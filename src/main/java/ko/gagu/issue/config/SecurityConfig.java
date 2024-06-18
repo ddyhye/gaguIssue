@@ -22,6 +22,8 @@ public class SecurityConfig {
 		@Bean
 		public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 			http.httpBasic().disable().csrf().disable();
+			// 정원, 0618  해당 페이지와 동일한 orgin에 해당하는 frame만 표시할 수 있도로 허용
+			http.headers().frameOptions().sameOrigin();
 			return http.build();
 		}
 
