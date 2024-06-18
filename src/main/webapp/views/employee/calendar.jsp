@@ -38,6 +38,18 @@
     <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
+    
+    <!-- 캘린더 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<!-- modal창 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+    
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -80,9 +92,60 @@
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
+          <h2><center>Javascript Fullcalendar</center></h2>
+		    <div class="container">
+		        <div id="calendar"></div>
+		    </div>
+		    <br>
+		
+		    <!-- Modal -->
+		    <div id="myModal" class="modal fade" role="dialog">
+		        <div class="modal-dialog">
+		
+		            <!-- Modal content-->
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                    <h4 class="modal-title">일정 추가</h4>
+		                </div>
+		                <div class="modal-body">
+		                    <div class="form-group">
+		                        <label for="title">일정명:</label>
+		                        <input type="text" class="form-control" id="title">
+		                    </div>
+		                    <div class="form-group datepicker-input">
+		                        <label for="startDate">시작 날짜:</label>
+		                        <input type="text" class="form-control" id="startDate">
+		                    </div>
+		                    <div class="form-group timepicker-input">
+		                        <label for="startTime">시작 시간:</label>
+		                        <select class="form-control" id="startTime"></select>
+		                    </div>
+		                    <div class="form-group datepicker-input">
+		                        <label for="endDate">종료 날짜:</label>
+		                        <input type="text" class="form-control" id="endDate">
+		                    </div>
+		                    <div class="form-group timepicker-input">
+		                        <label for="endTime">종료 시간:</label>
+		                        <select class="form-control" id="endTime"></select>
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="description">설명:</label>
+		                        <textarea class="form-control" id="description"></textarea>
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="color">색상:</label>
+		                        <input type="text" class="form-control" id="color">
+		                    </div>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-default" id="addEventBtn">등록</button>
+		                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		                </div>
+		            </div>
+		
+		        </div>
+		    </div>
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
@@ -102,8 +165,130 @@
         </footer>
       </div>
     </div>
+    <script>
+	$(document).ready(function() {
+	    $('#calendar').fullCalendar({
+	        editable: true,
+	        selectable: true,
+	        droppable: true,
+	        header: {
+	            left: 'month,agendaWeek,agendaDay,list,addEventButton',
+	            center: 'title',
+	            right: 'prev,today,next'
+	        },
+	        customButtons: {
+	            addEventButton: {
+	                text: '일정추가',
+	                click: function() {
+	                    $('#myModal').modal('show');
+	                }
+	            }
+	        },
+	        buttonText: {
+	            today: 'Today',
+	            month: 'Month',
+	            week: 'Week',
+	            day: 'Day',
+	            list: 'List'
+	        },
+	        events: function(fetchInfo, successCallback, failureCallback) {
+	            $.ajax({
+	                type: 'GET',
+	                url: './getAllEvents',
+	                dataType: 'json',
+	                success: function(response) {
+	                    console.log('서버 응답:', response); // 서버 응답 확인용 콘솔 로그
+	
+	                    if (response && response.calendarEvents) {
+	                        // ajax 통신이 성공하면 모든 일정을 반환한다
+	                        successCallback(response.calendarEvents);
+	                    } else {
+	                        console.error('응답 형식이 올바르지 않습니다:', response);
+	                        failureCallback('응답 형식이 올바르지 않습니다');
+	                    }
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error('이벤트 로딩에 실패ㅠㅠ : ' + error);
+	                    failureCallback(error);
+	                }
+	            });
+	        },
+	        select: function(start, end) {
+	            $('#startDate').val(moment(start).format('YYYY-MM-DD'));
+	            $('#endDate').val(moment(end).subtract(1, 'days').format('YYYY-MM-DD'));
+	            $('#myModal').modal('toggle');
+	        }
+	    });
+	
+	    var selectOptions = '';
+	    for (var i = 0; i <= 24; i++) {
+	        var hour = (i < 10) ? '0' + i : i;
+	        selectOptions += '<option value="' + hour + '">' + hour + ':00</option>';
+	    }
+	    $('#startTime, #endTime').html(selectOptions);
+	
+	    // jQuery UI datepicker를 사용
+	    $('#startDate, #endDate').datepicker({
+	        dateFormat: 'yy-mm-dd',
+	        showButtonPanel: true,
+	        changeMonth: true,
+	        changeYear: true,
+	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        onSelect: function(dateText) {
+	            $(this).val(dateText);
+	        }
+	    });
+	    $('#startDate, #endDate').prop('readonly', true);
+	
+	    $('#addEventBtn').click(function() {
+	        var startDate = $('#startDate').val();
+	        var startTime = $('#startTime').val();
+	        var endDate = $('#endDate').val();
+	        var endTime = $('#endTime').val();
+	        var eventTitle = $('#title').val();
+	        var eventDescription = $('#description').val();
+	        var eventColor = $('#color').val();
+	
+	        // 시작 날짜와 시간이 종료 날짜와 시간보다 늦을 경우 알림
+	        if (moment(startDate + 'T' + startTime) >= moment(endDate + 'T' + endTime)) {
+	            alert('종료 날짜를 다시 확인해주세요.');
+	            return;
+	        }
+	
+	        var event = {
+	            ec_title: eventTitle,
+	            ec_description: eventDescription,
+	            ec_start_datetime: startDate + 'T' + startTime,
+	            ec_end_datetime: endDate + 'T' + endTime,
+	            ec_color: eventColor
+	        };
+	
+	        $('#calendar').fullCalendar('renderEvent', event, true); // 캘린더에 이벤트 추가
+	        events.push(event); // events 배열에 이벤트 추가
+	
+	        // 서버로 이벤트 추가 요청 보내기
+	        $.ajax({
+	            type: 'POST',
+	            url: '/addEvent',
+	            contentType: 'application/json',
+	            data: JSON.stringify(event),
+	            success: function(response) {
+	                console.log('Event added successfully.');
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('Failed to add event: ' + error);
+	            }
+	        });
+	
+	        $('#myModal').modal('hide'); // 모달 창 닫기
+	    });
+	});
+	</script>
     <!-- latest jquery-->
-    <script src="../assets/js/jquery.min.js"></script>
+    
+    <!-- <script src="../assets/js/jquery.min.js"></script> -->
+    
     <!-- Bootstrap js-->
     <script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->

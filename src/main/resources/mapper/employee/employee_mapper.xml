@@ -4,6 +4,9 @@
 
 <mapper namespace="ko.gagu.issue.employee.dao.EmployeerDAO">
 	
+	<select id="getCalendarEvents" resultType="employee">
+		SELECT * FROM calendar_event
+	</select>
 	
 	
 	
