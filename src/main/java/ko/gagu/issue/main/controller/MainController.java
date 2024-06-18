@@ -16,7 +16,7 @@ public class MainController {
 	@RequestMapping(value = "/")
 	public String main() {
 		logger.info("index.jsp 로 이동");
-		return "main/index";
+		return "main/dashboard";
 	}
 
 	@RequestMapping(value = "/indexOri.go")
@@ -30,6 +30,16 @@ public class MainController {
 	public String path(@PathVariable String path) {
 		logger.info(path + ".jsp 로 이동");
 		return path;
+	}
+	
+	// 2단 경로
+	@GetMapping(value = "/{path1}/{path2}.go")
+	public String path2(@PathVariable String path1, @PathVariable String path2) {
+		logger.info(path1+"/"+path2+".jsp 로 이동");
+		
+		String page = path1+"/"+path2;
+		
+		return page;
 	}
 
 }
