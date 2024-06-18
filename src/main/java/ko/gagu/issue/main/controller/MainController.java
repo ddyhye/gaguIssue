@@ -3,6 +3,7 @@ package ko.gagu.issue.main.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +15,12 @@ public class MainController {
 	
 	// 메인페이지
 	@RequestMapping(value = "/")
-	public String main() {
+	public String main(Model model) {
 		logger.info("index.jsp 로 이동");
+		
+		model.addAttribute("emp_name", "관리자");
+		model.addAttribute("de_name", "관리자");
+		
 		return "main/dashboard";
 	}
 
