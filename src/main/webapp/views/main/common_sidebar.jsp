@@ -30,7 +30,7 @@
                   
                   
                   <!-- do : 대쉬보드 -->              
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="index.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/main/dashboard.go'/>">
                       <svg class="stroke-icon">
                         <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                       </svg>
@@ -143,7 +143,7 @@
                       
                       
                   <!-- do: 창고 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="storageManage.go">
                       <svg class="stroke-icon">
                         <use href="../assets/svg/icon-sprite.svg#stroke-animation"></use>
                       </svg>
