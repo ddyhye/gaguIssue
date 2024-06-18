@@ -2,14 +2,31 @@
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<<<<<<< HEAD
 <mapper namespace="ko.gagu.issue.employee.dao.EmployeerDAO">
 	
 	<select id="getCalendarEvents" resultType="employee">
 		SELECT * FROM calendar_event
 	</select>
 	
+=======
+<mapper namespace="ko.gagu.issue.employee.dao.EmployeeDAO">
+	<select id="login" resultType="String">
+		SELECT emp_pw FROM employee_tb WHERE emp_id = #{param1}
+	</select>
+>>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 	
+	<insert id="join" parameterType="map">
+		INSERT INTO employee_tb (idx_employee,idx_department,idx_title,emp_id,emp_pw,emp_name,emp_status,emp_email,emp_email_pw,emp_phone_number,emp_birth_date,emp_hire_date,emp_term_date,emp_address,first_login)
+			VALUES (#{idx_employee},#{idx_department},#{idx_title},#{emp_id},#{emp_pw},#{emp_name},#{emp_status},#{emp_email},#{emp_email_pw},#{emp_phone_number},#{emp_birth_date},#{emp_hire_date},#{emp_term_date},#{emp_address},#{first_login})
+	</insert>
 	
+	 <select id="findEmployeeNumber" parameterType="map" resultType="string">
+        SELECT emp_id
+        FROM employee_tb
+        WHERE emp_name = #{emp_name}
+          AND emp_birth_date = #{birthDate}
+    </select>
 	
 	
 	
