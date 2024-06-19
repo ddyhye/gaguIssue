@@ -31,7 +31,8 @@
 
 .H_ui * {
   /* normalize in case some other normalization CSS likes things differently */
-  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
   -moz-box-sizing: content-box;
 }
 
@@ -126,7 +127,7 @@
   color: white;
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
-  border-bottom: 0.1em solid #4A5B65;
+  border-bottom: 0.1em dashed #4A5B65;
 }
 
 .H_rdo_title {
@@ -232,7 +233,7 @@
   content: " ";
   width: 0px;
   height: 0px;
-  border-style: solid;
+  border-style: dashed;
   position: absolute;
 }
 
@@ -400,7 +401,6 @@
   background-color: white;
   border-radius: 9em;
   -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
@@ -413,7 +413,6 @@
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
 
@@ -439,9 +438,6 @@
   top: 0;
   color: white;
   background-color: #000F1A;
-  -moz-border-radius: 0.4em;
-  -webkit-border-radius: 0.4em;
-  -o-border-radius: 0.4em;
   border-radius: 0.4em;
   padding: 10px 0;
   -moz-user-select: initial;
@@ -483,8 +479,8 @@
 .H_context_menu_item_separator {
   height: 0;
   margin: 8px 10px;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #666;
+  border-top: 1px dashed #333;
+  border-bottom: 1px dashed #666;
   line-height: 0;
   font-size: 0;
 }
@@ -510,17 +506,20 @@
 }
 
 .H_pano_notransition {
+  -webkit-transition: none !important;
   transition: none !important;
 }
 
 .H_pano_circle {
   margin-top: -1em;
   margin-left: -1em;
+  -webkit-transition: all 0.3s;
   transition: all 0.3s;
   pointer-events: none;
 }
 
 .H_disabled .H_pano_circle {
+  -webkit-transition: none;
   transition: none;
   margin-left: -0.1em;
 }
@@ -554,7 +553,7 @@
 }
 
 .H_tib p.H_tib_desc {
-  border-top: 1px solid #666;
+  border-top: 1px dashed #666;
   padding-top: 0.5em;
 }
 
@@ -596,6 +595,7 @@ svg.H_icon {
 
 /*###############################################  OVERVIEW MAP  #####################################################*/
 .H_overview {
+  -webkit-transition: width 0.2s, height 0.2s, margin-top 0.2s, padding 0.2s;
   transition: width 0.2s, height 0.2s, margin-top 0.2s, padding 0.2s;
   width: 0em;
   height: 0em;
@@ -604,7 +604,6 @@ svg.H_icon {
   position: absolute;
   margin: auto;
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -647,13 +646,13 @@ svg.H_icon {
 }
 
 .H_overview .H_overview_map {
-  border: 1px solid black;
+  border: 1px dashed black;
   background-color: rgba(255, 255, 255, 0.6);
   -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 .H_overview_map .H_ui {
   display: none;
 }
+/*# sourceMappingURL=mapsjs-ui.css.map */

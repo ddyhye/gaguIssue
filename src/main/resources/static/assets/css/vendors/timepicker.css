@@ -4,24 +4,27 @@
   width: 0;
   height: 0;
   border-color: transparent;
-  border-style: solid;
+  border-style: dashed;
   overflow: visible;
   margin: 0;
   padding: 0;
   z-index: auto;
   background-color: transparent;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   bottom: auto;
   left: auto;
   right: auto;
   top: auto;
-  transform: none;
+  -webkit-transform: none;
+          transform: none;
 }
 
 .btn:active, .btn.active {
   background-image: none;
   outline: 0;
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
 .open .dropdown-toggle.btn-default, .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active {
@@ -50,8 +53,9 @@
   background-color: #ffffff;
   background-clip: padding-box;
   border-radius: 6px;
-  box-shadow: 1px 1px 2px 1px #e2e2e2;
-  border: 0px solid transparent;
+  -webkit-box-shadow: 1px 1px 2px 1px #e2e2e2;
+          box-shadow: 1px 1px 2px 1px #e2e2e2;
+  border: 0px dashed transparent;
 }
 .popover.top {
   margin-top: -10px;
@@ -136,7 +140,7 @@
   font-weight: 400;
   line-height: 18px;
   background-color: #f7f7f7;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px dashed #ebebeb;
   border-radius: 5px 5px 0 0;
 }
 
@@ -150,9 +154,12 @@
 
 .btn {
   cursor: pointer;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   background-image: none;
-  border: 1px solid transparent;
+  border: 1px dashed transparent;
 }
 .btn.active:focus {
   outline: dotted thin;
@@ -205,39 +212,47 @@
   cursor: pointer;
 }
 .clockpicker-popover .popover-content {
-  background-color: #ebeffe;
+  background-color: #eae8f4;
   padding: 12px;
 }
 
 .clockpicker-plate {
   background-color: #ffffff;
-  border: 1px solid #ccc;
+  border: 1px dashed #ccc;
   border-radius: 50%;
   width: 200px;
   height: 200px;
   overflow: visible;
   position: relative;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .clockpicker-canvas {
+  -webkit-transition: opacity 175ms;
   transition: opacity 175ms;
 }
 .clockpicker-canvas line {
-  stroke: #4466f2;
+  stroke: #7A70BA;
   stroke-width: 1;
   stroke-linecap: round;
 }
 
 .clockpicker-dial {
+  -webkit-transition: opacity 350ms, -webkit-transform 350ms;
+  transition: opacity 350ms, -webkit-transform 350ms;
   transition: transform 350ms, opacity 350ms;
+  transition: transform 350ms, opacity 350ms, -webkit-transform 350ms;
 }
 
 .clockpicker-minutes {
   visibility: hidden;
 }
 .clockpicker-minutes.clockpicker-dial-out {
-  transform: scale(0.8, 0.8);
+  -webkit-transform: scale(0.8, 0.8);
+          transform: scale(0.8, 0.8);
 }
 
 .clockpicker-tick {
@@ -251,12 +266,12 @@
   cursor: pointer;
 }
 .clockpicker-tick.active {
-  background-color: #e1e7fd;
+  background-color: #e4e2f1;
   color: #fff;
 }
 .clockpicker-tick:hover {
   color: #fff;
-  background-color: #e1e7fd;
+  background-color: #e4e2f1;
 }
 
 .clockpicker-button {
@@ -278,13 +293,13 @@
 .clockpicker-button.am-button {
   margin: 1px;
   padding: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 .clockpicker-button.pm-button {
   margin: 1px 1px 1px 136px;
   padding: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 
@@ -298,21 +313,21 @@
 
 .clockpicker-canvas-bearing {
   stroke: none;
-  fill: #4466f2;
+  fill: #7A70BA;
 }
 
 .clockpicker-canvas-fg {
   stroke: none;
-  fill: #4466f2;
+  fill: #7A70BA;
 }
 
 .clockpicker-canvas-bg {
   stroke: none;
-  fill: #e1e7fd;
+  fill: #e4e2f1;
 }
 
 .clockpicker-canvas-bg-trans {
-  fill: #ebeffe;
+  fill: #eae8f4;
 }
 
 .open .dropdown-toggle.btn-default {
@@ -322,3 +337,4 @@
 .clockpicker .input-group-addon {
   cursor: pointer;
 }
+/*# sourceMappingURL=timepicker.css.map */
