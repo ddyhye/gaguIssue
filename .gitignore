@@ -5,3 +5,7 @@ HELP.md
 mvnw
 mvnw.cmd
 target/
+node_modules/
+gulpfile.js
+package.json
+package-lock.json

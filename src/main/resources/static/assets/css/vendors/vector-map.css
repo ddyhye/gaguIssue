@@ -8,7 +8,8 @@
   cursor: pointer;
   line-height: 20px;
   text-align: center;
-  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
 }
 
 .jvectormap-container {
@@ -25,7 +26,7 @@
 .jvectormap-tip {
   position: absolute;
   display: none;
-  border: solid 1px #cdcdcd;
+  border: dashed 1px #cdcdcd;
   border-radius: 3px;
   background: #292929;
   color: #fff;
@@ -127,3 +128,4 @@
 .jvectormap-legend .jvectormap-legend-tick-sample {
   height: 26px;
 }
+/*# sourceMappingURL=vector-map.css.map */

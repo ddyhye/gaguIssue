@@ -9,14 +9,14 @@
   display: none;
   z-index: 8;
   background: #2c323f;
-  border: 1px solid #ecf3fa;
+  border: 1px dashed rgba(106, 113, 133, 0.3);
 }
 .button-builder .colorpicker input {
   background-color: transparent;
-  border: 1px solid transparent;
+  border: 1px dashed transparent;
   position: absolute;
   font-size: 10px;
-  color: #ecf3fa;
+  color: rgba(106, 113, 133, 0.3);
   top: 4px;
   right: 11px;
   text-align: right;
@@ -30,7 +30,7 @@
   left: 14px;
   top: 13px;
   position: absolute;
-  background: #FC4438;
+  background: #E44141;
   overflow: hidden;
   cursor: crosshair;
 }
@@ -74,7 +74,7 @@
   height: 30px;
   left: 213px;
   top: 13px;
-  background: #FC4438;
+  background: #E44141;
 }
 .button-builder .colorpicker-current-color {
   position: absolute;
@@ -82,7 +82,7 @@
   height: 30px;
   left: 283px;
   top: 13px;
-  background: #FC4438;
+  background: #E44141;
 }
 .button-builder .colorpicker-hex {
   position: absolute;
@@ -193,7 +193,8 @@
   position: absolute;
   top: 0;
   width: 33px;
-  transform: scale(1.4);
+  -webkit-transform: scale(1.4);
+          transform: scale(1.4);
   z-index: 1;
   background: url(../images/button_builder/select.png) repeat scroll 0 0 rgba(0, 0, 0, 0);
 }
@@ -204,7 +205,7 @@
   position: relative;
   z-index: 1;
   top: 3px;
-  border: 1px solid var(--theme-default);
+  border: 1px dashed var(--theme-default);
   border-radius: 100%;
 }
 .button-builder .custom-radio:hover {
@@ -254,14 +255,16 @@
   top: 98px;
   width: 75px;
   height: 25px;
-  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
 }
 .button-builder .colorpicker-hex input {
   background: transparent;
   border: medium none;
-  color: #242934;
+  color: #9B9B9B;
   display: block;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   font-size: 13px;
   height: 17px;
   outline: medium none;
@@ -271,7 +274,8 @@
   text-align: left;
   text-transform: uppercase;
   width: 65px;
-  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
 }
 .button-builder .colorpicker-hue {
   background: url(../images/button_builder/rainbow.png) no-repeat scroll center center rgba(0, 0, 0, 0);
@@ -297,7 +301,7 @@
   position: absolute;
   top: 12px;
   width: 73px;
-  border: 1px solid #ecf3fa;
+  border: 1px dashed rgba(106, 113, 133, 0.3);
 }
 .button-builder .colorpicker-field {
   display: none;
@@ -325,14 +329,14 @@
   color: #fff;
 }
 .button-builder .colorpicker-submit:hover {
-  background-color: #4433ff;
+  background-color: #5c50a7;
 }
 .button-builder .box {
   background-color: #fff;
   margin-bottom: 20px;
   padding: 30px;
   text-align: center;
-  border: 1px solid #efefef;
+  border: 1px dashed #efefef;
   border-radius: 5px;
 }
 .button-builder .button-preview {
@@ -439,6 +443,7 @@
   border: 1px dotted #efefef;
   color: #898989;
   width: 40px;
+  -webkit-transition: all 0.2s ease-in-out 0s;
   transition: all 0.2s ease-in-out 0s;
   margin: 2px;
 }
@@ -447,11 +452,13 @@
 }
 .button-builder ul.the-icons li:hover {
   background: #fff;
-  box-shadow: 0 0 3px #f4f4f4;
+  -webkit-box-shadow: 0 0 3px #f4f4f4;
+          box-shadow: 0 0 3px #f4f4f4;
 }
 .button-builder ul.the-icons li:hover.active {
   background: #fff;
-  box-shadow: 0 0 3px #f4f4f4;
+  -webkit-box-shadow: 0 0 3px #f4f4f4;
+          box-shadow: 0 0 3px #f4f4f4;
 }
 
 .button-builder-wrap .form-group {
@@ -469,3 +476,4 @@
 /*==============================
  64. Button Builder CSS End
  ===========================*/
+/*# sourceMappingURL=button-builder.css.map */

@@ -8,7 +8,7 @@
 .page-builder .btn-screen {
   padding: 0px 18px;
   background: transparent;
-  color: #cccccc;
+  color: rgba(106, 113, 133, 0.3);
   border: none;
 }
 .page-builder .btn-code {
@@ -16,13 +16,13 @@
   background-color: transparent;
   border: none;
   font-size: 12px;
-  border-right: 1px solid #f4f4f4;
-  color: #cccccc;
+  border-right: 1px dashed #f4f4f4;
+  color: rgba(106, 113, 133, 0.3);
 }
 .page-builder .btn-grid {
   background-color: #fff;
-  color: #52526c !important;
-  border-right: 1px solid #efefef;
+  color: #9B9B9B !important;
+  border-right: 1px dashed #efefef;
   padding: 0px;
   margin-right: 8px;
   padding-right: 10px;
@@ -33,9 +33,12 @@
 }
 .page-builder .ge-mainControls .ge-wrapper {
   color: #fff;
-  font-family: Rubik, sans-serif;
+  font-family: "Outfit", sans-serif, sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   gap: 10px;
 }
 .page-builder .ge-mainControls .ge-wrapper.ge-fixed {
@@ -49,6 +52,8 @@
   width: auto;
 }
 .page-builder .ge-mainControls .ge-addRowGroup .ge-row-icon {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
   display: inline-flex;
   width: 50px;
   margin: 0;
@@ -57,7 +62,7 @@
   height: 10px;
   background: var(--theme-default);
   padding: 0;
-  border-left: 3px solid #fff;
+  border-left: 3px dashed #fff;
 }
 @media (min-width: 1670px) {
   .page-builder .ge-mainControls .ge-layout-mode {
@@ -76,7 +81,8 @@
   color: #fff;
 }
 .page-builder .ge-mainControls .btn:focus {
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   outline: none;
 }
 .page-builder .ge-html-output {
@@ -87,7 +93,10 @@
   display: none;
 }
 .page-builder .ge-canvas.ge-editing .ge-tools-drawer {
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   margin: 0 0 5px;
   display: block;
 }
@@ -101,7 +110,7 @@
 }
 .page-builder .ge-canvas.ge-editing .ge-tools-drawer .ge-details {
   padding: 5px;
-  border-top: 1px solid #2c323f;
+  border-top: 1px dashed #2c323f;
   display: none;
 }
 .page-builder .ge-canvas.ge-editing .ge-tools-drawer .ge-details .btn-group a {
@@ -124,17 +133,17 @@
   width: 100%;
 }
 .page-builder .ge-canvas.ge-editing .row > .ge-tools-drawer > a {
-  color: #cccccc;
+  color: rgba(106, 113, 133, 0.3);
   font-size: 11px;
 }
 .page-builder .ge-canvas.ge-editing .column {
   background-color: #fff;
-  border: 1px solid #f4f4f4;
+  border: 1px dashed #f4f4f4;
   padding: 15px;
   border-radius: 4px;
 }
 .page-builder .ge-canvas.ge-editing .column > .ge-tools-drawer a {
-  color: #cccccc;
+  color: rgba(106, 113, 133, 0.3);
   font-size: 11px;
 }
 .page-builder .ge-canvas.ge-editing .column > .ge-tools-drawer > a.ge-add-row {
@@ -146,7 +155,7 @@
   min-height: 50px;
 }
 .page-builder .ge-canvas.ge-editing .ge-content-type-tinymce.active {
-  outline: 1px dotted #ecf3fa;
+  outline: 1px dotted rgba(106, 113, 133, 0.3);
 }
 .page-builder .ge-canvas.ge-layout-phone {
   max-width: 450px;
@@ -604,3 +613,4 @@
 /**=====================
       Page Builder CSS Ends
 ==========================**/
+/*# sourceMappingURL=page-builder.css.map */

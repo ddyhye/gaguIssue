@@ -30,7 +30,7 @@
                   
                   
                   <!-- do : 대쉬보드 -->              
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="index.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/main/dashboard.go'/>">
                       <svg class="stroke-icon">
                         <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                       </svg>
@@ -58,20 +58,27 @@
                       </svg><span>게시판</span></a></li>
                       
                       
-                  <!-- do: 인사 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                  <!-- do: 메일 -->
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="task.go">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
+                        <use href="../assets/svg/icon-sprite.svg#stroke-email"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-ecommerce"></use>
-                      </svg><span>인사 관리</span></a>
-                    <ul class="sidebar-submenu">
-                      <li><a href="add-products.go">직원 관리</a></li>
-                      <li><a href="list-products.go">직원 근태 현황</a></li>
-                      <li><a href="list-products.go">회사 일정 관리</a></li>
-                    </ul>
-                  </li>
+                        <use href="../assets/svg/icon-sprite.svg#fill-calender"></use>
+                      </svg><span>메일</span></a></li>
+                      
+                      
+                  <!-- do: 나의 연차 -->
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="task.go">
+                      <svg class="stroke-icon">
+                        <use href="../assets/svg/icon-sprite.svg#stroke-blog"></use>
+                      </svg>
+                      <svg class="fill-icon">
+                        <use href="../assets/svg/icon-sprite.svg#fill-calender"></use>
+                      </svg><span>나의 연차</span></a></li>
+                      
+                      
+                  
                   
                   
                   <!-- do: 전자 결재 -->
@@ -100,6 +107,22 @@
                     <ul class="sidebar-submenu">
                       <li><a href="add-products.go">회의실 예약</a></li>
                       <li><a href="list-products.go">회의실 예약 내역</a></li>
+                    </ul>
+                  </li>
+                  
+                  
+                  <!-- do: 인사 관리 -->
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
+                      <svg class="stroke-icon">
+                        <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
+                      </svg>
+                      <svg class="fill-icon">
+                        <use href="../assets/svg/icon-sprite.svg#fill-ecommerce"></use>
+                      </svg><span>인사 관리</span></a>
+                    <ul class="sidebar-submenu">
+                      <li><a href="add-products.go">직원 관리</a></li>
+                      <li><a href="list-products.go">직원 근태 현황</a></li>
+                      <li><a href="list-products.go">회사 일정 관리</a></li>
                     </ul>
                   </li>
                   
@@ -143,7 +166,7 @@
                       
                       
                   <!-- do: 창고 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="storageManage.go">
                       <svg class="stroke-icon">
                         <use href="../assets/svg/icon-sprite.svg#stroke-animation"></use>
                       </svg>

@@ -27,8 +27,12 @@
   font-size: 0;
   line-height: 0;
   position: relative;
-  touch-action: none;
-  user-select: none;
+  -ms-touch-action: none;
+      touch-action: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .cropper-container img {
   display: block;
@@ -63,7 +67,7 @@
   display: block;
   height: 100%;
   outline-color: var(--theme-default);
-  outline: 1px solid var(--theme-default);
+  outline: 1px dashed var(--theme-default);
   overflow: hidden;
   width: 100%;
 }
@@ -259,11 +263,13 @@
   margin-bottom: 0;
 }
 .img-cropper .d-flex > .btn {
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 .img-cropper .carbonads {
   border-radius: 0.25rem;
-  border: 1px solid #ccc;
+  border: 1px dashed #ccc;
   font-size: 0.875rem;
   overflow: hidden;
   padding: 1rem;
@@ -314,7 +320,7 @@
   color: #ff4136;
 }
 .img-cropper .heart::before {
-  border-top: 1px solid #eee;
+  border-top: 1px dashed #eee;
   content: " ";
   display: block;
   height: 0;
@@ -453,3 +459,4 @@
 .img-cropper .docs-cropped .modal-body > canvas {
   max-width: 100%;
 }
+/*# sourceMappingURL=image-cropper.css.map */

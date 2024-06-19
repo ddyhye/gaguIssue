@@ -1,6 +1,18 @@
 // /**=====================
 //   3.13 Dashboard_default CSS Start
 // ==========================**/
+// do: 적용,,
+.do-flexdirection-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    //justify-content: center;  //자식 요소들을 가운데 정렬
+}
+.greater-than {
+    color: rgba(122, 112, 186, 0.7);
+    font-size: 20px;
+}
+
 .default-dashboard,
 .dashboard-2,
 .dashboard-3,
@@ -195,9 +207,9 @@
         overflow: hidden;
 
         .card-body {
-            background-image: url(../../assets/images/dashboard/bg.png);
-            background-repeat: no-repeat;
-            background-position: center right;
+            //background-image: url(../../assets/images/dashboard/bg.png);
+            //background-repeat: no-repeat;
+            //background-position: center right;
             display: block;
             height: 252px;
             padding: 22px 24px;
@@ -220,6 +232,17 @@
             [dir="rtl"] & {
                 transform: scaleX(-1);
             }
+        }
+
+        .do-flexdirection-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            //justify-content: center;  //자식 요소들을 가운데 정렬
+        }
+        .greater-than {
+            color: rgba(122, 112, 186, 0.7);
+            font-size: 20px;
         }
 
         .img-overlay {
