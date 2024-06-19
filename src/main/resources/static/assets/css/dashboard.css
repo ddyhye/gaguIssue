@@ -1,0 +1,92 @@
+.do-flexdirection-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.greater-than {
+  color: rgba(122, 112, 186, 0.7);
+  font-size: 20px;
+}
+
+
+
+
+/* 출퇴근 */
+.do-body1 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	height: 180px;
+}
+.do-body-left {
+	display: flex;
+	flex-direction: row;
+	
+	position: relative;
+	width: 65%;
+	gap: 15px;
+	
+	border-right: 1px dotted rgba(122, 112, 186, 0.5);
+}
+.do-body-left-button1, .do-body-left-button2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+   	justify-content: center; 
+   	
+   	position: relative;
+   	width: 45%;
+   	height: 100px;
+	border-radius: 5%;
+	gap: 5px;
+}
+.do-body-left-button1 {
+	background-color: white;
+	border: 1px solid rgba(122, 112, 186, 0.5);
+}
+.do-p-darkgray {
+	color: #5b5b5b;
+}
+.do-bold {
+	font-weight: bold;
+}
+.do-body-left-button2 {
+	background-color: rgba(122, 112, 186, 0.8);
+}
+.do-p-white {
+	color: white;
+}
+
+.do-body-right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+	position: relative;
+	width: 25%;
+	height: 70%;
+}
+.do-clock {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	color: rgba(122, 112, 186, 0.3);
+}
+#remainingTime {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1001;
+}

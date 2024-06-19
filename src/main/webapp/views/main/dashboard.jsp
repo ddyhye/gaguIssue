@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/dashboard.css">
     <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
@@ -124,6 +125,9 @@
                   </div>
                 </div>
               </div>
+              
+              
+              <!-- do: 출퇴근 -->
               <div class="col-xl-7 proorder-xl-5 box-col-7 proorder-md-5"> 
                 <div class="card">
                   <div class="card-header card-no-border pb-0">
@@ -134,6 +138,26 @@
                     </div>
                   </div>
                   <div class="card-body pt-0 projects px-0">
+                  	<div class="do-body1">
+	                  	<div class="do-body-left">
+	                  		<div class="do-body-left-button1" id="gotoWorkBtn">
+	                  			<h4 class="do-p-darkgray">출근</h4>
+	                  			<p class="do-p-darkgray" id="gotoWorkTime">${gotoWork}</p>
+	                  		</div>
+	                  		<div class="do-body-left-button2" id="finishWorkBtn">
+	                  			<h4 class="do-p-white">퇴근</h4>
+	                  			<p class="do-p-white" id="finishWorkTime">${finishWork}</p>
+	                  		</div>
+	                  	</div>
+	                  	<div class="do-body-right">
+	                  		<p class="do-p-darkgray do-bold">남은 근무 시간</p>
+	                  		<div class="do-body-right-center">
+	                  			<i class="do-clock" data-feather="clock">
+	                  			</i>
+	                  			<h5 class="do-p-darkgray do-bold" id="remainingTime">00:00:00</h5>
+	                  		</div>
+	                  	</div>
+                  	</div>
                   </div>
                 </div>
               </div>
@@ -184,6 +208,9 @@
           </div>
           <!-- Container-fluid Ends-->
         </div>
+        
+        
+        
         <!-- footer start-->
         <footer class="footer">
           <div class="container-fluid">
@@ -246,4 +273,91 @@
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>
+  
+<script>
+	/*
+	if (msg != '') {
+		alert(msg);
+	}*/
+	
+	
+	
+	
+	// [do] 출퇴근 여부
+	var isGotoWorkTime = '${isGotoWorkTime}';
+	var isFinishWorkTime = '${isFinishWorkTime}';
+	
+	if (isGotoWorkTime) {
+		
+	}
+
+
+
+	// [do] 출퇴근 JS
+	const gotoWorkBtn = document.getElementById('gotoWorkBtn');
+	const gotoWorkTime = document.getElementById('gotoWorkTime');
+	const finishWorkBtn = document.getElementById('finishWorkBtn');
+	const finishWorkTime = document.getElementById('finishWorkTime');
+	//const remainingTime = document.getElementById('remainingTime');
+	
+	// 현재 시간 함수
+	function updateTime() {
+		// 현재 시간
+		const now = new Date();
+		const hours = String(now.getHours()).padStart(2, '0');
+		const minutes = String(now.getMinutes()).padStart(2, '0');
+		const seconds = String(now.getSeconds()).padStart(2, '0');
+		const currentTime = hours+':'+minutes+':'+seconds;
+		
+		// 남은 근무 시간
+		const endOfDay = new Date();
+		endOfDay.setHours(18, 0, 0, 0);
+		
+		let remainingTime = endOfDay - now;
+		if(remainingTime < 0) {
+			remainingTime = 0;
+		}
+		
+      	const remainingHours = String(Math.floor(remainingTime / (1000 * 60 * 60))).padStart(2, '0');
+      	const remainingMinutes = String(Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      	const remainingSeconds = String(Math.floor((remainingTime % (1000 * 60)) / 1000)).padStart(2, '0');
+      	const remainingTimeString = remainingHours+':'+remainingMinutes+':'+remainingSeconds;
+	
+      	if (remainingHours === '00') {
+			if (remainingMinutes === '00') {
+				if (remainingSeconds === '00') {
+					remainingTimeStrig = '00:00:00';
+				}
+			}
+		}
+      	
+		return {
+			currentTime: currentTime,
+			remainingTimeString: remainingTimeString
+		}
+	}
+	
+	// 출퇴근 및 남은 근무시간 업데이트
+	// 초기 호출
+	updateTime();	
+	// 1초마다 퇴근까지 남은 시간 업데이트
+	setInterval(() => {
+	    const timeData = updateTime();
+	    document.getElementById('remainingTime').textContent = timeData.remainingTimeString;
+	}, 1000);
+	// 출근 버튼 클릭 시
+	gotoWorkBtn.addEventListener('click', () => {
+		const timeData = updateTime();
+		document.getElementById('gotoWorkTime').textContent = timeData.currentTime;
+	});
+	// 퇴근 버튼 클릭 시
+	finishWorkBtn.addEventListener('click', () => {
+		const timeData = updateTime();
+		finishWorkTime.textContent = timeData.currentTime;
+	});
+	
+	
+	
+	
+</script>
 </html>
