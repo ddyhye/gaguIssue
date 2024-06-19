@@ -38,52 +38,151 @@
     <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
+    
   </head>
   <body> 
-    <div class="loader-wrapper"> 
-      <div class="loader loader-1">
-        <div class="loader-outter"></div>
-        <div class="loader-inner"></div>
-        <div class="loader-inner-1"></div>
-      </div>
-    </div>
-    <!-- loader ends-->
-    <!-- tap on top starts-->
-    <div class="tap-top"><i data-feather="chevrons-up"></i></div>
-    <!-- tap on tap ends-->
-    <!-- page-wrapper Start-->
-    <div class="page-wrapper compact-wrapper" id="pageWrapper">
-      <div class="page-header row">
-        <div class="header-logo-wrapper col-auto">
-          <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt=""/></a></div>
-        </div>
-        <div class="col-4 col-xl-4 page-title">
-          <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
-          <nav>
-            <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
-              <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-              <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
-            </ol>
-          </nav>
-        </div>
-        <!-- Page Header Start -->
-        <%@ include file="../main/common_top.jsp" %>
-        <!-- Page Header Ends -->
-      </div>
-      <!-- Page Body Start-->
+   <div class="page-wrapper compact-wrapper" id="pageWrapper">
       <div class="page-body-wrapper">
         <!-- Page Sidebar Start-->
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          <div class="container-fluid email-wrap bookmark-wrap todo-wrap">
+            <div class="row">
+              <div class="col-xxl-3 col-xl-4 box-col-30">
+                <div class="email-sidebar md-sidebar"><a class="btn btn-primary email-aside-toggle md-sidebar-toggle">To Do filter</a>
+                  <div class="email-left-aside md-sidebar-aside">
+                    <div class="card theme-scrollbar mb-0">
+                      <div class="card-body"> 
+                        <div class="email-app-sidebar left-bookmark custom-scrollbar">
+                          <div class="d-flex align-items-center">
+                            <div class="media-size-email"><img class="me-3 rounded-circle" src="../assets/images/user/user.png" alt=""></div>
+                            <div class="flex-grow-1"> 
+                              <h6 class="f-w-600">Mark Jecno</h6>
+                              <p>Markjecno@gmail.com</p>
+                            </div>
+                          </div>
+                          <ul class="nav main-menu">
+                            <li class="nav-item">
+                              <button class="btn-primary text-white badge-light d-block btn-mail w-100"><i class="me-2" data-feather="check-circle"> </i>To Do List</button>
+                            </li>
+                            <li class="nav-item"> <a href="javascript:void(0)"><span class="iconbg badge-light-primary"><i data-feather="file-plus"></i></span><span class="title ms-2">All Task</span></a></li>
+                            <li class="nav-item"><a href="javascript:void(0)"><span class="iconbg badge-light-success"><i data-feather="check-circle"></i></span><span class="title ms-2">Completed</span><span class="badge rounded-pill badge-success">3</span></a></li>
+                            <li class="nav-item"><a href="javascript:void(0)"><span class="iconbg badge-light-danger"><i data-feather="cast"></i></span><span class="title ms-2">Pending</span><span class="badge rounded-pill badge-danger">2</span></a></li>
+                            <li class="nav-item"><a href="javascript:void(0)"><span class="iconbg badge-light-info"><i data-feather="activity"></i></span><span class="title ms-2">In Process</span><span class="badge rounded-pill badge-primary">2</span></a></li>
+                            <li class="nav-item"><a href="javascript:void(0)"><span class="iconbg badge-light-danger"><i data-feather="trash"></i></span><span class="title ms-2">Trash</span></a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xxl-9 col-xl-8 box-col-12">
+                <div class="card">
+                  <div class="card-header b-bottom">
+                    <div class="todo-list-header"> 
+                      <div class="new-task-wrapper input-group">
+                        <input class="form-control" id="new-task" placeholder="Enter new task here. . ."><span class="btn btn-primary add-new-task-btn" id="add-task">Add Task</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="todo">
+                      <div class="todo-list-wrapper theme-scrollbar">
+                        <div class="todo-list-container">
+                          <div class="todo-list-body theme-scrollbar">
+                            <ul id="todo-list">
+                              <li class="task">
+                                <div class="task-container">
+                                  <h4 class="task-label">Check validation involves making sure all your tags are properly closed and nested.</h4>
+                                  <div class="d-flex align-items-center gap-3"><span class="badge badge-light-primary done-badge">In Progress</span>
+                                    <h5 class="assign-name m-0">10 Nov</h5><span class="task-action-btn"><span class="action-box large delete-btn" title="Delete Task"><i class="icon"><i class="icon-trash"></i></i></span></span>
+                                  </div>
+                                </div>
+                              </li>
+                              <li class="task">
+                                <div class="task-container">
+                                  <h4 class="task-label">Test the outgoing links from all the pages to the specific domain under test.</h4>
+                                  <div class="d-flex align-items-center gap-3"><span class="badge badge-light-danger">Pending</span>
+                                    <h5 class="assign-name m-0">04 Aug</h5><span class="task-action-btn"><span class="action-box large delete-btn" title="Delete Task"><i class="icon"><i class="icon-trash"></i></i></span></span>
+                                  </div>
+                                </div>
+                              </li>
+                              <li class="completed task">
+                                <div class="task-container">
+                                  <h4 class="task-label">Test links are used to send emails to admin or other users from web pages.</h4>
+                                  <div class="d-flex align-items-center gap-3"><span class="badge badge-light-success">Done</span>
+                                    <h5 class="assign-name m-0">25 Feb</h5><span class="task-action-btn"><span class="action-box large delete-btn" title="Delete Task"><i class="icon"><i class="icon-trash"></i></i></span></span>
+                                  </div>
+                                </div>
+                              </li>
+                              <li class="task">
+                                <div class="task-container">
+                                  <h4 class="task-label">Options to create forms, if any, form deletes a view or modify the forms.</h4>
+                                  <div class="d-flex align-items-center gap-3"><span class="badge badge-light-primary">In Progress</span>
+                                    <h5 class="assign-name m-0">15 Dec</h5><span class="task-action-btn"><span class="action-box large delete-btn" title="Delete Task"><i class="icon"><i class="icon-trash"></i></i></span></span>
+                                  </div>
+                                </div>
+                              </li>
+                              <li class="task">
+                                <div class="task-container">
+                                  <h4 class="task-label">Wrong inputs in the forms to the fields in the forms.</h4>
+                                  <div class="d-flex align-items-center gap-3"><span class="badge badge-light-danger">Pending</span>
+                                    <h5 class="assign-name m-0">11 Nov</h5><span class="task-action-btn"><span class="action-box large delete-btn" title="Delete Task"><i class="icon"><i class="icon-trash"></i></i></span></span>
+                                  </div>
+                                </div>
+                              </li>
+                              <li class="task completed">
+                                <div class="task-container">
+                                  <h4 class="task-label">Check if the instructions provided are perfect to satisfy its purpose.</h4>
+                                  <div class="d-flex align-items-center gap-3"><span class="badge badge-light-danger">Pending</span>
+                                    <h5 class="assign-name m-0">04 Sept</h5><span class="task-action-btn"><span class="action-box large delete-btn" title="Delete Task"><i class="icon"><i class="icon-trash"></i></i></span></span>
+                                  </div>
+                                </div>
+                              </li>
+                              <li class="task">
+                                <div class="task-container">
+                                  <h4 class="task-label">Application server and Database server interface.</h4>
+                                  <div class="d-flex align-items-center gap-3"><span class="badge badge-light-success">Done</span>
+                                    <h5 class="assign-name m-0">08 July</h5><span class="task-action-btn"><span class="action-box large delete-btn" title="Delete Task"><i class="icon"><i class="icon-trash"></i></i></span></span>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="notification-popup hide">
+                        <p><span class="task"></span><span class="notification-text"></span></p>
+                      </div>
+                    </div>
+                    <!-- HTML Template for tasks-->
+                    <script id="task-template" type="tect/template">
+                      <li class="task">
+                        <div class="task-container">
+                          <h4 class="task-label"></h4>
+                          <div class="d-flex align-items-center gap-3">
+                            <span class="badge badge-light-danger">Pending</span>
+                            <h5 class="assign-name m-0">16 Jan</h5>
+                            <span class="task-action-btn">
+                              <span class="action-box large delete-btn" title="Delete Task">
+                                <i class="icon"><i class="icon-trash"></i></i>
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                      
+                    </script>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- Container-fluid Ends-->
+          <!-- Container-fluid ends  -->
         </div>
         <!-- footer start-->
         <footer class="footer">
@@ -120,10 +219,7 @@
     <script src="../assets/js/slick/slick.min.js"></script>
     <script src="../assets/js/slick/slick.js"></script>
     <script src="../assets/js/header-slick.js"></script>
-    <script src="../assets/js/chart/apex-chart/apex-chart.js"></script>
-    <script src="../assets/js/chart/apex-chart/stock-prices.js"></script>
-    <script src="../assets/js/chart/apex-chart/moment.min.js"></script>
-    <script src="../assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="../assets/js/todo/todo.js"></script>
     <!-- calendar js-->
     <script src="../assets/js/dashboard/default.js"></script>
     <script src="../assets/js/notify/index.js"></script>

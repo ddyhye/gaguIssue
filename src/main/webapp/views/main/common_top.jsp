@@ -54,7 +54,7 @@
                     </svg><span class="badge rounded-pill badge-primary">4 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown">
-                    <h5 class="f-18 f-w-600 mb-0 dropdown-title">Notifications                               </h5>
+                    <h5 class="f-18 f-w-600 mb-0 dropdown-title">Notifications</h5>
                     <ul class="notification-box">
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                         <div class="d-flex justify-content-between">
@@ -133,7 +133,7 @@
                     <li><a href="letter-box.go"><i data-feather="users"></i><span>조직도</span></a></li>
                     <li><a href="task.go"><i data-feather="check-circle"></i><span>나의 근태</span></a></li>
                     <li><a href="edit-profile.go"><i data-feather="calendar"></i><span>Calendar</span></a></li>
-                    <li><a href="login.go"><i data-feather="edit-3"> </i><span>To Do !</span></a></li>
+                    <li><a href="todo.go"><i data-feather="edit-3"> </i><span>To Do !</span></a></li>
                     <li><a href="login.go"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                   </ul>
                 </li>
