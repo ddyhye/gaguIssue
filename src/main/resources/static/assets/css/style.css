@@ -25508,23 +25508,6 @@ p.data-attributes svg {
   }
 }
 
-.do-flexdirection-row {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.greater-than {
-  color: rgba(122, 112, 186, 0.7);
-  font-size: 20px;
-}
 
 .default-dashboard div.dataTables_wrapper,
 .dashboard-2 div.dataTables_wrapper,
