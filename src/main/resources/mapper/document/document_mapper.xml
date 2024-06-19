@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ko.gagu.issue.document.dao.DocumentDAO">
+	<!-- jeong : 문서 양식 번호를 입력하면 해당 양식의 파일 경로를 조회 -->
+	<select id="getFormSrc" resultType="String">
+		SELECT file_name FROM filestore_tb ft WHERE idx_filetype = 5 AND idx_ref = #{form_name};
+	</select>
+</mapper>

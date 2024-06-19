@@ -15,10 +15,10 @@
               </div>
             </form>
             <div class="header-logo-wrapper col-auto p-0">
-              <div class="logo-wrapper"><a href="index.go"><img class="img-fluid" src="../assets/images/logo/logo.png" alt=""></a></div>
+              <div class="logo-wrapper"><a href="index.go"><img class="img-fluid" src="/assets/images/logo/logo.png" alt=""></a></div>
               <div class="toggle-sidebar">
                 <svg class="stroke-icon sidebar-toggle status_toggle middle">
-                  <use href="../assets/svg/icon-sprite.svg#toggle-icon"></use>
+                  <use href="/assets/svg/icon-sprite.svg#toggle-icon"></use>
                 </svg>
               </div>
             </div>
@@ -28,11 +28,11 @@
                 <!-- do: 전체화면 -->
                 <li>                         <span class="header-search">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#search"></use>
+                      <use href="/assets/svg/icon-sprite.svg#search"></use>
                     </svg></span></li>
                 <li class="fullscreen-body">                       <span>
                     <svg id="maximize-screen">
-                      <use href="../assets/svg/icon-sprite.svg#full-screen"></use>
+                      <use href="/assets/svg/icon-sprite.svg#full-screen"></use>
                     </svg></span></li>
                     
                 
@@ -40,7 +40,7 @@
                 <li>
                   <div class="mode">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#moon"></use>
+                      <use href="/assets/svg/icon-sprite.svg#moon"></use>
                     </svg>
                   </div>
                 </li>
@@ -50,7 +50,7 @@
                 <li class="onhover-dropdown">
                   <div class="notification-box">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#notification"></use>
+                      <use href="/assets/svg/icon-sprite.svg#notification"></use>
                     </svg><span class="badge rounded-pill badge-primary">4 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown">
@@ -59,7 +59,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-primary"><img class="w-auto" src="../assets/images/dashboard/icon/wallet.png" alt="Wallet"></div>
+                            <div class="flex-shrink-0 bg-light-primary"><img class="w-auto" src="/assets/images/dashboard/icon/wallet.png" alt="Wallet"></div>
                             <div class="flex-grow-1"> <a href="private-chat.go">
                                 <h6 class="m-0">Daily offer added</h6></a>
                               <p class="m-0">User-only offer added</p>
@@ -71,7 +71,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"> 
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-info"><img class="w-auto" src="../assets/images/dashboard/icon/shield-dne.png" alt="Shield-dne"></div>
+                            <div class="flex-shrink-0 bg-light-info"><img class="w-auto" src="/assets/images/dashboard/icon/shield-dne.png" alt="Shield-dne"></div>
                             <div class="flex-grow-1"> <a href="private-chat.go">
                                 <h6 class="m-0">Product Review</h6></a>
                               <p class="m-0">Changed to a workflow</p>
@@ -83,7 +83,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">  
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-warning"><img class="w-auto" src="../assets/images/dashboard/icon/graph.png" alt="Graph"></div>
+                            <div class="flex-shrink-0 bg-light-warning"><img class="w-auto" src="/assets/images/dashboard/icon/graph.png" alt="Graph"></div>
                             <div class="flex-grow-1"> <a href="private-chat.go">
                                 <h6 class="m-0">Return Products</h6></a>
                               <p class="m-0">52 items were returned</p>
@@ -95,7 +95,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"> 
                         <div class="d-flex justify-content-between"> 
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-tertiary"><img class="w-auto" src="../assets/images/dashboard/icon/ticket-star.png" alt="Ticket-star"></div>
+                            <div class="flex-shrink-0 bg-light-tertiary"><img class="w-auto" src="/assets/images/dashboard/icon/ticket-star.png" alt="Ticket-star"></div>
                             <div class="flex-grow-1"> <a href="private-chat.go">
                                 <h6 class="m-0">Recently Paid</h6></a>
                               <p class="m-0">Card payment of $343   </p>
@@ -111,10 +111,10 @@
                 
                 <!-- do: 쪽지 -->
                 <li class="onhover-dropdown">
-                  <a href="../noteMessage/noteMessage.go">
+                  <a href="/noteMessage/noteMessage.go">
                     <div class="notification-box">
                       <svg>
-                        <use href="../assets/svg/icon-sprite.svg#header-message"></use>
+                        <use href="/assets/svg/icon-sprite.svg#header-message"></use>
                       </svg><span class="badge rounded-pill badge-info">3 </span>
                     </div>
                   </a>
@@ -123,7 +123,7 @@
                 
                 <!-- do: 직원서비스 -->
                 <li class="profile-nav onhover-dropdown px-0 py-0">
-                  <div class="d-flex profile-media align-items-center"><img class="img-30" src="../assets/images/dashboard/profile.png" alt="">
+                  <div class="d-flex profile-media align-items-center"><img class="img-30" src="/assets/images/dashboard/profile.png" alt="">
                     <div class="flex-grow-1"><span>${emp_name}</span>
                       <p class="mb-0 font-outfit">${de_name}<i class="fa fa-angle-down"></i></p>
                     </div>

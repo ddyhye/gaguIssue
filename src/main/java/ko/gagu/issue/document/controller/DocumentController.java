@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +42,16 @@ public class DocumentController {
 		return mav;
 	}
 
-	@GetMapping(value = "/document/write.go")
-	public ModelAndView documentWriteGo() {
-		ModelAndView mav = new ModelAndView("common/documentWrite");
-		return mav;
+	@GetMapping(value = "/document/{form_name}/write.go")
+	public ModelAndView documentWriteGo(@PathVariable String form_name) {
+		logger.info("form_name : {}", form_name);
+		return service.getFormSrc(form_name);
 	}
 
 	@PostMapping(value = "/document/write.do")
 	@ResponseBody
-	public String documentWriteDo(@RequestParam("file") MultipartFile file, @RequestParam("json") MultipartFile json) {
+	public String documentWriteDo(@RequestParam("file") MultipartFile file, 
+			@RequestParam("json") MultipartFile json, HttpSession session) {
 		logger.info("json : {}", json);
 		logger.info("file : {}", file);
 		
@@ -56,7 +59,7 @@ public class DocumentController {
 		Map<String, Object> jsonData;
 		try {
 			jsonData = objectMapper.readValue(json.getInputStream(), Map.class);
-			service.documentWrite(file, jsonData);
+			service.documentWrite(file, jsonData, session);
 			return "문서 저장에 성공했습니다";
 		} catch (IOException e) {
 			e.printStackTrace();
