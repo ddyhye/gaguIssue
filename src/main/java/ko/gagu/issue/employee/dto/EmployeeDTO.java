@@ -1,18 +1,14 @@
 package ko.gagu.issue.employee.dto;
 
-<<<<<<< HEAD
-=======
 import java.sql.Date;
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 import java.sql.Timestamp;
 
 import org.apache.ibatis.type.Alias;
 
 @Alias(value="employee")
 public class EmployeeDTO {
-<<<<<<< HEAD
 	private int idx_emp_calendar;
-	private int idx_employee;
+//	private int idx_employee;
 	private String ec_title;
 	private String ec_description;
 	private Timestamp ec_start_datetime;
@@ -32,7 +28,6 @@ public class EmployeeDTO {
 	public void setIdx_emp_calendar(int idx_emp_calendar) {
 		this.idx_emp_calendar = idx_emp_calendar;
 	}
-=======
 	
 	private int idx_employee;
 	private int idx_department;
@@ -50,14 +45,13 @@ public class EmployeeDTO {
 	private String emp_address;
 	private boolean first_login;
 	
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 	public int getIdx_employee() {
 		return idx_employee;
 	}
 	public void setIdx_employee(int idx_employee) {
 		this.idx_employee = idx_employee;
 	}
-<<<<<<< HEAD
+
 	public String getEc_title() {
 		return ec_title;
 	}
@@ -124,7 +118,6 @@ public class EmployeeDTO {
 	public void setCc_color(String cc_color) {
 		this.cc_color = cc_color;
 	}
-=======
 	public int getIdx_department() {
 		return idx_department;
 	}
@@ -212,5 +205,4 @@ public class EmployeeDTO {
 	
 	
 	
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 }

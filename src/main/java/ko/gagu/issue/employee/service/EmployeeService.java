@@ -1,18 +1,12 @@
 package ko.gagu.issue.employee.service;
 
-<<<<<<< HEAD
 import java.util.List;
-=======
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
-=======
 import org.springframework.security.crypto.password.PasswordEncoder;
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,19 +20,28 @@ import ko.gagu.issue.employee.dto.EmployeeDTO;
 public class EmployeeService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-<<<<<<< HEAD
 	@Autowired EmployeeDAO employeeDao;
 
-	public void getCalendarEvents(Map<String, Object> response) {
-		List<EmployeeDTO> events = employeeDao.getCalendarEvents();
-		response.put("calendarEvents", events);		
+	public void employeeGetAllEvents(Map<String, Object> response) {
+		List<EmployeeDTO> events = employeeDao.employeeGetAllEvents();
+		response.put("calendarEvents", events);	
 	}
-=======
+
+	public void employeeAddEvent(EmployeeDTO employee) {
+		employeeDao.employeeAddEvent(employee);
+	}
+
+	
+	
+	
+	
+	
+	
 	@Autowired EmployeeDAO dao;
 	@Autowired PasswordEncoder encoder;
 
 	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr) {
-
+		
 		logger.info("id :{}",emp_id);
 		logger.info("pw : {}",emp_pw);
 		
@@ -83,6 +86,5 @@ public class EmployeeService {
 	}
 
 	
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 
 }

@@ -1,28 +1,24 @@
 package ko.gagu.issue.employee.controller;
 
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-=======
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 
+import ko.gagu.issue.employee.dto.EmployeeDTO;
 import ko.gagu.issue.employee.service.EmployeeService;
 
 @Controller
@@ -31,7 +27,7 @@ public class EmployeeController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired EmployeeService employeeService;
 	
-<<<<<<< HEAD
+	// 작성자 : 구일승 , 기능 : 캘린더
 	@RequestMapping(value="/employee/calendar.go")
 	public String calendar() {
 		logger.info("calendar in");
@@ -40,14 +36,22 @@ public class EmployeeController {
 	
 	@RequestMapping(value="/employee/getAllEvents.ajax")
 	@ResponseBody
-	public Map<String, Object> getAllEvents(){
+	public Map<String, Object> employeeGetAllEvents(){
 		Map<String, Object>response = new HashMap<String, Object>();
-		employeeService.getCalendarEvents(response);
+		employeeService.employeeGetAllEvents(response);
 		logger.info("response : {}"+response);
 		return response;
 	}
-
-=======
+	
+	@RequestMapping(value="/employee/addEvent.ajax")
+	@ResponseBody
+	public Map<String, Object>employeeAddEvent(@RequestBody EmployeeDTO employee){
+		Map<String, Object>response = new HashMap<String, Object>();
+		logger.info("response : {}"+response);
+		employeeService.employeeAddEvent(employee);
+		return response;
+	}
+	
 	@Autowired EmployeeService service;
 	@Autowired PasswordEncoder encoder;
 	
@@ -108,5 +112,4 @@ public class EmployeeController {
 	}
 	
 	
->>>>>>> 5f3cc565ca22253d518d9b192727834cdc44b5b2
 }
