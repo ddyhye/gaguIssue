@@ -31,5 +31,9 @@
 	
 	
 	
+	<insert id="join" parameterType="map">
+		INSERT INTO employee_tb (idx_employee,idx_department,idx_title,emp_id,emp_pw,emp_name,emp_status,emp_email,emp_email_pw,emp_phone_number,emp_birth_date,emp_hire_date,emp_term_date,emp_address,first_login)
+			VALUES (#{idx_employee},#{idx_department},#{idx_title},#{emp_id},#{emp_pw},#{emp_name},#{emp_status},#{emp_email},#{emp_email_pw},#{emp_phone_number},#{emp_birth_date},#{emp_hire_date},#{emp_term_date},#{emp_address},#{first_login})
+	</insert>
 	
 </mapper>
