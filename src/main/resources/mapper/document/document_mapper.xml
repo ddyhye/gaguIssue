@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ko.gagu.issue.document.dao.DocumentDAO">
+	<!-- [jeong] 문서 양식 번호를 입력하면 해당 양식의 파일 경로를 조회 -->
+	<select id="getFormSrc" resultType="String">
+		SELECT file_name FROM filestore_tb ft WHERE idx_filetype = 5 AND idx_ref = #{form_name};
+	</select>
+	
+	<!-- [jeong] 임시로 직원의 정보를 불러옴 무조건 지워야함!!! -->
+	<select id="getEmployeeInfo" resultType="employee">
+		SELECT * FROM employee_tb WHERE emp_name = '전태환';
+	</select>
+	
+	<!-- [jeong] 문서의 작성자와 양식 번호 내용을 approval 테이블에 저장 -->
+	<insert id="saveDocument" useGeneratedKeys="true"
+		keyColumn="idx_approval"
+		keyProperty="idx_approval"
+		parameterType="document">
+		INSERT INTO approval_tb (idx_employee, idx_dc, ap_content) 
+			VALUES (#{idx_employee}, #{idx_dc}, #{ap_content})
+	</insert>
+	
+	<!-- [jeong] 작성한 문서의 파일 이름을 filestore 테이블에 저장 -->
+	<insert id="saveDocumentFile">
+		INSERT INTO filestore_tb (idx_filetype, idx_ref, file_name)
+			VALUES (#{idx_filetype}, #{idx_ref}, #{file_name})
+	</insert>
+</mapper>
