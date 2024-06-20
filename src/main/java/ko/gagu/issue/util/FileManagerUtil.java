@@ -24,7 +24,7 @@ public class FileManagerUtil {
 	@Value("${spring.servlet.multipart.location}")
 	private String root;
 	
-	public String fileUpload(MultipartFile file, String folder) {
+	public String saveFile(MultipartFile file, String folder) {
 		// 1. 파일명 추출하기.
 		String origin_name = file.getOriginalFilename();
 
@@ -41,6 +41,7 @@ public class FileManagerUtil {
 			Files.write(path, file_content);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}		
 		return file_name;
 	}
