@@ -7,37 +7,37 @@
     <meta name="description" content="Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
-    <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
     <title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css">
     <!-- ico-font-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/icofont.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/icofont.css">
     <!-- Themify icon-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/themify.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/themify.css">
     <!-- Flag icon-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/flag-icon.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/flag-icon.css">
     <!-- Feather icon-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/feather-icon.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/feather-icon.css">
     <!-- Plugins css start-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/scrollbar.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/animate.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/datatables.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/date-range-picker/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/slick.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/slick-theme.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/animate.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/datatables.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/date-range-picker/flatpickr.min.css">
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/bootstrap.css">
     <!-- App css-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
-    <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link id="color" rel="stylesheet" href="/assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -55,7 +55,7 @@
     <div class="page-wrapper compact-wrapper" id="pageWrapper">
       <div class="page-header row">
         <div class="header-logo-wrapper col-auto">
-          <div class="logo-wrapper"><a href="index.html"><img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt=""/></a></div>
+          <div class="logo-wrapper"><a href="index.html"><img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt=""/></a></div>
         </div>
         <div class="col-4 col-xl-4 page-title">
           <h4 class="f-w-700">Default dashboard</h4>
@@ -74,18 +74,18 @@
               <div class="form-group w-100">
                 <div class="Typeahead Typeahead--twitterUsers">
                   <div class="u-posRelative">
-                    <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Mofi .." name="q" title="" autofocus>
-                    <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span></div><i class="close-search" data-feather="x"></i>
+                    <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Mofi " name="q" title="" autofocus>
+                    <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading.</span></div><i class="close-search" data-feather="x"></i>
                   </div>
                   <div class="Typeahead-menu"></div>
                 </div>
               </div>
             </form>
             <div class="header-logo-wrapper col-auto p-0">
-              <div class="logo-wrapper"><a href="index.html"><img class="img-fluid" src="../assets/images/logo/logo.png" alt=""></a></div>
+              <div class="logo-wrapper"><a href="index.html"><img class="img-fluid" src="/assets/images/logo/logo.png" alt=""></a></div>
               <div class="toggle-sidebar">
                 <svg class="stroke-icon sidebar-toggle status_toggle middle">
-                  <use href="../assets/svg/icon-sprite.svg#toggle-icon"></use>
+                  <use href="/assets/svg/icon-sprite.svg#toggle-icon"></use>
                 </svg>
               </div>
             </div>
@@ -93,28 +93,28 @@
               <ul class="nav-menus">
                 <li>                         <span class="header-search">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#search"></use>
+                      <use href="/assets/svg/icon-sprite.svg#search"></use>
                     </svg></span></li>
                 <li>
                   <div class="form-group w-100">
                     <div class="Typeahead Typeahead--twitterUsers">
                       <div class="u-posRelative d-flex align-items-center">
                         <svg class="search-bg svg-color"> 
-                          <use href="../assets/svg/icon-sprite.svg#search"></use>
+                          <use href="/assets/svg/icon-sprite.svg#search"></use>
                         </svg>
-                        <input class="demo-input py-0 Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Mofi .." name="q" title="">
+                        <input class="demo-input py-0 Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Mofi " name="q" title="">
                       </div>
                     </div>
                   </div>
                 </li>
                 <li class="fullscreen-body">                       <span>
                     <svg id="maximize-screen">
-                      <use href="../assets/svg/icon-sprite.svg#full-screen"></use>
+                      <use href="/assets/svg/icon-sprite.svg#full-screen"></use>
                     </svg></span></li>
                 <li class="onhover-dropdown">
                   <div class="notification-box">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#notification"></use>
+                      <use href="/assets/svg/icon-sprite.svg#notification"></use>
                     </svg><span class="badge rounded-pill badge-primary">4 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown">
@@ -123,7 +123,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-primary"><img class="w-auto" src="../assets/images/dashboard/icon/wallet.png" alt="Wallet"></div>
+                            <div class="flex-shrink-0 bg-light-primary"><img class="w-auto" src="/assets/images/dashboard/icon/wallet.png" alt="Wallet"></div>
                             <div class="flex-grow-1"> <a href="private-chat.html">
                                 <h6 class="m-0">Daily offer added</h6></a>
                               <p class="m-0">User-only offer added</p>
@@ -135,7 +135,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"> 
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-info"><img class="w-auto" src="../assets/images/dashboard/icon/shield-dne.png" alt="Shield-dne"></div>
+                            <div class="flex-shrink-0 bg-light-info"><img class="w-auto" src="/assets/images/dashboard/icon/shield-dne.png" alt="Shield-dne"></div>
                             <div class="flex-grow-1"> <a href="private-chat.html">
                                 <h6 class="m-0">Product Review</h6></a>
                               <p class="m-0">Changed to a workflow</p>
@@ -147,7 +147,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">  
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-warning"><img class="w-auto" src="../assets/images/dashboard/icon/graph.png" alt="Graph"></div>
+                            <div class="flex-shrink-0 bg-light-warning"><img class="w-auto" src="/assets/images/dashboard/icon/graph.png" alt="Graph"></div>
                             <div class="flex-grow-1"> <a href="private-chat.html">
                                 <h6 class="m-0">Return Products</h6></a>
                               <p class="m-0">52 items were returned</p>
@@ -159,7 +159,7 @@
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"> 
                         <div class="d-flex justify-content-between"> 
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-tertiary"><img class="w-auto" src="../assets/images/dashboard/icon/ticket-star.png" alt="Ticket-star"></div>
+                            <div class="flex-shrink-0 bg-light-tertiary"><img class="w-auto" src="/assets/images/dashboard/icon/ticket-star.png" alt="Ticket-star"></div>
                             <div class="flex-grow-1"> <a href="private-chat.html">
                                 <h6 class="m-0">Recently Paid</h6></a>
                               <p class="m-0">Card payment of $343   </p>
@@ -173,7 +173,7 @@
                 </li>
                 <li class="onhover-dropdown">
                   <svg>
-                    <use href="../assets/svg/icon-sprite.svg#header-bookmark"></use>
+                    <use href="/assets/svg/icon-sprite.svg#header-bookmark"></use>
                   </svg>
                   <div class="onhover-show-div bookmark-flip">
                     <div class="flip-card">
@@ -207,7 +207,7 @@
                           <ul>
                             <li>
                               <div class="bookmark-dropdown flip-back-content">
-                                <input type="text" placeholder="search...">
+                                <input type="text" placeholder="search.">
                               </div>
                             </li>
                             <li><a class="f-w-700 d-block flip-back btn btn-primary w-100" id="flip-back" href="javascript:void(0)">Back</a></li>
@@ -220,35 +220,35 @@
                 <li>
                   <div class="mode">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#moon"></use>
+                      <use href="/assets/svg/icon-sprite.svg#moon"></use>
                     </svg>
                   </div>
                 </li>
                 <li class="onhover-dropdown">
                   <div class="notification-box">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#header-message"></use>
+                      <use href="/assets/svg/icon-sprite.svg#header-message"></use>
                     </svg><span class="badge rounded-pill badge-info">3 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown">
                     <h5 class="f-18 f-w-600 mb-0 dropdown-title">Messages             </h5>
                     <ul class="messages">
                       <li class="d-flex b-light1-primary gap-2"> 
-                        <div class="flex-shrink-0"><img src="../assets/images/dashboard-2/user/1.png" alt="Graph"></div>
+                        <div class="flex-shrink-0"><img src="/assets/images/dashboard-2/user/1.png" alt="Graph"></div>
                         <div class="flex-grow-1"> <a href="private-chat.html">
                             <h6 class="font-primary f-w-600">Hackett Yessenia</h6></a>
-                          <p>Hello Miss...&#128522;</p>
+                          <p>Hello Miss.&#128522;</p>
                         </div><span>2 hours</span>
                       </li>
                       <li class="d-flex b-light1-secondary gap-2"> 
-                        <div class="flex-shrink-0"><img src="../assets/images/dashboard-2/user/2.png" alt="Graph"></div>
+                        <div class="flex-shrink-0"><img src="/assets/images/dashboard-2/user/2.png" alt="Graph"></div>
                         <div class="flex-grow-1"> <a href="private-chat.html">
                             <h6 class="font-secondary f-w-600">schneider Adan</h6></a>
-                          <p>Wishing You a Happy Birthday Dear..  🥳&#127882;</p>
+                          <p>Wishing You a Happy Birthday Dear  🥳&#127882;</p>
                         </div><span>3 hours</span>
                       </li>
                       <li class="d-flex b-light1-success gap-2"> 
-                        <div class="flex-shrink-0"><img src="../assets/images/dashboard-2/user/3.png" alt="Graph"></div>
+                        <div class="flex-shrink-0"><img src="/assets/images/dashboard-2/user/3.png" alt="Graph"></div>
                         <div class="flex-grow-1"> <a href="private-chat.html">
                             <h6 class="font-success f-w-600">Mahdi Gholizadeh</h6></a>
                           <p>Hello Dear!! This Theme Is Very beautiful</p>
@@ -261,14 +261,14 @@
                 <li class="cart-nav onhover-dropdown">
                   <div class="cart-box">
                     <svg>
-                      <use href="../assets/svg/icon-sprite.svg#stroke-ecommerce"></use>
+                      <use href="/assets/svg/icon-sprite.svg#stroke-ecommerce"></use>
                     </svg>
                   </div>
                   <div class="cart-dropdown onhover-show-div">
                     <h5 class="f-18 f-w-600 mb-0 dropdown-title">Cart</h5>
                     <ul>
                       <li>
-                        <div class="d-flex"><img class="img-fluid b-r-5 me-3 img-60" src="../assets/images/other-images/cart-img.jpg" alt="">
+                        <div class="d-flex"><img class="img-fluid b-r-5 me-3 img-60" src="/assets/images/other-images/cart-img.jpg" alt="">
                           <div class="flex-grow-1"><span class="f-w-600">Furniture Chair for Home</span>
                             <div class="qty-box">
                               <div class="input-group"><span class="input-group-prepend">
@@ -283,7 +283,7 @@
                         </div>
                       </li>
                       <li>
-                        <div class="d-flex"><img class="img-fluid b-r-5 me-3 img-60" src="../assets/images/other-images/table-img.jpg" alt="">
+                        <div class="d-flex"><img class="img-fluid b-r-5 me-3 img-60" src="/assets/images/other-images/table-img.jpg" alt="">
                           <div class="flex-grow-1"><span class="f-w-600">Furniture Table for Office</span>
                             <div class="qty-box">
                               <div class="input-group"><span class="input-group-prepend">
@@ -305,7 +305,7 @@
                   </div>
                 </li>
                 <li class="profile-nav onhover-dropdown px-0 py-0">
-                  <div class="d-flex profile-media align-items-center"><img class="img-30" src="../assets/images/dashboard/profile.png" alt="">
+                  <div class="d-flex profile-media align-items-center"><img class="img-30" src="/assets/images/dashboard/profile.png" alt="">
                     <div class="flex-grow-1"><span>Alen Miller</span>
                       <p class="mb-0 font-outfit">UI Designer<i class="fa fa-angle-down"></i></p>
                     </div>
@@ -338,23 +338,23 @@
         <!-- Page Sidebar Start-->
         <div class="sidebar-wrapper" data-layout="stroke-svg">
           <div>
-            <div class="logo-wrapper"><a href="index.html"><img class="img-fluid" src="../assets/images/logo/logo_light.png" alt=""></a>
+            <div class="logo-wrapper"><a href="index.html"><img class="img-fluid" src="/assets/images/logo/logo_light.png" alt=""></a>
               <div class="back-btn"><i class="fa fa-angle-left"></i></div>
               <div class="toggle-sidebar">
                 <svg class="stroke-icon sidebar-toggle status_toggle middle">
-                  <use href="../assets/svg/icon-sprite.svg#toggle-icon"></use>
+                  <use href="/assets/svg/icon-sprite.svg#toggle-icon"></use>
                 </svg>
                 <svg class="fill-icon sidebar-toggle status_toggle middle">
-                  <use href="../assets/svg/icon-sprite.svg#fill-toggle-icon"></use>
+                  <use href="/assets/svg/icon-sprite.svg#fill-toggle-icon"></use>
                 </svg>
               </div>
             </div>
-            <div class="logo-icon-wrapper"><a href="index.html"><img class="img-fluid" src="../assets/images/logo/logo-icon.png" alt=""></a></div>
+            <div class="logo-icon-wrapper"><a href="index.html"><img class="img-fluid" src="/assets/images/logo/logo-icon.png" alt=""></a></div>
             <nav class="sidebar-main">
               <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
               <div id="sidebar-menu">
                 <ul class="sidebar-links" id="simple-bar">
-                  <li class="back-btn"><a href="index.html"><img class="img-fluid" src="../assets/images/logo/logo-icon.png" alt=""></a>
+                  <li class="back-btn"><a href="index.html"><img class="img-fluid" src="/assets/images/logo/logo-icon.png" alt=""></a>
                     <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
                   </li>
                   <li class="pin-title sidebar-main-title">
@@ -369,10 +369,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-home"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-home"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-home"></use>
                       </svg><span class="lan-3">Dashboard          </span></a>
                     <ul class="sidebar-submenu">
                       <li><a class="lan-4" href="index.html">Default</a></li>
@@ -383,10 +383,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-widget"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-widget"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-widget"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-widget"></use>
                       </svg><span class="lan-6">Widgets</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="general-widget.html">General</a></li>
@@ -395,10 +395,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-layout"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-layout"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-layout"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-layout"></use>
                       </svg><span class="lan-7">Page layout</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="box-layout.html">Boxed</a></li>
@@ -417,10 +417,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack">    </i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-project"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-project"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-project"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-project"></use>
                       </svg><span>Project           </span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="projects.html">Project List</a></li>
@@ -429,24 +429,24 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-file"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-file"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-file"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-file"></use>
                       </svg><span>File manager</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack">        </i><a class="sidebar-link sidebar-title link-nav" href="kanban.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-board"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-board"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-board"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-board"></use>
                       </svg><span>kanban Board</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-ecommerce"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-ecommerce"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-ecommerce"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
                       </svg><span>Ecommerce</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="add-products.html">Add Products</a></li>
@@ -476,17 +476,17 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="letter-box.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-email"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-email"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-email"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-email"> </use>
                       </svg><span>Letter Box</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-chat"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-chat"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-chat"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-chat"></use>
                       </svg><span>Chat</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="private-chat.html">Private Chat</a></li>
@@ -495,10 +495,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-user"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-user"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-user"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-user"></use>
                       </svg><span>Users</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="user-profile.html">Users Profile</a></li>
@@ -508,52 +508,52 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="bookmark.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-bookmark"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-bookmark"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-bookmark"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-bookmark"> </use>
                       </svg><span>Bookmarks</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="contacts.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-contact"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-contact"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-contact"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-contact"> </use>
                       </svg><span>Contacts</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="task.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-task"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-task"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-task"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-task"> </use>
                       </svg><span>Tasks</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="calendar-basic.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-calendar"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-calendar"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-calender"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-calender"></use>
                       </svg><span>Calendar</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="social-app.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-social"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-social"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-social"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-social"> </use>
                       </svg><span>Social App</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="to-do.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-to-do"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-to-do"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-to-do"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-to-do"> </use>
                       </svg><span>To-Do</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="search.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-search"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-search"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-search"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-search"> </use>
                       </svg><span>Search Result</span></a></li>
                   <li class="sidebar-main-title">
                     <div>
@@ -562,10 +562,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-form"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-form"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-form"> </use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-form"> </use>
                       </svg><span>Forms</span></a>
                     <ul class="sidebar-submenu">
                       <li><a class="submenu-title" href="javascript:void(0)">Form Controls<span class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
@@ -599,10 +599,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-table"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-table"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-table"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-table"></use>
                       </svg><span>Tables</span></a>
                     <ul class="sidebar-submenu">
                       <li><a class="submenu-title" href="javascript:void(0)">Bootstrap Tables<span class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
@@ -630,10 +630,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-ui-kits"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-ui-kits"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-ui-kits"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-ui-kits"></use>
                       </svg><span>Ui Kits</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="typography.html">Typography</a></li>
@@ -666,10 +666,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-bonus-kit"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-bonus-kit"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-bonus-kit"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-bonus-kit"></use>
                       </svg><span>Bonus Ui</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="scrollable.html">Scrollable</a></li>
@@ -700,10 +700,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-animation"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-animation"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-animation"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-animation"></use>
                       </svg><span>Animation</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="animate.html">Animate</a></li>
@@ -718,10 +718,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-icons"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-icons"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-icons"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-icons"></use>
                       </svg><span>Icons</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="flag-icon.html">Flag icon</a></li>
@@ -734,17 +734,17 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="buttons.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-button"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-button"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-button"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-button"></use>
                       </svg><span>Buttons </span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-charts"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-charts"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-charts"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-charts"></use>
                       </svg><span>Charts</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="echarts.html">Echarts</a></li>
@@ -766,38 +766,38 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="landing-page.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-landing-page"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-landing-page"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-landing-page"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-landing-page"></use>
                       </svg><span>Landing page</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="sample-page.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-sample-page"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-sample-page"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-sample-page"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-sample-page"></use>
                       </svg><span>Sample page</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="internationalization.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-internationalization"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-internationalization"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-internationalization"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-internationalization"></use>
                       </svg><span>Internationalization</span></a></li>
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="../starter-kit/index.html" target="_blank">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="/starter-kit/index.html" target="_blank">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-starter-kit"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-starter-kit"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-starter-kit"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-starter-kit"></use>
                       </svg><span>Starter kit</span></a></li>
                   <li class="mega-menu sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-others"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-others"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-others"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-others"></use>
                       </svg><span>Others</span></a>
                     <div class="mega-menu-container menu-content">
                       <div class="container-fluid">
@@ -878,10 +878,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-gallery"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-gallery"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-gallery"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-gallery"></use>
                       </svg><span>Gallery</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="gallery.html">Gallery Grid</a></li>
@@ -893,10 +893,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-blog"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-blog"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-blog"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-blog"></use>
                       </svg><span>Blog</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="blog.html">Blog Details</a></li>
@@ -906,17 +906,17 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="faq.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-faq"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-faq"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-faq"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-faq"></use>
                       </svg><span>FAQ</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-job-search"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-job-search"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-job-search"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-job-search"></use>
                       </svg><span>Job Search</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="job-cards-view.html">Cards view</a></li>
@@ -927,10 +927,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-learning"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-learning"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-learning"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-learning"></use>
                       </svg><span>Courses</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="course-list-view.html">Course List</a></li>
@@ -939,10 +939,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-maps"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-maps"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-maps"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-maps"></use>
                       </svg><span>Maps</span></a>
                     <ul class="sidebar-submenu">
                       <li><a href="map-js.html">Maps JS</a></li>
@@ -951,10 +951,10 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-editors"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-editors"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-editors"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-editors"></use>
                       </svg><span>Editors</span></a>
                     <ul class="sidebar-submenu">
                       <li>
@@ -968,17 +968,17 @@
                   </li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="knowledgebase.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-knowledgebase"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-knowledgebase"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-knowledgebase"></use>
                       </svg><span>Knowledgebase</span></a></li>
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="support-ticket.html">
                       <svg class="stroke-icon">
-                        <use href="../assets/svg/icon-sprite.svg#stroke-support-tickets"></use>
+                        <use href="/assets/svg/icon-sprite.svg#stroke-support-tickets"></use>
                       </svg>
                       <svg class="fill-icon">
-                        <use href="../assets/svg/icon-sprite.svg#fill-support-tickets"></use>
+                        <use href="/assets/svg/icon-sprite.svg#fill-support-tickets"></use>
                       </svg><span>Support Ticket</span></a></li>
                 </ul>
               </div>
@@ -1115,7 +1115,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/1.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/1.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Rules Post on Dribble</h6></a></div>
                               </div>
@@ -1147,7 +1147,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/2.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/2.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Login & Sign Up Ui</h6></a></div>
                               </div>
@@ -1179,7 +1179,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/3.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/3.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Nft website Pages</h6></a></div>
                               </div>
@@ -1211,7 +1211,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/4.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/4.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Square Dashboard</h6></a></div>
                               </div>
@@ -1243,7 +1243,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/4.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/4.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Square Dashboard</h6></a></div>
                               </div>
@@ -1275,7 +1275,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/1.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/1.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Rules Post on Dribble</h6></a></div>
                               </div>
@@ -1307,7 +1307,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/2.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/2.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Login & Sign Up Ui</h6></a></div>
                               </div>
@@ -1339,7 +1339,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/4.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/4.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Square Dashboard</h6></a></div>
                               </div>
@@ -1371,7 +1371,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/3.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/3.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Nft website Pages</h6></a></div>
                               </div>
@@ -1403,7 +1403,7 @@
                             </td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/project/1.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/project/1.png" alt=""></div>
                                 <div class="flex-grow-1 ms-2"><a href="product-page.html">
                                     <h6>Rules Post on Dribble</h6></a></div>
                               </div>
@@ -1462,28 +1462,28 @@
                   <div class="card-body">
                     <ul class="notification-box">
                       <li class="d-flex"> 
-                        <div class="flex-shrink-0 bg-light-primary"><img src="../assets/images/dashboard/icon/wallet.png" alt="Wallet"></div>
+                        <div class="flex-shrink-0 bg-light-primary"><img src="/assets/images/dashboard/icon/wallet.png" alt="Wallet"></div>
                         <div class="flex-grow-1"> <a href="private-chat.html">
                             <h5>New daily offer added</h5></a>
                           <p class="text-truncate">New user-only offer added</p>
                         </div><span>10 Sep,2024</span>
                       </li>
                       <li class="d-flex"> 
-                        <div class="flex-shrink-0 bg-light-info"><img src="../assets/images/dashboard/icon/shield-dne.png" alt="Shield-dne"></div>
+                        <div class="flex-shrink-0 bg-light-info"><img src="/assets/images/dashboard/icon/shield-dne.png" alt="Shield-dne"></div>
                         <div class="flex-grow-1"> <a href="private-chat.html">
                             <h5>Product Evaluation</h5></a>
                           <p class="text-truncate">Changed to a new workflow</p>
                         </div><span>12 Oct,2024</span>
                       </li>
                       <li class="d-flex"> 
-                        <div class="flex-shrink-0 bg-light-warning"> <img src="../assets/images/dashboard/icon/graph.png" alt="Graph"></div>
+                        <div class="flex-shrink-0 bg-light-warning"> <img src="/assets/images/dashboard/icon/graph.png" alt="Graph"></div>
                         <div class="flex-grow-1"> <a href="private-chat.html">
                             <h5>Return of a Product</h5></a>
                           <p class="text-truncate">452 items were returned</p>
                         </div><span>15 Mar,2024</span>
                       </li>
                       <li class="d-flex"> 
-                        <div class="flex-shrink-0 bg-light-tertiary"><img src="../assets/images/dashboard/icon/ticket-star.png" alt="Ticket-star"></div>
+                        <div class="flex-shrink-0 bg-light-tertiary"><img src="/assets/images/dashboard/icon/ticket-star.png" alt="Ticket-star"></div>
                         <div class="flex-grow-1"> <a href="private-chat.html">
                             <h5>Recently Paid</h5></a>
                           <p class="text-truncate">Mastercard payment of $343  </p>
@@ -1505,28 +1505,28 @@
                       <div class="col-5"> 
                         <ul class="appointments-user">
                           <li class="d-flex align-items-center">
-                            <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/05.png" alt=""></div>
+                            <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/05.png" alt=""></div>
                             <div class="flex-grow-1"><a href="private-chat.html">
                                 <h5>John Elliot</h5></a>
                               <p>21 Oct 2024<span>(15:55 AM)</span></p>
                             </div>
                           </li>
                           <li class="d-flex align-items-center">
-                            <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/06.png" alt=""></div>
+                            <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/06.png" alt=""></div>
                             <div class="flex-grow-1"><a href="private-chat.html">
                                 <h5>Ashley Hart</h5></a>
                               <p>12 Oct 2024<span>(10:20 AM)</span></p>
                             </div>
                           </li>
                           <li class="d-flex align-items-center">
-                            <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/07.png" alt=""></div>
+                            <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/07.png" alt=""></div>
                             <div class="flex-grow-1"><a href="private-chat.html">
                                 <h5>Anna lverson</h5></a>
                               <p>05 Oct 2024<span>(14:30 AM)</span></p>
                             </div>
                           </li>
                           <li class="d-flex align-items-center">
-                            <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/08.png" alt=""></div>
+                            <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/08.png" alt=""></div>
                             <div class="flex-grow-1"><a href="private-chat.html">
                                 <h5>Dana Lemon</h5></a>
                               <p>01 Oct 2024     <span>(18:45 AM)</span></p>
@@ -1566,7 +1566,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/01.jpg" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/01.jpg" alt=""></div>
                                 <div class="flex-grow-1"><a href="product.html">
                                     <h5>Joshua Wood</h5></a><span>UI/UX Designer</span></div>
                               </div>
@@ -1579,7 +1579,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/02.jpg" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/02.jpg" alt=""></div>
                                 <div class="flex-grow-1"><a href="product.html">
                                     <h5>Ashley Hart</h5></a><span>Website Design</span></div>
                               </div>
@@ -1592,7 +1592,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/03.jpg" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/03.jpg" alt=""></div>
                                 <div class="flex-grow-1"><a href="product.html">
                                     <h5>Anna lverson </h5></a><span>UX Research</span></div>
                               </div>
@@ -1605,7 +1605,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/user/04.jpg" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/user/04.jpg" alt=""></div>
                                 <div class="flex-grow-1"><a href="product.html">
                                     <h5>Ron Dayley</h5></a><span>234+ Online</span></div>
                               </div>
@@ -1636,7 +1636,7 @@
                     <div class="row"> 
                       <div class="col-3 statistic-icon">    
                         <div class="light-card balance-card widget-hover">
-                          <div class="icon-box"><img src="../assets/images/dashboard/icon/customers.png" alt=""></div>
+                          <div class="icon-box"><img src="/assets/images/dashboard/icon/customers.png" alt=""></div>
                           <div> <span class="f-w-500 f-light">Customers</span>
                             <h5 class="mt-1 mb-0">1.736</h5>
                           </div>
@@ -1650,7 +1650,7 @@
                       </div>
                       <div class="col-3 statistic-icon"> 
                         <div class="light-card balance-card widget-hover">
-                          <div class="icon-box"><img src="../assets/images/dashboard/icon/revenue.png" alt=""></div>
+                          <div class="icon-box"><img src="/assets/images/dashboard/icon/revenue.png" alt=""></div>
                           <div> <span class="f-w-500 f-light">Revenue</span>
                             <h5 class="mt-1 mb-0">$9.247   </h5>
                           </div>
@@ -1664,7 +1664,7 @@
                       </div>
                       <div class="col-3 statistic-icon">
                         <div class="light-card balance-card widget-hover">
-                          <div class="icon-box"><img src="../assets/images/dashboard/icon/profit.png" alt=""></div>
+                          <div class="icon-box"><img src="/assets/images/dashboard/icon/profit.png" alt=""></div>
                           <div> <span class="f-w-500 f-light">Profit</span>
                             <h5 class="mt-1 mb-0">80%</h5>
                           </div>
@@ -1707,7 +1707,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/product/1.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/product/1.png" alt=""></div>
                                 <div class="flex-grow-1"><a href="list-products.html">
                                     <h5>Touch sensor Lamp</h5></a></div>
                               </div>
@@ -1723,7 +1723,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/product/2.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/product/2.png" alt=""></div>
                                 <div class="flex-grow-1"><a href="list-products.html">
                                     <h5>Bluetooth headphone</h5></a></div>
                               </div>
@@ -1739,7 +1739,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/product/3.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/product/3.png" alt=""></div>
                                 <div class="flex-grow-1"><a href="list-products.html">
                                     <h5>Apple watch series 8</h5></a></div>
                               </div>
@@ -1755,7 +1755,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/product/4.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/product/4.png" alt=""></div>
                                 <div class="flex-grow-1"><a href="list-products.html">
                                     <h5>Macbook Pro M1</h5></a></div>
                               </div>
@@ -1771,7 +1771,7 @@
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img src="../assets/images/dashboard/product/5.png" alt=""></div>
+                                <div class="flex-shrink-0"><img src="/assets/images/dashboard/product/5.png" alt=""></div>
                                 <div class="flex-grow-1"><a href="list-products.html">
                                     <h5>iphone 12 Pro max</h5></a></div>
                               </div>
@@ -1802,7 +1802,7 @@
                 <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> © Mofi theme by pixelstrap  </p>
                 <p class="mb-0 f-w-600">Hand crafted & made with
                   <svg class="footer-icon">
-                    <use href="../assets/svg/icon-sprite.svg#footer-heart"> </use>
+                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
                   </svg>
                 </p>
               </div>
@@ -1812,47 +1812,47 @@
       </div>
     </div>
     <!-- latest jquery-->
-    <script src="../assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
-    <script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
-    <script src="../assets/js/icons/feather-icon/feather.min.js"></script>
-    <script src="../assets/js/icons/feather-icon/feather-icon.js"></script>
+    <script src="/assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="/assets/js/icons/feather-icon/feather-icon.js"></script>
     <!-- scrollbar js-->
-    <script src="../assets/js/scrollbar/simplebar.js"></script>
-    <script src="../assets/js/scrollbar/custom.js"></script>
+    <script src="/assets/js/scrollbar/simplebar.js"></script>
+    <script src="/assets/js/scrollbar/custom.js"></script>
     <!-- Sidebar jquery-->
-    <script src="../assets/js/config.js"></script>
+    <script src="/assets/js/config.js"></script>
     <!-- Plugins JS start-->
-    <script src="../assets/js/sidebar-menu.js"></script>
-    <script src="../assets/js/sidebar-pin.js"></script>
-    <script src="../assets/js/slick/slick.min.js"></script>
-    <script src="../assets/js/slick/slick.js"></script>
-    <script src="../assets/js/header-slick.js"></script>
-    <script src="../assets/js/chart/apex-chart/apex-chart.js"></script>
-    <script src="../assets/js/chart/apex-chart/stock-prices.js"></script>
-    <script src="../assets/js/chart/apex-chart/moment.min.js"></script>
-    <script src="../assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="/assets/js/sidebar-menu.js"></script>
+    <script src="/assets/js/sidebar-pin.js"></script>
+    <script src="/assets/js/slick/slick.min.js"></script>
+    <script src="/assets/js/slick/slick.js"></script>
+    <script src="/assets/js/header-slick.js"></script>
+    <script src="/assets/js/chart/apex-chart/apex-chart.js"></script>
+    <script src="/assets/js/chart/apex-chart/stock-prices.js"></script>
+    <script src="/assets/js/chart/apex-chart/moment.min.js"></script>
+    <script src="/assets/js/notify/bootstrap-notify.min.js"></script>
     <!-- calendar js-->
-    <script src="../assets/js/dashboard/default.js"></script>
-    <script src="../assets/js/notify/index.js"></script>
-    <script src="../assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
-    <script src="../assets/js/datatable/datatables/datatable.custom.js"></script>
-    <script src="../assets/js/datatable/datatables/datatable.custom1.js"></script>
-    <script src="../assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="../assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
-    <script src="../assets/js/typeahead/handlebars.js"></script>
-    <script src="../assets/js/typeahead/typeahead.bundle.js"></script>
-    <script src="../assets/js/typeahead/typeahead.custom.js"></script>
-    <script src="../assets/js/typeahead-search/handlebars.js"></script>
-    <script src="../assets/js/typeahead-search/typeahead-custom.js"></script>
-    <script src="../assets/js/height-equal.js"></script>
-    <script src="../assets/js/animation/wow/wow.min.js"></script>
+    <script src="/assets/js/dashboard/default.js"></script>
+    <script src="/assets/js/notify/index.js"></script>
+    <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
+    <script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+    <script src="/assets/js/typeahead/handlebars.js"></script>
+    <script src="/assets/js/typeahead/typeahead.bundle.js"></script>
+    <script src="/assets/js/typeahead/typeahead.custom.js"></script>
+    <script src="/assets/js/typeahead-search/handlebars.js"></script>
+    <script src="/assets/js/typeahead-search/typeahead-custom.js"></script>
+    <script src="/assets/js/height-equal.js"></script>
+    <script src="/assets/js/animation/wow/wow.min.js"></script>
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
-    <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/script1.js"></script>
-    <script src="../assets/js/theme-customizer/customizer.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/script1.js"></script>
+    <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>

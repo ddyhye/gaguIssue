@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ko.gagu.issue.document.dto.DocumentDTO;
+import ko.gagu.issue.dto.DocumentDTO;
 
 @Component
 public class FileManagerUtil {
