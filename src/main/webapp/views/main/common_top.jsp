@@ -199,24 +199,57 @@
              -->
              
              <script>
-				$(document).ready(function() {
-				    $('#messageButton').click(function(e) {
-				        e.preventDefault();
-				        $.ajax({
-				            url: 'noteMessage/noteMessage2.jsp',
-				            method: 'GET',
-				            success: function(response) {
-				                // 모달 내용을 body에 추가
-				                $('body').append(response);
-				                // 모달 표시
-				                $('#myModal').modal('show');
-				            },
-				            error: function() {
-				                alert('쪽지함을 불러오는데 실패했습니다.');
-				            }
-				        });
-				    });
-				});
+             $(document).ready(function() {
+            	    $('#messageButton').click(function(e) {
+            	        e.preventDefault();
+            	        $.ajax({
+            	            url: '/noteMessage2',
+            	            method: 'GET',
+            	            success: function(response) {
+            	                // 기존 모달 제거 (중복 방지)
+            	                $('#myModal').remove();
+            	                // 모달 내용을 body에 추가
+            	                $('body').append(response);
+            	                // 모달 표시
+            	                $('#myModal').modal('show');
+            	                
+            	                // 대화방 목록을 불러오는 함수 호출
+            	                loadChatRooms(idx);
+            	            },
+            	            error: function() {
+            	                alert('쪽지함을 불러오는데 실패했습니다.');
+            	            }
+            	        });
+            	    });
+            	});
+             
+             
+             function loadChatRooms(idx) {
+                 $.ajax({
+                     url: '/getChatRooms',
+                     method: 'GET',
+                     data: {
+                    	'idx':idx 
+                     },
+                     dataType:'JSON',
+                     success: function(chatRooms) {
+                         // 대화방 목록을 화면에 표시하는 로직
+                         var chatRoomList = $('#chats-user');
+                         chatRoomList.empty();
+                         chatRooms.forEach(function(room) {
+                             chatRoomList.append('<li class="common-space"' + room.id + '">' + room.name + '</li>');
+                         });
+
+                         // 첫 번째 대화방의 대화 내용을 불러옴
+                         if (chatRooms.length > 0) {
+                             loadChatMessages(chatRooms[0].id);
+                         }
+                     },
+                     error: function() {
+                         alert('대화방 목록을 불러오는데 실패했습니다.');
+                     }
+                 });
+             }
 			</script>
           </div>
           

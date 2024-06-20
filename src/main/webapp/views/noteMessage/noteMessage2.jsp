@@ -57,7 +57,7 @@
           
 		      <!-- Modal Header -->
 		      <div class="modal-header">
-		        <h4 class="modal-title">Modal Heading</h4>
+		        <h4 class="modal-title">사내 쪽지함</h4>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 		      </div>
 		
@@ -68,6 +68,7 @@
 				  <div class="row g-0">
 				    <div class="col-xxl-3 col-xl-4 col-md-5 box-col-5">
 				      <div class="left-sidebar-wrapper card">
+				    	<!-- <h5>쪽지함 목록</h5> -->
 				        <div class="left-sidebar-chat">
 				          <div class="input-group">
 				            <span class="input-group-text"><i class="search-icon text-gray" data-feather="search"></i></span>
@@ -76,8 +77,8 @@
 				        </div>
 				        <div class="advance-options">
 				          <ul class="nav border-tab" id="chat-options-tab" role="tablist">
-				            <li class="nav-item"><a class="nav-link active" id="chats-tab" data-bs-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="true">Chats</a></li>
-				            <li class="nav-item"><a class="nav-link" id="contacts-tab" data-bs-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="false">Contacts</a></li>
+				            <li class="nav-item"><a class="nav-link active" id="chats-tab" data-bs-toggle="tab" href="#chats" role="tab" aria-controls="chats" aria-selected="true">쪽지목록</a></li>
+				            <li class="nav-item"><a class="nav-link" id="contacts-tab" data-bs-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="false">연락처</a></li>
 				          </ul>
 				          <div class="tab-content" id="chat-options-tabContent">
 				            <div class="tab-pane fade show active" id="chats" role="tabpanel" aria-labelledby="chats-tab">
@@ -86,10 +87,11 @@
 				                <div class="header-top"><a class="btn badge-light-primary f-w-500" href="#!"><i class="fa fa-plus"></i></a></div>
 				              </div>
 				              <ul class="chats-user">
+				              <!-- 
 				                <li class="common-space">
 				                  <div class="chat-time">
 				                    <div class="active-profile">
-				                      <img class="img-fluid rounded-circle" src="resources/img/avatar3.png" alt="user">
+				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
 				                      <div class="status bg-success"></div>
 				                    </div>
 				                    <div>
@@ -102,6 +104,7 @@
 				                    <div class="badge badge-light-success">15</div>
 				                  </div>
 				                </li>
+				               -->
 				              </ul>
 				            </div>
 				            <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
@@ -121,7 +124,7 @@
 				                <ul class="border-0">
 				                  <li class="common-space">
 				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="resources/img/avtar3.jpg" alt="user">
+				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
 				                      <div>
 				                        <span>Andres Williamson</span>
 				                        <p>191-900-5689</p>
@@ -139,7 +142,7 @@
 				                <ul class="border-0">
 				                  <li class="common-space">
 				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="resources/img/blogcomment.jpg" alt="user">
+				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
 				                      <div>
 				                        <span>Britlin Weed</span>
 				                        <p>698-781-5581</p>
@@ -174,7 +177,7 @@
 				                <ul class="border-0">
 				                  <li class="common-space">
 				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="resources/img/blog14.png" alt="user">
+				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
 				                      <div>
 				                        <span>Cody Fisher</span>
 				                        <p>983-333-4545</p>
@@ -200,7 +203,7 @@
 				          <div class="common-space">
 				            <div class="chat-time">
 				              <div class="active-profile">
-				                <img class="img-fluid rounded-circle" src="../assets/img/blogcomment.jpg" alt="user">
+				                <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
 				                <div class="status bg-success"></div>
 				              </div>
 				              <div>
@@ -242,56 +245,6 @@
 				                  <div class="msg-text">Absolutely! I'd be happy to assist you.</div>
 				                </div>
 				              </div>
-				              <div class="msg right-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Darrell Steward</div>
-				                    <div class="msg-info-time">12:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">What kind of design aesthetic are you aiming for?</div>
-				                </div>
-				              </div>
-				              <div class="msg left-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Theresa Webb</div>
-				                    <div class="msg-info-time">01:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">I want a clean and modern look with a focus on user experience.</div>
-				                </div>
-				              </div>
-				              <div class="msg right-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Darrell Steward</div>
-				                    <div class="msg-info-time">12:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">Great! Do you have any specific color schemes in mind?</div>
-				                </div>
-				              </div>
-				              <div class="msg left-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Theresa Webb</div>
-				                    <div class="msg-info-time">01:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">I'm thinking of using a combination of blues and grays.</div>
-				                </div>
-				              </div>
-				              <div class="msg right-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Darrell Steward</div>
-				                    <div class="msg-info-time">12:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">Excellent choice! Those colors can definitely create a professional.</div>
-				                </div>
-				              </div>
 				            </div>
 				            <form class="msger-inputarea">
 				              <div class="dropdown-form dropdown-toggle" role="main" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-plus"></i>
@@ -321,16 +274,16 @@
 				  </div>
 				</div>
 		      </div>
-			</div>
-		</div>
-	</div>
-		
-		
 		      	<!-- Modal footer -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger"
 						data-bs-dismiss="modal">나가기</button>
 				</div>
+			</div>
+		</div>
+	</div>
+		
+		
 			
     <!-- latest jquery-->
     <script src="../assets/js/jquery.min.js"></script>
