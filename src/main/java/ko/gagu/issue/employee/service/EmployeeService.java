@@ -64,6 +64,10 @@ public class EmployeeService {
 		return dao.findEmployeeNumber(emp_name, birthDate);
 	}
 
+	public String findpw(String emp_id, String emp_name, String birthDate) {
+		return dao.findPW(emp_id, emp_name, birthDate);
+	}
+
 	
 
 }
