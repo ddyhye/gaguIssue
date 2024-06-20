@@ -1,5 +1,7 @@
 package ko.gagu.issue.main.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +43,8 @@ public class MainController {
 		session.setAttribute("emp_name", "관리자");
 		session.setAttribute("de_name", "관리자");
 		
+		birthDateTest();
+		
 		/*
 		 * if (session.getAttribute("emp_name")!= null) { String emp_name = (String)
 		 * session.getAttribute("emp_name"); String de_name = (String)
@@ -68,6 +72,31 @@ public class MainController {
 		
 		return mainService.finishWorkTimeCheck(map, session, finishWorkTime);
 	}
+	
+	
+	
+	
+	
+	// [do] 멘토님 테스트 코드
+	void birthDateTest() {
+        String year = "1990";
+        String month = "2";
+        String day = "8";
+        String before = year + "-" + String.format("%02d", Integer.parseInt(month)) + "-" + String.format("%02d", Integer.parseInt(day));
+        System.out.println(before);
+
+        int changedYear = Integer.parseInt(year);
+        int changedMonth = Integer.parseInt(month);
+        int changedDay = Integer.parseInt(day);
+
+        String after = LocalDate.of(changedYear, changedMonth, changedDay)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        System.out.println(after);
+
+        // before 와 after 가 같다는 것을 검증
+        //assertEquals(before, after);
+        logger.info(before+" == "+after);
+    }
 	
 	
 	
