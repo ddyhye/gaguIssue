@@ -129,7 +129,7 @@ iframe {
 											<h5>결제 서류 선택</h5>
 										</div>
 								</a></li>
-								<li class="nav-item"><a class="nav-link active">
+								<li class="nav-item"><a class="nav-link">
 										<div class="nav-rounded">
 											<div class="product-icons">
 												<svg class="stroke-icon">
@@ -141,7 +141,7 @@ iframe {
 											<h5>서류 작성</h5>
 										</div>
 								</a></li>
-								<li class="nav-item"><a class="nav-link">
+								<li class="nav-item"><a class="nav-link active">
 										<div class="nav-rounded">
 											<div class="product-icons">
 												<svg class="stroke-icon">
@@ -169,20 +169,9 @@ iframe {
 						</div>
 						<!-- jeong : 사이드바 끝 -->
 
-						<!-- jeong : 문서 양식 작성하는 영역 시작 -->
-
-						<div class="col-10 h-100"style="display: flex;flex-direction: column;padding-left: 30px;align-items: center;">
-							<div id="submit" class="row">
-								<div class="col">
-									<button class="btn btn-primary ripple-button" onclick="document_next()">다음으로</button>
-								</div>								
-							</div>
-							<br/>
-							<div id="form" class="row">
-								<iframe id="form-document" src="/file/${form_src}"></iframe>
-							</div>
-						</div>
-						<!-- jeong : 문서 양식 작성하는 영역 끝 -->
+						<!-- jeong : 시작 -->
+						
+						<!-- jeong : 끝 -->
 					</div>
 				</div>
 				<!-- Container-fluid Ends-->
