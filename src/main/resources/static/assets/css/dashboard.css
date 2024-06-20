@@ -1,0 +1,171 @@
+/* [do] 대쉬보드 - 공통 */
+
+.do-flexdirection-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.greater-than {
+  color: rgba(122, 112, 186, 0.7);
+  font-size: 20px;
+}
+
+.do-p-darkgray {
+	color: #5b5b5b;
+}
+.do-bold {
+	font-weight: bold;
+}
+.do-p-white {
+	color: white;
+}
+.do-eclipse {
+	white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+    overflow: hidden; /* 넘친 내용을 숨기도록 설정 */
+    text-overflow: ellipsis; /* 넘친 부분을 ...으로 표시 */
+}
+
+
+
+/* 조직도 */
+.do-departName {
+	position: absolute;
+	right: 10%;
+}
+.card-body-center {
+	display: flex;
+	flex-direction: row;
+	
+	gap: 5px;
+}
+.do-group {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	width: 33.33%;
+	height: 190px;
+}
+.do-group-pic {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 5px;
+}
+.do-group-pic-size {
+	position: relative;
+	width: 125px;
+	height: 125px;
+	border-radius: 50%;
+}
+
+
+
+/* 메일 */
+.opening-box {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	
+	position: relative;
+	height: 212px;
+}
+.do-mail-list {
+	display: flex;
+	align-items: center;
+	
+	position: relative;
+	width: 95%;
+	padding: 8px 0;
+	border-bottom: 1px dotted rgba(122, 112, 186, 0.5);
+}
+.do-mail-list p {
+	margin: 0;
+}
+.do-mail-subject {
+	position: relative;
+	width: 75%;
+	font-weight: bold;
+	
+}
+.do-mail-writer {
+	position: absolute;
+	right: 0%;
+}
+
+
+
+
+
+
+/* 출퇴근 */
+.do-body1 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	height: 180px;
+}
+.do-body-left {
+	display: flex;
+	flex-direction: row;
+	
+	position: relative;
+	width: 65%;
+	gap: 15px;
+	
+	border-right: 1px dotted rgba(122, 112, 186, 0.5);
+}
+.do-body-left-button1, .do-body-left-button2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+   	justify-content: center; 
+   	
+   	position: relative;
+   	width: 45%;
+   	height: 100px;
+	border-radius: 5%;
+	gap: 5px;
+}
+.do-body-left-button1 {
+	background-color: white;
+	border: 1px solid rgba(122, 112, 186, 0.5);
+}
+.do-body-left-button2 {
+	background-color: rgba(122, 112, 186, 0.8);
+}
+.do-body-right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+	position: relative;
+	width: 25%;
+	height: 70%;
+}
+.do-clock {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	color: rgba(122, 112, 186, 0.3);
+}
+#remainingTime {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1001;
+}
