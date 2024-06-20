@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -58,12 +59,13 @@
           <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt=""/></a></div>
         </div>
         <div class="col-4 col-xl-4 page-title">
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">공지사항 작성</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400 active">Board</li>
+              <li class="breadcrumb-item f-w-400 active">BoardWrite</li>
             </ol>
           </nav>
         </div>
@@ -79,7 +81,34 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+            <div class="row">
+              <div class="col-12">
+                <h3 class="mb-4">공지사항 작성</h3>
+                <form action="boardlist.go" method="post" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <label for="category" class="form-label">구분</label>
+                    <select name="category" id="category" class="form-select">
+                      <option value="필독">필독</option>
+                      <option value="공지">공지</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="title" class="form-label">제목</label>
+                    <input type="text" name="title" id="title" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="content" class="form-label">내용</label>
+                    <textarea name="content" id="content" class="form-control" rows="6" required></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="attachment" class="form-label">첨부파일</label>
+                    <input type="file" name="attachment" id="attachment" class="form-control">
+                  </div>
+                  <button type="submit" class="btn btn-primary">작성</button>
+                  <a href="boardlist.go" class="btn btn-secondary">취소</a>
+                </form>
+              </div>
+            </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
@@ -88,7 +117,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
+                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> © Mofi theme by pixelstrap  </p>
                 <p class="mb-0 f-w-600">Hand crafted & made with
                   <svg class="footer-icon">
                     <use href="../assets/svg/icon-sprite.svg#footer-heart"> </use>

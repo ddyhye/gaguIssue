@@ -58,12 +58,12 @@
           <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt=""/></a></div>
         </div>
         <div class="col-4 col-xl-4 page-title">
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">공지사항 상세보기</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400 active">BoardDetail</li>
             </ol>
           </nav>
         </div>
@@ -79,8 +79,27 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>공지사항 상세보기</h3>
+                            <hr>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">제목: ${po_title}</h5>
+                                    <p class="card-text">내용: ${po_content}</p>
+                                    <%-- 첨부 파일이 있다면 링크로 보여줌 --%>
+                                    <c:if test="${not empty notice.attachment}">
+                                        <p>첨부 파일: <a href="../uploads/${notice.attachment}">${notice.attachment}</a></p>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <br>
+                            <a href="boardlist.go" class="btn btn-secondary">목록으로 돌아가기</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Container-fluid Ends-->
+            </div>
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->

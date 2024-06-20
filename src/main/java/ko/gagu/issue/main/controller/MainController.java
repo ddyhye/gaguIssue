@@ -1,5 +1,8 @@
 package ko.gagu.issue.main.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -9,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,7 +41,6 @@ public class MainController {
 		session.setAttribute("emp_name", "관리자");
 		session.setAttribute("de_name", "관리자");
 		
-		
 		/*
 		 * if (session.getAttribute("emp_name")!= null) { String emp_name = (String)
 		 * session.getAttribute("emp_name"); String de_name = (String)
@@ -48,6 +52,30 @@ public class MainController {
 		
 		return mainService.dashboard(session, rAttr);
 	}
+	
+	// [do] 대시보드 - 오늘의 출근 히스토리
+	@PostMapping(value="/gotoWorkTimeCheck.ajax")
+	@ResponseBody
+	public Map<String, String> gotoWorkTimeCheck(HttpSession session, String gotoWorkTime) {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		return mainService.gotoWorkTimeCheck(map, session, gotoWorkTime);
+	}
+	@PostMapping(value="/finishWorkTimeCheck.ajax")
+	@ResponseBody
+	public Map<String, String> finishWorkTimeCheck(HttpSession session, String finishWorkTime) {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		return mainService.finishWorkTimeCheck(map, session, finishWorkTime);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@RequestMapping(value = "/indexOri.go")
 	public String indexOri() {

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,6 +36,8 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <!-- [do] css 추가 -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/dashboard.css">
     <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
@@ -78,13 +81,306 @@
         <!-- Page Sidebar Start-->
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
+        
+        
+        
+        
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          <div class="container-fluid">
+            <div class="row"> 
+              <div class="col-sm-12"> 
+                <div class="card"> 
+                  <div class="card-body">
+                  	<div class="card-header">
+			          <h4>Product Form</h4>
+			        </div>
+                    <div class="list-product-header">
+                      <div> 
+                        <div class="light-box"><a data-bs-toggle="collapse" href="#collapseProduct" role="button" aria-expanded="false" aria-controls="collapseProduct"><i class="filter-icon show" data-feather="filter"></i><i class="icon-close filter-close hide"></i></a></div><a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>Add Product</a>
+                      </div>
+                      <div class="collapse" id="collapseProduct">
+                        <div class="card card-body list-product-body">
+                          <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 g-3"> 
+                            <div class="col"> 
+                              <select class="form-select" aria-label="Default select example">
+                                <option selected="">Choose Product</option>
+                                <option value="1">Apple iphone 13 Pro</option>
+                                <option value="2">Wood Chair</option>
+                                <option value="3">M185 Compact Wireless Mouse</option>
+                              </select>
+                            </div>
+                            <div class="col"> 
+                              <select class="form-select" aria-label="Default select example">
+                                <option selected="">Choose Category</option>
+                                <option value="1">Furniture</option>
+                                <option value="2">Smart Gadgets</option>
+                                <option value="3">Electrics</option>
+                              </select>
+                            </div>
+                            <div class="col"> 
+                              <select class="form-select" aria-label="Default select example">
+                                <option selected="">Choose Sub Category</option>
+                                <option value="1">Smart Phones</option>
+                                <option value="2">Smart Watches</option>
+                                <option value="3">Wireless headphone</option>
+                              </select>
+                            </div>
+                            <div class="col"> 
+                              <select class="form-select" aria-label="Default select example">
+                                <option selected="">Status</option>
+                                <option value="1">Sold Out </option>
+                                <option value="2">In Stock</option>
+                                <option value="3">Pre Order</option>
+                                <option value="4">Limited Stock </option>
+                              </select>
+                            </div>
+                            <div class="col"> 
+                              <select class="form-select" aria-label="Default select example">
+                                <option selected="">Price</option>
+                                <option value="1">56000.00</option>
+                                <option value="2">19000.00</option>
+                                <option value="3">10000.00</option>
+                                <option value="3">15000.00</option>
+                                <option value="3">99000.00</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="list-product">
+                      <table class="table" id="project-status">
+                        <thead> 
+                          <tr> 
+                            <th>
+                              <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox">
+                              </div>
+                            </th>
+                            <th> <span class="f-light f-w-600">Product Name</span></th>
+                            <th> <span class="f-light f-w-600">SKU</span></th>
+                            <th> <span class="f-light f-w-600">Category</span></th>
+                            <th> <span class="f-light f-w-600">Price</span></th>
+                            <th> <span class="f-light f-w-600">Qty</span></th>
+                            <th> <span class="f-light f-w-600">Status</span></th>
+                            <th> <span class="f-light f-w-600">Rating</span></th>
+                            <th> <span class="f-light f-w-600">Action</span></th>
+                          </tr>
+                        </thead>
+                        <tbody> 
+                          <tr class="product-removes">
+                            <td>
+                              <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox">
+                              </div>
+                            </td>
+                            <td> 
+                              <div class="product-names">
+                                <div class="light-product-box"><img class="img-fluid" src="../assets/images/product_list/product-categories/laptop.png" alt="laptop"></div>
+                                <p>Apple Desktop 2024</p>
+                              </div>
+                            </td>
+                            <td> 
+                              <p class="f-light">02145YK796</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">Laptops</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">56000.00</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">13</p>
+                            </td>
+                            <td> <span class="badge badge-light-secondary">Sold Out</span></td>
+                            <td> 
+                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star f-light"></i></div>
+                            </td>
+                            <td> 
+                              <div class="product-action"><a href="add-products.html"> 
+                                  <svg>    
+                                    <use href="../assets/svg/icon-sprite.svg#edit-content"></use>
+                                  </svg></a>
+                                <svg>
+                                  <use href="../assets/svg/icon-sprite.svg#trash1"></use>
+                                </svg>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr class="product-removes">
+                            <td>
+                              <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox">
+                              </div>
+                            </td>
+                            <td> 
+                              <div class="product-names">
+                                <div class="light-product-box"><img class="img-fluid" src="../assets/images/product_list/product-categories/phone.png" alt="phone"></div>
+                                <p>Apple iphone 13 Pro</p>
+                              </div>
+                            </td>
+                            <td> 
+                              <p class="f-light">56379FG3AW</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">Smart Phones    </p>
+                            </td>
+                            <td> 
+                              <p class="f-light">19000.00</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">48</p>
+                            </td>
+                            <td> <span class="badge badge-light-primary">In Stock</span></td>
+                            <td> 
+                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star f-light"></i><i class="fa fa-star f-light"></i></div>
+                            </td>
+                            <td> 
+                              <div class="product-action"><a href="add-products.html"> 
+                                  <svg>    
+                                    <use href="../assets/svg/icon-sprite.svg#edit-content"></use>
+                                  </svg></a>
+                                <svg>
+                                  <use href="../assets/svg/icon-sprite.svg#trash1"></use>
+                                </svg>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr class="product-removes">
+                            <td>
+                              <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox">
+                              </div>
+                            </td>
+                            <td> 
+                              <div class="product-names">
+                                <div class="light-product-box"><img class="img-fluid" src="../assets/images/product_list/product-categories/headphone.png" alt="headphones"></div>
+                                <p>Headphones</p>
+                              </div>
+                            </td>
+                            <td> 
+                              <p class="f-light">33KR5689B1</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">Smart Headphones       </p>
+                            </td>
+                            <td> 
+                              <p class="f-light">10000.00</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">5</p>
+                            </td>
+                            <td> 
+                              <div class="badge badge-light-primary">In Stock</div>
+                            </td>
+                            <td> 
+                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i></div>
+                            </td>
+                            <td> 
+                              <div class="product-action"><a href="add-products.html"> 
+                                  <svg>    
+                                    <use href="../assets/svg/icon-sprite.svg#edit-content"></use>
+                                  </svg></a>
+                                <svg>
+                                  <use href="../assets/svg/icon-sprite.svg#trash1"></use>
+                                </svg>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr class="product-removes">
+                            <td>
+                              <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox">
+                              </div>
+                            </td>
+                            <td> 
+                              <div class="product-names">
+                                <div class="light-product-box"><img class="img-fluid" src="../assets/images/product_list/product-categories/wireless-headphone.png" alt="wireless headphone"></div>
+                                <p>wireless-headphone</p>
+                              </div>
+                            </td>
+                            <td> 
+                              <p class="f-light">AD6789HEY0</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">Smart Headphones         </p>
+                            </td>
+                            <td> 
+                              <p class="f-light">15000.00</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">4</p>
+                            </td>
+                            <td> <span class="badge badge-light-secondary">Sold Out</span></td>
+                            <td> 
+                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star f-light"></i></div>
+                            </td>
+                            <td> 
+                              <div class="product-action"><a href="add-products.html"> 
+                                  <svg>    
+                                    <use href="../assets/svg/icon-sprite.svg#edit-content"></use>
+                                  </svg></a>
+                                <svg>
+                                  <use href="../assets/svg/icon-sprite.svg#trash1"></use>
+                                </svg>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr class="product-removes">
+                            <td>
+                              <div class="form-check"> 
+                                <input class="form-check-input checkbox-primary" type="checkbox">
+                              </div>
+                            </td>
+                            <td> 
+                              <div class="product-names">
+                                <div class="light-product-box"><img class="img-fluid" src="../assets/images/product_list/product-categories/1.png" alt="chair"></div>
+                                <p>Wood Chair</p>
+                              </div>
+                            </td>
+                            <td> 
+                              <p class="f-light">456DF78DFQ</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">Furniture         </p>
+                            </td>
+                            <td> 
+                              <p class="f-light">99000.00</p>
+                            </td>
+                            <td> 
+                              <p class="f-light">2</p>
+                            </td>
+                            <td> <span class="badge badge-light-secondary">Sold Out</span></td>
+                            <td> 
+                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i></div>
+                            </td>
+                            <td> 
+                              <div class="product-action"><a href="add-products.html"> 
+                                  <svg>    
+                                    <use href="../assets/svg/icon-sprite.svg#edit-content"></use>
+                                  </svg></a>
+                                <svg>
+                                  <use href="../assets/svg/icon-sprite.svg#trash1"></use>
+                                </svg>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
+        
+        
+        
+        
+        
         <!-- footer start-->
         <footer class="footer">
           <div class="container-fluid">

@@ -70,37 +70,56 @@
         background-color: #6c3483;
     }
 </style>
+<script>
+    $(document).ready(function() {
+        const errorMessage = "${errorMessage}";
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+        
+        $("form").submit(function() {
+            const year = $("select[name='year']").val();
+            const month = $("select[name='month']").val();
+            const day = $("select[name='day']").val();
+            
+            if (year === "" || month === "" || day === "") {
+                alert("생년월일을 모두 선택해주세요.");
+                return false;
+            }
+        });
+    });
+</script>
 </head>
 <body>
     <div class="find-pw-container">
         <h3>비밀번호 찾기</h3>
         <hr/>
-        <form action="findPw.do" method="post">
+        <form action="findPW.do" method="post">
             <table>
                 <tr>
                     <th style="width: 100px;">사원번호</th>
-                    <td><input type="text" name="employeeId" placeholder="사원번호를 입력하세요"></td>
+                    <td><input type="text" name="emp_id" placeholder="사원번호를 입력하세요" required></td>
                 </tr>
                 <tr>
                     <th>이름</th>
-                    <td><input type="text" name="name" placeholder="이름을 입력하세요"></td>
+                    <td><input type="text" name="emp_name" placeholder="이름을 입력하세요" required></td>
                 </tr>
                 <tr>
                     <th>생년월일</th>
                     <td>
-                        <select name="year">
+                        <select name="year" required>
                             <option value="">년도</option>
                             <c:forEach begin="1900" end="2023" var="year">
                                 <option value="${year}">${year}</option>
                             </c:forEach>
                         </select>
-                        <select name="month">
+                        <select name="month" required>
                             <option value="">월</option>
                             <c:forEach begin="1" end="12" var="month">
                                 <option value="${month}">${month}</option>
                             </c:forEach>
                         </select>
-                        <select name="day">
+                        <select name="day" required>
                             <option value="">일</option>
                             <c:forEach begin="1" end="31" var="day">
                                 <option value="${day}">${day}</option>
@@ -110,7 +129,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input type="submit" value="비밀번호 찾기"/>
+                        <input type="submit" value="비밀번호 찾기" />
                         <input type="button" value="취소" onclick='location.href="./login.go"'/>
                     </td>
                 </tr>

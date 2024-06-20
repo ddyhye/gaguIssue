@@ -51,7 +51,7 @@
 </head>
 <body>
     <div class="container">
-        <p>${emp_name}님의 사원번호는<br><span class="emp-id">${emp_id}</span>입니다.</p>
+        <p>${emp_name}님의 비밀번호는<br><span class="emp-id">${emp_pw}</span>입니다.</p>
         <button onclick="location.href='/login.go'">로그인 페이지로 돌아가기</button>
     </div>
 </body>

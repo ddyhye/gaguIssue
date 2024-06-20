@@ -30,6 +30,14 @@
         WHERE emp_name = #{emp_name}
           AND emp_birth_date = #{birthDate}
     </select>
+    
+    <select id="findPW" parameterType="map" resultType="string">
+		SELECT emp_pw
+		FROM employee_tb
+		WHERE emp_id = #{emp_id}
+		AND emp_name = #{emp_name}
+		AND emp_birth_date = #{birthDate}
+    </select>
 	
 	
 	

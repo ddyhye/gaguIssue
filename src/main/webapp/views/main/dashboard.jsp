@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <!-- [do] css 추가 -->
     <link rel="stylesheet" type="text/css" href="../assets/css/dashboard.css">
     <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
@@ -88,13 +89,34 @@
                   	<a href="#">
                   	  <div class="do-flexdirection-row">
                         <h2>조직도</h2><i class="greater-than" data-feather="chevron-right"></i>
+                        <h4 class="do-departName">관리자</h4>
                       </div>
                       <div class="card-body-center">
+                      	<div class="do-group">
+                      		<div class="do-group-pic">
+                      			<img class="do-group-pic-size" src="../img/ahruru.png"/>
+                      		</div>
+                      		<div class="do-group-name">관리자</div>
+                      	</div>
+                      	<div class="do-group">
+                      		<div class="do-group-pic">
+                      			<img class="do-group-pic-size" src="../img/ahruru.png"/>
+                      		</div>
+                      		<div class="do-group-name">관리자</div>
+                      	</div>
+                      	<div class="do-group">
+                      		<div class="do-group-pic">
+                      			<img class="do-group-pic-size" src="../img/ahruru.png"/>
+                      		</div>
+                      		<div class="do-group-name">관리자</div>
+                      	</div>
                       </div>
                     </a>
                   </div>
                 </div>
               </div>
+              
+              
               <div class="col-xl-3 col-md-6 proorder-xl-2 proorder-md-2">
                 <div class="card">
                   <div class="card-header card-no-border pb-0">
@@ -104,14 +126,31 @@
                       </div>
                       <div class="dropdown icon-dropdown">
                         <button class="btn dropdown-toggle" id="userdropdown17" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-more-alt"></i></button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown17"><a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a></div>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown17"><a class="dropdown-item" href="#">전체</a><a class="dropdown-item" href="#">받은 메일</a><a class="dropdown-item" href="#">안 읽음</a></div>
                       </div>
                     </div>
                   </div>
                   <div class="card-body pb-0 opening-box">
+                  	<div class="do-mail-list">
+                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
+                  	</div>
+                  	<div class="do-mail-list">
+                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
+                  	</div>
+                  	<div class="do-mail-list">
+                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
+                  	</div>
+                  	<div class="do-mail-list">
+                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
+                  	</div>
+                  	<div class="do-mail-list">
+                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
+                  	</div>
                   </div>
                 </div>
               </div>
+              
+              
               <div class="col-xl-4 col-md-5 proorder-xl-3 proorder-md-3"> 
                 <div class="card shifts-char-box">
                   <div class="card-header card-no-border pb-0">
@@ -121,7 +160,15 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body do-docBody">
+                  	<div class="do-docBody-left">
+                  		<h4>결재 대기</h4>
+                  		<div>0</div>
+                  	</div>
+                  	<div class="do-docBody-right">
+                  		<h4>수신함</h4>
+                  		<div>1</div>
+                  	</div>
                   </div>
                 </div>
               </div>
@@ -161,19 +208,29 @@
                   </div>
                 </div>
               </div>
+              
+              
               <div class="col-xl-5 col-md-7 proorder-xl-4 box-col-5 proorder-md-6"> 
                 <div class="card">
-                  <div class="card-header card-no-border pb-0">
-                    <div class="header-top">
-                      <div class="do-flexdirection-row">
-                        <h4>나의 연차</h4><i class="greater-than" data-feather="chevron-right"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body pb-0">
-                  </div>
+                  <a href="<c:url value='/common/annualList.go'/>">
+	                  <div class="card-header card-no-border pb-0">
+	                    <div class="header-top">
+	                      <div class="do-flexdirection-row">
+	                        <h4>나의 연차</h4><i class="greater-than" data-feather="chevron-right"></i>
+	                      </div>
+	                    </div>
+	                  </div>
+	                  <div class="card-body pb-0 do-annual-body">
+	                  	<div>
+	                  		<p class="do-annualLeaveDay">8</p><p class="do-annualLeaveDay2">&nbsp;일</p>
+	                  		<i class="do-coffee" data-feather="coffee"></i>
+	                  	</div>
+	                  </div>
+	              </a>
                 </div>
               </div>
+              
+              
               <div class="col-xxl-7 col-xl-12 box-col-12 proorder-xl-8 proorder-md-9"> 
                 <div class="card">
                   <div class="card-header card-no-border pb-0">
@@ -279,18 +336,6 @@
 	if (msg != '') {
 		alert(msg);
 	}*/
-	
-	
-	
-	
-	// [do] 출퇴근 여부
-	var isGotoWorkTime = '${isGotoWorkTime}';
-	var isFinishWorkTime = '${isFinishWorkTime}';
-	
-	if (isGotoWorkTime) {
-		
-	}
-
 
 
 	// [do] 출퇴근 JS
@@ -322,14 +367,6 @@
       	const remainingMinutes = String(Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
       	const remainingSeconds = String(Math.floor((remainingTime % (1000 * 60)) / 1000)).padStart(2, '0');
       	const remainingTimeString = remainingHours+':'+remainingMinutes+':'+remainingSeconds;
-	
-      	if (remainingHours === '00') {
-			if (remainingMinutes === '00') {
-				if (remainingSeconds === '00') {
-					remainingTimeStrig = '00:00:00';
-				}
-			}
-		}
       	
 		return {
 			currentTime: currentTime,
@@ -347,13 +384,58 @@
 	}, 1000);
 	// 출근 버튼 클릭 시
 	gotoWorkBtn.addEventListener('click', () => {
-		const timeData = updateTime();
-		document.getElementById('gotoWorkTime').textContent = timeData.currentTime;
+		const gotoWorkTime = document.getElementById('gotoWorkTime');
+		
+		if (finishWorkTime && finishWorkTime.textContent.trim() === '') {
+			if (gotoWorkTime && gotoWorkTime.textContent.trim() !== '') {
+				alert('이미 근무 중 입니다...');
+			} else {
+				const timeData = updateTime();
+				
+				$.ajax({
+					type: 'post', 
+					url: '<c:url value="/gotoWorkTimeCheck.ajax"/>',
+					data: {
+						'gotoWorkTime': timeData.currentTime
+					},
+					dataType: 'JSON',
+					success: function(data) {
+						gotoWorkTime.textContent = timeData.currentTime;
+						alert(data.successMsg);
+					}, error: function(e){}
+				});
+			}
+		} else {
+			alert('하루 일과를 마무리 하셨습니다...');
+		}
 	});
 	// 퇴근 버튼 클릭 시
 	finishWorkBtn.addEventListener('click', () => {
-		const timeData = updateTime();
-		finishWorkTime.textContent = timeData.currentTime;
+		const gotoWorkTime = document.getElementById('gotoWorkTime');
+		
+		if (gotoWorkTime && gotoWorkTime.textContent.trim() !== '') {
+			if (finishWorkTime && finishWorkTime.textContent.trim() !== '') {
+				alert('하루 일과를 마무리 하셨습니다...');
+			} else {
+				const timeData = updateTime();
+				finishWorkTime.textContent = timeData.currentTime;
+				
+				$.ajax({
+					type: 'post', 
+					url: '<c:url value="/finishWorkTimeCheck.ajax"/>',
+					data: {
+						'finishWorkTime': timeData.currentTime
+					},
+					dataType: 'JSON',
+					success: function(data) {
+						const finishWorkBtn = document.getElementById('finishWorkBtn');
+						alert(data.successMsg);
+					}, error: function(e){}
+				});
+			}
+		} else {
+			alert('출근 먼저 확인해 주세요...');
+		}
 	});
 	
 	
