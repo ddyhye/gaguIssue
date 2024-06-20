@@ -39,6 +39,7 @@
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
   </head>
+  
   <body> 
     <div class="loader-wrapper"> 
       <div class="loader loader-1">
@@ -59,13 +60,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">공지사항</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
               <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400 active">Board</li>
             </ol>
           </nav>
         </div>
@@ -82,6 +83,85 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
           <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+			<div class="row">
+			    <div class="col-12">
+			        <div class="card">
+			            <div class="card-header d-flex justify-content-between align-items-center">
+			                <h4 class="card-title">공지사항</h4>
+			                <a href="boardwrite.go" class="btn btn-primary">공지사항 작성</a>
+			            </div>
+			            <div class="card-body">
+			                <!-- 검색 바 -->
+			                <div class="row mb-3">
+			                    <div class="col-md-4">
+			                        <form action="searchNotice.do" method="get" class="form-inline">
+			                            <div class="input-group">
+			                                <select name="searchType" class="form-select">
+			                                    <option value="title">제목</option>
+			                                    <option value="content">제목+내용</option>
+			                                </select>
+			                                <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
+			                                <button type="submit" class="btn btn-primary">검색</button>
+			                            </div>
+			                        </form>
+			                    </div>
+			                </div>
+			
+			                <!-- 공지사항 목록 테이블 -->
+			                <div class="table-responsive">
+			                    <table class="table table-bordered table-striped">
+			                        <thead>
+			                            <tr>
+			                                <th>구분</th>
+			                                <th>제목</th>
+			                                <th>작성자</th>
+			                                <th>작성일</th>
+			                                <th>조회수</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+			                            <c:forEach var="notice" items="${notices}">
+			                                <tr>
+			                                    <td>${notice.category}</td>
+			                                    <td><a href="viewNotice.do?id=${notice.id}">${notice.title}</a></td>
+			                                    <td>${notice.author}</td>
+			                                    <td>${notice.createdDate}</td>
+			                                    <td>${notice.viewCount}</td>
+			                                </tr>
+			                            </c:forEach>
+			                        </tbody>
+			                    </table>
+			                </div>
+			
+			                <!-- 페이지네이션 -->
+			                <nav>
+			                    <ul class="pagination justify-content-center">
+			                        <c:if test="${page > 1}">
+			                            <li class="page-item">
+			                                <a class="page-link" href="noticeList.do?page=${page - 1}" aria-label="Previous">
+			                                    <span aria-hidden="true">&laquo;</span>
+			                                </a>
+			                            </li>
+			                        </c:if>
+			                        <c:forEach begin="1" end="${totalPages}" var="i">
+			                            <li class="page-item <c:if test='${i == page}'>active</c:if>">
+			                                <a class="page-link" href="noticeList.do?page=${i}">${i}</a>
+			                            </li>
+			                        </c:forEach>
+			                        <c:if test="${page < totalPages}">
+			                            <li class="page-item">
+			                                <a class="page-link" href="noticeList.do?page=${page + 1}" aria-label="Next">
+			                                    <span aria-hidden="true">&raquo;</span>
+			                                </a>
+			                            </li>
+			                        </c:if>
+			                    </ul>
+			                </nav>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+
           
           
           </div>

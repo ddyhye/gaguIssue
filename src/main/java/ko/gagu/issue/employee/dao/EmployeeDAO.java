@@ -13,4 +13,6 @@ public interface EmployeeDAO {
 
 	String findEmployeeNumber(String emp_name, String birthDate);
 
+	String findPW(String emp_id, String emp_name, String birthDate);
+
 }
