@@ -40,11 +40,9 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
     
     <!-- [il] 캘린더 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>     
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-	<!-- <link rel="stylesheet" type="text/css" href="../assets/css/vendors/calendar.css"> -->
-	
+	<!-- <link rel="stylesheet" type="text/css" href="../assets/css/vendors/calendar.css"> -->	
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
 	<!-- [il]jquery / 원래는 3.2.1 버전이었으나, 3.7.1버전으로 바꿔둠 -->
@@ -61,10 +59,19 @@
 	   width: 80%;
 	   margin: 5px auto;
 	}
+	.datepicker-input {
+    position: relative;
+	}
+	.datepicker-input input, .timepicker-input select, .modal-body textarea {
+	    width: 100%;
+	}
+	.datepicker-input .ui-datepicker-trigger, .timepicker-input .ui-timepicker-trigger {
+	    position: absolute;
+	    right: 5px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
 	</style>
-	
-	
-    
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -112,16 +119,15 @@
 		    <div class="container">
 		        <div id="calendar"></div>
 		    </div>
-		    <br>
-		
+		    <br>		
 		    <!-- [il]Modal -->
-		    <div id="myModal" class="modal fade" role="dialog">
+		    <div id="myModal" class="modal" role="dialog">
 		        <div class="modal-dialog">
 		
 		            <!--[il] Modal content-->
 		            <div class="modal-content">
 		                <div class="modal-header">
-		                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                    <!-- [il] <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 		                    <h4 class="modal-title">일정 추가</h4>
 		                </div>
 		                <div class="modal-body">
@@ -151,12 +157,12 @@
 		                    </div>
 		                    <div class="form-group">
 		                        <label for="color">색상:</label>
-		                        <input type="text" class="form-control" id="color">
+		                        <input type="color" class="form-control" id="color">
 		                    </div>
 		                </div>
 		                <div class="modal-footer">
 		                    <button type="button" class="btn btn-default" id="addEventBtn">등록</button>
-		                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		                    <button type="button" class="btn btn-default custom-close">닫기</button>
 		                </div>
 		            </div>
 		
@@ -182,6 +188,13 @@
       </div>
     </div>
     <script>
+    
+    $(document).ready(function(){
+        $('.custom-close').on('click', function(){
+            $('#myModal').modal('hide');
+        });
+    });
+    
 	$(document).ready(function() {
 	    $('#calendar').fullCalendar({
 	        editable: true,
@@ -231,7 +244,7 @@
 	            $('#myModal').modal('show');
 	        }
 	    });
-		// il : 시간 선택옵션 설정하기
+		// [il] 시간 선택옵션 설정하기 / 1시간 단위로
 	    var selectOptions = '';
 	    for (var i = 0; i <= 24; i++) {
 	        var hour = (i < 10) ? '0' + i : i;
@@ -253,7 +266,7 @@
 	    });
 	    $('#startDate, #endDate').prop('readonly', true);
 		
-	    // il : 
+	    // [il] 일정 추가 버튼 클릭 시 이벤트 핸들러 
 	    $('#addEventBtn').click(function() {
 	        var startDate = $('#startDate').val();
 	        var startTime = $('#startTime').val();
@@ -283,7 +296,7 @@
 	        // [il]서버로 이벤트 추가 요청 보내는 ajax
 	        $.ajax({
 	            type: 'POST',
-	            url: './employee/addEvent.ajax',
+	            url: './addEvent.ajax',
 	            dataType:'JSON', 
 	            data: JSON.stringify(event),
 	            success: function(response) {
@@ -292,8 +305,7 @@
 	            error: function(xhr, status, error) {
 	                console.error('이벤트 추가에 실패했습니다.: ' + error);
 	            }
-	        });
-	
+	        });	
 	        $('#myModal').modal('hide'); // [il]모달 창 닫기
 	    });
 	});
@@ -328,8 +340,9 @@
     <script src="../assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="../assets/js/datatable/datatables/datatable.custom.js"></script>
     <script src="../assets/js/datatable/datatables/datatable.custom1.js"></script>
+    <!-- [il] datepicker 겹치는 부분 있어서 주석처리했습니다. 
     <script src="../assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="../assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+    <script src="../assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script> -->
     <script src="../assets/js/typeahead/handlebars.js"></script>
     <script src="../assets/js/typeahead/typeahead.bundle.js"></script>
     <script src="../assets/js/typeahead/typeahead.custom.js"></script>

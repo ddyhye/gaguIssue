@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,7 @@ public class EmployeeController {
 		return response;
 	}
 	
-	@RequestMapping(value="/employee/addEvent.ajax")
+	@RequestMapping(value="/employee/addEvent.ajax",method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object>employeeAddEvent(@RequestBody EmployeeDTO employee){
 		Map<String, Object>response = new HashMap<String, Object>();
