@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <!-- [do] css 추가 -->
     <link rel="stylesheet" type="text/css" href="../assets/css/dashboard.css">
     <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
@@ -159,7 +160,15 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body do-docBody">
+                  	<div class="do-docBody-left">
+                  		<h4>결재 대기</h4>
+                  		<div>0</div>
+                  	</div>
+                  	<div class="do-docBody-right">
+                  		<h4>수신함</h4>
+                  		<div>1</div>
+                  	</div>
                   </div>
                 </div>
               </div>
@@ -199,19 +208,29 @@
                   </div>
                 </div>
               </div>
+              
+              
               <div class="col-xl-5 col-md-7 proorder-xl-4 box-col-5 proorder-md-6"> 
                 <div class="card">
-                  <div class="card-header card-no-border pb-0">
-                    <div class="header-top">
-                      <div class="do-flexdirection-row">
-                        <h4>나의 연차</h4><i class="greater-than" data-feather="chevron-right"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body pb-0">
-                  </div>
+                  <a href="<c:url value='/common/annualList.go'/>">
+	                  <div class="card-header card-no-border pb-0">
+	                    <div class="header-top">
+	                      <div class="do-flexdirection-row">
+	                        <h4>나의 연차</h4><i class="greater-than" data-feather="chevron-right"></i>
+	                      </div>
+	                    </div>
+	                  </div>
+	                  <div class="card-body pb-0 do-annual-body">
+	                  	<div>
+	                  		<p class="do-annualLeaveDay">8</p><p class="do-annualLeaveDay2">&nbsp;일</p>
+	                  		<i class="do-coffee" data-feather="coffee"></i>
+	                  	</div>
+	                  </div>
+	              </a>
                 </div>
               </div>
+              
+              
               <div class="col-xxl-7 col-xl-12 box-col-12 proorder-xl-8 proorder-md-9"> 
                 <div class="card">
                   <div class="card-header card-no-border pb-0">
@@ -367,7 +386,7 @@
 	gotoWorkBtn.addEventListener('click', () => {
 		const gotoWorkTime = document.getElementById('gotoWorkTime');
 		
-		if (finishWorkTime && finishWorkTime.textContent.trim() !== '') {
+		if (finishWorkTime && finishWorkTime.textContent.trim() === '') {
 			if (gotoWorkTime && gotoWorkTime.textContent.trim() !== '') {
 				alert('이미 근무 중 입니다...');
 			} else {
