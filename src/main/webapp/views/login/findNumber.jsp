@@ -70,6 +70,27 @@
         background-color: #6c3483;
     }
 </style>
+<script>
+    $(document).ready(function() {
+        // 서버에서 전달된 errorMessage가 있는 경우 alert으로 표시
+        const errorMessage = "${errorMessage}";
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+        
+        // 폼 제출 시 생년월일 필드가 비어있는지 확인
+        $("form").submit(function() {
+            const year = $("select[name='year']").val();
+            const month = $("select[name='month']").val();
+            const day = $("select[name='day']").val();
+            
+            if (year === "" || month === "" || day === "") {
+                alert("생년월일을 모두 선택해주세요.");
+                return false; // 폼 제출 방지
+            }
+        });
+    });
+</script>
 </head>
 <body>
     <div class="find-id-container">
@@ -79,24 +100,24 @@
             <table>
                 <tr>
                     <th style="width: 100px;">이름</th>
-                    <td><input type="text" name="emp_name" placeholder="이름을 입력하세요"></td>
+                    <td><input type="text" name="emp_name" placeholder="이름을 입력하세요" required></td>
                 </tr>
                 <tr>
                     <th>생년월일</th>
                     <td>
-                        <select name="year">
+                        <select name="year" required>
                             <option value="">년도</option>
                             <c:forEach begin="1900" end="2023" var="year">
                                 <option value="${year}">${year}</option>
                             </c:forEach>
                         </select>
-                        <select name="month">
+                        <select name="month" required>
                             <option value="">월</option>
                             <c:forEach begin="1" end="12" var="month">
                                 <option value="${month}">${month}</option>
                             </c:forEach>
                         </select>
-                        <select name="day">
+                        <select name="day" required>
                             <option value="">일</option>
                             <c:forEach begin="1" end="31" var="day">
                                 <option value="${day}">${day}</option>

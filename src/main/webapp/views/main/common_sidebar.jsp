@@ -49,7 +49,7 @@
                   
                   
                   <!-- do: 게시판 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="task.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="boardlist.go">
                       <svg class="stroke-icon">
                         <use href="/assets/svg/icon-sprite.svg#stroke-bookmark"></use>
                       </svg>
