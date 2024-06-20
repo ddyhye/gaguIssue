@@ -1,27 +1,60 @@
 package ko.gagu.issue.employee.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ko.gagu.issue.employee.dto.EmployeeDTO;
 import ko.gagu.issue.employee.service.EmployeeService;
 
 @Controller
 public class EmployeeController {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	
 	@Autowired EmployeeService employeeService;
 	@Autowired PasswordEncoder encoder;
+	
+	// 작성자 : 구일승 , 기능 : 캘린더
+	@RequestMapping(value="/employee/calendar.go")
+	public String calendar() {
+		logger.info("calendar in");
+		return "employee/calendar";
+	}
+	
+	@RequestMapping(value="/employee/getAllEvents.ajax")
+	@ResponseBody
+	public Map<String, Object> employeeGetAllEvents(){
+		Map<String, Object>response = new HashMap<String, Object>();
+		employeeService.employeeGetAllEvents(response);
+		logger.info("response : {}"+response);
+		return response;
+	}
+	
+	@RequestMapping(value="/employee/addEvent.ajax",method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object>employeeAddEvent(@RequestBody EmployeeDTO employee){
+		Map<String, Object>response = new HashMap<String, Object>();
+		logger.info("response : {}"+response);
+		employeeService.employeeAddEvent(employee);
+		return response;
+	}
+	
+	
 	
 	// 로그인페이지 이동 ><
 	@GetMapping(value="/login.go")

@@ -1,5 +1,6 @@
 package ko.gagu.issue.employee.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,15 +13,35 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ko.gagu.issue.employee.dao.EmployeeDAO;
 
+import ko.gagu.issue.employee.dao.EmployeeDAO;
+import ko.gagu.issue.employee.dto.EmployeeDTO;
+
 @Service
 public class EmployeeService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
+	@Autowired EmployeeDAO employeeDao;
+
+	public void employeeGetAllEvents(Map<String, Object> response) {
+		List<EmployeeDTO> events = employeeDao.employeeGetAllEvents();
+		response.put("calendarEvents", events);	
+	}
+
+	public void employeeAddEvent(EmployeeDTO employee) {
+		employeeDao.employeeAddEvent(employee);
+	}
+
+	
+	
+	
+	
+	
+	
 	@Autowired EmployeeDAO dao;
 	@Autowired PasswordEncoder encoder;
 
 	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr) {
-
+		
 		logger.info("id :{}",emp_id);
 		logger.info("pw : {}",emp_pw);
 		

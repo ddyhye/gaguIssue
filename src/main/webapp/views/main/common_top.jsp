@@ -1,6 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<style>
+	    .modal-dialog {
+	      max-width: 85%; /* 원하는 너비를 설정합니다 */
+	      width: 85%; /* 모달이 설정된 너비를 사용하도록 합니다 */
+	      max-height: 70vh; /* 원하는 높이를 설정합니다 */
+    	}
+	</style>
+	
+	
+</head>
+
 		<div class="header-wrapper col m-0">
           <div class="row">
             <form class="form-inline search-full col" action="#" method="get">
@@ -111,7 +127,7 @@
                 
                 <!-- do: 쪽지 -->
                 <li class="onhover-dropdown">
-                  <a href="/noteMessage/noteMessage.go">
+                  <a class="messageBox" href="#" id="messageButton">
                     <div class="notification-box">
                       <svg>
                         <use href="/assets/svg/icon-sprite.svg#header-message"></use>
@@ -119,6 +135,29 @@
                     </div>
                   </a>
                 </li>
+                <!-- 
+                <li class="onhover-dropdown">
+			    	<button type="button" class="btn btn-link" data-bs-toggle="modal"
+			    	 data-bs-target="#myModal" onclick="openMessageForm()">
+				      <div class="notification-box">
+				        <svg>
+				          <use href="../assets/svg/icon-sprite.svg#header-message"></use>
+				        </svg><span class="badge rounded-pill badge-info">3</span>
+				      </div>
+				    </button>
+//				     The Modal
+			<div class="modal" id="myModal" data-bs-backdrop="static">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+//			     [임재민] 외부 jsp 파일이 들어올 부분 
+			    </div>
+			  </div>
+			</div>
+			    </li>
+                 -->
+				    
+			    
+			    
                 
                 
                 <!-- do: 직원서비스 -->
@@ -151,5 +190,67 @@
               </div>
             </script>
             <script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
+            <!-- 
+            <script>
+            	function openMessageForm() {
+            		$('.modal-content').load("../noteMessage/noteMessage2.go");
+            	}            
+            </script>
+             -->
+             
+             <script>
+             $(document).ready(function() {
+            	    $('#messageButton').click(function(e) {
+            	        e.preventDefault();
+            	        $.ajax({
+            	            url: '/noteMessage2',
+            	            method: 'GET',
+            	            success: function(response) {
+            	                // 기존 모달 제거 (중복 방지)
+            	                $('#myModal').remove();
+            	                // 모달 내용을 body에 추가
+            	                $('body').append(response);
+            	                // 모달 표시
+            	                $('#myModal').modal('show');
+            	                
+            	                // 대화방 목록을 불러오는 함수 호출
+            	                loadChatRooms(idx);
+            	            },
+            	            error: function() {
+            	                alert('쪽지함을 불러오는데 실패했습니다.');
+            	            }
+            	        });
+            	    });
+            	});
+             
+             
+             function loadChatRooms(idx) {
+                 $.ajax({
+                     url: '/getChatRooms',
+                     method: 'GET',
+                     data: {
+                    	'idx':idx 
+                     },
+                     dataType:'JSON',
+                     success: function(chatRooms) {
+                         // 대화방 목록을 화면에 표시하는 로직
+                         var chatRoomList = $('#chats-user');
+                         chatRoomList.empty();
+                         chatRooms.forEach(function(room) {
+                             chatRoomList.append('<li class="common-space"' + room.id + '">' + room.name + '</li>');
+                         });
+
+                         // 첫 번째 대화방의 대화 내용을 불러옴
+                         if (chatRooms.length > 0) {
+                             loadChatMessages(chatRooms[0].id);
+                         }
+                     },
+                     error: function() {
+                         alert('대화방 목록을 불러오는데 실패했습니다.');
+                     }
+                 });
+             }
+			</script>
           </div>
+          
         </div>

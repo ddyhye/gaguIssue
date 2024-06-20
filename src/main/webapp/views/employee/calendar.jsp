@@ -38,6 +38,40 @@
     <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
+    
+    <!-- [il] 캘린더 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>     
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="../assets/css/vendors/calendar.css"> -->	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+	<!-- [il]jquery / 원래는 3.2.1 버전이었으나, 3.7.1버전으로 바꿔둠 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<!-- [il]modal창 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+	
+	<style>
+	#calendar {
+	   width: 80%;
+	   margin: 5px auto;
+	}
+	.datepicker-input {
+    position: relative;
+	}
+	.datepicker-input input, .timepicker-input select, .modal-body textarea {
+	    width: 100%;
+	}
+	.datepicker-input .ui-datepicker-trigger, .timepicker-input .ui-timepicker-trigger {
+	    position: absolute;
+	    right: 5px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+	</style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -80,9 +114,60 @@
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
+          <!-- [il] 캘린더 시작 -->
+          <h2><center>Javascript Fullcalendar</center></h2>
+		    <div class="container">
+		        <div id="calendar"></div>
+		    </div>
+		    <br>		
+		    <!-- [il]Modal -->
+		    <div id="myModal" class="modal" role="dialog">
+		        <div class="modal-dialog">
+		
+		            <!--[il] Modal content-->
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <!-- [il] <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+		                    <h4 class="modal-title">일정 추가</h4>
+		                </div>
+		                <div class="modal-body">
+		                    <div class="form-group">
+		                        <label for="title">일정명:</label>
+		                        <input type="text" class="form-control" id="title">
+		                    </div>
+		                    <div class="form-group datepicker-input">
+		                        <label for="startDate">시작 날짜:</label>
+		                        <input type="text" class="form-control" id="startDate">
+		                    </div>
+		                    <div class="form-group timepicker-input">
+		                        <label for="startTime">시작 시간:</label>
+		                        <select class="form-control" id="startTime"></select>
+		                    </div>
+		                    <div class="form-group datepicker-input">
+		                        <label for="endDate">종료 날짜:</label>
+		                        <input type="text" class="form-control" id="endDate">
+		                    </div>
+		                    <div class="form-group timepicker-input">
+		                        <label for="endTime">종료 시간:</label>
+		                        <select class="form-control" id="endTime"></select>
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="description">설명:</label>
+		                        <textarea class="form-control" id="description"></textarea>
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="color">색상:</label>
+		                        <input type="color" class="form-control" id="color">
+		                    </div>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-default" id="addEventBtn">등록</button>
+		                    <button type="button" class="btn btn-default custom-close">닫기</button>
+		                </div>
+		            </div>
+		
+		        </div>
+		    </div>
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
@@ -102,8 +187,133 @@
         </footer>
       </div>
     </div>
+    <script>
+    
+    $(document).ready(function(){
+        $('.custom-close').on('click', function(){
+            $('#myModal').modal('hide');
+        });
+    });
+    
+	$(document).ready(function() {
+	    $('#calendar').fullCalendar({
+	        editable: true,
+	        selectable: true,
+	        droppable: true,
+	        header: {
+	            left: 'month,agendaWeek,agendaDay,list,addEventButton',
+	            center: 'title',
+	            right: 'prev,today,next'
+	        },
+	        customButtons: {
+	            addEventButton: {
+	                text: '일정추가',
+	                click: function() {
+	                    $('#myModal').modal('show');
+	                }
+	            }
+	        },
+	        buttonText: {
+	            today: 'Today',
+	            month: 'Month',
+	            week: 'Week',
+	            day: 'Day',
+	            list: 'List'
+	        },
+	        events: function(start, end, timezone, callback) {
+	            $.ajax({
+	                type: 'GET',
+	                url: './getAllEvents.ajax',
+	                dataType: 'json',
+	                success: function(response) {
+	                    console.log('서버 응답:', response);
+	                    if (typeof callback === "function") {
+	                        callback(response.calendarEvents);
+	                    } else {
+	                        console.error('callback is not a function');
+	                    }
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error('이벤트 로딩에 실패했습니다: ' + error);
+	                }
+	            });
+	        },
+	        select: function(start, end) {
+	            $('#startDate').val(moment(start).format('YYYY-MM-DD'));
+	            $('#endDate').val(moment(end).subtract(1, 'days').format('YYYY-MM-DD'));
+	            $('#myModal').modal('show');
+	        }
+	    });
+		// [il] 시간 선택옵션 설정하기 / 1시간 단위로
+	    var selectOptions = '';
+	    for (var i = 0; i <= 24; i++) {
+	        var hour = (i < 10) ? '0' + i : i;
+	        selectOptions += '<option value="' + hour + '">' + hour + ':00</option>';
+	    }
+	    $('#startTime, #endTime').html(selectOptions);
+	
+	    // [il]jQuery UI datepicker를 사용하기
+	    $('#startDate, #endDate').datepicker({
+	        dateFormat: 'yy-mm-dd',
+	        showButtonPanel: true,
+	        changeMonth: true,
+	        changeYear: true,
+	        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	        onSelect: function(dateText) {
+	            $(this).val(dateText);
+	        }
+	    });
+	    $('#startDate, #endDate').prop('readonly', true);
+		
+	    // [il] 일정 추가 버튼 클릭 시 이벤트 핸들러 
+	    $('#addEventBtn').click(function() {
+	        var startDate = $('#startDate').val();
+	        var startTime = $('#startTime').val();
+	        var endDate = $('#endDate').val();
+	        var endTime = $('#endTime').val();
+	        var eventTitle = $('#title').val();
+	        var eventDescription = $('#description').val();
+	        var eventColor = $('#color').val();
+	
+	        // [il]시작 날짜와 시간이 종료 날짜와 시간보다 늦을 경우 알림
+	        if (moment(startDate + 'T' + startTime) >= moment(endDate + 'T' + endTime)) {
+	            alert('종료 날짜를 다시 확인해주세요.');
+	            return;
+	        }
+	
+	        var event = {
+	            ec_title: eventTitle,
+	            ec_description: eventDescription,
+	            ec_start_datetime: startDate + 'T' + startTime,
+	            ec_end_datetime: endDate + 'T' + endTime,
+	            ec_color: eventColor
+	        };
+	
+	        $('#calendar').fullCalendar('renderEvent', event, true); // [il]캘린더에 이벤트 추가하기
+	        events.push(event); // [il]events 배열에 이벤트 추가하기
+	
+	        // [il]서버로 이벤트 추가 요청 보내는 ajax
+	        $.ajax({
+	            type: 'POST',
+	            url: './addEvent.ajax',
+	            dataType:'JSON', 
+	            data: JSON.stringify(event),
+	            success: function(response) {
+	                console.log('이벤트 추가가 완료되었습니다.');
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('이벤트 추가에 실패했습니다.: ' + error);
+	            }
+	        });	
+	        $('#myModal').modal('hide'); // [il]모달 창 닫기
+	    });
+	});
+	</script>
     <!-- latest jquery-->
-    <script src="../assets/js/jquery.min.js"></script>
+    <!-- [il]부트스트랩 jquery 버전 : 3.7.1 -->
+    <!-- [il]<script src="../assets/js/jquery.min.js"></script>     -->
+    
     <!-- Bootstrap js-->
     <script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
@@ -130,8 +340,9 @@
     <script src="../assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="../assets/js/datatable/datatables/datatable.custom.js"></script>
     <script src="../assets/js/datatable/datatables/datatable.custom1.js"></script>
+    <!-- [il] datepicker 겹치는 부분 있어서 주석처리했습니다. 
     <script src="../assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="../assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+    <script src="../assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script> -->
     <script src="../assets/js/typeahead/handlebars.js"></script>
     <script src="../assets/js/typeahead/typeahead.bundle.js"></script>
     <script src="../assets/js/typeahead/typeahead.custom.js"></script>
