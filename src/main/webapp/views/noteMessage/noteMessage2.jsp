@@ -49,63 +49,12 @@
 	</style>
   </head>
   <body> 
-    <div class="loader-wrapper"> 
-      <div class="loader loader-1">
-        <div class="loader-outter"></div>
-        <div class="loader-inner"></div>
-        <div class="loader-inner-1"></div>
-      </div>
-    </div>
-    <!-- loader ends-->
-    <!-- tap on top starts-->
-    <div class="tap-top"><i data-feather="chevrons-up"></i></div>
-    <!-- tap on tap ends-->
-    <!-- page-wrapper Start-->
-    <div class="page-wrapper compact-wrapper" id="pageWrapper">
-      <div class="page-header row">
-        <div class="header-logo-wrapper col-auto">
-          <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt=""/></a></div>
-        </div>
-        <div class="col-4 col-xl-4 page-title">
-          <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">쪽지</h4>
-          <nav>
-            <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
-              <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-              <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">쪽지</li>
-            </ol>
-          </nav>
-        </div>
-        <!-- Page Header Start -->
-        <%@ include file="../main/common_top.jsp" %>
-        <!-- Page Header Ends -->
-      </div>
-      <!-- Page Body Start-->
-      <div class="page-body-wrapper">
-        <!-- Page Sidebar Start-->
-        <%@ include file="../main/common_sidebar.jsp" %>
-        <!-- Page Sidebar Ends-->
-        <div class="page-body">
-          <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+   
           
-		<div class="container mt-3">
-		  <h3>Modal Example</h3>
-		  <p>Click on the button to open the modal.</p>
-		  
-		  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal2">
-		    Open modal
-		  </button>
-		</div>
-		
-		<!-- The Modal -->
-		<div class="modal" id="myModal2" data-bs-backdrop="static">
-		  <div class="modal-dialog modal-xxl">
-		    <div class="modal-content ">
-		
+	          <div class="modal" id="myModal" data-bs-backdrop="static">
+				  <div class="modal-dialog">
+				    <div class="modal-content">          
+          
 		      <!-- Modal Header -->
 		      <div class="modal-header">
 		        <h4 class="modal-title">Modal Heading</h4>
@@ -372,37 +321,17 @@
 				  </div>
 				</div>
 		      </div>
+			</div>
+		</div>
+	</div>
+		
 		
 		      	<!-- Modal footer -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger"
 						data-bs-dismiss="modal">나가기</button>
 				</div>
-			</div>
-		  </div>
-		</div>
-
-          
-          </div>
-          <!-- Container-fluid Ends-->
-        </div>
-        <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="../assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </div>
+			
     <!-- latest jquery-->
     <script src="../assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
