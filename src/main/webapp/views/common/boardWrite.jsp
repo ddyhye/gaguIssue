@@ -84,29 +84,30 @@
             <div class="row">
               <div class="col-12">
                 <h3 class="mb-4">공지사항 작성</h3>
-                <form action="boardlist.go" method="post" enctype="multipart/form-data">
-                  <div class="mb-3">
-                    <label for="category" class="form-label">구분</label>
-                    <select name="category" id="category" class="form-select">
-                      <option value="필독">필독</option>
-                      <option value="공지">공지</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="title" class="form-label">제목</label>
-                    <input type="text" name="title" id="title" class="form-control" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="content" class="form-label">내용</label>
-                    <textarea name="content" id="content" class="form-control" rows="6" required></textarea>
-                  </div>
-                  <div class="mb-3">
-                    <label for="attachment" class="form-label">첨부파일</label>
-                    <input type="file" name="attachment" id="attachment" class="form-control">
-                  </div>
-                  <button type="submit" class="btn btn-primary">작성</button>
-                  <a href="boardlist.go" class="btn btn-secondary">취소</a>
-                </form>
+                <form action="boardwrite.do" method="post" enctype="multipart/form-data">
+				    <div class="mb-3">
+				        <label for="is_notice" class="form-label">구분</label>
+				        <select name="is_notice" id="is_notice" class="form-select">
+				            <option value="true">필독</option>
+				            <option value="false">공지</option>
+				        </select>
+				    </div>
+				    <div class="mb-3">
+				        <label for="po_title" class="form-label">제목</label>
+				        <input type="text" name="po_title" id="po_title" class="form-control" required>
+				    </div>
+				    <div class="mb-3">
+				        <label for="po_content" class="form-label">내용</label>
+				        <textarea name="po_content" id="po_content" class="form-control" rows="6" required></textarea>
+				    </div>
+				    <div class="mb-3">
+				        <label for="attachment" class="form-label">첨부파일</label>
+				        <input type="file" name="attachment" id="attachment" class="form-control">
+				    </div>
+				    <button type="submit" class="btn btn-primary">작성</button>
+				    <a href="boardlist.go" class="btn btn-secondary">취소</a>
+				</form>
+
               </div>
             </div>
           </div>
