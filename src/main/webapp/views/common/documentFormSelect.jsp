@@ -268,5 +268,11 @@
 	<script>
 		new WOW().init();
 	</script>
+	<script>
+		var msg = '${msg}';
+		if (msg != '') {
+			alert(msg);
+		}
+	</script>
 </body>
 </html>
