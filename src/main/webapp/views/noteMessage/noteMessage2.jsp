@@ -7,38 +7,38 @@
     <meta name="description" content="Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
-    <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
     <title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/font-awesome.css'/>">
     <!-- ico-font-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/icofont.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/icofont.css'/>">
     <!-- Themify icon-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/themify.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/themify.css'/>">
     <!-- Flag icon-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/flag-icon.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/flag-icon.css'/>">
     <!-- Feather icon-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/feather-icon.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/feather-icon.css'/>">
     <!-- Plugins css start-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/scrollbar.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/animate.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/datatables.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/date-range-picker/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick-theme.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/scrollbar.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/animate.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/datatables.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
-    <link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+    <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'/>" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<style>
     .modal-dialog {
@@ -72,7 +72,7 @@
 				        <div class="left-sidebar-chat">
 				          <div class="input-group">
 				            <span class="input-group-text"><i class="search-icon text-gray" data-feather="search"></i></span>
-				            <input class="form-control" type="text" placeholder="Search here..">
+				            <input class="form-control" type="text" placeholder="Search here">
 				          </div>
 				        </div>
 				        <div class="advance-options">
@@ -91,7 +91,7 @@
 				                <li class="common-space">
 				                  <div class="chat-time">
 				                    <div class="active-profile">
-				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
+				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
 				                      <div class="status bg-success"></div>
 				                    </div>
 				                    <div>
@@ -115,7 +115,7 @@
 				              <div class="search-contacts">
 				                <input class="form-control" type="text" placeholder="Name and phone number">
 				                <svg>
-				                  <use href="../assets/svg/icon-sprite.svg#stroke-search"></use>
+				                  <use href="/assets/svg/icon-sprite.svg#stroke-search"></use>
 				                </svg>
 				                <i class="mic-search" data-feather="mic"></i>
 				              </div>
@@ -124,7 +124,7 @@
 				                <ul class="border-0">
 				                  <li class="common-space">
 				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
+				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
 				                      <div>
 				                        <span>Andres Williamson</span>
 				                        <p>191-900-5689</p>
@@ -132,7 +132,7 @@
 				                    </div>
 				                    <div class="contact-edit">
 				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="../assets/svg/icon-sprite.svg#menubar"></use>
+				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
 				                      </svg>
 				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
 				                    </div>
@@ -142,7 +142,7 @@
 				                <ul class="border-0">
 				                  <li class="common-space">
 				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
+				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
 				                      <div>
 				                        <span>Britlin Weed</span>
 				                        <p>698-781-5581</p>
@@ -150,7 +150,7 @@
 				                    </div>
 				                    <div class="contact-edit">
 				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="../assets/svg/icon-sprite.svg#menubar"></use>
+				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
 				                      </svg>
 				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
 				                    </div>
@@ -167,7 +167,7 @@
 				                    </div>
 				                    <div class="contact-edit">
 				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="../assets/svg/icon-sprite.svg#menubar"></use>
+				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
 				                      </svg>
 				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
 				                    </div>
@@ -177,7 +177,7 @@
 				                <ul class="border-0">
 				                  <li class="common-space">
 				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
+				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
 				                      <div>
 				                        <span>Cody Fisher</span>
 				                        <p>983-333-4545</p>
@@ -185,7 +185,7 @@
 				                    </div>
 				                    <div class="contact-edit">
 				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="../assets/svg/icon-sprite.svg#menubar"></use>
+				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
 				                      </svg>
 				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
 				                    </div>
@@ -203,7 +203,7 @@
 				          <div class="common-space">
 				            <div class="chat-time">
 				              <div class="active-profile">
-				                <img class="img-fluid rounded-circle" src="../img/ahruru.png" alt="user">
+				                <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
 				                <div class="status bg-success"></div>
 				              </div>
 				              <div>
@@ -215,7 +215,7 @@
 				              <div class="contact-edit chat-alert"><i class="icon-info-alt"></i></div>
 				              <div class="contact-edit chat-alert">
 				                <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                  <use href="../assets/svg/icon-sprite.svg#menubar"></use>
+				                  <use href="/assets/svg/icon-sprite.svg#menubar"></use>
 				                </svg>
 				                <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
 				              </div>
@@ -251,17 +251,17 @@
 				                <div class="chat-icon dropdown-menu dropdown-menu-start">
 				                  <div class="dropdown-item mb-2">
 				                    <svg>
-				                      <use href="../assets/svg/icon-sprite.svg#camera"></use>
+				                      <use href="/assets/svg/icon-sprite.svg#camera"></use>
 				                    </svg>
 				                  </div>
 				                  <div class="dropdown-item">
 				                    <svg>
-				                      <use href="../assets/svg/icon-sprite.svg#attchment"></use>
+				                      <use href="/assets/svg/icon-sprite.svg#attchment"></use>
 				                    </svg>
 				                  </div>
 				                </div>
 				              </div>
-				              <input class="msger-input two uk-textarea" type="text" placeholder="Type Message here..">
+				              <input class="msger-input two uk-textarea" type="text" placeholder="Type Message here">
 				              <div class="open-emoji">
 				                <div class="second-btn uk-button"></div>
 				              </div>
@@ -286,47 +286,47 @@
 		
 			
     <!-- latest jquery-->
-    <script src="../assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
-    <script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
-    <script src="../assets/js/icons/feather-icon/feather.min.js"></script>
-    <script src="../assets/js/icons/feather-icon/feather-icon.js"></script>
+    <script src="/assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="/assets/js/icons/feather-icon/feather-icon.js"></script>
     <!-- scrollbar js-->
-    <script src="../assets/js/scrollbar/simplebar.js"></script>
-    <script src="../assets/js/scrollbar/custom.js"></script>
+    <script src="/assets/js/scrollbar/simplebar.js"></script>
+    <script src="/assets/js/scrollbar/custom.js"></script>
     <!-- Sidebar jquery-->
-    <script src="../assets/js/config.js"></script>
+    <script src="/assets/js/config.js"></script>
     <!-- Plugins JS start-->
-    <script src="../assets/js/sidebar-menu.js"></script>
-    <script src="../assets/js/sidebar-pin.js"></script>
-    <script src="../assets/js/slick/slick.min.js"></script>
-    <script src="../assets/js/slick/slick.js"></script>
-    <script src="../assets/js/header-slick.js"></script>
-    <script src="../assets/js/chart/apex-chart/apex-chart.js"></script>
-    <script src="../assets/js/chart/apex-chart/stock-prices.js"></script>
-    <script src="../assets/js/chart/apex-chart/moment.min.js"></script>
-    <script src="../assets/js/notify/bootstrap-notify.min.js"></script>
+    <script src="/assets/js/sidebar-menu.js"></script>
+    <script src="/assets/js/sidebar-pin.js"></script>
+    <script src="/assets/js/slick/slick.min.js"></script>
+    <script src="/assets/js/slick/slick.js"></script>
+    <script src="/assets/js/header-slick.js"></script>
+    <script src="/assets/js/chart/apex-chart/apex-chart.js"></script>
+    <script src="/assets/js/chart/apex-chart/stock-prices.js"></script>
+    <script src="/assets/js/chart/apex-chart/moment.min.js"></script>
+    <script src="/assets/js/notify/bootstrap-notify.min.js"></script>
     <!-- calendar js-->
-    <script src="../assets/js/dashboard/default.js"></script>
-    <script src="../assets/js/notify/index.js"></script>
-    <script src="../assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
-    <script src="../assets/js/datatable/datatables/datatable.custom.js"></script>
-    <script src="../assets/js/datatable/datatables/datatable.custom1.js"></script>
-    <script src="../assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="../assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
-    <script src="../assets/js/typeahead/handlebars.js"></script>
-    <script src="../assets/js/typeahead/typeahead.bundle.js"></script>
-    <script src="../assets/js/typeahead/typeahead.custom.js"></script>
-    <script src="../assets/js/typeahead-search/handlebars.js"></script>
-    <script src="../assets/js/typeahead-search/typeahead-custom.js"></script>
-    <script src="../assets/js/height-equal.js"></script>
-    <script src="../assets/js/animation/wow/wow.min.js"></script>
+    <script src="/assets/js/dashboard/default.js"></script>
+    <script src="/assets/js/notify/index.js"></script>
+    <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
+    <script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+    <script src="/assets/js/typeahead/handlebars.js"></script>
+    <script src="/assets/js/typeahead/typeahead.bundle.js"></script>
+    <script src="/assets/js/typeahead/typeahead.custom.js"></script>
+    <script src="/assets/js/typeahead-search/handlebars.js"></script>
+    <script src="/assets/js/typeahead-search/typeahead-custom.js"></script>
+    <script src="/assets/js/height-equal.js"></script>
+    <script src="/assets/js/animation/wow/wow.min.js"></script>
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
-    <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/script1.js"></script>
-    <script src="../assets/js/theme-customizer/customizer.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/script1.js"></script>
+    <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>
