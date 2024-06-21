@@ -15,32 +15,33 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/font-awesome.css'/>">
     <!-- ico-font-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/icofont.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/icofont.css'/>">
     <!-- Themify icon-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/themify.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/themify.css'/>">
     <!-- Flag icon-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/flag-icon.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/flag-icon.css'/>">
     <!-- Feather icon-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/feather-icon.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/feather-icon.css'/>">
     <!-- Plugins css start-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/slick.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/scrollbar.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/animate.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/datatables.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/date-range-picker/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick-theme.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/scrollbar.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/animate.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/datatables.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/vendors/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
     <!-- [do] css 추가 -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/dashboard.css">
-    <link id="color" rel="stylesheet" href="/assets/css/color-1.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/dashboard.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/annualList.css'/>">
+    <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
-    <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -62,13 +63,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">My AnnualLeave History</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400">Common</li>
+              <li class="breadcrumb-item f-w-400 active">AnnualLeave List</li>
             </ol>
           </nav>
         </div>
@@ -92,13 +93,13 @@
               <div class="col-sm-12"> 
                 <div class="card"> 
                   <div class="card-body">
-                  	<div class="card-header">
-			          <h4>Product Form</h4>
+                  	<div class="card-header do-flexdirection-row">
+			          <h4>My AnnualLeave History</h4>
+			          <div class="do-rightfixed"> 
+                        <a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>연차신청</a>
+                      </div>
 			        </div>
                     <div class="list-product-header">
-                      <div> 
-                        <div class="light-box"><a data-bs-toggle="collapse" href="#collapseProduct" role="button" aria-expanded="false" aria-controls="collapseProduct"><i class="filter-icon show" data-feather="filter"></i><i class="icon-close filter-close hide"></i></a></div><a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>Add Product</a>
-                      </div>
                       <div class="collapse" id="collapseProduct">
                         <div class="card card-body list-product-body">
                           <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 g-3"> 

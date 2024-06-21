@@ -34,6 +34,7 @@ public class MainService {
 		EmployeeDTO emp = mainDao.getEmpData(empID);
 		
 		
+		
 		// 직원의 출퇴근 확인
 		Attendance_history_tbDTO empTodayCheck = mainDao.getTodayCheck(emp.getIdx_employee());		
 		
@@ -45,6 +46,15 @@ public class MainService {
 				}
 			}
 		}
+		
+		
+		
+		// 직원의 연차 
+		Integer empAnnual = mainDao.getAnnualLeave(emp.getIdx_employee());
+		mav.addObject("empAnnualLeave", empAnnual);
+		
+		
+		
 		
 		mav.setViewName("main/dashboard");
 		

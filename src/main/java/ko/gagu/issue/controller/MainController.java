@@ -36,7 +36,7 @@ public class MainController {
 	// [do] 로그인 세션 정보 저장 다시 하기!
 	
 	// [do] 메인페이지, 대시보드
-	@RequestMapping(value = "/")
+	@GetMapping(value = "/")
 	public ModelAndView dashboard(Model model, HttpSession session, RedirectAttributes rAttr) {
 		logger.info("/main/dashboard.jsp 로 이동");
 		

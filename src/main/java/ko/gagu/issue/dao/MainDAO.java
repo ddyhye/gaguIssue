@@ -26,4 +26,6 @@ public interface MainDAO {
 
 	void updateTodayCheck4(int idx_employee);
 
+	Integer getAnnualLeave(int idx_employee);
+
 }

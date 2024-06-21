@@ -7,6 +7,8 @@
 	
 	
 	
+	
+	
 	<!-- [do] -->
 	
 	<!-- 로그인 직원 정보 전체 가져오기 -->
@@ -16,13 +18,13 @@
 		WHERE emp_id = #{param1}
 	</select>
 	
+	
 	<!-- 직원 오늘의 출퇴근 기록 가져오기 -->
 	<select id="getTodayCheck" resultType="attendance_history">
 		SELECT * 
 		FROM attendance_history_tb aht 
 		WHERE aht.idx_employee = #{param1} and aht.ah_date = CURDATE()
 	</select>
-	
 	<!-- 직원 오늘의 출근 삽입 -->
 	<insert id="gotoWorkTimeCheck">
 		INSERT INTO attendance_history_tb (idx_employee, ah_check_in)
@@ -55,5 +57,10 @@
 		WHERE idx_employee = #{param1} AND ah_date = CURDATE()
 	</update>
 	
+	
+	<!-- 직원 연차 -->
+	<select id="getAnnualLeave" resultType="Integer">
+		SELECT leave_days FROM leave_accruals_tb WHERE idx_employee = #{param1}
+	</select>
 	
 </mapper>
