@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'/>" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
@@ -23,8 +23,8 @@
               <div class="form-group w-100">
                 <div class="Typeahead Typeahead--twitterUsers">
                   <div class="u-posRelative">
-                    <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Mofi " name="q" title="" autofocus>
-                    <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading.</span></div><i class="close-search" data-feather="x"></i>
+                    <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Mofi .." name="q" title="" autofocus>
+                    <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span></div><i class="close-search" data-feather="x"></i>
                   </div>
                   <div class="Typeahead-menu"></div>
                 </div>
@@ -141,7 +141,7 @@
 			    	 data-bs-target="#myModal" onclick="openMessageForm()">
 				      <div class="notification-box">
 				        <svg>
-				          <use href="/assets/svg/icon-sprite.svg#header-message"></use>
+				          <use href="../assets/svg/icon-sprite.svg#header-message"></use>
 				        </svg><span class="badge rounded-pill badge-info">3</span>
 				      </div>
 				    </button>
@@ -193,7 +193,7 @@
             <!-- 
             <script>
             	function openMessageForm() {
-            		$('.modal-content').load("/noteMessage/noteMessage2.go");
+            		$('.modal-content').load("../noteMessage/noteMessage2.go");
             	}            
             </script>
              -->
@@ -214,7 +214,7 @@
             	                $('#myModal').modal('show');
             	                
             	                // 대화방 목록을 불러오는 함수 호출
-            	                loadChatRooms(idx);
+            	                loadChatRooms();
             	            },
             	            error: function() {
             	                alert('쪽지함을 불러오는데 실패했습니다.');
@@ -224,32 +224,71 @@
             	});
              
              
-             function loadChatRooms(idx) {
+             function loadChatRooms() {
                  $.ajax({
                      url: '/getChatRooms',
-                     method: 'GET',
+                     method: 'POST',
                      data: {
-                    	'idx':idx 
+                    	 
                      },
                      dataType:'JSON',
-                     success: function(chatRooms) {
+                     success: function(data) {
                          // 대화방 목록을 화면에 표시하는 로직
-                         var chatRoomList = $('#chats-user');
-                         chatRoomList.empty();
-                         chatRooms.forEach(function(room) {
-                             chatRoomList.append('<li class="common-space"' + room.id + '">' + room.name + '</li>');
-                         });
-
-                         // 첫 번째 대화방의 대화 내용을 불러옴
-                         if (chatRooms.length > 0) {
-                             loadChatMessages(chatRooms[0].id);
-                         }
+                         drawRoomList(data);
                      },
-                     error: function() {
+                     error: function(error) {
+                    	 console.log(error);
                          alert('대화방 목록을 불러오는데 실패했습니다.');
                      }
                  });
              }
+             
+             /* 
+             function drawRoomList(data) {
+         		$('#chats-user').empty();
+         		var content = '';
+         		if (!data.roomList || data.roomList.length === 0) {
+         			content += '<p> 대화방이 없습니다. </p>';
+         		}
+         		
+         		for (item of data.roomList) {
+         			content +=	'<li class="common-space">'; 
+         			content +=		'<div class="chat-time">';
+         			content +=		'<div class="active-profile">';
+         			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+         			content +=			'<div class="status bg-success"></div>';
+         			content +=		'</div>';
+         			content +=		'<div>';
+         			content +=		'<span>'+item.name+'</span>';
+         			content +=		'<p>'+item.content+'</p>';
+         			content +=		'</div>';
+         			content +=		'</div>';
+         			content +=		'<div>';
+         			content +=		'<p>'+item.+'</p>';
+         			
+         			if (item.no_read > 0) {
+         				content +=		'<div class="no-read"></div>';				
+         			}
+         			content +=	'</div>';	
+         		}
+         		
+         		$('#room-list').append(content);
+         		
+         	    $('.room').click(function() {
+         	    	$('.room').css('background-color', 'white');
+         	        $(this).css('background-color', 'lightgray');
+         	    });
+         	}
+         	
+             */
+             
+             
+             
+             
+             
+             
+             
+             
 			</script>
           </div>
           

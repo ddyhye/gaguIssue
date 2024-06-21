@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ko.gagu.issue.dao.MessageDAO">
+	
+	<select id="roomList" resultType="String">
+		SELECT
+	    mt.idx_messageroom, 
+	    IF (mt.receiver = #{param1}, mt.sender, mt.receiver) AS other_email,  
+	    MAX(mh.send_datetime) AS reg_date, 
+	    (SELECT et.emp_name FROM employee_tb et WHERE et.idx_employee = other_email) AS name,
+	    (SELECT COUNT(*) 
+	        FROM message_history_tb mh  
+	        WHERE mh.idx_messageroom = mt.idx_messageroom 
+	          AND ((mt.sender = #{param1} AND mt.is_sender_exit = 'N')
+	          OR (mt.receiver = #{param1} AND mt.is_receiver_exit = 'N'))
+	    ) AS msg_count,
+	    (SELECT COUNT(*) 
+	        FROM message_history_tb mh  
+	        WHERE mh.idx_messageroom = mt.idx_messageroom 
+	          AND mt.receiver = #{param1}
+	          AND mh.is_receiver_read = 'N'
+	          AND mh.sender = other_email
+	    ) AS no_read
+	FROM 
+	    messageroom_tb mt
+	LEFT JOIN 
+	    message_history_tb mh ON mt.idx_messageroom = mh.idx_messageroom
+	WHERE 
+	    mt.sender = #{param1} OR mt.receiver = #{param1}
+	GROUP BY
+	    mt.idx_messageroom, other_email
+	ORDER BY 
+	    reg_date DESC;
+	
+	</select>
+	
+	
+
+
+</mapper>
