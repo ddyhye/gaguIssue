@@ -10,7 +10,7 @@
 	
 	<!-- [jeong] 임시로 직원의 정보를 불러옴 무조건 지워야함!!! -->
 	<select id="getEmployeeInfo" resultType="employee">
-		SELECT * FROM employee_tb WHERE emp_name = '전태환';
+		SELECT * FROM employee_tb WHERE emp_name = '김정원';
 	</select>
 	
 	<!-- [jeong] 문서의 작성자와 양식 번호 내용을 approval 테이블에 저장 -->
