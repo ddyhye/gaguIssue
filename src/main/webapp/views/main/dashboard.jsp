@@ -37,6 +37,7 @@
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
     <!-- [do] css 추가 -->
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/dashboard.css'/>">
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->

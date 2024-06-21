@@ -1,9 +1,13 @@
 package ko.gagu.issue.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.Leave_accruals_tbDTO;
+import ko.gagu.issue.dto.Leave_usage_tbDTO;
 
 @Mapper
 public interface MainDAO {
@@ -27,5 +31,9 @@ public interface MainDAO {
 	void updateTodayCheck4(int idx_employee);
 
 	Integer getAnnualLeave(int idx_employee);
+
+	Leave_accruals_tbDTO getempLeaveData(int idx_employee);
+
+	List<Leave_usage_tbDTO> getempLeaveHistory(int idx_employee);
 
 }

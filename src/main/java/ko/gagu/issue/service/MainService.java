@@ -1,5 +1,6 @@
 package ko.gagu.issue.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.Leave_accruals_tbDTO;
+import ko.gagu.issue.dto.Leave_usage_tbDTO;
 
 @Service
 public class MainService {
@@ -121,6 +124,44 @@ public class MainService {
 		}
 		
 		return map;
+	}
+	
+	
+	// 연차
+	public ModelAndView annualLeaveHistory(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		EmployeeDTO emp = getEmpData(session);
+		
+		// 연차 정보
+		Leave_accruals_tbDTO empLdto = mainDao.getempLeaveData(emp.getIdx_employee());
+		mav.addObject("leave_days", empLdto.getLeave_days());
+		mav.addObject("usage_days", empLdto.getUsage_days());
+		
+		mav.setViewName("common/annualList");
+		
+		return mav;
+	}
+	// 연차 히스토리
+	public Map<String, Object> annualHistoryAjax(HttpSession session, Map<String, Object> map) {
+		EmployeeDTO emp = getEmpData(session);
+		
+		List<Leave_usage_tbDTO> empLhistory = mainDao.getempLeaveHistory(emp.getIdx_employee());
+		map.put("empLhistory", empLhistory);
+		
+		return map;
+	}
+	
+	
+	
+	
+	// [do] 로그인한 직원 정보 가져오기
+	public EmployeeDTO getEmpData(HttpSession session) {
+		// 로그인한 직원 정보 불러오기
+		String empID = (String) session.getAttribute("emp_id");
+		EmployeeDTO emp = mainDao.getEmpData(empID);
+		
+		return emp;
 	}
 
 }

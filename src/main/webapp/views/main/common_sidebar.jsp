@@ -61,17 +61,6 @@
                   <!-- do: 메일 -->
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="task.go">
                       <svg class="stroke-icon">
-                        <use href="/assets/svg/icon-sprite.svg#stroke-user"></use>
-                      </svg>
-                      <svg class="fill-icon">
-                        <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
-                      </svg><span>인사 관리</span></a>
-                    <ul class="sidebar-submenu">
-                      <li><a href="add-products.go">직원 관리</a></li>
-                      <li><a href="list-products.go">직원 근태 현황</a></li>
-                      <li><a href="list-products.go">회사 일정 관리</a></li>
-                    </ul>
-                  </li>
                         <use href="/assets/svg/icon-sprite.svg#stroke-email"></use>
                       </svg>
                       <svg class="fill-icon">
@@ -80,17 +69,14 @@
                       
                       
                   <!-- do: 나의 연차 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="task.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/common/annualList.go'/>">
                       <svg class="stroke-icon">
                         <use href="/assets/svg/icon-sprite.svg#stroke-blog"></use>
                       </svg>
                       <svg class="fill-icon">
                         <use href="/assets/svg/icon-sprite.svg#fill-calender"></use>
                       </svg><span>나의 연차</span></a></li>
-                      
-                      
-                  
-                  
+                                        
                   
                   <!-- do: 전자 결재 -->
                   <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
@@ -147,7 +133,7 @@
                         <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
                       </svg><span>재고 관리</span></a>
                     <ul class="sidebar-submenu">
-                      <li><a href="add-products.go">재고 내역</a></li>
+                      <li><a href="<c:url value='/logisticsDepartment/inventoryList.go'/>">Inventory</a></li>
                       <li><a href="list-products.go">발주</a></li>
                       <li><a href="add-products.go">입고 내역</a></li>
                       <li><a href="list-products.go">주문</a></li>

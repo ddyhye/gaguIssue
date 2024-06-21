@@ -37,7 +37,7 @@
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
     <!-- [do] css 추가 -->
-    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/dashboard.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/annualList.css'/>">
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
@@ -99,274 +99,55 @@
                         <a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>연차신청</a>
                       </div>
 			        </div>
+			        
+			        
                     <div class="list-product-header">
-                      <div class="collapse" id="collapseProduct">
-                        <div class="card card-body list-product-body">
-                          <div class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 g-3"> 
-                            <div class="col"> 
-                              <select class="form-select" aria-label="Default select example">
-                                <option selected="">Choose Product</option>
-                                <option value="1">Apple iphone 13 Pro</option>
-                                <option value="2">Wood Chair</option>
-                                <option value="3">M185 Compact Wireless Mouse</option>
-                              </select>
-                            </div>
-                            <div class="col"> 
-                              <select class="form-select" aria-label="Default select example">
-                                <option selected="">Choose Category</option>
-                                <option value="1">Furniture</option>
-                                <option value="2">Smart Gadgets</option>
-                                <option value="3">Electrics</option>
-                              </select>
-                            </div>
-                            <div class="col"> 
-                              <select class="form-select" aria-label="Default select example">
-                                <option selected="">Choose Sub Category</option>
-                                <option value="1">Smart Phones</option>
-                                <option value="2">Smart Watches</option>
-                                <option value="3">Wireless headphone</option>
-                              </select>
-                            </div>
-                            <div class="col"> 
-                              <select class="form-select" aria-label="Default select example">
-                                <option selected="">Status</option>
-                                <option value="1">Sold Out </option>
-                                <option value="2">In Stock</option>
-                                <option value="3">Pre Order</option>
-                                <option value="4">Limited Stock </option>
-                              </select>
-                            </div>
-                            <div class="col"> 
-                              <select class="form-select" aria-label="Default select example">
-                                <option selected="">Price</option>
-                                <option value="1">56000.00</option>
-                                <option value="2">19000.00</option>
-                                <option value="3">10000.00</option>
-                                <option value="3">15000.00</option>
-                                <option value="3">99000.00</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
+                      <div class="do-annual-header-left">
+                      	<p class="do-bold do-p-darkgray">사용 가능한 연차  </p>
+                      	<div class="do-bold-p">${leave_days}</div>
+                      	<p class="do-bold do-p-darkgray do-margin">사용한 연차  </p>
+                      	<div class="do-bold-p">${usage_days}</div>
+                      </div>
+                      <div class="do-annual-header-right">
+                      	<div class="datatable-top">
+                      		<div class="datatable-dropdown">
+                      			<label>
+                      				<select class="datatable-selector">
+                      					<option value="2024">2024</option>
+                      				</select>
+                      			</label>
+                      		</div>
+                      	</div>
+                      	<div class="datatable-top">
+                      		<div class="datatable-dropdown">
+                      			<label>
+                      				<select class="datatable-selector">
+                      					<option value="06">06</option>
+                      				</select>
+                      			</label>
+                      		</div>
+                      	</div>
                       </div>
                     </div>
+                    
+                    
                     <div class="list-product">
-                      <table class="table" id="project-status">
+                      <table class="table do-table">
                         <thead> 
                           <tr> 
-                            <th>
-                              <div class="form-check"> 
-                                <input class="form-check-input checkbox-primary" type="checkbox">
-                              </div>
-                            </th>
-                            <th> <span class="f-light f-w-600">Product Name</span></th>
-                            <th> <span class="f-light f-w-600">SKU</span></th>
-                            <th> <span class="f-light f-w-600">Category</span></th>
-                            <th> <span class="f-light f-w-600">Price</span></th>
-                            <th> <span class="f-light f-w-600">Qty</span></th>
-                            <th> <span class="f-light f-w-600">Status</span></th>
-                            <th> <span class="f-light f-w-600">Rating</span></th>
-                            <th> <span class="f-light f-w-600">Action</span></th>
+                            <th class="do-table-no">No</th>
+                            <th class="do-table-1">사용 연차 기간</th>
+                            <th class="do-table-2">사용 연차 일수</th>
+                            <th class="do-table-3">연차 내용</th>
                           </tr>
                         </thead>
-                        <tbody> 
-                          <tr class="product-removes">
-                            <td>
-                              <div class="form-check"> 
-                                <input class="form-check-input checkbox-primary" type="checkbox">
-                              </div>
-                            </td>
-                            <td> 
-                              <div class="product-names">
-                                <div class="light-product-box"><img class="img-fluid" src="/assets/images/product_list/product-categories/laptop.png" alt="laptop"></div>
-                                <p>Apple Desktop 2024</p>
-                              </div>
-                            </td>
-                            <td> 
-                              <p class="f-light">02145YK796</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">Laptops</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">56000.00</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">13</p>
-                            </td>
-                            <td> <span class="badge badge-light-secondary">Sold Out</span></td>
-                            <td> 
-                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star f-light"></i></div>
-                            </td>
-                            <td> 
-                              <div class="product-action"><a href="add-products.html"> 
-                                  <svg>    
-                                    <use href="/assets/svg/icon-sprite.svg#edit-content"></use>
-                                  </svg></a>
-                                <svg>
-                                  <use href="/assets/svg/icon-sprite.svg#trash1"></use>
-                                </svg>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr class="product-removes">
-                            <td>
-                              <div class="form-check"> 
-                                <input class="form-check-input checkbox-primary" type="checkbox">
-                              </div>
-                            </td>
-                            <td> 
-                              <div class="product-names">
-                                <div class="light-product-box"><img class="img-fluid" src="/assets/images/product_list/product-categories/phone.png" alt="phone"></div>
-                                <p>Apple iphone 13 Pro</p>
-                              </div>
-                            </td>
-                            <td> 
-                              <p class="f-light">56379FG3AW</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">Smart Phones    </p>
-                            </td>
-                            <td> 
-                              <p class="f-light">19000.00</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">48</p>
-                            </td>
-                            <td> <span class="badge badge-light-primary">In Stock</span></td>
-                            <td> 
-                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star f-light"></i><i class="fa fa-star f-light"></i></div>
-                            </td>
-                            <td> 
-                              <div class="product-action"><a href="add-products.html"> 
-                                  <svg>    
-                                    <use href="/assets/svg/icon-sprite.svg#edit-content"></use>
-                                  </svg></a>
-                                <svg>
-                                  <use href="/assets/svg/icon-sprite.svg#trash1"></use>
-                                </svg>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr class="product-removes">
-                            <td>
-                              <div class="form-check"> 
-                                <input class="form-check-input checkbox-primary" type="checkbox">
-                              </div>
-                            </td>
-                            <td> 
-                              <div class="product-names">
-                                <div class="light-product-box"><img class="img-fluid" src="/assets/images/product_list/product-categories/headphone.png" alt="headphones"></div>
-                                <p>Headphones</p>
-                              </div>
-                            </td>
-                            <td> 
-                              <p class="f-light">33KR5689B1</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">Smart Headphones       </p>
-                            </td>
-                            <td> 
-                              <p class="f-light">10000.00</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">5</p>
-                            </td>
-                            <td> 
-                              <div class="badge badge-light-primary">In Stock</div>
-                            </td>
-                            <td> 
-                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i></div>
-                            </td>
-                            <td> 
-                              <div class="product-action"><a href="add-products.html"> 
-                                  <svg>    
-                                    <use href="/assets/svg/icon-sprite.svg#edit-content"></use>
-                                  </svg></a>
-                                <svg>
-                                  <use href="/assets/svg/icon-sprite.svg#trash1"></use>
-                                </svg>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr class="product-removes">
-                            <td>
-                              <div class="form-check"> 
-                                <input class="form-check-input checkbox-primary" type="checkbox">
-                              </div>
-                            </td>
-                            <td> 
-                              <div class="product-names">
-                                <div class="light-product-box"><img class="img-fluid" src="/assets/images/product_list/product-categories/wireless-headphone.png" alt="wireless headphone"></div>
-                                <p>wireless-headphone</p>
-                              </div>
-                            </td>
-                            <td> 
-                              <p class="f-light">AD6789HEY0</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">Smart Headphones         </p>
-                            </td>
-                            <td> 
-                              <p class="f-light">15000.00</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">4</p>
-                            </td>
-                            <td> <span class="badge badge-light-secondary">Sold Out</span></td>
-                            <td> 
-                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star f-light"></i></div>
-                            </td>
-                            <td> 
-                              <div class="product-action"><a href="add-products.html"> 
-                                  <svg>    
-                                    <use href="/assets/svg/icon-sprite.svg#edit-content"></use>
-                                  </svg></a>
-                                <svg>
-                                  <use href="/assets/svg/icon-sprite.svg#trash1"></use>
-                                </svg>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr class="product-removes">
-                            <td>
-                              <div class="form-check"> 
-                                <input class="form-check-input checkbox-primary" type="checkbox">
-                              </div>
-                            </td>
-                            <td> 
-                              <div class="product-names">
-                                <div class="light-product-box"><img class="img-fluid" src="/assets/images/product_list/product-categories/1.png" alt="chair"></div>
-                                <p>Wood Chair</p>
-                              </div>
-                            </td>
-                            <td> 
-                              <p class="f-light">456DF78DFQ</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">Furniture         </p>
-                            </td>
-                            <td> 
-                              <p class="f-light">99000.00</p>
-                            </td>
-                            <td> 
-                              <p class="f-light">2</p>
-                            </td>
-                            <td> <span class="badge badge-light-secondary">Sold Out</span></td>
-                            <td> 
-                              <div class="rating"><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i><i class="fa fa-star txt-warning"></i></div>
-                            </td>
-                            <td> 
-                              <div class="product-action"><a href="add-products.html"> 
-                                  <svg>    
-                                    <use href="/assets/svg/icon-sprite.svg#edit-content"></use>
-                                  </svg></a>
-                                <svg>
-                                  <use href="/assets/svg/icon-sprite.svg#trash1"></use>
-                                </svg>
-                              </div>
-                            </td>
-                          </tr>
+                        <tbody class= "do-annual-history"> 
+                          <!-- <tr>
+                          	<td class="do-table-td1">1</td>
+                          	<td class="do-table-td2">2024-06-13 ~ 2024-06-14</td>
+                          	<td class="do-table-td3">2</td>
+                          	<td class="do-table-td4"><button>상세보기</button></td>
+                          </tr> -->
                         </tbody>
                       </table>
                     </div>
@@ -444,4 +225,76 @@
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>
+  
+  
+<script>
+	listCall();
+
+	// 물품 리스트 출력
+	function listCall() {
+		$.ajax({
+			type: 'post',
+			url: '<c:url value="/annualList.ajax"/>',
+			data: {
+			},
+			dataType: 'JSON',
+			success: function(data) {
+				drawHistory(data);
+			}, error: function(error) {
+				console.log(error);
+			}
+		});
+	}
+	// drawHistory 함수 : 히스토리 그리기
+	function drawHistory(data) {
+		$('.do-annual-history').empty();
+		
+		var content = '';
+		var no = 1;
+		
+		/*
+		<tr>
+        	<td class="do-table-td1">1</td>
+        	<td class="do-table-td2">2024-06-13 ~ 2024-06-14</td>
+        	<td class="do-table-td3">2</td>
+        	<td class="do-table-td4"><button>상세보기</button></td>
+        </tr>
+		*/
+		//lu_start_date lu_end_date
+		if (!data.empLhistory || data.empLhistory.length === 0) {
+			content += '<tr><td colspan="4">연차 사용 내역이 없습니다...</td></tr>';
+		}
+		for (item of data.empLhistory) {
+			content += '<tr>';
+			content += '<td class="do-table-td1">';
+			content += no;
+			no++;
+			content += '</td>';
+			content += '<td class="do-table-td2">';
+			content += item.lu_start_date;
+			content += ' ~ ';
+			content += item.lu_end_date;
+			content += '</td>';
+			content += '<td class="do-table-td3">';
+			content += item.lu_usage_days;
+			content += '</td>';
+			content += '<td class="do-table-td4"><button>상세보기</button></td>';
+			content += '</tr>';
+			
+			/* dateStr = DateToString(item.reg_date);
+			content += '<span id="dateStr">'+dateStr+'&nbsp;</span>';
+			content += '</div></div></div>'; */
+		}
+		
+		$('.do-annual-history').append(content);
+	}
+	// timestamp 형식인 거 문자열로 변환하는 함수
+	function DateToString(timesteamp){
+	  	var date = new Date(timesteamp);
+	  	var dateStr = date.toLocaleDateString("ko-KR");
+	  	return dateStr;
+	}
+</script>
+
+
 </html>

@@ -62,5 +62,16 @@
 	<select id="getAnnualLeave" resultType="Integer">
 		SELECT leave_days FROM leave_accruals_tb WHERE idx_employee = #{param1}
 	</select>
+	<!-- 직원 연차 테이블 -->
+	<select id="getempLeaveData" resultType="leave_accruals">
+		SELECT * FROM leave_accruals_tb WHERE idx_employee = #{param1}
+	</select>
+	<!-- 직원 연차 히스토리 -->
+	<select id="getempLeaveHistory" resultType="leave_usage">
+		SELECT * 
+		FROM leave_usage_tb 
+		WHERE idx_employee = #{param1}
+		ORDER BY lu_start_date DESC;
+	</select>
 	
 </mapper>

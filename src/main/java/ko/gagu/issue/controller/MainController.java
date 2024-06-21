@@ -97,6 +97,20 @@ public class MainController {
 	
 	
 	
+	// [do] 연차 히스토리
+	@GetMapping(value="/common/annualList.go")
+	public ModelAndView annualLeaveHistory(HttpSession session) {
+		return mainService.annualLeaveHistory(session);
+	}
+	@PostMapping(value="/annualList.ajax")
+	@ResponseBody
+	public Map<String, Object> annualListAjax(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return mainService.annualHistoryAjax(session, map);
+	}
+	
+	
 	
 	
 	
@@ -127,6 +141,7 @@ public class MainController {
 	}
 	
 	// 2단 경로
+	/*
 	@GetMapping(value = "/{path1}/{path2}.go")
 	public String path2(@PathVariable String path1, @PathVariable String path2, Model model, HttpSession session) {
 		logger.info(path1+"/"+path2+".jsp 로 이동");
@@ -143,5 +158,6 @@ public class MainController {
 		
 		return page;
 	}
+	*/
 
 }

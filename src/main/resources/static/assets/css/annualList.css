@@ -4,3 +4,76 @@
 	position: absolute;
 	right: 0;
 }
+
+
+/* 연차 리스트 헤더 */
+.list-product-header {
+	display: flex;
+	
+	margin-top: 14px;
+	border-bottom: 1px dashed rgba(106, 113, 133, 0.3);
+}
+.do-annual-header-left {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	
+	position: relative;
+	width: 85%;
+	margin-left: 20px;
+}
+.do-annual-header-left p, .do-annual-header-left div  {
+	margin: 0;
+}
+.do-annual-header-right {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+	
+	position: relative;
+	width: 10%;
+}
+.do-bold-p {
+	color: rgba(122, 112, 186);
+	font-weight: bold;
+}
+.do-margin {
+	margin-left: 20px;
+}
+
+
+/* 연차 테이블 */
+.do-table-no {
+	background-color: rgba(82, 82, 108, 0.8) !important;
+	font-weight: 600 !important;
+	color: white !important;
+	text-align: center !important;
+	width: 10% !important;
+}
+.do-table-1 {
+	background-color: rgba(82, 82, 108, 0.8) !important;
+	font-weight: 600 !important;
+	color: white !important;
+	text-align: center !important;
+	width: 45% !important;
+}
+.do-table-2 {
+	background-color: rgba(82, 82, 108, 0.8) !important;
+	font-weight: 600 !important;
+	color: white !important;
+	text-align: center !important;
+	width: 15% !important;
+}
+.do-table-3 {
+	background-color: rgba(82, 82, 108, 0.8) !important;
+	font-weight: 600 !important;
+	color: white !important;
+	text-align: center !important;
+	width: 20% !important;
+}
+.do-table-td1, .do-table-td2, .do-table-td3, .do-table-td4 {
+	text-align: center !important;
+    vertical-align: middle; 
+}
