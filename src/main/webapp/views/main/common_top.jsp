@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	<style>
@@ -135,31 +135,9 @@
                     </div>
                   </a>
                 </li>
-                <!-- 
-                <li class="onhover-dropdown">
-			    	<button type="button" class="btn btn-link" data-bs-toggle="modal"
-			    	 data-bs-target="#myModal" onclick="openMessageForm()">
-				      <div class="notification-box">
-				        <svg>
-				          <use href="../assets/svg/icon-sprite.svg#header-message"></use>
-				        </svg><span class="badge rounded-pill badge-info">3</span>
-				      </div>
-				    </button>
-//				     The Modal
-			<div class="modal" id="myModal" data-bs-backdrop="static">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-//			      외부 jsp 파일이 들어올 부분 
-			    </div>
-			  </div>
-			</div>
-			    </li>
-                 -->
+                
 				    
 			    
-			    
-                
-                
                 <!-- do: 직원서비스 -->
                 <li class="profile-nav onhover-dropdown px-0 py-0">
                   <div class="d-flex profile-media align-items-center"><img class="img-30" src="/assets/images/dashboard/profile.png" alt="">
@@ -190,13 +168,7 @@
               </div>
             </script>
             <script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
-            <!-- 
-            <script>
-            	function openMessageForm() {
-            		$('.modal-content').load("../noteMessage/noteMessage2.go");
-            	}            
-            </script>
-             -->
+            
              
              <script>
              $(document).ready(function() {
@@ -228,9 +200,6 @@
                  $.ajax({
                      url: '/getChatRooms',
                      method: 'POST',
-                     data: {
-                    	 
-                     },
                      dataType:'JSON',
                      success: function(data) {
                          // 대화방 목록을 화면에 표시하는 로직
@@ -243,7 +212,9 @@
                  });
              }
              
-             /* 
+              
+              
+             <!-- 
              function drawRoomList(data) {
          		$('#chats-user').empty();
          		var content = '';
@@ -264,7 +235,7 @@
          			content +=		'</div>';
          			content +=		'</div>';
          			content +=		'<div>';
-         			content +=		'<p>'+item.+'</p>';
+         			content +=		'<p>'+item.reg_date+'</p>';
          			
          			if (item.no_read > 0) {
          				content +=		'<div class="no-read"></div>';				
@@ -280,7 +251,8 @@
          	    });
          	}
          	
-             */
+             
+              --> 
              
              
              
