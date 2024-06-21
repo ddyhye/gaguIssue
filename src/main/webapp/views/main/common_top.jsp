@@ -149,7 +149,7 @@
 			<div class="modal" id="myModal" data-bs-backdrop="static">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
-//			     [임재민] 외부 jsp 파일이 들어올 부분 
+//			      외부 jsp 파일이 들어올 부분 
 			    </div>
 			  </div>
 			</div>
