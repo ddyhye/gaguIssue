@@ -9,7 +9,6 @@ Build date: 2019-12-19 16:51:02
   display: block;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -41,7 +40,8 @@ Build date: 2019-12-19 16:51:02
 .irs-handle {
   position: absolute;
   display: block;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   cursor: default;
   z-index: 1;
 }
@@ -151,7 +151,7 @@ Build date: 2019-12-19 16:51:02
   outline: none !important;
   z-index: -9999 !important;
   background: none !important;
-  border-style: solid !important;
+  border-style: dashed !important;
   border-color: transparent !important;
 }
 
@@ -245,7 +245,7 @@ Build date: 2019-12-19 16:51:02
   height: 0;
   margin-left: -3px;
   overflow: hidden;
-  border: 3px solid transparent;
+  border: 3px dashed transparent;
   border-top-color: #ed5565;
 }
 
@@ -269,8 +269,9 @@ Build date: 2019-12-19 16:51:02
   top: 33px;
   height: 12px;
   background-color: white;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(-50%, #ddd), color-stop(150%, white));
   background: linear-gradient(to bottom, #ddd -50%, white 150%);
-  border: 1px solid #ccc;
+  border: 1px dashed #ccc;
   border-radius: 12px;
 }
 
@@ -278,9 +279,11 @@ Build date: 2019-12-19 16:51:02
   top: 33px;
   height: 12px;
   background-color: #92bce0;
-  border: 1px solid #428bca;
+  border: 1px dashed #428bca;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(30%, #428bca), to(#b9d4ec));
   background: linear-gradient(to bottom, #ffffff 0%, #428bca 30%, #b9d4ec 100%);
-  box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.5);
+  -webkit-box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.5);
+          box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .irs--big .irs-bar--single {
@@ -297,10 +300,12 @@ Build date: 2019-12-19 16:51:02
   top: 25px;
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px dashed rgba(0, 0, 0, 0.3);
   background-color: #cbcfd5;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), color-stop(30%, #B4B9BE), to(white));
   background: linear-gradient(to bottom, white 0%, #B4B9BE 30%, white 100%);
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 3px 1px white;
+  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 3px 1px white;
+          box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2), inset 0 0 3px 1px white;
   border-radius: 30px;
 }
 
@@ -308,6 +313,7 @@ Build date: 2019-12-19 16:51:02
 .irs--big .irs-handle:hover {
   border-color: rgba(0, 0, 0, 0.45);
   background-color: #939ba7;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), color-stop(30%, #919BA5), to(white));
   background: linear-gradient(to bottom, white 0%, #919BA5 30%, white 100%);
 }
 
@@ -328,6 +334,7 @@ Build date: 2019-12-19 16:51:02
   text-shadow: none;
   padding: 1px 5px;
   background-color: #428bca;
+  background: -webkit-gradient(linear, left top, left bottom, from(#428bca), to(#3071a9));
   background: linear-gradient(to bottom, #428bca 0%, #3071a9 100%);
   border-radius: 3px;
 }
@@ -352,8 +359,9 @@ Build date: 2019-12-19 16:51:02
   top: 25px;
   height: 5px;
   background-color: #d1d6e0;
+  background: -webkit-gradient(linear, left top, left bottom, from(#e0e4ea), to(#d1d6e0));
   background: linear-gradient(to bottom, #e0e4ea 0%, #d1d6e0 100%);
-  border: 1px solid #a3adc1;
+  border: 1px dashed #a3adc1;
   border-bottom-width: 0;
   border-radius: 5px;
 }
@@ -362,6 +370,7 @@ Build date: 2019-12-19 16:51:02
   top: 25px;
   height: 5px;
   background: #20b426;
+  background: -webkit-gradient(linear, left top, left bottom, from(#20b426), to(#18891d));
   background: linear-gradient(to bottom, #20b426 0%, #18891d 100%);
 }
 
@@ -379,9 +388,10 @@ Build date: 2019-12-19 16:51:02
   top: 37px;
   width: 12px;
   height: 13px;
-  border: 1px solid #a3adc1;
+  border: 1px dashed #a3adc1;
   border-top-width: 0;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+          box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   border-radius: 0 0 3px 3px;
 }
 
@@ -392,20 +402,23 @@ Build date: 2019-12-19 16:51:02
   left: 1px;
   width: 6px;
   height: 6px;
-  border: 1px solid #a3adc1;
+  border: 1px dashed #a3adc1;
   background: white;
-  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
 }
 
 .irs--modern .irs-handle > i:nth-child(2) {
   position: absolute;
   display: block;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   top: 0;
   left: 0;
   width: 10px;
   height: 12px;
   background: #e9e6e6;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#e9e6e6));
   background: linear-gradient(to bottom, white 0%, #e9e6e6 100%);
   border-radius: 0 0 3px 3px;
 }
@@ -413,19 +426,21 @@ Build date: 2019-12-19 16:51:02
 .irs--modern .irs-handle > i:nth-child(3) {
   position: absolute;
   display: block;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   top: 3px;
   left: 3px;
   width: 4px;
   height: 5px;
-  border-left: 1px solid #a3adc1;
-  border-right: 1px solid #a3adc1;
+  border-left: 1px dashed #a3adc1;
+  border-right: 1px dashed #a3adc1;
 }
 
 .irs--modern .irs-handle.state_hover,
 .irs--modern .irs-handle:hover {
   border-color: #7685a2;
   background: #c3c7cd;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(30%, #919ba5), to(#ffffff));
   background: linear-gradient(to bottom, #ffffff 0%, #919ba5 30%, #ffffff 100%);
 }
 
@@ -475,7 +490,7 @@ Build date: 2019-12-19 16:51:02
   height: 0;
   margin-left: -3px;
   overflow: hidden;
-  border: 3px solid transparent;
+  border: 3px dashed transparent;
   border-top-color: #20b426;
 }
 
@@ -539,7 +554,7 @@ Build date: 2019-12-19 16:51:02
   left: 0;
   width: 0;
   height: 0;
-  border: 5px solid transparent;
+  border: 5px dashed transparent;
   border-top-color: #a804b2;
 }
 
@@ -589,7 +604,7 @@ Build date: 2019-12-19 16:51:02
   height: 0;
   margin-left: -3px;
   overflow: hidden;
-  border: 3px solid transparent;
+  border: 3px dashed transparent;
   border-top-color: #a804b2;
 }
 
@@ -641,10 +656,11 @@ Build date: 2019-12-19 16:51:02
   top: 26px;
   width: 24px;
   height: 24px;
-  border: 4px solid #006cfa;
+  border: 4px dashed #006cfa;
   background-color: white;
   border-radius: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 255, 0.3);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 255, 0.3);
+          box-shadow: 0 1px 3px rgba(0, 0, 255, 0.3);
 }
 
 .irs--round .irs-handle.state_hover,
@@ -687,7 +703,7 @@ Build date: 2019-12-19 16:51:02
   height: 0;
   margin-left: -3px;
   overflow: hidden;
-  border: 3px solid transparent;
+  border: 3px dashed transparent;
   border-top-color: #006cfa;
 }
 
@@ -734,10 +750,9 @@ Build date: 2019-12-19 16:51:02
   top: 25px;
   width: 16px;
   height: 16px;
-  border: 3px solid black;
+  border: 3px dashed black;
   background-color: white;
   -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
@@ -779,3 +794,4 @@ Build date: 2019-12-19 16:51:02
   color: silver;
   font-size: 11px;
 }
+/*# sourceMappingURL=range-slider.css.map */

@@ -34,9 +34,9 @@
 	<root>
 		<appender-ref ref="console" />
 	</root>
-	<!-- DEBUG 24-06-18 23:26:48[main] [JndiLocatorDelegate:102] - Converted JNDI name [java:comp/env/logging.group] not found - --> 
-	<!-- trying original name [logging.group].javax.naming.NameNotFoundException: Name [logging.group]은(는) 이 컨텍스트에 바인딩되지 않았습니다. --> 
-	<!-- [logging.group]을(를) 찾을 수 없습니다. -->
-	<!-- 정원 0618, 위의 로그가 서버 시작할때 떠서 아래 코드로 고침 -->
-	<logger name="org.springframework.jndi" level="INFO" />
+    <!-- DEBUG 24-06-18 23:26:48[main] [JndiLocatorDelegate:102] - Converted JNDI name [java:comp/env/logging.group] not found - --> 
+    <!-- trying original name [logging.group].javax.naming.NameNotFoundException: Name [logging.group]은(는) 이 컨텍스트에 바인딩되지 않았습니다. --> 
+    <!-- [logging.group]을(를) 찾을 수 없습니다. -->
+    <!-- 정원 0619, 위의 로그가 서버 시작할때 떠서 아래 코드로 고침 -->
+    <logger name="org.springframework.jndi" level="INFO" />
 </configuration>

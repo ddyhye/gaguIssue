@@ -1,0 +1,208 @@
+
+
+
+/* 조직도 */
+.do-departName {
+	position: absolute;
+	right: 10%;
+}
+.card-body-center {
+	display: flex;
+	flex-direction: row;
+	
+	gap: 5px;
+}
+.do-group {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	width: 33.33%;
+	height: 190px;
+}
+.do-group-pic {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 5px;
+}
+.do-group-pic-size {
+	position: relative;
+	width: 125px;
+	height: 125px;
+	border-radius: 50%;
+}
+
+
+
+/* 메일 */
+.opening-box {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	
+	position: relative;
+	height: 212px;
+}
+.do-mail-list {
+	display: flex;
+	align-items: center;
+	
+	position: relative;
+	width: 95%;
+	padding: 8px 0;
+	border-bottom: 1px dotted rgba(122, 112, 186, 0.5);
+}
+.do-mail-list p {
+	margin: 0;
+}
+.do-mail-subject {
+	position: relative;
+	width: 75%;
+	font-weight: bold;
+	
+}
+.do-mail-writer {
+	position: absolute;
+	right: 0%;
+}
+
+
+
+
+/* 전자 결재 */
+.do-docBody {
+	display: flex;
+	flex-direction: row;
+	
+	position: relative;
+	width: 100%;
+	height: 212px;
+}
+.do-docBody-left, .do-docBody-right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	width: 50%;
+	height: 100%;
+	gap: 30px;
+	
+	color: rgba(122, 112, 186);
+	font-size: 25px;
+	font-weight: bold;
+}
+.do-docBody-left {
+	border-right: 2px dotted rgba(122, 112, 186, 0.5);
+}
+
+
+
+/* 출퇴근 */
+.do-body1 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	height: 180px;
+}
+.do-body-left {
+	display: flex;
+	flex-direction: row;
+	
+	position: relative;
+	width: 65%;
+	gap: 15px;
+	
+	border-right: 1px dotted rgba(122, 112, 186, 0.5);
+}
+.do-body-left-button1, .do-body-left-button2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+   	justify-content: center; 
+   	
+   	position: relative;
+   	width: 45%;
+   	height: 100px;
+	border-radius: 5%;
+	gap: 5px;
+}
+.do-body-left-button1 {
+	background-color: white;
+	border: 1px solid rgba(122, 112, 186, 0.5);
+}
+.do-body-left-button2 {
+	background-color: rgba(122, 112, 186, 0.8);
+}
+.do-body-right {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+	position: relative;
+	width: 25%;
+	height: 70%;
+}
+.do-clock {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	color: rgba(122, 112, 186, 0.3);
+	
+	margin-top: 10px
+}
+#remainingTime {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1001;
+	margin-top: 10px;
+}
+
+
+
+
+
+/* 연차 */
+.do-annual-body {
+	display: flex;
+	
+	position: relative;
+	width: 100%;
+	height: 197px;
+}
+.do-annual-body div{
+	display: flex;
+	align-items: flex-end;
+	
+	position: relative;
+	width: 100%;
+	height: 85%;
+}
+.do-annualLeaveDay {
+	font-size: 40px;
+	font-weight: bold;
+	color: rgba(122, 112, 186);
+	margin: 0;
+}
+.do-annualLeaveDay2 {
+	font-size: 35px;
+	font-weight: bold;
+	color: #5b5b5b;
+	margin: 0;
+}
+.do-coffee {
+	position: absolute;
+	right: 0%;
+	width: 90px;
+	height: 90px;
+	color: rgba(122, 112, 186, 0.3);
+}

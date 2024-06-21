@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ko.gagu.issue.dao.MainDAO">
+
+	
+	
+	
+	
+	
+	<!-- [do] -->
+	
+	<!-- 로그인 직원 정보 전체 가져오기 -->
+	<select id="getEmpData" resultType="employee">
+		SELECT * 
+		FROM employee_tb 
+		WHERE emp_id = #{param1}
+	</select>
+	
+	
+	<!-- 직원 오늘의 출퇴근 기록 가져오기 -->
+	<select id="getTodayCheck" resultType="attendance_history">
+		SELECT * 
+		FROM attendance_history_tb aht 
+		WHERE aht.idx_employee = #{param1} and aht.ah_date = CURDATE()
+	</select>
+	<!-- 직원 오늘의 출근 삽입 -->
+	<insert id="gotoWorkTimeCheck">
+		INSERT INTO attendance_history_tb (idx_employee, ah_check_in)
+		VALUES(#{param1}, #{param2});
+	</insert>
+	<update id="finishWorkTimeCheck">
+		UPDATE attendance_history_tb
+		SET ah_check_out = #{param2}
+		WHERE idx_employee = #{param1} AND ah_date = CURDATE()
+	</update>
+	<!-- 직원 근태 상태 변경 -->
+	<update id="updateTodayCheck1">
+		UPDATE attendance_history_tb
+		SET ah_status = '출근'
+		WHERE idx_employee = #{param1} AND ah_date = CURDATE()
+	</update>
+	<update id="updateTodayCheck2">
+		UPDATE attendance_history_tb
+		SET ah_status = '조퇴'
+		WHERE idx_employee = #{param1} AND ah_date = CURDATE()
+	</update>
+	<update id="updateTodayCheck3">
+		UPDATE attendance_history_tb
+		SET ah_status = '지각'
+		WHERE idx_employee = #{param1} AND ah_date = CURDATE()
+	</update>
+	<update id="updateTodayCheck4">
+		UPDATE attendance_history_tb
+		SET ah_status = '결근'
+		WHERE idx_employee = #{param1} AND ah_date = CURDATE()
+	</update>
+	
+	
+	<!-- 직원 연차 -->
+	<select id="getAnnualLeave" resultType="Integer">
+		SELECT leave_days FROM leave_accruals_tb WHERE idx_employee = #{param1}
+	</select>
+	<!-- 직원 연차 테이블 -->
+	<select id="getempLeaveData" resultType="leave_accruals">
+		SELECT * FROM leave_accruals_tb WHERE idx_employee = #{param1}
+	</select>
+	<!-- 직원 연차 히스토리 -->
+	<select id="getempLeaveHistory" resultType="leave_usage">
+		SELECT * 
+		FROM leave_usage_tb 
+		WHERE idx_employee = #{param1}
+		ORDER BY lu_start_date DESC;
+	</select>
+	
+</mapper>

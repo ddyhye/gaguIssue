@@ -7,37 +7,37 @@
 <meta name="description" content="Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
 <meta name="keywords" content="admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app">
 <meta name="author" content="pixelstrap">
-<link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
-<link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
+<link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
+<link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
 <title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
 <!-- Google font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/font-awesome.css'/>">
 <!-- ico-font-->
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/icofont.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/icofont.css'/>">
 <!-- Themify icon-->
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/themify.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/themify.css'/>">
 <!-- Flag icon-->
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/flag-icon.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/flag-icon.css'/>">
 <!-- Feather icon-->
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/feather-icon.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/feather-icon.css'/>">
 <!-- Plugins css start-->
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick.css">
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/slick-theme.css">
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/scrollbar.css">
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/animate.css">
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/datatables.css">
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/date-range-picker/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick-theme.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/scrollbar.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/animate.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/datatables.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
 <!-- Plugins css Ends-->
 <!-- Bootstrap css-->
-<link rel="stylesheet" type="text/css" href="../assets/css/vendors/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
 <!-- App css-->
-<link rel="stylesheet" type="text/css" href="../assets/css/style.css">
-<link id="color" rel="stylesheet" href="../assets/css/color-1.css" media="screen">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+<link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
 <!-- Responsive css-->
-<link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
 <style>
 .container-fluid {
 	display: flex;
@@ -53,11 +53,19 @@ iframe {
 }
 
 #form {
-	width: 60%;
+	width: 75%;
 	display: flex;
+	height: 750px;
 	justify-content: center;
 	border: 1px solid;
 	background: white;
+}
+
+#form-document {
+	width: 100%;
+	height: 700px; /* 원하는 높이로 설정 */
+	overflow: scroll; /* 스크롤바를 항상 표시 */
+	border: none; /* 테두리를 없애려면 사용 */
 }
 </style>
 </head>
@@ -80,7 +88,8 @@ iframe {
 		<div class="page-header row">
 			<div class="header-logo-wrapper col-auto">
 				<div class="logo-wrapper">
-					<a href="index.go"><img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt="" /><img class="img-fluid for-dark" src="../assets/images/logo/logo_light.png" alt="" /></a>
+					<a href="/index.go"> <img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt="" /> <img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt="" />
+					</a>
 				</div>
 			</div>
 			<div class="col-4 col-xl-4 page-title">
@@ -105,12 +114,82 @@ iframe {
 			<div class="page-body">
 				<!-- Container-fluid starts-->
 				<div class="container-fluid default-dashboard">
-					<div id="form">
-						<iframe id="form-document" src="/file/document.html"></iframe>
+					<div class="row h-100 w-100">
+						<!-- jeong : 사이드바 시작 -->
+						<div class="col-2 sidebar-left-wrapper">
+							<ul class="sidebar-left-icons nav nav-pills" id="add-product-pills-tab" role="tablist">
+								<li class="nav-item"><a class="nav-link">
+										<div class="nav-rounded">
+											<div class="product-icons">
+												<svg class="stroke-icon">
+                                    			<use href="/assets/svg/icon-sprite.svg#product-detail"></use>
+                                  			</svg>
+											</div>
+										</div>
+										<div class="product-tab-content">
+											<h5>결제 서류 선택</h5>
+										</div>
+								</a></li>
+								<li class="nav-item"><a class="nav-link active">
+										<div class="nav-rounded">
+											<div class="product-icons">
+												<svg class="stroke-icon">
+                                    			<use href="/assets/svg/icon-sprite.svg#pencil"></use>
+                                  			</svg>
+											</div>
+										</div>
+										<div class="product-tab-content">
+											<h5>서류 작성</h5>
+										</div>
+								</a></li>
+								<li class="nav-item"><a class="nav-link">
+										<div class="nav-rounded">
+											<div class="product-icons">
+												<svg class="stroke-icon">
+                                   				<use href="/assets/svg/icon-sprite.svg#attchment"></use>
+                                  			</svg>
+											</div>
+										</div>
+										<div class="product-tab-content">
+											<h5>참고 자료 첨부</h5>
+										</div>
+								</a></li>
+								<li class="nav-item"><a class="nav-link">
+										<div class="nav-rounded">
+											<div class="product-icons">
+												<svg class="stroke-icon">
+                                    			<use href="/assets/svg/icon-sprite.svg#print"> </use>
+                                  			</svg>
+											</div>
+										</div>
+										<div class="product-tab-content">
+											<h5>작성 완료</h5>
+										</div>
+								</a></li>
+							</ul>
+						</div>
+						<!-- jeong : 사이드바 끝 -->
+
+						<!-- jeong : 문서 양식 작성하는 영역 시작 -->
+						<div class="col-10 h-100">
+							<div class="row">
+								<div class="col-1"></div>
+								<div class="col-10">
+									<div id="submit" style="display: flex; justify-content: end;">
+										<button class="btn btn-primary ripple-button" onclick="document_next()">다음으로</button>
+									</div>
+									<br />
+									<div class="row" style="display: flex; flex-direction: column; align-items: center;">
+										<div id="form" class="row">
+											<iframe id="form-document" src="/file/${form_src}"></iframe>
+										</div>
+									</div>
+								</div>
+								<div class="col-1"></div>
+							</div>
+						</div>
+						<!-- jeong : 문서 양식 작성하는 영역 끝 -->
 					</div>
-				</div>
-				<div id="submit">
-					<button onclick="save()">저장하기</button>
 				</div>
 				<!-- Container-fluid Ends-->
 			</div>
@@ -125,7 +204,7 @@ iframe {
 							<p class="mb-0 f-w-600">
 								Hand crafted & made with
 								<svg class="footer-icon">
-                    				<use href="../assets/svg/icon-sprite.svg#footer-heart"> </use>
+                    				<use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
                   				</svg>
 							</p>
 						</div>
@@ -136,59 +215,37 @@ iframe {
 		</div>
 	</div>
 	<!-- latest jquery-->
-	<script src="../assets/js/jquery.min.js"></script>
+	<script src="/assets/js/jquery.min.js"></script>
 	<!-- Bootstrap js-->
-	<script src="../assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+	<script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
 	<!-- feather icon js-->
-	<script src="../assets/js/icons/feather-icon/feather.min.js"></script>
-	<script src="../assets/js/icons/feather-icon/feather-icon.js"></script>
+	<script src="/assets/js/icons/feather-icon/feather.min.js"></script>
+	<script src="/assets/js/icons/feather-icon/feather-icon.js"></script>
 	<!-- scrollbar js-->
-	<script src="../assets/js/scrollbar/simplebar.js"></script>
-	<script src="../assets/js/scrollbar/custom.js"></script>
+	<script src="/assets/js/scrollbar/simplebar.js"></script>
+	<script src="/assets/js/scrollbar/custom.js"></script>
 	<!-- Sidebar jquery-->
-	<script src="../assets/js/config.js"></script>
+	<script src="/assets/js/config.js"></script>
 	<!-- Plugins JS start-->
-	<script src="../assets/js/sidebar-menu.js"></script>
-	<script src="../assets/js/sidebar-pin.js"></script>
-	<script src="../assets/js/slick/slick.min.js"></script>
-	<script src="../assets/js/slick/slick.js"></script>
-	<script src="../assets/js/header-slick.js"></script>
-	<script src="../assets/js/chart/apex-chart/apex-chart.js"></script>
-	<script src="../assets/js/chart/apex-chart/stock-prices.js"></script>
-	<script src="../assets/js/chart/apex-chart/moment.min.js"></script>
-	<script src="../assets/js/notify/bootstrap-notify.min.js"></script>
+	<script src="/assets/js/sidebar-menu.js"></script>
+	<script src="/assets/js/sidebar-pin.js"></script>
+	<script src="/assets/js/slick/slick.min.js"></script>
+	<script src="/assets/js/slick/slick.js"></script>
+	<script src="/assets/js/header-slick.js"></script>
+	<script src="/assets/js/chart/apex-chart/apex-chart.js"></script>
+	<script src="/assets/js/chart/apex-chart/stock-prices.js"></script>
+	<script src="/assets/js/chart/apex-chart/moment.min.js"></script>
+	<script src="/assets/js/notify/bootstrap-notify.min.js"></script>
 	<!-- Plugins JS Ends-->
 	<!-- Theme js-->
-	<script src="../assets/js/script.js"></script>
-	<script src="../assets/js/script1.js"></script>
-	<script src="../assets/js/theme-customizer/customizer.js"></script>
+	<script src="/assets/js/script.js"></script>
+	<script src="/assets/js/script1.js"></script>
+	<!-- Sweetalert js -->
+	<script src="/assets/js/sweet-alert/sweetalert.min.js"></script>
 	<script>
-		document.addEventListener("DOMContentLoaded", function() {
-			try {
-				// iframe 내용의 전체 높이를 가져와 iframe 높이를 조절합니다.
-				var iframe = document.getElementById('form-document');
-				console.log(iframe.contentWindow.document.documentElement.scrollHeight);
-				document.getElementById('form').style.height = iframe.contentWindow.document.documentElement.scrollHeight + 50 + 'px';
-			} catch (e) {
-				console.error('Error accessing iframe content:', e);
-			}
-			/* 			function resizeIframe(event) {
-			 if (event.data.height) {
-			 document.getElementById('form').style.height = event.data.height + 'px';
-			 }
-			 }
-			 window.addEventListener('message', resizeIframe); */
-		});
-	</script>
-	<script>
-    function save() {
+    function document_next() {
     	// 작성한 내용은 담은 iframe 요소를 가져온다
         const iframe = document.getElementById('form-document');
-        
-        // IFrame 요소의 접근 방식
-        // https://blog.naver.com/kaiz00/220488509587
-        // contentDocument 과 contentWindow 차이
-        // https://aljjabaegi.tistory.com/551
         
         // iframe 의 상위 객체인 document 객체를 반환한 후 저장한다
         const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
@@ -209,22 +266,38 @@ iframe {
         	// 나중에 문서를 볼때 수정할 수 없게 설정한다
             input.setAttribute('readonly', 'true');
         }
+        values['idx_dc'] = ${idx_dc}
 	
         // 
         const htmlTag = new Blob([iframeDocument.documentElement.outerHTML], {type: 'text/html'});
         const data = new FormData();
         data.append('file', htmlTag, 'document.html');
-        
-        const json = new Blob([JSON.stringify({values: values})], {type: 'application/json'});
-        data.append('json', json);
-        
+        data.append('json', JSON.stringify(values));
+        console.log(data);
         fetch('/document/write.do', {
             method: 'POST',
             body: data
         })
         .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error));
+        .then(data => {
+        	if (data.success) {
+        		window.location.href = '/document/attachment.go'; 
+        	} else {
+        		// 오류 메시지 뜨게 하기
+        		Swal.fire({
+        			title:'문서 작성 중 오류가 발생하여 양식 선택 페이지로 이동합니다.'
+        		}).then((result) => {
+        			window.location.href = '/document/formSelect.go';	
+        		});
+        	}
+        })
+        .catch(error => {
+    		Swal.fire({
+    			title:'문서 작성 중 오류가 발생하여 양식 선택 페이지로 이동합니다.'
+    		}).then((result) => {
+    			window.location.href = '/document/formSelect.go';	
+    		});
+        });
     }
 	</script>
 </body>

@@ -8,14 +8,15 @@
   display: block;
   margin: auto;
   font-weight: 400;
-  font-size: 0.6em; /* 12px */
+  font-size: 0.6em;
+  /* 12px */
   line-height: 5.5;
   letter-spacing: 2px;
   margin-bottom: 7em;
   -webkit-transition: color 2s;
   transition: color 2s;
 }
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .antennaio {
     background-image: url("${file-2x}");
     background-size: 60px 60px;
@@ -35,7 +36,7 @@
   display: block;
   margin: auto;
 }
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .bars {
     background-image: url("${file-2x}");
     background-size: 80px 80px;
@@ -45,7 +46,8 @@
 .section-intro {
   text-align: center;
   margin: 3em 0 4em 0;
-  max-height: 9999px; /* no font boosting please */
+  max-height: 9999px;
+  /* no font boosting please */
 }
 .section-intro h1 {
   line-height: 2.4;
@@ -55,7 +57,8 @@
   margin: auto;
 }
 .section-intro p.tagline {
-  font-size: 0.8em; /* 16px */
+  font-size: 0.8em;
+  /* 16px */
   color: #a8a8a8;
   margin-bottom: 3em;
 }
@@ -72,72 +75,100 @@
 .docs {
   width: 800px;
   margin: auto;
-  max-height: 9999px; /* no font boosting please */
+  max-height: 9999px;
+  /* no font boosting please */
 }
-.docs .how-to-use header, .docs .callbacks header, .docs .download header {
+.docs .how-to-use header,
+.docs .callbacks header,
+.docs .download header {
   background: #4278F5;
 }
-.docs .how-to-use strong, .docs .callbacks strong, .docs .download strong {
+.docs .how-to-use strong,
+.docs .callbacks strong,
+.docs .download strong {
   color: #4278F5;
 }
-.docs .how-to-use a, .docs .callbacks a, .docs .download a {
+.docs .how-to-use a,
+.docs .callbacks a,
+.docs .download a {
   color: #4278F5;
 }
-.docs .how-to-use a:hover, .docs .callbacks a:hover, .docs .download a:hover {
+.docs .how-to-use a:hover,
+.docs .callbacks a:hover,
+.docs .download a:hover {
   color: #0b43c6;
 }
-.docs .how-to-use pre, .docs .callbacks pre, .docs .download pre {
+.docs .how-to-use pre,
+.docs .callbacks pre,
+.docs .download pre {
   background: white;
-  border-left: 2px solid #4278F5;
+  border-left: 2px dashed #4278F5;
   padding: 0 2em;
 }
-.docs .how-to-use code, .docs .callbacks code, .docs .download code {
+.docs .how-to-use code,
+.docs .callbacks code,
+.docs .download code {
   font-family: "Source Code Pro", sans-serif;
-  font-size: 0.9em; /* 18px */
+  font-size: 0.9em;
+  /* 18px */
   color: #4278F5;
 }
-.docs .configuration header, .docs .faq header {
+.docs .configuration header,
+.docs .faq header {
   background: #50E3C2;
 }
-.docs .configuration strong, .docs .faq strong {
+.docs .configuration strong,
+.docs .faq strong {
   color: #50E3C2;
 }
-.docs .configuration a, .docs .faq a {
+.docs .configuration a,
+.docs .faq a {
   color: #50E3C2;
 }
-.docs .configuration a:hover, .docs .faq a:hover {
+.docs .configuration a:hover,
+.docs .faq a:hover {
   color: #1cb18f;
 }
-.docs .configuration pre, .docs .faq pre {
+.docs .configuration pre,
+.docs .faq pre {
   background: white;
-  border-left: 2px solid #50E3C2;
+  border-left: 2px dashed #50E3C2;
   padding: 0 2em;
 }
-.docs .configuration code, .docs .faq code {
+.docs .configuration code,
+.docs .faq code {
   font-family: "Source Code Pro", sans-serif;
-  font-size: 0.9em; /* 18px */
+  font-size: 0.9em;
+  /* 18px */
   color: #50E3C2;
 }
-.docs .license header, .docs .methods header {
+.docs .license header,
+.docs .methods header {
   background: #EDB867;
 }
-.docs .license strong, .docs .methods strong {
+.docs .license strong,
+.docs .methods strong {
   color: #EDB867;
 }
-.docs .license a, .docs .methods a {
+.docs .license a,
+.docs .methods a {
   color: #EDB867;
 }
-.docs .license a:hover, .docs .methods a:hover {
+.docs .license a:hover,
+.docs .methods a:hover {
   color: #d58b19;
 }
-.docs .license pre, .docs .methods pre {
+.docs .license pre,
+.docs .methods pre {
   background: white;
-  border-left: 2px solid #EDB867;
+  border-left: 2px dashed #EDB867;
   padding: 0 2em;
 }
-.docs .license code, .docs .methods code {
+.docs .license code,
+.docs .methods code {
   font-family: "Source Code Pro", sans-serif;
-  font-size: 0.9em; /* 18px */
+  font-size: 0.9em;
+  /* 18px */
   color: #EDB867;
 }
 .docs .instructions {
@@ -257,7 +288,8 @@
     background: transparent;
     color: black;
   }
-  .docs .how-to-use code, .docs .how-to-use strong,
+  .docs .how-to-use code,
+  .docs .how-to-use strong,
   .docs .callbacks code,
   .docs .callbacks strong,
   .docs .download code,
@@ -394,7 +426,8 @@
   margin-bottom: 3em;
   line-height: 1.2;
 }
-.star-ratings h1, .star-ratings p {
+.star-ratings h1,
+.star-ratings p {
   text-align: center;
 }
 .star-ratings .stars {
@@ -461,7 +494,7 @@
 }
 .box-orange .box-body {
   background-color: white;
-  border: 2px solid #f5d8ab;
+  border: 2px dashed #f5d8ab;
   border-top: 0;
 }
 
@@ -471,7 +504,7 @@
 }
 .box-green .box-body {
   background-color: white;
-  border: 2px solid #92eed9;
+  border: 2px dashed #92eed9;
   border-top: 0;
 }
 
@@ -481,7 +514,7 @@
 }
 .box-blue .box-body {
   background-color: white;
-  border: 2px solid #8bacf9;
+  border: 2px dashed #8bacf9;
   border-top: 0;
 }
 
@@ -553,7 +586,7 @@
   padding: 5px 0;
   height: 28px;
   float: left;
-  background-color: #e8e6ff;
+  background-color: #cac6e3;
   margin: 1px;
   text-align: center;
 }
@@ -572,23 +605,22 @@
   cursor: default;
 }
 .br-theme-bars-1to10 .br-readonly a.br-active, .br-theme-bars-1to10 .br-readonly a.br-selected {
-  background-color: #a299ff;
+  background-color: #9a92cb;
 }
 .br-theme-bars-1to10 .br-readonly .br-current-rating {
-  color: #a299ff;
+  color: #9a92cb;
 }
 
 @media print {
   .br-theme-bars-1to10 .br-widget a {
-    border: 1px solid #b3b3b3;
+    border: 1px dashed #b3b3b3;
     background: white;
     height: 38px;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
   .br-theme-bars-1to10 .br-widget a.br-active, .br-theme-bars-1to10 .br-widget a.br-selected {
-    border: 1px solid black;
+    border: 1px dashed black;
     background: white;
   }
   .br-theme-bars-1to10 .br-widget .br-current-rating {
@@ -603,7 +635,7 @@
   display: block;
   width: 120px;
   height: 5px;
-  background-color: #e8e6ff;
+  background-color: #cac6e3;
   margin: 1px;
 }
 .br-theme-bars-horizontal .br-widget a.br-active, .br-theme-bars-horizontal .br-widget a.br-selected {
@@ -621,22 +653,21 @@
   cursor: default;
 }
 .br-theme-bars-horizontal .br-readonly a.br-active, .br-theme-bars-horizontal .br-readonly a.br-selected {
-  background-color: #a299ff;
+  background-color: #9a92cb;
 }
 .br-theme-bars-horizontal .br-readonly .br-current-rating {
-  color: #a299ff;
+  color: #9a92cb;
 }
 
 @media print {
   .br-theme-bars-horizontal .br-widget a {
-    border: 1px solid #b3b3b3;
+    border: 1px dashed #b3b3b3;
     background: white;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
   .br-theme-bars-horizontal .br-widget a.br-active, .br-theme-bars-horizontal .br-widget a.br-selected {
-    border: 1px solid black;
+    border: 1px dashed black;
     background: white;
   }
   .br-theme-bars-horizontal .br-widget .br-current-rating {
@@ -652,7 +683,7 @@
   width: 60px;
   height: 8px;
   float: left;
-  background-color: #e8e6ff;
+  background-color: #cac6e3;
   margin: 1px;
 }
 .br-theme-bars-movie .br-widget a.br-active, .br-theme-bars-movie .br-widget a.br-selected {
@@ -672,22 +703,21 @@
   cursor: default;
 }
 .br-theme-bars-movie .br-readonly a.br-active, .br-theme-bars-movie .br-readonly a.br-selected {
-  background-color: #a299ff;
+  background-color: #9a92cb;
 }
 .br-theme-bars-movie .br-readonly .br-current-rating {
-  color: #a299ff;
+  color: #9a92cb;
 }
 
 @media print {
   .br-theme-bars-movie .br-widget a {
-    border: 1px solid #b3b3b3;
+    border: 1px dashed #b3b3b3;
     background: white;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
   .br-theme-bars-movie .br-widget a.br-active, .br-theme-bars-movie .br-widget a.br-selected {
-    border: 1px solid black;
+    border: 1px dashed black;
     background: white;
   }
   .br-theme-bars-movie .br-widget .br-current-rating {
@@ -699,7 +729,7 @@
 }
 .br-theme-bars-pill .br-widget a {
   padding: 7px 15px;
-  background-color: #e8e6ff;
+  background-color: #cac6e3;
   color: var(--theme-default);
   text-decoration: none;
   font-size: 13px;
@@ -731,26 +761,25 @@
   cursor: default;
 }
 .br-theme-bars-pill .br-readonly a.br-active, .br-theme-bars-pill .br-readonly a.br-selected {
-  background-color: #a299ff;
+  background-color: #9a92cb;
 }
 
 @media print {
   .br-theme-bars-pill .br-widget a {
-    border: 1px solid #b3b3b3;
+    border: 1px dashed #b3b3b3;
     border-left: none;
     background: white;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
   .br-theme-bars-pill .br-widget a.br-active, .br-theme-bars-pill .br-widget a.br-selected {
-    border: 1px solid black;
+    border: 1px dashed black;
     border-left: none;
     background: white;
     color: black;
   }
   .br-theme-bars-pill .br-widget a:first-child {
-    border-left: 1px solid black;
+    border-left: 1px dashed black;
   }
 }
 .br-theme-bars-reversed .br-widget {
@@ -762,7 +791,7 @@
   width: 22px;
   height: 22px;
   float: left;
-  background-color: #e8e6ff;
+  background-color: #cac6e3;
   margin: 1px;
   font-size: 15px;
   font-weight: 400;
@@ -786,22 +815,21 @@
   cursor: default;
 }
 .br-theme-bars-reversed .br-readonly a.br-active, .br-theme-bars-reversed .br-readonly a.br-selected {
-  background-color: #a299ff;
+  background-color: #9a92cb;
 }
 .br-theme-bars-reversed .br-readonly .br-current-rating {
-  color: #a299ff;
+  color: #9a92cb;
 }
 
 @media print {
   .br-theme-bars-reversed .br-widget a {
-    border: 1px solid #b3b3b3;
+    border: 1px dashed #b3b3b3;
     background: white;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
   .br-theme-bars-reversed .br-widget a.br-active, .br-theme-bars-reversed .br-widget a.br-selected {
-    border: 1px solid black;
+    border: 1px dashed black;
     background: white;
   }
   .br-theme-bars-reversed .br-widget .br-current-rating {
@@ -817,18 +845,18 @@
   width: 30px;
   height: 30px;
   float: left;
-  border: 2px solid #d0ccff;
+  border: 2px dashed #bab5db;
   background-color: white;
   margin: 2px;
   text-decoration: none;
   font-size: 14px;
   line-height: 1.8;
   text-align: center;
-  color: #d0ccff;
+  color: #bab5db;
   font-weight: 600;
 }
 .br-theme-bars-square .br-widget a.br-active, .br-theme-bars-square .br-widget a.br-selected {
-  border: 2px solid var(--theme-default);
+  border: 2px dashed var(--theme-default);
   color: var(--theme-default);
 }
 .br-theme-bars-square .br-widget .br-current-rating {
@@ -844,17 +872,17 @@
   cursor: default;
 }
 .br-theme-bars-square .br-readonly a.br-active, .br-theme-bars-square .br-readonly a.br-selected {
-  border: 2px solid var(--theme-default);
-  color: #a299ff;
+  border: 2px dashed var(--theme-default);
+  color: #9a92cb;
 }
 
 @media print {
   .br-theme-bars-square .br-widget a {
-    border: 2px solid #b3b3b3;
+    border: 2px dashed #b3b3b3;
     color: #b3b3b3;
   }
   .br-theme-bars-square .br-widget a.br-active, .br-theme-bars-square .br-widget a.br-selected {
-    border: 2px solid black;
+    border: 2px dashed black;
     color: black;
   }
 }
@@ -975,7 +1003,8 @@
   transform: scaleX(-1);
   -moz-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
-  filter: FlipH;
+  -webkit-filter: FlipH;
+          filter: FlipH;
   -ms-filter: "FlipH";
 }
 
@@ -994,3 +1023,4 @@
     color: black;
   }
 }
+/*# sourceMappingURL=rating.css.map */

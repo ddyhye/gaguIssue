@@ -101,7 +101,7 @@
     };
 
     var growthchart = new ApexCharts(document.querySelector("#growthchart"), growthoptions);
-    growthchart.render();
+    //growthchart.render();
 
     // ----------Shifts Overview-----//
     var option = {
@@ -167,7 +167,7 @@
         document.querySelector("#shifts-overview"),
         option
     );
-    chart.render();
+    //chart.render();
     var options = {
         series: [{
             type: 'bar',
@@ -321,7 +321,7 @@
     };
 
     var chart = new ApexCharts(document.querySelector("#customer-transaction"), options);
-    chart.render();
+    //chart.render();
 
     var options = {
         series: [{
@@ -477,7 +477,7 @@
         ]
     };
     var chart = new ApexCharts(document.querySelector("#chart-dash-2-line"), options);
-    chart.render();
+    //chart.render();
 
 })();
 

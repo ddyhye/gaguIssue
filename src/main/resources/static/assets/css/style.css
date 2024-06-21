@@ -5369,7 +5369,7 @@ h1 {
 
 h2 {
   font-size: 26px;
-  font-weight: 500;
+  font-weight: bold;
   letter-spacing: 0.6px;
 }
 
@@ -16401,8 +16401,7 @@ textarea {
   top: -12px;
   border-left: 12px dashed rgba(0, 0, 0, 0.3333333333);
   border-bottom: 14px dashed rgba(0, 0, 0, 0);
-  -webkit-clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 14px), calc(50% + 6px) 100%, 12px calc(100% - 14px), 12px 12px, 0 12px);
-          clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 14px), calc(50% + 6px) 100%, 12px calc(100% - 14px), 12px 12px, 0 12px);
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 14px), calc(50% + 6px) 100%, 12px calc(100% - 14px), 12px 12px, 0 12px);
 }
 
 /**=====================
@@ -17813,12 +17812,10 @@ textarea {
           justify-content: flex-start;
 }
 .arrow-tabs.bg-navbar .nav .nav-item {
-  -webkit-clip-path: polygon(0% 0%, 85% 0%, 100% 50%, 85% 100%, 0% 100%);
-          clip-path: polygon(0% 0%, 85% 0%, 100% 50%, 85% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 85% 0%, 100% 50%, 85% 100%, 0% 100%);
 }
 [dir=rtl] .arrow-tabs.bg-navbar .nav .nav-item {
-  -webkit-clip-path: polygon(15% 0%, 0% 50%, 15% 100%, 100% 100%, 100% 0%);
-          clip-path: polygon(15% 0%, 0% 50%, 15% 100%, 100% 100%, 100% 0%);
+  clip-path: polygon(15% 0%, 0% 50%, 15% 100%, 100% 100%, 100% 0%);
 }
 .arrow-tabs.bg-navbar .nav .nav-item .nav-link.active {
   border-radius: 0;
@@ -19343,8 +19340,7 @@ input[type=number] {
 }
 
 .pulse-rhombus a {
-  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-          clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 .pulse-rhombus svg,
 .pulse-rhombus i {
@@ -19352,8 +19348,7 @@ input[type=number] {
 }
 
 .pulse-rabbet a {
-  -webkit-clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%);
-          clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%);
+  clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%);
 }
 
 @-webkit-keyframes pulse-animate {
@@ -20527,7 +20522,7 @@ input[type=number] {
   display: flex;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
-          justify-content: end;
+          justify-content: start;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -24995,8 +24990,7 @@ p.data-attributes svg {
   margin-bottom: -40px;
 }
 .dashboard-4 .schedult-calendar .schedule-container svg path {
-  -webkit-clip-path: inset(1% 0% 0% 0% round 1.5rem);
-          clip-path: inset(1% 0% 0% 0% round 1.5rem);
+  clip-path: inset(1% 0% 0% 0% round 1.5rem);
 }
 .dashboard-4 #monthly-reportchart .apexcharts-canvas .apexcharts-svg .apexcharts-inner .apexcharts-line-series .apexcharts-series path {
   stroke: #48A3D7;
@@ -25514,6 +25508,7 @@ p.data-attributes svg {
   }
 }
 
+
 .default-dashboard div.dataTables_wrapper,
 .dashboard-2 div.dataTables_wrapper,
 .dashboard-3 div.dataTables_wrapper,
@@ -25768,9 +25763,6 @@ p.data-attributes svg {
   overflow: hidden;
 }
 .default-dashboard .profile-greeting .card-body {
-  background-image: url(../../assets/images/dashboard/bg.png);
-  background-repeat: no-repeat;
-  background-position: center right;
   display: block;
   height: 252px;
   padding: 22px 24px;
@@ -25796,6 +25788,22 @@ p.data-attributes svg {
 [dir=rtl] .default-dashboard .profile-greeting .card-body {
   -webkit-transform: scaleX(-1);
           transform: scaleX(-1);
+}
+.default-dashboard .profile-greeting .do-flexdirection-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.default-dashboard .profile-greeting .greater-than {
+  color: rgba(122, 112, 186, 0.7);
+  font-size: 20px;
 }
 @media (max-width: 1666px) {
   .default-dashboard .profile-greeting .img-overlay {
@@ -27168,8 +27176,7 @@ p.data-attributes svg {
   margin: 0 -12px -27px -17px;
 }
 .visitors-container svg .apexcharts-series path {
-  -webkit-clip-path: inset(1% 0% 0% 0% round 3rem);
-          clip-path: inset(1% 0% 0% 0% round 3rem);
+  clip-path: inset(1% 0% 0% 0% round 3rem);
 }
 .visitors-container svg .apexcharts-legend.apexcharts-align-left .apexcharts-legend-series {
   display: -webkit-box;
@@ -37358,15 +37365,13 @@ form header {
 .rating_expression .emoji__face-right-eye {
   -webkit-animation: right-eye 1s var(--delay-right) linear paused;
           animation: right-eye 1s var(--delay-right) linear paused;
-  -webkit-clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
-          clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
   left: 0.6em;
 }
 .rating_expression .emoji__face-left-eye {
   -webkit-animation: left-eye 1s var(--delay-left) linear paused;
           animation: left-eye 1s var(--delay-left) linear paused;
-  -webkit-clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
-          clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
   right: 0.6em;
 }
 .rating_expression .emoji__face-mouth-lower,
@@ -37478,42 +37483,34 @@ form header {
 }
 @-webkit-keyframes right-eye {
   from {
-    -webkit-clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
-            clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
   }
   50%, to {
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 }
 @keyframes right-eye {
   from {
-    -webkit-clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
-            clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 75%, 100% 0, 100% 100%, 0 100%);
   }
   50%, to {
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 }
 @-webkit-keyframes left-eye {
   from {
-    -webkit-clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
-            clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
   }
   50%, to {
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 }
 @keyframes left-eye {
   from {
-    -webkit-clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
-            clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%);
   }
   50%, to {
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 }
 @-webkit-keyframes mouth-lower {
@@ -50599,7 +50596,7 @@ table.table-bordered thead tr th p {
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   position: relative;
-  margin-bottom: 10px;
+  margin-top: 10px;
   background-color: #374462;
 }
 .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links .simplebar-wrapper .simplebar-mask .simplebar-content-wrapper .simplebar-content > li .sidebar-link.active::after {

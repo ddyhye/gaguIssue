@@ -44,6 +44,7 @@
   background: #D6D6D6;
   display: block;
   -webkit-backface-visibility: visible;
+  -webkit-transition: opacity 200ms ease;
   transition: opacity 200ms ease;
   border-radius: 30px;
 }
@@ -113,7 +114,6 @@
 .owl-carousel .owl-dot {
   cursor: pointer;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -141,7 +141,8 @@
   visibility: hidden;
 }
 .owl-carousel.owl-drag .owl-item {
-  touch-action: none;
+  -ms-touch-action: none;
+      touch-action: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -149,6 +150,7 @@
 }
 .owl-carousel.owl-grab {
   cursor: move;
+  cursor: -webkit-grab;
   cursor: grab;
 }
 .owl-carousel.owl-rtl {
@@ -167,8 +169,10 @@
  *  Owl Carousel - Animate Plugin
  */
 .owl-carousel .animated {
-  animation-duration: 1000ms;
-  animation-fill-mode: both;
+  -webkit-animation-duration: 1000ms;
+          animation-duration: 1000ms;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
 }
 .owl-carousel .owl-animated-in {
   z-index: 0;
@@ -177,7 +181,17 @@
   z-index: 1;
 }
 .owl-carousel .fadeOut {
-  animation-name: fadeOut;
+  -webkit-animation-name: fadeOut;
+          animation-name: fadeOut;
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes fadeOut {
@@ -192,6 +206,7 @@
  * 	Owl Carousel - Auto Height Plugin
  */
 .owl-height {
+  -webkit-transition: height 500ms ease-in-out;
   transition: height 500ms ease-in-out;
 }
 
@@ -200,10 +215,12 @@
  */
 .owl-carousel .owl-item .owl-lazy {
   opacity: 0;
+  -webkit-transition: opacity 400ms ease;
   transition: opacity 400ms ease;
 }
 .owl-carousel .owl-item img.owl-lazy {
-  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
 }
 
 .owl-theme .owl-nav {
@@ -249,9 +266,11 @@
   background: #D6D6D6;
   display: block;
   -webkit-backface-visibility: visible;
+  -webkit-transition: opacity 200ms ease;
   transition: opacity 200ms ease;
   border-radius: 30px;
 }
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
   background: #869791;
 }
+/*# sourceMappingURL=owlcarousel.css.map */
