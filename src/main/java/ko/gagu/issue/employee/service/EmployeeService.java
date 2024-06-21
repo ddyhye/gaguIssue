@@ -20,15 +20,15 @@ import ko.gagu.issue.employee.dto.EmployeeDTO;
 public class EmployeeService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired EmployeeDAO employeeDao;
+	//@Autowired EmployeeDAO employeeDao;
 
 	public void employeeGetAllEvents(Map<String, Object> response) {
-		List<EmployeeDTO> events = employeeDao.employeeGetAllEvents();
+		List<EmployeeDTO> events = dao.employeeGetAllEvents();
 		response.put("calendarEvents", events);	
 	}
 
 	public void employeeAddEvent(EmployeeDTO employee) {
-		employeeDao.employeeAddEvent(employee);
+		dao.employeeAddEvent(employee);
 	}
 
 	

@@ -30,13 +30,13 @@ public class EmployeeController {
 	@Autowired PasswordEncoder encoder;
 	
 	// 작성자 : 구일승 , 기능 : 캘린더
-	@RequestMapping(value="/employee/calendar.go")
+	@GetMapping(value="/employee/calendar.go")
 	public String calendar() {
 		logger.info("calendar in");
 		return "employee/calendar";
 	}
 	
-	@RequestMapping(value="/employee/getAllEvents.ajax")
+	@GetMapping(value="/employee/getAllEvents.ajax")
 	@ResponseBody
 	public Map<String, Object> employeeGetAllEvents(){
 		Map<String, Object>response = new HashMap<String, Object>();
@@ -45,7 +45,7 @@ public class EmployeeController {
 		return response;
 	}
 	
-	@RequestMapping(value="/employee/addEvent.ajax",method = RequestMethod.POST)
+	@PostMapping(value="/employee/addEvent.ajax")
 	@ResponseBody
 	public Map<String, Object>employeeAddEvent(@RequestBody EmployeeDTO employee){
 		Map<String, Object>response = new HashMap<String, Object>();

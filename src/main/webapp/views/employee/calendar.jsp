@@ -46,7 +46,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
 	<!-- [il]jquery / 원래는 3.2.1 버전이었으나, 3.7.1버전으로 바꿔둠 -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
@@ -54,7 +54,7 @@
 	<!-- [il]modal창 -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 	
-	<style>
+<style>
 	#calendar {
 	   width: 80%;
 	   margin: 5px auto;
@@ -71,7 +71,7 @@
 	    top: 50%;
 	    transform: translateY(-50%);
 	}
-	</style>
+</style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -188,13 +188,6 @@
       </div>
     </div>
     <script>
-    
-    $(document).ready(function(){
-        $('.custom-close').on('click', function(){
-            $('#myModal').modal('hide');
-        });
-    });
-    
 	$(document).ready(function() {
 	    $('#calendar').fullCalendar({
 	        editable: true,
@@ -309,6 +302,13 @@
 	        $('#myModal').modal('hide'); // [il]모달 창 닫기
 	    });
 	});
+	
+	$(document).ready(function(){
+        $('.custom-close').on('click', function(){
+            $('#myModal').modal('hide');
+        });
+    });
+	
 	</script>
     <!-- latest jquery-->
     <!-- [il]부트스트랩 jquery 버전 : 3.7.1 -->
