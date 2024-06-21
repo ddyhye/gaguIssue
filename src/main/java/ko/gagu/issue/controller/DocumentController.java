@@ -1,6 +1,7 @@
 package ko.gagu.issue.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.service.DocumentService;
 
 
@@ -30,8 +33,9 @@ public class DocumentController {
 	@Autowired DocumentService document_service;
 
 	@GetMapping(value = "/document/formSelect.go")
-	public ModelAndView documentFormSelectGo() {
+	public ModelAndView documentFormSelectGo(String msg) {
 		ModelAndView mav = new ModelAndView("common/documentFormSelect");
+		mav.addObject("msg", msg);
 		return mav;
 	}
 
@@ -42,23 +46,19 @@ public class DocumentController {
 	}
 	
 	@PostMapping(value = "/document/write.do")
-	public ModelAndView documentWriteDo(@RequestParam("file") MultipartFile file, 
-			@RequestParam("json") MultipartFile json, HttpSession session) {
-		logger.info("json : {}", json);
-		logger.info("file : {}", file);
-		/*
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> jsonData;
-		try {
-			jsonData = objectMapper.readValue(json.getInputStream(), Map.class);
-			document_service.documentWrite(file, jsonData, session);
-			return "문서 저장에 성공했습니다";
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		*/
-		
-		return document_service.documentWrite(file, json, session);
+	@ResponseBody
+	public Map<String, Object> documentWriteDo(@RequestParam("file") MultipartFile file, 
+			@RequestParam("json") String json, HttpSession session) {
+		logger.info("작성한 문서의 내용 json : {}", json);
+		logger.info("작성한 문서의 파일 객체 : {}", file);
+		Map<String, Object> response = new HashMap<>();
+		if (file == null || file.isEmpty() ||  !StringUtils.hasText(json)) {
+			logger.info("문서 작성 중 오류 발생");
+			response.put("success", false);
+		} else {
+			document_service.documentWrite(file, json, session, response);
+		}	
+		return response;
 	} 
 	
 }
