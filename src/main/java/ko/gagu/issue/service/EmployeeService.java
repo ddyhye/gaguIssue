@@ -18,15 +18,17 @@ import ko.gagu.issue.dto.EmployeeDTO;
 public class EmployeeService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired EmployeeDAO employeeDao;
+	//@Autowired EmployeeDAO employeeDao;
+	@Autowired EmployeeDAO dao;
+	@Autowired PasswordEncoder encoder;
 
 	public void employeeGetAllEvents(Map<String, Object> response) {
-		List<EmployeeDTO> events = employeeDao.employeeGetAllEvents();
+		List<EmployeeDTO> events = dao.employeeGetAllEvents();
 		response.put("calendarEvents", events);	
 	}
 
 	public void employeeAddEvent(EmployeeDTO employee) {
-		employeeDao.employeeAddEvent(employee);
+		dao.employeeAddEvent(employee);
 	}
 
 	
@@ -35,8 +37,8 @@ public class EmployeeService {
 	
 	
 	
-	@Autowired EmployeeDAO dao;
-	@Autowired PasswordEncoder encoder;
+	
+	
 
 	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr) {
 		

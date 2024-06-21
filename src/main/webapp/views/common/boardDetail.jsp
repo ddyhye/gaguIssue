@@ -87,9 +87,9 @@
                                 <div class="card-body">
                                     <h5 class="card-title">제목: ${po_title}</h5>
                                     <p class="card-text">내용: ${po_content}</p>
-                                    <%-- 첨부 파일이 있다면 링크로 보여줌 --%>
-                                    <c:if test="${not empty notice.attachment}">
-                                        <p>첨부 파일: <a href="/uploads/${notice.attachment}">${notice.attachment}</a></p>
+                                    
+                                    <c:if test="${not empty attachment}">
+                                        <p>첨부 파일: <a href="/uploads/${attachment}">${notice.attachment}</a></p>
                                     </c:if>
                                 </div>
                             </div>

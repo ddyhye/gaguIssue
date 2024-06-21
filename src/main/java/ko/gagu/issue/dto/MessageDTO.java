@@ -1,5 +1,7 @@
 package ko.gagu.issue.dto;
 
+import java.sql.Timestamp;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias(value="message")
@@ -9,6 +11,14 @@ public class MessageDTO {
 	private int	is_sender_exit;
 	private int receiver;
 	private int is_receiver_exit;
+	
+	private int msg_count;
+	private int no_read;
+	private String new_picname;
+	private String name;
+	private Timestamp reg_date;
+	private String content;
+	private String other_emp;
 	
 	public int getIdx_messageroom() {
 		return idx_messageroom;
@@ -39,6 +49,48 @@ public class MessageDTO {
 	}
 	public void setIs_receiver_exit(int is_receiver_exit) {
 		this.is_receiver_exit = is_receiver_exit;
+	}
+	public int getMsg_count() {
+		return msg_count;
+	}
+	public void setMsg_count(int msg_count) {
+		this.msg_count = msg_count;
+	}
+	public int getNo_read() {
+		return no_read;
+	}
+	public void setNo_read(int no_read) {
+		this.no_read = no_read;
+	}
+	public String getNew_picname() {
+		return new_picname;
+	}
+	public void setNew_picname(String new_picname) {
+		this.new_picname = new_picname;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Timestamp getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(Timestamp reg_date) {
+		this.reg_date = reg_date;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getOther_emp() {
+		return other_emp;
+	}
+	public void setOther_emp(String other_emp) {
+		this.other_emp = other_emp;
 	}
 	
 	

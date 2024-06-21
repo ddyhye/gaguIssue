@@ -14,6 +14,9 @@ public class BoardDTO {
 	private int po_view_count;
 	private boolean is_notice;
 	private Timestamp written_datetime;
+	private Integer idx_file;
+	
+	
 	public int getPost_id() {
 		return post_id;
 	}
@@ -55,6 +58,13 @@ public class BoardDTO {
 	}
 	public void setWritten_datetime(Timestamp written_datetime) {
 		this.written_datetime = written_datetime;
+	}
+	
+	public Integer getIdx_file() {
+		return idx_file;
+	}
+	public void setIdx_file(Integer idx_file) {
+		this.idx_file = idx_file;
 	}
 	
 	
