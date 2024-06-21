@@ -120,13 +120,13 @@
 			                            </tr>
 			                        </thead>
 			                        <tbody>
-			                            <c:forEach var="notice" items="${notices}">
+			                            <c:forEach var="post_list_tb" items="${post_list_tb}">
 			                                <tr>
-			                                    <td>${notice.category}</td>
-			                                    <td><a href="viewNotice.do?id=${notice.id}">${notice.title}</a></td>
-			                                    <td>${notice.author}</td>
-			                                    <td>${notice.createdDate}</td>
-			                                    <td>${notice.viewCount}</td>
+			                                    <td>${is_notice}</td>
+			                                    <td><a href="boarddetail.go?id=${post_id}">${po_title}</a></td>
+			                                    <td>${writer}</td>
+			                                    <td>${written_datetime}</td>
+			                                    <td>${po_view_count}</td>
 			                                </tr>
 			                            </c:forEach>
 			                        </tbody>
