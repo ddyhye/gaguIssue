@@ -19,6 +19,8 @@ public class EmployeeService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	//@Autowired EmployeeDAO employeeDao;
+	@Autowired EmployeeDAO dao;
+	@Autowired PasswordEncoder encoder;
 
 	public void employeeGetAllEvents(Map<String, Object> response) {
 		List<EmployeeDTO> events = dao.employeeGetAllEvents();
@@ -35,8 +37,8 @@ public class EmployeeService {
 	
 	
 	
-	@Autowired EmployeeDAO dao;
-	@Autowired PasswordEncoder encoder;
+	
+	
 
 	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr) {
 		

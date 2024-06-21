@@ -39,6 +39,7 @@ public class EmployeeController {
 	@GetMapping(value="/employee/getAllEvents.ajax")
 	@ResponseBody
 	public Map<String, Object> employeeGetAllEvents(){
+		logger.info("getAllEvenets진입");
 		Map<String, Object>response = new HashMap<String, Object>();
 		employeeService.employeeGetAllEvents(response);
 		logger.info("response : {}"+response);
