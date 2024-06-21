@@ -53,13 +53,14 @@ iframe {
 }
 
 #form {
-	width: 70%;
+	width: 75%;
 	display: flex;
 	height: 750px;
 	justify-content: center;
 	border: 1px solid;
 	background: white;
 }
+
 #form-document {
 	width: 100%;
 	height: 700px; /* 원하는 높이로 설정 */
@@ -170,16 +171,21 @@ iframe {
 						<!-- jeong : 사이드바 끝 -->
 
 						<!-- jeong : 문서 양식 작성하는 영역 시작 -->
-
-						<div class="col-10 h-100"style="display: flex;flex-direction: column;padding-left: 30px;align-items: center;">
-							<div id="submit" class="row">
-								<div class="col">
-									<button class="btn btn-primary ripple-button" onclick="document_next()">다음으로</button>
-								</div>								
-							</div>
-							<br/>
-							<div id="form" class="row">
-								<iframe id="form-document" src="/file/${form_src}"></iframe>
+						<div class="col-10 h-100">
+							<div class="row">
+								<div class="col-1"></div>
+								<div class="col-10">
+									<div id="submit" style="display: flex; justify-content: end;">
+										<button class="btn btn-primary ripple-button" onclick="document_next()">다음으로</button>
+									</div>
+									<br />
+									<div class="row" style="display: flex; flex-direction: column; align-items: center;">
+										<div id="form" class="row">
+											<iframe id="form-document" src="/file/${form_src}"></iframe>
+										</div>
+									</div>
+								</div>
+								<div class="col-1"></div>
 							</div>
 						</div>
 						<!-- jeong : 문서 양식 작성하는 영역 끝 -->
@@ -234,16 +240,12 @@ iframe {
 	<!-- Theme js-->
 	<script src="/assets/js/script.js"></script>
 	<script src="/assets/js/script1.js"></script>
-	
+	<!-- Sweetalert js -->
+	<script src="/assets/js/sweet-alert/sweetalert.min.js"></script>
 	<script>
     function document_next() {
     	// 작성한 내용은 담은 iframe 요소를 가져온다
         const iframe = document.getElementById('form-document');
-        
-        // IFrame 요소의 접근 방식
-        // https://blog.naver.com/kaiz00/220488509587
-        // contentDocument 과 contentWindow 차이
-        // https://aljjabaegi.tistory.com/551
         
         // iframe 의 상위 객체인 document 객체를 반환한 후 저장한다
         const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
@@ -270,17 +272,32 @@ iframe {
         const htmlTag = new Blob([iframeDocument.documentElement.outerHTML], {type: 'text/html'});
         const data = new FormData();
         data.append('file', htmlTag, 'document.html');
-        
-        const json = new Blob([JSON.stringify(values)], {type: 'application/json'});
-        data.append('json', json);
-        
+        data.append('json', JSON.stringify(values));
+        console.log(data);
         fetch('/document/write.do', {
             method: 'POST',
             body: data
         })
         .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error));
+        .then(data => {
+        	if (data.success) {
+        		window.location.href = '/document/attachment.go'; 
+        	} else {
+        		// 오류 메시지 뜨게 하기
+        		Swal.fire({
+        			title:'문서 작성 중 오류가 발생하여 양식 선택 페이지로 이동합니다.'
+        		}).then((result) => {
+        			window.location.href = '/document/formSelect.go';	
+        		});
+        	}
+        })
+        .catch(error => {
+    		Swal.fire({
+    			title:'문서 작성 중 오류가 발생하여 양식 선택 페이지로 이동합니다.'
+    		}).then((result) => {
+    			window.location.href = '/document/formSelect.go';	
+    		});
+        });
     }
 	</script>
 </body>
