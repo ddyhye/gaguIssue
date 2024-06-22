@@ -10,7 +10,7 @@ public interface DocumentDAO {
 
 	String getFormSrc(String form_name);
 
-	EmployeeDTO getEmployeeInfo();
+	EmployeeDTO getEmployeeInfo(int idx_employee);
 
 	int saveDocument(DocumentDTO document_dto);
 

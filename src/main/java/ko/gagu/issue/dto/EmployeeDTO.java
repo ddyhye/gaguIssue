@@ -45,6 +45,10 @@ public class EmployeeDTO {
 	private String emp_address;
 	private boolean first_login;
 	
+	// [jeong] 직원의 부서명과 직급명이 필요해서 추가했습니다
+	private String de_name;
+	private String title_name;
+	
 	public int getIdx_employee() {
 		return idx_employee;
 	}
@@ -201,6 +205,18 @@ public class EmployeeDTO {
 	}
 	public void setFirst_login(boolean first_login) {
 		this.first_login = first_login;
+	}
+	public String getDe_name() {
+		return de_name;
+	}
+	public void setDe_name(String de_name) {
+		this.de_name = de_name;
+	}
+	public String getTitle_name() {
+		return title_name;
+	}
+	public void setTitle_name(String title_name) {
+		this.title_name = title_name;
 	}
 	
 	
