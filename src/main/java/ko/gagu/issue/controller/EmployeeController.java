@@ -42,16 +42,17 @@ public class EmployeeController {
 		logger.info("getAllEvenets진입");
 		Map<String, Object>response = new HashMap<String, Object>();
 		employeeService.employeeGetAllEvents(response);
-		logger.info("response : {}"+response);
+		logger.info("response : {}",response);
 		return response;
 	}
 	
 	@PostMapping(value="/employee/addEvent.ajax")
 	@ResponseBody
 	public Map<String, Object>employeeAddEvent(@RequestBody EmployeeDTO employee){
-		Map<String, Object>response = new HashMap<String, Object>();
-		logger.info("response : {}"+response);
+		logger.info("addevent에 진입했습니다.");
+		Map<String, Object>response = new HashMap<String, Object>();		
 		employeeService.employeeAddEvent(employee);
+		logger.info("response : {}",response);
 		return response;
 	}
 	

@@ -35,7 +35,10 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
-    <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
+    
+    <!-- id color->ec_color로 바꿈 / 06.22 -->
+    <link id="ec_color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
+    
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
     
@@ -113,16 +116,14 @@
           <!-- Container-fluid starts-->
           <!-- [il] 캘린더 시작 -->
           <h2><center>Javascript Fullcalendar</center></h2>
-		    <div class="container">
-		        <div id="calendar"></div>
-		    </div>
+		    <div id="calendar"></div>
 		    <br>		
 		    <!-- [il]Modal -->
-		    <div id="myModal" class="modal" role="dialog">
+		    <!-- Modal -->
+			<div id="myModal" class="modal" role="dialog">
 			    <div class="modal-dialog">
 			        <div class="modal-content">
 			            <div class="modal-header">
-			                <!-- [il] <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 			                <h4 class="modal-title">일정 추가</h4>
 			            </div>
 			            <div class="modal-body">
@@ -130,19 +131,19 @@
 			                    <label for="title">일정명:</label>
 			                    <input type="text" class="form-control" id="title">
 			                </div>
-			                <div class="form-group datepicker-input">
+			                <div class="form-group">
 			                    <label for="startDate">시작 날짜:</label>
-			                    <input type="text" class="form-control" id="startDate">
+			                    <input type="date" class="form-control" id="startDate">
 			                </div>
-			                <div class="form-group timepicker-input">
+			                <div class="form-group">
 			                    <label for="startTime">시작 시간:</label>
 			                    <select class="form-control" id="startTime"></select>
 			                </div>
-			                <div class="form-group datepicker-input">
+			                <div class="form-group">
 			                    <label for="endDate">종료 날짜:</label>
-			                    <input type="text" class="form-control" id="endDate">
+			                    <input type="date" class="form-control" id="endDate">
 			                </div>
-			                <div class="form-group timepicker-input">
+			                <div class="form-group">
 			                    <label for="endTime">종료 시간:</label>
 			                    <select class="form-control" id="endTime"></select>
 			                </div>
@@ -205,11 +206,24 @@
             },
             events: function(info, successCallback, failureCallback) {
                 $.ajax({
-                    url: './getAllEvents.ajax',
+                    url: './getAllEvents.ajax', 
                     method: 'GET',
                     dataType: 'json',
                     success: function(response) {
-                        successCallback(response.calendarEvents);
+                        var events = [];
+
+                        for (var i = 0; i < response.calendarEvents.length; i++) {
+                            var event = {
+                                id: response.calendarEvents[i].id,
+                                title: response.calendarEvents[i].ec_title,
+                                description: response.calendarEvents[i].ec_description,
+                                start: response.calendarEvents[i].ec_start_datetime,
+                                end: response.calendarEvents[i].ec_end_datetime,
+                                color: response.calendarEvents[i].ec_color
+                            };
+                            events.push(event);
+                        }
+                        successCallback(events);
                     },
                     error: function(xhr, status, error) {
                         console.error('이벤트 로딩에 실패했습니다: ' + error);
@@ -220,20 +234,26 @@
                 });
             },
             select: function(info) {
-                $('#startDate').val(moment(info.start).format('YYYY-MM-DD'));
-                $('#endDate').val(moment(info.end).subtract(1, 'days').format('YYYY-MM-DD'));
+                var startDateInput = document.getElementById('startDate');
+                var endDateInput = document.getElementById('endDate');
+
+                startDateInput.value = info.startStr;
+                endDateInput.value = info.endStr;
+
                 $('#myModal').modal('show');
+            },
+            eventContent: function(arg) {
+                var eventTitle = arg.event.title;
+                return { html: '<div>' + eventTitle + '</div>' };
             }
         });
 
         calendar.render();
-
-        // 모달 닫기 버튼 클릭 이벤트 처리
-        $(document).on('click', '.custom-close', function() {
+        
+        document.querySelector('.custom-close').addEventListener('click', function() {
             $('#myModal').modal('hide');
         });
-		
-        // 모달의 등록 버튼 클릭 이벤트 처리
+
         document.getElementById('addEventBtn').addEventListener('click', function() {
             var startDate = document.getElementById('startDate').value;
             var startTime = document.getElementById('startTime').value;
@@ -244,18 +264,18 @@
             var color = document.getElementById('color').value;
 
             var event = {
-                title: title,
-                description: description,
-                start: startDate + 'T' + startTime,
-                end: endDate + 'T' + endTime,
-                color: color
+                ec_title: title,
+                ec_description: description,
+                ec_start_datetime: startDate + 'T' + startTime,
+                ec_end_datetime: endDate + 'T' + endTime,
+                ec_color: color
             };
 
             $.ajax({
-                url: './addEvent.ajax',
+                url: './addEvent.ajax', 
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(event),
+                data: JSON.stringify(event), 
                 success: function(response) {
                     console.log('이벤트 추가가 완료되었습니다.');
                     $('#myModal').modal('hide');
@@ -267,7 +287,6 @@
             });
         });
 
-        // 시간 선택 옵션 설정하기
         var selectOptions = '';
         for (var i = 0; i < 24; i++) {
             var hour = (i < 10) ? '0' + i : i;
@@ -275,22 +294,18 @@
         }
         document.getElementById('startTime').innerHTML = selectOptions;
         document.getElementById('endTime').innerHTML = selectOptions;
-        
-        // jQuery UI datepicker 사용하기
-        $('#startDate, #endDate').datepicker({
-            dateFormat: 'yy-mm-dd',
-            showButtonPanel: true,
-            changeMonth: true,
-            changeYear: true,
-            monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            onSelect: function(dateText) {
-                $(this).val(dateText);
-            }
-        });
-        $('#startDate, #endDate').prop('readonly', true);
-    });
 
+        $('#myModal').on('hidden.bs.modal', function() {
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('startTime').value = '00:00';
+            document.getElementById('endDate').value = '';
+            document.getElementById('endTime').value = '00:00';
+            document.getElementById('color').value = '#3788d8';
+            calendar.unselect();
+        });
+    });
 
 	</script>
     <!-- latest jquery-->
