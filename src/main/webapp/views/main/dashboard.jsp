@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -7,7 +8,6 @@
     <meta name="description" content="Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'/>">
     <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
     <title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
@@ -36,12 +36,12 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
-    <!-- [do] css 추가 -->
-    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
-    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/dashboard.css'/>">
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    <!-- [do] css 추가 -->
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/dashboard.css'/>">
   </head>
   <body> 
     <div class="loader-wrapper"> 
