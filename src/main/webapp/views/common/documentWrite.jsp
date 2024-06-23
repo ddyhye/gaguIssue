@@ -100,7 +100,7 @@ iframe {
 }
 
 #ex9 {
-	margin-top: 100px;
+	margin-top: 20px;
 	display: flex;
 	justify-content: center;
 }
@@ -111,6 +111,7 @@ iframe {
 	border: 1px dashed black;
 	display: flex;
 	justify-content: center;
+	background: white;
 	align-items: center;
 }
 .upload-box span {
@@ -118,6 +119,8 @@ iframe {
 }
 #jstree {
 	overflow-y: auto;
+	max-height: 300px;
+	height: 290px;
 	border: 1px solid #ccc;
 }
 #approvalLine {
@@ -143,7 +146,6 @@ iframe {
 	display: none;
 }
 .seectionBorder {
-	height: 100%;
 	border: 1px solid black;
 }
 </style>
@@ -230,7 +232,7 @@ iframe {
 											<h5>서류 작성</h5>
 										</div>
 								</a></li>
-								<li class='nav-item'><a class='nav-link active'>
+								<li class='nav-item'><a id="ApprovalStatus" class='nav-link'>
 										<div class='nav-rounded'>
 											<div class='product-icons'>
 												<svg class='stroke-icon'>
@@ -270,8 +272,8 @@ iframe {
 										<!-- <button class='btn btn-primary ripple-button' style='cursor: default;margin-right: 10px;cursor: pointer;'>결재자 지정</button> -->
 										<button type='button' class='btn btn-primary'
 											style='margin-right: 20px;' data-toggle='modal'
-											data-target='#approverModal' onClick="openModal()">결재자 지정</button>
-										<button class='btn btn-primary ripple-button'
+											data-target='#approverModal'>결재자 지정</button>
+										<button class='btn btn-primary ripple-button' id="confirmBtn"
 											style='background: gray !important; border-color: gray !important; cursor: default;'
 											onclick='documentWrite()'>작성 완료</button>
 									</div>
@@ -282,7 +284,7 @@ iframe {
 											<iframe id='form-document' src='/file/${formSrc}'></iframe>
 										</div>
 									</div>
-									<div class='row' style='margin-top: 20px;'>
+									<div class='row'>
 										<section id='ex9'>
 											<div class='upload-box'>
 												<p style='font-size: 1.5rem; margin-bottom: 0rem;'>
@@ -328,8 +330,8 @@ iframe {
 		</div>
 		<!-- [jeong] : 결재재 지정 모달 시작 -->
 		<div class='modal fade' id="approverModal" role='dialog'>
-			<div class='modal-dialog modal-sm' role='document'style="width: 50%;padding-top:10%;">
-				<div class='modal-content' style="height: 30%;">
+			<div class='modal-dialog modal-sm' role='document'style="width: 50%;top: 10%;height: 525px;">
+				<div class='modal-content' style="height: 100%">
 					<div class='modal-header'>
 						<h5 class='modal-title' id='approverModalLabel'>결재자 지정</h5>
 						<button type='button' class='close' data-dismiss='modal'
@@ -337,55 +339,54 @@ iframe {
 							<span aria-hidden='true'>&times;</span>
 						</button>
 					</div>
-					<div class='modal-body' style='display: flex;'>
+					<div class='modal-body' style='display: flex;height: 80%'>
 						<!-- 결재자 목록 -->
 						<div class='col-4'>
+							<h5 style="font-weight: bold;">조직도</h5>
 							<section class="seectionBorder">							
 								<div id='jstree'>
-								
+									
 								</div>
 							</section>
+							<input type="text" id="searchInput" placeholder="직원 이름을 검색하세요." style="margin-top: 5px; width: 100%">
+						</div>
+						<!-- 버튼 -->
+						<div class="col-1 d-flex flex-column align-items-center justify-content-center">
+							<button type='button' class='btn btn-primary' onClick="approvalAdd()">추가</button>
+							<button type='button' class='btn btn-primary' onClick="approvalRemove()" style="margin-top: 10px;">제외</button>
 						</div>
 						<!-- 결재라인 -->
-						<div class='col-8'>
-							<section class="seectionBorder">	
+						<div class='col-7'>
+							<h5 style="font-weight: bold;">결재 순서</h5>
+							<section class="seectionBorder"style="height: 325px;">	
 								<table id='approvalLine' style='width: 100%'>
 									<tr id='approvalLineHeader'>
 										<td style='width: 15%'>순서</td>
 										<td style='width: 15%'>이름</td>
 										<td style='width: 30%'>부서</td>
 										<td style='width: 30%'>직급</td>
-										<td style='width: 10%'><img class='img-fluid' src='/assets/images/document/trash.png' alt='' width='25px' height='25px'></td>
 									</tr>
 									<tr>
 										<td class='approvalHr' colspan='5'>요청</td>
 									</tr>
 									<tr id='writer'>
 										<td></td>
-										<td>김사원</td>
-										<td>영업팀</td>
-										<td>사원</td>
-										<td><img class='img-fluid' src='/assets/images/document/trash.png' width='15px' height='15px'></td>
+										<td>${employeeDTO.emp_name}</td>
+										<td>${employeeDTO.de_name}</td>
+										<td>${employeeDTO.title_name}</td>
 									</tr>
 									<tr>
 										<td class='approvalHr' colspan='5'>결재</td>
 									</tr>
-									<tr>
-										<td>1</td>
-										<td>김자연</td>
-										<td>영업팀</td>
-										<td>대리</td>
-										<td><img class='img-fluid' src='/assets/images/document/trash.png' width='15px' height='15px'></td>
-									</tr>
+									<tbody id="approvalLineTable">
+									</tbody>
 								</table>
 							</section>
 						</div>
 					</div>
-					<div class='modal-footer'>
-						<button type='button' class='btn btn-secondary'
-							data-dismiss='modal'>취소</button>
-						<button type='button' class='btn btn-primary'
-							onclick='assignApprover()'>확인</button>
+					<div class='modal-footer' style="padding-top: 7px;">
+						<button type='button' class='btn btn-secondary'data-dismiss='modal' onclick='resetApprover()'>취소</button>
+						<button type='button' class='btn btn-primary' data-dismiss='modal' onclick='assignApprover()'>확인</button>
 					</div>
 				</div>
 			</div>
@@ -425,13 +426,13 @@ iframe {
 	
 	<script>
 		/* [jeong] 헤더와 page-body 의 간격이 벌어져서 스크립트로 맞춤 */
-	    var pageHeader = document.querySelector('.page-header');
+/* 	    var pageHeader = document.querySelector('.page-header');
 	    var pageBody = document.querySelector('.page-body');
 	
 	    if (pageHeader && pageBody) {
 	        var headerHeight = pageHeader.offsetHeight;
 	        pageBody.style.marginTop = headerHeight + 'px';
-	    }  
+	    }   */
     </script>
 	<script>
     	/* [jeong] 작성자의 성명, 부서, 직급, 현재 날짜를 서버로부터 받아와 문서에 자동으로 기입 */
@@ -451,17 +452,22 @@ iframe {
     </script>
     <script>
    		/* [jeong] 조직도 불러오기 */
+   		var selectedEmp = 0;
+   		var approvalLine = [];
+   		var removeIdx = 9999;
+   		var approvalStatus = false;
+   		
 	    $('#jstree').jstree({ 
-			'plugins': ['radio','types'],
+			'plugins': ['wholerow','radio','types','search'],
 			'core' : {
 				'multiple': false,
-				'data' : [
-					{ 'type': 'default', 'id' : 'gaguissue', 'parent' : '#', 'text' : '가구있수' },
+/* 				'data' : [
+					{ 'type': 'department', 'id' : 'gaguissue', 'parent' : '#', 'text' : '가구있수' },
 					{ 'type': 'default', 'id' : 'ajson1', 'parent' : 'gaguissue', 'text' : '대표이사' },
 					{ 'type': 'default',  'id' : 'ajson2', 'parent' : 'gaguissue', 'text' : '전무' },
 					{ 'type': 'department',  'id' : 'ajson3', 'parent' : 'gaguissue', 'text' : '인사팀' },
-					{ 'type': 'default',  'id' : 'emp1', 'parent' : 'ajson3', 'text' : '김정원' },
-					{ 'type': 'default',  'id' : 'emp2', 'parent' : 'ajson3', 'text' : '전태환' },
+					{ 'type': 'default',  'id' : 'emp1', 'parent' : 'ajson3', 'text' : '김정원', 'department' : '개발', 'title' : '대리', },
+					{ 'type': 'default',  'id' : 'emp2', 'parent' : 'ajson3', 'text' : '전태환', 'data' : '사원' },
 					{ 'type': 'default',  'id' : 'emp3', 'parent' : 'ajson3', 'text' : '이도혜', "state": { "checkbox_disabled": true } },
 					{ 'type': 'department',  'id' : 'ajson4', 'parent' : 'gaguissue', 'text' : '경영지원팀', "li_attr": { "class": "no-checkbox" } },
 					{ 'type': 'default',  'id' : 'emp4', 'parent' : 'ajson4', 'text' : '김정원' },
@@ -469,41 +475,126 @@ iframe {
 					{ 'type': 'default',  'id' : 'emp6', 'parent' : 'ajson4', 'text' : '이도혜' },
 					{ 'type': 'default',  'id' : 'emp7', 'parent' : 'ajson4', 'text' : '구일승' },
 					{ 'type': 'default',  'id' : 'emp8', 'parent' : 'ajson4', 'text' : '임재민' },
-					{ 'type': 'department',  'id' : 'ajson5', 'parent' : 'gaguissue', 'text' : '물류팀' }
-				],
-
+					{ 'type': 'department',  'id' : 'ajson5', 'parent' : 'gaguissue', 'text' : '물류팀' },
+					{ 'type': 'default',  'id' : 'emp9', 'parent' : 'ajson4', 'text' : '김정원' },
+					{ 'type': 'default',  'id' : 'emp10', 'parent' : 'ajson4', 'text' : '전태환' },
+					{ 'type': 'default',  'id' : 'emp11', 'parent' : 'ajson4', 'text' : '이도혜' },
+					{ 'type': 'default',  'id' : 'emp12', 'parent' : 'ajson4', 'text' : '구일승' },
+					{ 'type': 'default',  'id' : 'emp13', 'parent' : 'ajson4', 'text' : '임재민' },
+				], */
+				'data' : JSON.parse('${organization}')
 			},
 			'types' : {
-				'default' : {
-					'icon' : 'fas fa-user'
+				'employee' : {
+					'icon' : 'fas fa-user',
+					'select_node': false // 노드 선택 불가 설정
 				},
 				'department' : {
-					'icon' : 'fas fa-users'
+					'icon' : 'fas fa-users',
+					'select_node': false // 노드 선택 불가 설정
 				}
-			}
+			},
+	      	'search': {
+		        'show_only_matches': true,
+		        'show_only_matches_children': true
+	        }
 	   	}).on('loaded.jstree', function() {
 	   		$("#jstree").jstree("open_all");
 		}).on('open_all.jstree', function() {
 			$('#jstree').css('max-height', $('.seectionBorder').height() * 0.9 + 'px');
+		}).on('select_node.jstree', function(e, data) {
+			if (data.node.type == 'department') { // 선택 불가능한 타입 검사
+			    data.instance.deselect_node(data.node); // 노드 선택 해제
+			    return false; // 선택을 막음
+			}
+			selectedEmp = data.node;
 		});
-   		
-	    $(document).ready(function() {
-	      // 모달이 열렸을 때 이벤트 감지
-	      $('#approverModal').on('shown.bs.modal', function() {
-	        console.log('모달이 열렸습니다.');
-	      });
-	    });
-		function openModal() {
-			console.log($('.seectionBorder').height() * 0.9);
+	    var to = false;
+		$('#searchInput').keyup(function() {
+			if(to) { clearTimeout(to); }
+			to = setTimeout(function() {
+				var v = $('#searchInput').val();
+				$('#jstree').jstree(true).search(v);
+			 }, 250);
+		 });
+		
+		/* [jeong] 조직도에서 선택한 직원을 결재 라인에 추가한다 */
+		function approvalAdd() {
+			if (selectedEmp != 0) {
+				if (approvalLine.length == 5) {
+					Swal.fire('최대 결재자 지정은 5명까지 가능합니다.');
+					return;
+				} 
+				// 결재자를 추가
+				approvalLine.push(selectedEmp);
+				drawApprovalTable();	
+			}
 		}
-    </script>
-	<script>
+		
+		/* [jeong] approvalLine 에 저장된 결재라인을 그려주는 함수 */
+		function drawApprovalTable() {
+			let content = '';
+			approvalLine.forEach((approvalEmp, index) => {
+				content += '<tr id="approvalEmp_' + index + '" value="'+ index +'" style="cursor: pointer;">';
+				content += '<td>' + (index + 1) + '</td>';
+				content += '<td>' + approvalEmp.original.name + '</td>'; // 직원의 이름
+				content += '<td>' + approvalEmp.original.department + '</td>';
+				content += '<td>' + approvalEmp.original.title + '</td>';
+				content += '</tr>';
+			});
+
+			
+			document.getElementById('approvalLineTable').innerHTML = content;
+			
+			/* [jeong] 결재라인에서 제외할 수 있도록 클릭 이벤트를 걸어둔다 */
+ 			approvalLine.forEach((approvalEmp, index) => {
+				const id = 'approvalEmp_' + index;
+				document.getElementById(id).addEventListener('click', function(e) {
+					const trTag = e.target.closest('tr');
+					removeIdx = parseInt(trTag.getAttribute('value'));
+					trTag.style.background = '#AEE6FF';
+				});
+			}); 
+		}
+		
+		/* [jeong] 선택한 결재자를 제외한다 */
+		function approvalRemove() {
+			if (removeIdx != 9999) {				
+				approvalLine.splice(removeIdx, 1);
+				drawApprovalTable();
+				removeIdx = 9999;
+			}
+		}
+		
+		/* [jeong] 결재자 지정 모달에서 취소버튼을 누르면 결재 라인을 비운다 */
+		function resetApprover() {
+			approvalLine = [];
+			drawApprovalTable();
+		}
+		
+		/* [jeong] 결재자 지정 모달에서 확인 버튼을 누르면 결재자 지정이 완료된다 */
     	function assignApprover() {
+    		console.log(approvalLine);
+    		if (approvalLine.length == 0) {
+    			Swal.fire('최소 한명의 결재자를 지정해야합니다.');
+    			return;
+    		}
+    		document.getElementById('ApprovalStatus').classList.add('active');
+    		const confirmBtn = document.getElementById('confirmBtn');
+    		confirmBtn.style.backgroundColor = 'purple';
+    		confirmBtn.style.borderColor = 'purple';
+    		confirmBtn.style.cursor = 'pointer';
+    		approvalStatus = true;
     	}
     </script>
 	<script>
 		/* [jeong] 서버에게 문서, 결재자 정보들을 묶어서 결재(문서)를 요청 */
 	    function documentWrite() {
+			if (approvalStatus == false) {
+				Swal.fire('결재자 지정을 먼저 해야합니다.');
+				return;
+			}
+			
 	    	// 작성한 내용은 담은 iframe 요소를 가져온다
 	        const iframe = document.getElementById('form-document');
 	        
@@ -511,13 +602,13 @@ iframe {
 	        const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
 	        // docuemnt 객체에 접근하여 input, textarea 태그들을 찾은 후 inputs 변수에 담는다
 	        const inputs = iframeDocument.querySelectorAll('input, textarea');
-	        // values 는 Key-value 형태로 태그의 이름과 값을 key-value 로 저장할 예정이다
-	        const values = {};
+	        // documentData 는 Key-value 형태로 태그의 이름과 값을 key-value 로 저장할 예정이다
+	        const documentData = {};
 	        
 	        // 문서에서 입력칸(input, textarea)들의 요소들을 반복문 돌린다
 	        for (const input of inputs) {
 	        	// 태그의 이름은 key, 값은 value 로 저장한다 
-	        	values[input.name] = input.value;
+	        	documentData[input.name] = input.value;
 	        	// textarea 태그는 value 로 저장하면 나중에 보이지 않기 때문에 textcontent 속성에 저장해야한다
 	        	if (input.tagName.toLowerCase() === 'textarea') {
 	            	input.textContent = input.value;	
@@ -526,14 +617,14 @@ iframe {
 	        	// 나중에 문서를 볼때 수정할 수 없게 설정한다
 	            input.setAttribute('readonly', 'true');
 	        }
-	        values['idxDc'] = ${idxDc}
+	        documentData['idxDc'] = ${idxDc};
 		
-	        // 
 	        const htmlTag = new Blob([iframeDocument.documentElement.outerHTML], {type: 'text/html'});
 	        const data = new FormData();
 	        data.append('file', htmlTag, 'document.html');
-	        data.append('json', JSON.stringify(values));
-	        console.log(data);
+	        data.append('documentData', JSON.stringify(documentData));
+	        data.append('approvalLine', JSON.stringify(approvalLine));
+	        
 	        fetch('/document/write.do', {
 	            method: 'POST',
 	            body: data
@@ -707,4 +798,6 @@ iframe {
 	</script>
 </body>
 </html>
+
+
 

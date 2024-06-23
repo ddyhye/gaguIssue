@@ -1,15 +1,11 @@
 package ko.gagu.issue.service;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,31 +41,37 @@ public class DocumentService {
 	
 	// [jeong] 직원이 작성한 문서를 파일로 filestore/document 에 저장하고 파일의 이름을 데이터베이스에 저장한다.
 	@Transactional(rollbackFor = Exception.class)
-	public void documentWrite(MultipartFile file, String json, int idxEmployee
-			, Map<String, Object> response) {
+	public void documentWrite(MultipartFile file, String documentData, String approvalLine, 
+			int idxEmployee ,Map<String, Object> response) {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		// 1. 데이터베이스에 저장할 문서의 정보를 DTO 에 담는다.
 		DocumentDTO documentDTO = new DocumentDTO();
 		
 		// 2. 클라이언트가 JSON 형태로 보내온것을 objectmapper 통해 변환한다.
-		Map<String, Object> jsonData = null;
-		
+		Map<String, Object> documentMap = null;
+		List<Map<String, String>> approvalLineList = null;
 		try {
-			jsonData = objectMapper.readValue(json, Map.class);
+			documentMap = objectMapper.readValue(documentData, Map.class);
+			approvalLineList = objectMapper.readValue(approvalLine, List.class);
 			documentDTO.setIdx_employee(idxEmployee);
-			documentDTO.setIdx_dc((int) jsonData.get("idxDc"));
-			documentDTO.setAp_content(json);
+			documentDTO.setIdx_dc((int) documentMap.get("idxDc"));
+			documentDTO.setAp_content(documentData);
+			logger.info("approvalLineList : {}", approvalLineList);
 		} catch (JsonProcessingException e) {
 			response.put("success", false);
 			return;
 		}
-		
+		logger.info("approvalLine : {}", approvalLine);
 		// 3. 데이터베이스에 문서 정보를 등록한다.
 		// 등록한 후 결재 문서 번호를 document_dto 필드에 저장한다.
 		logger.info("문서의 내용 documentDTO : {}", documentDTO);
 		dao.saveDocument(documentDTO);
 		int idxApproval = documentDTO.getIdx_approval();
+		for (var a : approvalLineList) {
+			logger.info("a : {}", a);
+		}
+		//dao.saveApprovalLine();
 		
 		// 4. 파일을 저장하고 데이터베이스에 저장한 문서의 경로(이름)을 저장한다.
 		// 파일을 실제로 서버에 저장한다. 그리고 그 파일의 이름을 file_name 에 저장한다.
@@ -86,32 +88,46 @@ public class DocumentService {
 		String formSrc = dao.getFormSrc(formName);
 		
 		// [jeong] 세션에서 로그인한 직원의 번호를 가져와야하지만 임시로 2로 설정하였음.
-		EmployeeDTO employee = dao.getEmployeeInfo(idxEmployee); 
-		Map<String,Object> temp = new HashMap<String, Object>();
-		temp.put("emp_name", employee.getEmp_name());
-		temp.put("title", employee.getTitle_name());
-		temp.put("department", employee.getDe_name());
-		temp.put("idx_employee", employee.getIdx_employee());
-		temp.put("year", du.getCurrentYear());
-		temp.put("month", du.getCurrentMonth());
-		temp.put("day", du.getCurrentDay());
-        // JSON 변환 및 예외 처리
+		EmployeeDTO employeeDTO = dao.getEmployeeInfo(idxEmployee); 
+		Map<String,Object> employee = new HashMap<String, Object>();
+		employee.put("emp_name", employeeDTO.getEmp_name());
+		employee.put("title", employeeDTO.getTitle_name());
+		employee.put("department", employeeDTO.getDe_name());
+		employee.put("idx_employee", employeeDTO.getIdx_employee());
+		employee.put("year", du.getCurrentYear());
+		employee.put("month", du.getCurrentMonth());
+		employee.put("day", du.getCurrentDay());
+		
+        List<Map<String, String>> jstree = dao.getOrganization();
+        Map<String, String> rootNode = new HashMap<String, String>();
+        rootNode.put("type", "department");
+        rootNode.put("id", "gaguissue");
+        rootNode.put("parent", "#");
+        rootNode.put("text", "가구있수");
+        jstree.add(rootNode);
+        
+		logger.info("jstree : {}", jstree);
+		// JSON 변환 및 예외 처리
         ObjectMapper mapper = new ObjectMapper();
-        String json = "";
+        String employeeInfo = "";
+        String organization = "";
         try {
-            json = mapper.writeValueAsString(temp);
+        	employeeInfo = mapper.writeValueAsString(employee);
+            organization = mapper.writeValueAsString(jstree);
         } catch (Exception e) {
             e.printStackTrace();
         }
-		logger.info("employee : {}", employee.toString());
 		
 		mav.addObject("formSrc", formSrc);
 		mav.addObject("idxDc", formName);
-		mav.addObject("employeeInfo", json);
+		mav.addObject("employeeInfo", employeeInfo);
+		mav.addObject("employeeDTO", employeeDTO);
+		mav.addObject("organization", organization);
 		return mav;
 	}
 
 }
+
 
 
 

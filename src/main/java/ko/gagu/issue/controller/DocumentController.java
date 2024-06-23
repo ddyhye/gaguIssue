@@ -50,18 +50,22 @@ public class DocumentController {
 	
 	@PostMapping(value = "/document/write.do")
 	@ResponseBody
-	public Map<String, Object> documentWriteDo(@RequestParam("file") MultipartFile file, 
-			@RequestParam("json") String json, HttpSession session) {
-		logger.info("작성한 문서의 내용 json : {}", json);
+	public Map<String, Object> documentWriteDo(HttpSession session
+			,@RequestParam("file") MultipartFile file 
+			,@RequestParam("documentData") String documentData
+			,@RequestParam("approvalLine") String approvalLine ) {
+		logger.info("작성한 문서의 내용 documentData : {}", documentData);
 		logger.info("작성한 문서의 파일 객체 : {}", file);
 		Map<String, Object> response = new HashMap<>();
-		if (file == null || file.isEmpty() ||  !StringUtils.hasText(json)) {
+		if (file == null || file.isEmpty() 
+				|| !StringUtils.hasText(documentData) 
+				|| !StringUtils.hasText(approvalLine)) {
 			logger.info("문서 작성 중 오류 발생");
 			response.put("success", false);
 		} else {
 			// int idxEmployee = session.getAttribute("???");
 			int idxEmployee = 2;
-			document_service.documentWrite(file, json, idxEmployee, response);
+			document_service.documentWrite(file, documentData, approvalLine, idxEmployee, response);
 		}	
 		return response;
 	} 
