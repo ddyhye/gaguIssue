@@ -13,4 +13,8 @@ public interface MessageDAO {
 
 	MessageDTO lastContent(int idx_messageroom, int sender, int emp_id);
 
+	List<MessageDTO> messageList(int idx, String emp, String otherEmp);
+
+	// void messageRead(int idx, String emp, String otherEmp);
+
 }
