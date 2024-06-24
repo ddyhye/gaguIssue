@@ -1,5 +1,8 @@
 package ko.gagu.issue.service;
 
+import java.util.HashMap;import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -10,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ko.gagu.issue.dao.LogiDepartmentDAO;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.LogiDeptDTO;
 
 @Service
 public class LogiDepartmentService {
@@ -30,11 +34,15 @@ public class LogiDepartmentService {
 	public ModelAndView inventoryList(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
-		// 인벤토뤼,,
-		
 		mav.setViewName("/logisticsDepartment/inventoryList");
 		
 		return mav;
+	}
+	public Map<String, Object> inventoryListDrow(Map<String, Object> map) {		
+		List<LogiDeptDTO> list = logiDeptDao.inventoryListDrow();
+		map.put("list",list);
+		
+		return map;
 	}
 
 	
@@ -50,4 +58,8 @@ public class LogiDepartmentService {
 		
 		return emp;
 	}
+
+
+
+	
 }

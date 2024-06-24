@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ko.gagu.issue.dao.LogiDepartmentDAO">
+	
+	
+	<!-- 인벤토리 리스트 그리그 -->
+	<select id="inventoryListDrow" resultType="logi">
+		SELECT it.idx_product , 
+				pct.category ,
+				pt.product_name ,
+				ct.client_name ,
+				it.current_stock ,
+				pt.minimum_stock 
+		FROM product_tb pt 
+			JOIN client_tb ct ON ct.idx_business = pt.idx_business 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+			JOIN inventory_tb it ON it.idx_product = pt.idx_product
+		ORDER BY it.idx_product
+	</select>
+	
+	
+
+
+</mapper>

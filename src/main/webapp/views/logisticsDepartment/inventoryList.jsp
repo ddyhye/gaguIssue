@@ -42,12 +42,16 @@
     <!-- [do] css 추가 -->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/inventoryList.css'/>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css'/>" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     
     
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+  	
+  	<!-- J-Query -->
+  	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -101,86 +105,69 @@
                   <div class="card-body">
                   	<div class="card-header do-flexdirection-row">
 			          <h4>Inventory</h4>
-			          <div class="do-rightfixed"> 
-                        <a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>연차신청</a>
-                      </div>
 			        </div>
 			        
 			        
-                    <div class="memberM-top">
-		   			<div class="memberM-top-search">
-		   				<h4>회원명&nbsp;&nbsp;</h4>
-		   				<input type="text" name="memberSearch" id="memberSearch" placeholder="회원 이메일 또는 닉네임 입력..."/>
-		   				<div id="memberSearchBtn">검색</div>
-		   			</div>
-		   			<div class="memberM-top-option">
-		   				<div class="memberM-top-option-skip">
-		   					<p>옵션&nbsp;</p>
-		   					<i class="fa-solid fa-caret-down"></i>
-		   					<i class="fa-solid fa-caret-up"></i>
-		   				</div>
-		   				<div class="memberM-top-option-detail">
-		   					<!-- <div class="memberM-top-option-detail-gender">
-		   						<div class="memberM-top-option-detail-head">
-			   						<p>&nbsp;성별&nbsp;</p>
-		   						</div>
-		   						<input type="checkbox" name="genderOption" class="genderOption" id="genderOption1" checked/>전체&nbsp;&nbsp; 
-								<input type="checkbox" name="genderOption" class="genderOption" id="genderOption2"/>남자&nbsp;&nbsp;
-		   						<input type="checkbox" name="genderOption" class="genderOption" id="genderOption3"/>여자&nbsp;&nbsp;
-		   					</div> -->
-		   					<div class="memberM-top-option-detail-warning">
-		   						<div class="memberM-top-option-detail-head">
-			   						<p>&nbsp;경고 횟수&nbsp;</p>
-		   						</div>
-		   						<select name="warningOption" id="warningOption">
-									<option value="all">전체</option>
-									<option value="0">0</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-								</select>
-		   					</div>
-		   					<div class="memberM-top-option-detail-memberState">
-		   						<div class="memberM-top-option-detail-head">
-			   						<p>&nbsp;계정 상태&nbsp;</p>
-		   						</div>
-		   						<input type="radio" name="memberStateOption" value="all" class="memberStateOption" id="memberStateOption1" checked/><label for="memberStateOption1">전체</label>&nbsp;&nbsp;
-								<input type="radio" name="memberStateOption" value="periodStop" class="memberStateOption" id="memberStateOption2"/><label for="memberStateOption2">기간 정지</label>&nbsp;&nbsp;
-		   						<input type="radio" name="memberStateOption" value="stop" class="memberStateOption" id="memberStateOption3"/><label for="memberStateOption3">영구 정지</label>&nbsp;&nbsp;
-		   						<input type="radio" name="memberStateOption" value="dormant" class="memberStateOption" id="memberStateOption4"/><label for="memberStateOption4">휴먼 계정</label>&nbsp;&nbsp;
-		   						<input type="radio" name="memberStateOption" value="secession" class="memberStateOption" id="memberStateOption5"/><label for="memberStateOption5">탈퇴 계정</label>&nbsp;&nbsp;
-		   					</div>
-		   				</div>
-		   			</div>
-		   			<div class="memberM-top-optionReset">
-		   				<i class="fa-solid fa-rotate-left"></i><p>&nbsp;옵션 초기화</p>
-		   			</div>
-		   		</div>
+                    <div class="list-product-header">
+                      <div class="do-annual-header-left">
+                      	<div class="do-left-search">
+	                      	<input type="text" name="memberSearch" id="memberSearch" placeholder="제품번호 또는 제품명..."/>
+	                      	<i class="fa-solid fa-magnifying-glass"></i>
+                      	</div>
+                      	<div class="do-left-category1">
+	                      	<p class="do-bold do-p-darkgray do-pCategory">카테고리&nbsp;</p>
+	                      	<div class="datatable-top do-pCategoryyy">
+	                      		<div class="datatable-dropdown">
+	                      			<label>
+	                      				<select class="datatable-selector">
+	                      					<option value="2024">2024</option>
+	                      				</select>
+	                      			</label>
+	                      		</div>
+	                      	</div>
+	                    </div>
+                      	<div class="do-left-category2">
+	                      	<p class="do-bold do-p-darkgray do-margin">발주처&nbsp;</p>
+	                      	<div class="datatable-top do-pCategoryyy">
+	                      		<div class="datatable-dropdown">
+	                      			<label>
+	                      				<select class="datatable-selector">
+	                      					<option value="2024">2024</option>
+	                      				</select>
+	                      			</label>
+	                      		</div>
+	                      	</div>
+	                    </div>
+                      </div>
+                      <div class="do-annual-header-right">
+                      	<div class="do-rightfixed"> 
+	                        <a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>재고부족</a>
+	                    </div>
+                      </div>
+                    </div>
                     
                     
                     <div class="list-product">
                       <table class="table do-table">
                         <thead> 
                           <tr> 
-                            <th class="do-table-no">No</th>
-                            <th class="do-table-1">사용 연차 기간</th>
-                            <th class="do-table-2">사용 연차 일수</th>
-                            <th class="do-table-3">연차 내용</th>
+                            <th class="do-table-1">제품번호</th>
+                            <th class="do-table-2">카테고리</th>
+                            <th class="do-table-3">제품명</th>
+                            <th class="do-table-4">수주처</th>
+                            <th class="do-table-5">현재 재고</th>
+                            <th class="do-table-6">안전 재고</th>
                           </tr>
                         </thead>
-                        <tbody class= "do-annual-history"> 
-                          <!-- <tr>
+                        <tbody class= "do-inventory"> 
+                          <tr>
                           	<td class="do-table-td1">1</td>
-                          	<td class="do-table-td2">2024-06-13 ~ 2024-06-14</td>
-                          	<td class="do-table-td3">2</td>
-                          	<td class="do-table-td4"><button>상세보기</button></td>
-                          </tr> -->
+                          	<td class="do-table-td2">침대</td>
+                          	<td class="do-table-td3">무한 침대</td>
+                          	<td class="do-table-td4">(주)무한상사</td>
+                          	<td class="do-table-td5">2</td>
+                          	<td class="do-table-td6">5</td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -286,67 +273,57 @@
 	});
 
 
-
-
 	listCall();
+	
 
 	// 물품 리스트 출력
 	function listCall() {
 		$.ajax({
 			type: 'post',
-			url: '<c:url value="/annualList.ajax"/>',
+			url: '<c:url value="/inventoryList.ajax"/>',
 			data: {
 			},
 			dataType: 'JSON',
 			success: function(data) {
-				drawHistory(data);
+				drawInventoryList(data);
 			}, error: function(error) {
 				console.log(error);
 			}
 		});
 	}
 	// drawHistory 함수 : 히스토리 그리기
-	function drawHistory(data) {
-		$('.do-annual-history').empty();
+	function drawInventoryList(data) {
+		$('.do-inventory').empty();
 		
 		var content = '';
-		var no = 1;
-		
-		/*
-		<tr>
-        	<td class="do-table-td1">1</td>
-        	<td class="do-table-td2">2024-06-13 ~ 2024-06-14</td>
-        	<td class="do-table-td3">2</td>
-        	<td class="do-table-td4"><button>상세보기</button></td>
-        </tr>
-		*/
-		//lu_start_date lu_end_date
-		if (!data.empLhistory || data.empLhistory.length === 0) {
-			content += '<tr><td colspan="4">연차 사용 내역이 없습니다...</td></tr>';
+
+		if (!data.list || data.list.length === 0) {
+			content += '<tr><td colspan="6">현재 보유중인 재고가 없습니다...</td></tr>';
 		}
-		for (item of data.empLhistory) {
+		for (item of data.list) {
 			content += '<tr>';
 			content += '<td class="do-table-td1">';
-			content += no;
-			no++;
+			content += item.idx_product;
 			content += '</td>';
 			content += '<td class="do-table-td2">';
-			content += item.lu_start_date;
-			content += ' ~ ';
-			content += item.lu_end_date;
+			content += item.category;
 			content += '</td>';
 			content += '<td class="do-table-td3">';
-			content += item.lu_usage_days;
+			content += item.product_name;
 			content += '</td>';
-			content += '<td class="do-table-td4"><button>상세보기</button></td>';
+			content += '<td class="do-table-td4">';
+			content += item.client_name;
+			content += '</td>';
+			content += '<td class="do-table-td5">';
+			content += item.current_stock;
+			content += '</td>';
+			content += '<td class="do-table-td6">';
+			content += item.minimum_stock;
+			content += '</td>';
 			content += '</tr>';
-			
-			/* dateStr = DateToString(item.reg_date);
-			content += '<span id="dateStr">'+dateStr+'&nbsp;</span>';
-			content += '</div></div></div>'; */
 		}
 		
-		$('.do-annual-history').append(content);
+		$('.do-inventory').append(content);
 	}
 	// timestamp 형식인 거 문자열로 변환하는 함수
 	function DateToString(timesteamp){

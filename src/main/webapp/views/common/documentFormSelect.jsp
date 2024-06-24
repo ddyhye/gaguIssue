@@ -80,12 +80,12 @@
 			<!-- Page Sidebar Start-->
 			<%@ include file="../main/common_sidebar.jsp"%>
 			<!-- Page Sidebar Ends-->
-			<div class="page-body">
+			<div class="page-body" style="padding: 30 50 0 30;">
 				<!-- Container-fluid starts-->
 				<div class="container-fluid default-dashboard">
 					<div class="row h-100">
-						<!-- jeong : 문서 작성 사이드바 시작 -->
-						<div class="col-2 sidebar-left-wrapper">
+						<!-- jeong : 사이드바 시작 -->
+						<div class="col-2 sidebar-left-wrapper" style="padding-right: 24px;">
 							<ul class="sidebar-left-icons nav nav-pills" id="add-product-pills-tab" role="tablist">
 								<li class="nav-item"><a class="nav-link active">
 										<div class="nav-rounded">
@@ -115,29 +115,29 @@
 										<div class="nav-rounded">
 											<div class="product-icons">
 												<svg class="stroke-icon">
-                                   				<use href="/assets/svg/icon-sprite.svg#attchment"></use>
+                                    			<use href="/assets/svg/icon-sprite.svg#fill-user"></use>
                                   			</svg>
 											</div>
 										</div>
 										<div class="product-tab-content">
-											<h5>참고 자료 첨부</h5>
+											<h5>결재자 지정</h5>
 										</div>
-								</a></li>
+								</a></li>								
 								<li class="nav-item"><a class="nav-link">
 										<div class="nav-rounded">
 											<div class="product-icons">
 												<svg class="stroke-icon">
-                                    			<use href="/assets/svg/icon-sprite.svg#print"> </use>
+                                    			<use href="/assets/svg/icon-sprite.svg#orders"> </use>
                                   			</svg>
 											</div>
 										</div>
 										<div class="product-tab-content">
-											<h5>작성 완료</h5>
+											<h5>결재 요청</h5>
 										</div>
 								</a></li>
 							</ul>
 						</div>
-						<!-- jeong : 문서 작성 사이드바 끝 -->
+						<!-- jeong : 사이드바 끝 -->
 
 						<!-- jeong : 양식 선택 시작 -->
 
@@ -268,6 +268,16 @@
 	<script>
 		new WOW().init();
 	</script>
+		<script>
+		/* [jeong] 헤더와 page-body 의 간격이 벌어져서 스크립트로 맞춤 */
+	    var pageHeader = document.querySelector('.page-header');
+	    var pageBody = document.querySelector('.page-body');
+	
+	    if (pageHeader && pageBody) {
+	        var headerHeight = pageHeader.offsetHeight;
+	        pageBody.style.marginTop = headerHeight + 'px';
+	    }  
+    </script>
 	<script>
 		var msg = '${msg}';
 		if (msg != '') {
