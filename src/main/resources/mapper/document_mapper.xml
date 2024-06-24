@@ -25,6 +25,12 @@
 		INSERT INTO approval_tb (idx_employee, idx_dc, ap_content) 
 			VALUES (#{idx_employee}, #{idx_dc}, #{ap_content})
 	</insert>
+
+	<!-- [jeong] 문서의 작성자와 양식 번호 내용을 approval 테이블에 저장 -->
+	<insert id="saveApprovalLine">
+		INSERT INTO approval_line_tb (idx_approval, idx_employee, sequence) 
+			VALUES (#{idx_approval}, #{idx_employee}, #{sequence})
+	</insert>
 	
 	<!-- [jeong] 작성한 문서의 파일 이름을 filestore 테이블에 저장 -->
 	<insert id="saveDocumentFile">

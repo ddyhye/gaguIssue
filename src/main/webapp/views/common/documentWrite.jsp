@@ -146,6 +146,7 @@ iframe {
 	display: none;
 }
 .seectionBorder {
+	width: 100%;
 	border: 1px solid black;
 }
 </style>
@@ -330,7 +331,7 @@ iframe {
 		</div>
 		<!-- [jeong] : 결재재 지정 모달 시작 -->
 		<div class='modal fade' id="approverModal" role='dialog'>
-			<div class='modal-dialog modal-sm' role='document'style="width: 50%;top: 10%;height: 525px;">
+			<div class='modal-dialog' role='document' style="top: 10%;height: 525px;max-width: 1200px;">
 				<div class='modal-content' style="height: 100%">
 					<div class='modal-header'>
 						<h5 class='modal-title' id='approverModalLabel'>결재자 지정</h5>
@@ -352,8 +353,8 @@ iframe {
 						</div>
 						<!-- 버튼 -->
 						<div class="col-1 d-flex flex-column align-items-center justify-content-center">
-							<button type='button' class='btn btn-primary' onClick="approvalAdd()">추가</button>
-							<button type='button' class='btn btn-primary' onClick="approvalRemove()" style="margin-top: 10px;">제외</button>
+							<button type='button' class='btn btn-primary' onClick="approvalAdd()" style="width:100px;">추가</button>
+							<button type='button' class='btn btn-primary' onClick="approvalRemove()" style="width:100px;margin-top: 10px;">제외</button>
 						</div>
 						<!-- 결재라인 -->
 						<div class='col-7'>
@@ -454,6 +455,7 @@ iframe {
    		/* [jeong] 조직도 불러오기 */
    		var selectedEmp = 0;
    		var approvalLine = [];
+   		var confirmApprovalLine = [];
    		var removeIdx = 9999;
    		var approvalStatus = false;
    		
@@ -569,15 +571,25 @@ iframe {
 		/* [jeong] 결재자 지정 모달에서 취소버튼을 누르면 결재 라인을 비운다 */
 		function resetApprover() {
 			approvalLine = [];
+			confirmApprovalLine = [];
 			drawApprovalTable();
+    		document.getElementById('ApprovalStatus').classList.remove('active');
+    		const confirmBtn = document.getElementById('confirmBtn');
+    		console.log(confirmBtn);
+    		confirmBtn.style.cssText = 'background-color: gray !important; border-color: gray !important; cursor: default;';
+    		approvalStatus = false;
 		}
 		
 		/* [jeong] 결재자 지정 모달에서 확인 버튼을 누르면 결재자 지정이 완료된다 */
     	function assignApprover() {
-    		console.log(approvalLine);
     		if (approvalLine.length == 0) {
     			Swal.fire('최소 한명의 결재자를 지정해야합니다.');
     			return;
+    		}
+    		confirmApprovalLine = [];
+    		// 확정
+    		for (let i = 0; i < approvalLine.length; i++) {
+    		    confirmApprovalLine.push(parseInt(approvalLine[i].id));
     		}
     		document.getElementById('ApprovalStatus').classList.add('active');
     		const confirmBtn = document.getElementById('confirmBtn');
@@ -618,12 +630,26 @@ iframe {
 	            input.setAttribute('readonly', 'true');
 	        }
 	        documentData['idxDc'] = ${idxDc};
-		
+			
 	        const htmlTag = new Blob([iframeDocument.documentElement.outerHTML], {type: 'text/html'});
-	        const data = new FormData();
-	        data.append('file', htmlTag, 'document.html');
+	        var data = new FormData();
+	        
+/* 	        const attachment = getBlobs(uploadFiles);
+	        console.log(attachment);
+	        attachment.forEach((item, index) => {
+	        	console.log(item, index);
+	        	data.append('attachmentFiles', item.blob, item.name);
+	        }); */
+	        
+	        for (let i = 0; i < uploadFiles.length; i++) {
+	            const file = uploadFiles[i];
+	            data.append('attachmentFiles', file, file.name);
+	        }
+	        
+	        data.append('documentFile', htmlTag, 'document.html');
 	        data.append('documentData', JSON.stringify(documentData));
-	        data.append('approvalLine', JSON.stringify(approvalLine));
+	        data.append('approvalLine', JSON.stringify(confirmApprovalLine));
+	        console.log(data);
 	        
 	        fetch('/document/write.do', {
 	            method: 'POST',
@@ -632,7 +658,7 @@ iframe {
 	        .then(response => response.json())
 	        .then(data => {
 	        	if (data.success) {
-	        		window.location.href = '/document/attachment.go'; 
+	        		// window.location.href = '/document/attachment.go'; 
 	        	} else {
 	        		// 오류 메시지 뜨게 하기
 	        		Swal.fire({
@@ -650,6 +676,27 @@ iframe {
 	    		});
 	        });
 	    }
+		
+		function getBlobs(files) {
+	        // 파일들을 저장할 배열
+	        let blobs = [];
+
+	        // 파일들을 Blob으로 변환
+	        for (let i = 0; i < files.length; i++) {
+	            const file = files[i];
+	            const reader = new FileReader();
+	            
+	            reader.onload = function(event) {
+	                const arrayBuffer = event.target.result;
+	                const blob = new Blob([arrayBuffer], { type: file.type });
+	                blobs.push({'blob' :blob, 'name': file.name});
+	        	};
+
+	        	reader.readAsArrayBuffer(file);
+	        }
+	        console.log(blobs);
+	        return blobs;
+		}
 	</script>
 	<script>
 		/* [jeong] 파일 첨부, 목록 보여주기, 삭제 기능 */
@@ -721,7 +768,6 @@ iframe {
 	    }
 	    
 	    function drawFileList() {
-	    	console.log(uploadFiles);
 	    	let content = '';
 	    	let uploadFile_idx = 0;
 	    	content += '<div class="row" style="width:95%;padding: 5px;overflow-y: auto;max-height: 130px;">';

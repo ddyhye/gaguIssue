@@ -41,7 +41,7 @@ public class DocumentService {
 	
 	// [jeong] 직원이 작성한 문서를 파일로 filestore/document 에 저장하고 파일의 이름을 데이터베이스에 저장한다.
 	@Transactional(rollbackFor = Exception.class)
-	public void documentWrite(MultipartFile file, String documentData, String approvalLine, 
+	public void documentWrite(MultipartFile documentFile, String documentData, String approvalLine, 
 			int idxEmployee ,Map<String, Object> response) {
 		ObjectMapper objectMapper = new ObjectMapper();
 
@@ -50,7 +50,7 @@ public class DocumentService {
 		
 		// 2. 클라이언트가 JSON 형태로 보내온것을 objectmapper 통해 변환한다.
 		Map<String, Object> documentMap = null;
-		List<Map<String, String>> approvalLineList = null;
+		List<Integer> approvalLineList = null;
 		try {
 			documentMap = objectMapper.readValue(documentData, Map.class);
 			approvalLineList = objectMapper.readValue(approvalLine, List.class);
@@ -68,14 +68,14 @@ public class DocumentService {
 		logger.info("문서의 내용 documentDTO : {}", documentDTO);
 		dao.saveDocument(documentDTO);
 		int idxApproval = documentDTO.getIdx_approval();
-		for (var a : approvalLineList) {
-			logger.info("a : {}", a);
+		// 지정한 결재자 라인을 approval_line_tb 테이블에 저장한다
+		for (int sequence = 0; sequence < approvalLineList.size(); sequence++) {
+			dao.saveApprovalLine(idxApproval, approvalLineList.get(sequence), sequence);
 		}
-		//dao.saveApprovalLine();
 		
 		// 4. 파일을 저장하고 데이터베이스에 저장한 문서의 경로(이름)을 저장한다.
 		// 파일을 실제로 서버에 저장한다. 그리고 그 파일의 이름을 file_name 에 저장한다.
-		String fileName = fm.saveFile(file, "document");
+		String fileName = fm.saveFile(documentFile, "document");
 		
 		// 5. 저장한 파일의 유형, 파일의 참조 번호, 저장한 파일의 경로(이름) 를 데이터베이스에 저장한다.
 		dao.saveDocumentFile(4, idxApproval, fileName);
