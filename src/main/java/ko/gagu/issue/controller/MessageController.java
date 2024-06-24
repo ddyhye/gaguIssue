@@ -41,5 +41,24 @@ public class MessageController {
 			int emp_id = 1;
 			
 			return messageService.roomListCallAjax(emp_id);
+		
 		}
+		
+		
+		
+		// 대화 내용 요청 ajax
+		@RequestMapping(value = "/messageCall.ajax", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> messageCallAjax(int idx, String emp, String otherEmp){
+			logger.info("{}번 게시물, {}가 요청", idx, emp);
+			return messageService.messageCallAjax(idx, emp, otherEmp);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 }

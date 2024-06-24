@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -39,44 +41,39 @@ public class BoardService {
         String page = "boardWrite";
 
         BoardDTO dto = new BoardDTO();
-        dto.setIs_notice(false);
+        dto.setIs_notice(Boolean.parseBoolean(param.get("is_notice")));
         dto.setPo_title(param.get("po_title"));
         dto.setPo_content(param.get("po_content"));
-        dto.setWriter(0);
-
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         dto.setWritten_datetime(currentTimestamp);
         dto.setPo_view_count(0);
 
-        // 1 게시글 데이터베이스에 넣기
-        
-
+        // 게시글을 데이터베이스에 삽입
         int result = boardDao.insertBoard(dto);
-     // 2 게시글 번호를 가져오기
-        int post_id = dto.getPost_id();
-        // 3 파일 저장한 후 저장한 파일 이름 가져오기
-        // 4 게시글 번호, 오리진 네임, 뉴 파일네임 으로 filestore 테이블에 넣기
-        // 4-1 파일 객체에서 오리진 네임 꺼내오기
+        int post_id = dto.getPost_id(); // 게시글 ID 가져오기
+
         try {
             if (file != null && !file.isEmpty()) {
-                String storedFileName = storeFile(file);
-                int fileIdx = saveFileInfoToDatabase(post_id, file.getOriginalFilename(), storedFileName);
+                String storedFileName = storeFile(file); // 파일 저장
+                int fileIdx = saveFileInfoToDatabase(post_id, file.getOriginalFilename(), storedFileName); // 파일 정보 데이터베이스에 저장
+                // 게시글에 파일 인덱스 업데이트
                 dto.setIdx_file(fileIdx);
+                //boardDao.updateBoardFile(post_id, fileIdx);
             } else {
                 dto.setIdx_file(null); 
             }
         } catch (IOException e) {
             logger.error("파일 업로드 중 오류 발생: " + e.getMessage());
         }
-        
+
         if (result > 0) {
             logger.info("게시글 작성 성공");
             rAttr.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다.");
-            mav.setViewName("redirect:/boardlist.go");
+            mav.setViewName("common/board");
         } else {
             logger.error("게시글 작성 실패");
             rAttr.addFlashAttribute("message", "게시글 작성에 실패하였습니다.");
-            mav.setViewName("redirect:/boardwrite.go");
+            mav.setViewName("common/boardWrite");
         }
 
         return mav;
@@ -137,5 +134,9 @@ public class BoardService {
 
     private int saveFileInfoToDatabase(int post_id, String origin_name, String file_name) {
         return boardDao.insertFile(post_id, origin_name, file_name);
+    }
+
+    public List<BoardDTO> getBoardList() {
+        return boardDao.selectBoardList(); 
     }
 }

@@ -11,7 +11,7 @@ import ko.gagu.issue.dto.EmployeeDTO;
 public interface EmployeeDAO {
 
 
-	List<EmployeeDTO> employeeGetAllEvents();
+	List<EmployeeDTO> employeeGetAllEvents(Integer idx_employee);
 	
 	void employeeAddEvent(EmployeeDTO employee);
 
@@ -23,5 +23,7 @@ public interface EmployeeDAO {
 
 
 	String findPW(String emp_id, String emp_name, String birthDate);
+
+	void employeeDeleteEvent(int idx_employee, int idx_emp_calendar);
 
 }

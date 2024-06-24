@@ -6,14 +6,18 @@
 <mapper namespace="ko.gagu.issue.dao.EmployeeDAO">
 	
 	<select id="employeeGetAllEvents" resultType="employee">
-		SELECT * FROM employee_calendar_tb
+		SELECT * FROM employee_calendar_tb WHERE idx_employee=#{param1} and ec_status='SHOW'
 	</select>
 	
 	<insert id="employeeAddEvent" parameterType="employee">
 		INSERT INTO employee_calendar_tb
-			(ec_title,ec_description,ec_start_datetime,ec_end_datetime,ec_color)
-		VALUES (#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},#{ec_color})
+			(idx_employee,ec_title,ec_description,ec_start_datetime,ec_end_datetime,ec_color)
+		VALUES (2,#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},#{ec_color})
 	</insert>
+	
+	<update id="employeeDeleteEvent">
+		UPDATE employee_calendar_tb SET ec_status='SHOW' WHERE idx_employee=#{param1} and idx_emp_calendar=#{param2}	
+	</update>
 	
 	<select id="login" resultType="String">
 		SELECT emp_pw FROM employee_tb WHERE emp_id = #{param1}
@@ -21,7 +25,7 @@
 	
 	<insert id="join" parameterType="map">
 		INSERT INTO employee_tb (idx_employee,idx_department,idx_title,emp_id,emp_pw,emp_name,emp_status,emp_email,emp_email_pw,emp_phone_number,emp_birth_date,emp_hire_date,emp_term_date,emp_address,first_login)
-			VALUES (#{idx_employee},#{idx_department},#{idx_title},#{emp_id},#{emp_pw},#{emp_name},#{emp_status},#{emp_email},#{emp_email_pw},#{emp_phone_number},#{emp_birth_date},#{emp_hire_date},#{emp_term_date},#{emp_address},#{first_login})
+			VALUES (2,#{idx_department},#{idx_title},#{emp_id},#{emp_pw},#{emp_name},#{emp_status},#{emp_email},#{emp_email_pw},#{emp_phone_number},#{emp_birth_date},#{emp_hire_date},#{emp_term_date},#{emp_address},#{first_login})
 	</insert>
 	
 	 <select id="findEmployeeNumber" parameterType="map" resultType="string">

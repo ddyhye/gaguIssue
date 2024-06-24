@@ -38,21 +38,42 @@ public class EmployeeController {
 	
 	@GetMapping(value="/employee/getAllEvents.ajax")
 	@ResponseBody
-	public Map<String, Object> employeeGetAllEvents(){
+	public Map<String, Object> employeeGetAllEvents(Integer idx_employee){
 		logger.info("getAllEvenets진입");
+		logger.info("idx_employee:{}",idx_employee);
 		Map<String, Object>response = new HashMap<String, Object>();
-		employeeService.employeeGetAllEvents(response);
-		logger.info("response : {}"+response);
+		employeeService.employeeGetAllEvents(response,idx_employee);
+		logger.info("response : {}",response);
 		return response;
 	}
 	
 	@PostMapping(value="/employee/addEvent.ajax")
 	@ResponseBody
 	public Map<String, Object>employeeAddEvent(@RequestBody EmployeeDTO employee){
-		Map<String, Object>response = new HashMap<String, Object>();
-		logger.info("response : {}"+response);
+		logger.info("addevent에 진입했습니다.");
+		Map<String, Object>response = new HashMap<String, Object>();		
 		employeeService.employeeAddEvent(employee);
+		logger.info("response : {}",response);
 		return response;
+	}
+	
+	@PostMapping(value="/employee/updateEvent.ajax")
+	@ResponseBody
+	public Map<String, Object>employeeUpdateEvent(@RequestParam Map<String, Object>param,Integer idx_emp_calendar){
+		logger.info("updateEvent 진입");
+		logger.info("idx_emp_calendar : {}",idx_emp_calendar);
+		logger.info("param : {}",param);
+		Map<String, Object>response=new HashMap<String, Object>();
+		
+		return response;
+	}
+	
+	@PostMapping(value="/employee/deleteEvent.ajax")
+	@ResponseBody
+	public void employeeDeleteEvent(Integer idx_employee,Integer idx_emp_calendar) {
+		logger.info("idx_employee : {}",idx_employee);
+		logger.info("idx_emp_calendar : {}",idx_emp_calendar);
+		employeeService.employeeDeleteEvent(idx_employee,idx_emp_calendar);
 	}
 	
 	

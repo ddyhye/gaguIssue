@@ -21,4 +21,6 @@ public interface DocumentDAO {
 
 	List<Map<String, String>> getOrganization();
 
+	void saveApprovalLine(int idx_approval, Integer idx_employee, int sequence);
+
 }

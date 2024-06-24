@@ -46,6 +46,12 @@
       width: 85%; /* 모달이 설정된 너비를 사용하도록 합니다 */
       max-height: 70vh; /* 원하는 높이를 설정합니다 */
     }
+    
+    .badge {
+		    padding: 0.25em 1.5em;
+		    font-family: "Outfit", sans-serif, sans-serif;
+		    font-weight: 500;
+		}
 	</style>
   </head>
   <body> 
@@ -72,7 +78,7 @@
 				        <div class="left-sidebar-chat">
 				          <div class="input-group">
 				            <span class="input-group-text"><i class="search-icon text-gray" data-feather="search"></i></span>
-				            <input class="form-control" type="text" placeholder="Search here">
+				            <input class="form-control" type="text" placeholder="대화방 검색">
 				          </div>
 				        </div>
 				        <div class="advance-options">
@@ -87,8 +93,8 @@
 				                <div class="header-top"><a class="btn badge-light-primary f-w-500" href="#!"><i class="fa fa-plus"></i></a></div>
 				              </div>
 				              <ul class="chats-user">
-				              <!-- 
-				                <li class="common-space">
+				               
+				                <li class="common-space" onclick="messagecal()">
 				                  <div class="chat-time">
 				                    <div class="active-profile">
 				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
@@ -104,7 +110,7 @@
 				                    <div class="badge badge-light-success">15</div>
 				                  </div>
 				                </li>
-				               -->
+				               
 				              </ul>
 				            </div>
 				            <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
@@ -261,7 +267,7 @@
 				                  </div>
 				                </div>
 				              </div>
-				              <input class="msger-input two uk-textarea" type="text" placeholder="Type Message here">
+				              <input class="msger-input two uk-textarea" type="text" placeholder="보내실 쪽지를 입력해주세요.">
 				              <div class="open-emoji">
 				                <div class="second-btn uk-button"></div>
 				              </div>

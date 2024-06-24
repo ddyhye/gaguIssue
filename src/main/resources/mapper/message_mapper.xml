@@ -5,7 +5,7 @@
 
 <mapper namespace="ko.gagu.issue.dao.MessageDAO">
 	
-	<select id="roomList" resultType="String">
+	<select id="roomList" resultType="message">
 		SELECT
 	    mt.idx_messageroom, 
 	    IF (mt.receiver = #{param1}, mt.sender, mt.receiver) AS other_emp,  
@@ -38,6 +38,35 @@
 	</select>
 	
 	
+	<select id="lastContent" resultType="message">
+		SELECT mht.msg_content AS content, mht.send_datetime
+		FROM message_history_tb mht, messageroom_tb mt 
+	 WHERE mht.idx_messageroom = mt.idx_messageroom AND mht.idx_messageroom = #{param1}
+	 	AND mt.receiver IN (#{param2},#{param3})
+	 	AND mt.sender IN (#{param2},#{param3})
+	 	AND ((mt.receiver=#{param3} AND mt.is_receiver_exit='N') OR (mt.sender=#{param3} and mt.is_sender_exit='n'))
+	 	ORDER BY mht.send_datetime DESC LIMIT 1
+	</select>
+	
+	
+	<select id="messageList" resultType="message">
+		SELECT
+		mht.idx_message
+		,IF (mht.receiver = #{param2}, mht.sender, mht.receiver) AS other_emp
+		,(SELECT et.emp_name FROM employee_tb et WHERE et.idx_employee = other_emp) AS other_name
+		,mht.msg_content as content
+		,mht.send_datetime
+		,mht.receiver 
+		,mht.sender
+		,mt.is_sender_exit 
+		,mt.is_receiver_exit 
+		,mht.is_receiver_read 
+	FROM messageroom_tb mt, message_history_tb mht  
+	WHERE mt.idx_messageroom = mht.idx_messageroom 
+	AND mht.idx_messageroom = #{param1}
+	AND (mt.receiver IN(#{param2},#{param3}))
+	AND (mt.sender IN(#{param2},#{param3}))
+	</select>
 
 
 </mapper>
