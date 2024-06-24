@@ -5,12 +5,16 @@
 <mapper namespace="ko.gagu.issue.dao.DocumentDAO">
 	<!-- [jeong] 문서 양식 번호를 입력하면 해당 양식의 파일 경로를 조회 -->
 	<select id="getFormSrc" resultType="String">
-		SELECT file_name FROM filestore_tb ft WHERE idx_filetype = 5 AND idx_ref = #{form_name};
+		SELECT file_name AS fileName FROM filestore_tb ft WHERE idx_filetype = 5 AND idx_ref = #{form_name};
 	</select>
 	
 	<!-- [jeong] 임시로 직원의 정보를 불러옴 무조건 지워야함!!! -->
 	<select id="getEmployeeInfo" resultType="employee">
-		SELECT * FROM employee_tb WHERE emp_name = '김정원';
+		SELECT 
+			*,
+			(SELECT de_name FROM department_tb d WHERE d.idx_department = e.idx_department) AS de_name,
+			(SELECT title_name FROM title_tb t WHERE t.idx_title = e.idx_title) AS title_name
+		FROM employee_tb e WHERE idx_employee = #{idx_employee}
 	</select>
 	
 	<!-- [jeong] 문서의 작성자와 양식 번호 내용을 approval 테이블에 저장 -->
@@ -21,10 +25,47 @@
 		INSERT INTO approval_tb (idx_employee, idx_dc, ap_content) 
 			VALUES (#{idx_employee}, #{idx_dc}, #{ap_content})
 	</insert>
+
+	<!-- [jeong] 문서의 작성자와 양식 번호 내용을 approval 테이블에 저장 -->
+	<insert id="saveApprovalLine">
+		INSERT INTO approval_line_tb (idx_approval, idx_employee, sequence) 
+			VALUES (#{idx_approval}, #{idx_employee}, #{sequence})
+	</insert>
 	
 	<!-- [jeong] 작성한 문서의 파일 이름을 filestore 테이블에 저장 -->
 	<insert id="saveDocumentFile">
 		INSERT INTO filestore_tb (idx_filetype, idx_ref, file_name)
 			VALUES (#{idx_filetype}, #{idx_ref}, #{file_name})
 	</insert>
+	
+	<!-- [jeong] jstree 에서 사용할 조직도를 조회 -->
+	<select id="getOrganization" resultType="map">
+		SELECT 
+		    'employee' AS type,
+		    et.idx_employee AS id, 
+		    CASE 
+		        WHEN root.de_name IS NULL THEN 'gaguissue'
+		        ELSE node.de_name 
+		    END AS parent, 
+		    CONCAT(tt.title_name, '|', et.emp_name) AS text,
+		    et.emp_name AS name,
+		    node.de_name AS department, 
+		    tt.title_name AS title
+		FROM employee_tb et 
+		JOIN organization_tb ot ON et.idx_department = ot.depart_idx
+		JOIN department_tb node ON node.idx_department = ot.depart_idx 
+		LEFT JOIN department_tb root ON root.idx_department = ot.root_depart_idx
+		JOIN title_tb tt ON tt.idx_title = et.idx_title
+			UNION ALL
+		SELECT 
+		    'department' AS type,
+		    dt.de_name AS id, 
+		    'gaguissue' AS parent, 
+		    dt.de_name AS text,
+		    NULL AS name,
+		    NULL AS department,   
+		    NULL AS title         
+		FROM department_tb dt 
+		WHERE dt.idx_department IN (2,3,4)
+	</select>	
 </mapper>

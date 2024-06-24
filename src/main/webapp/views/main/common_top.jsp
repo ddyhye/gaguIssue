@@ -2,20 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	<style>
-	    .modal-dialog {
-	      max-width: 85%; /* 원하는 너비를 설정합니다 */
-	      width: 85%; /* 모달이 설정된 너비를 사용하도록 합니다 */
-	      max-height: 70vh; /* 원하는 높이를 설정합니다 */
-    	}
+	    
+    	
 	</style>
 	
 	
-</head>
+</head> -->
 
 		<div class="header-wrapper col m-0">
           <div class="row">
@@ -135,31 +130,9 @@
                     </div>
                   </a>
                 </li>
-                <!-- 
-                <li class="onhover-dropdown">
-			    	<button type="button" class="btn btn-link" data-bs-toggle="modal"
-			    	 data-bs-target="#myModal" onclick="openMessageForm()">
-				      <div class="notification-box">
-				        <svg>
-				          <use href="../assets/svg/icon-sprite.svg#header-message"></use>
-				        </svg><span class="badge rounded-pill badge-info">3</span>
-				      </div>
-				    </button>
-//				     The Modal
-			<div class="modal" id="myModal" data-bs-backdrop="static">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-//			      외부 jsp 파일이 들어올 부분 
-			    </div>
-			  </div>
-			</div>
-			    </li>
-                 -->
+                
 				    
 			    
-			    
-                
-                
                 <!-- do: 직원서비스 -->
                 <li class="profile-nav onhover-dropdown px-0 py-0">
                   <div class="d-flex profile-media align-items-center"><img class="img-30" src="/assets/images/dashboard/profile.png" alt="">
@@ -190,13 +163,7 @@
               </div>
             </script>
             <script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
-            <!-- 
-            <script>
-            	function openMessageForm() {
-            		$('.modal-content').load("../noteMessage/noteMessage2.go");
-            	}            
-            </script>
-             -->
+            
              
              <script>
              $(document).ready(function() {
@@ -228,12 +195,10 @@
                  $.ajax({
                      url: '/getChatRooms',
                      method: 'POST',
-                     data: {
-                    	 
-                     },
                      dataType:'JSON',
                      success: function(data) {
-                         // 대화방 목록을 화면에 표시하는 로직
+                    	 console.log(data);
+                         //  대화방 목록을 화면에 표시하는 로직
                          drawRoomList(data);
                      },
                      error: function(error) {
@@ -243,20 +208,23 @@
                  });
              }
              
-             /* 
+              
+              
+             
              function drawRoomList(data) {
-         		$('#chats-user').empty();
+            	 console.log(data);
+         		$('.chats-user').empty();
          		var content = '';
          		if (!data.roomList || data.roomList.length === 0) {
-         			content += '<p> 대화방이 없습니다. </p>';
+         			content += '<p> 주고받은 쪽지가 없습니다. </p>';
          		}
          		
          		for (item of data.roomList) {
-         			content +=	'<li class="common-space">'; 
+         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\')">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
          			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
-         			content +=			'<div class="status bg-success"></div>';
+//         			content +=			'<div class="status bg-success"></div>';
          			content +=		'</div>';
          			content +=		'<div>';
          			content +=		'<span>'+item.name+'</span>';
@@ -264,28 +232,156 @@
          			content +=		'</div>';
          			content +=		'</div>';
          			content +=		'<div>';
-         			content +=		'<p>'+item.+'</p>';
-         			
+         			content +=		'<p>'+DateToString(item.reg_date)+'</p>';
+         			content +=      '<div class="badge badge-light-success">'+15+'</div>';
+         			content +=		'</div>';
+         			content +=		'</li>';
          			if (item.no_read > 0) {
          				content +=		'<div class="no-read"></div>';				
          			}
          			content +=	'</div>';	
          		}
          		
-         		$('#room-list').append(content);
+         		$('.chats-user').append(content);
          		
-         	    $('.room').click(function() {
-         	    	$('.room').css('background-color', 'white');
-         	        $(this).css('background-color', 'lightgray');
-         	    });
+         	  
          	}
          	
-             */
+             function viewRoomContent(idx, other_emp){
+         		// subjectCall(idx);
+         		var emp_id = 1;
+         		messageCall(idx, emp_id , other_emp);
+         		chat_idx = idx;
+         		chat_user = other_emp;
+         	}
              
              
+         	// 특정 방 message 출력
+         	function messageCall(idx, emp, otherEmp) {
+         		$.ajax({
+         			type: 'POST',
+         			url: './messageCall.ajax',
+         			data: {
+         				'idx': idx,
+         				'emp': emp,
+         				'otherEmp': otherEmp
+         			},
+         			dataType: 'JSON',
+         			success: function(data) {
+         				drawMessage(data);
+         			}, error: function(error) {
+         				console.log(error);
+         			}
+         		});
+         		
+         	}
+             
+            
+         	
+         	
+         	var checkDate;
+         	/* 대화 내용 출력 */
+         	function drawMessage(data) {
+        		var emp = 1;  // [jae]: 임의로 1 넣어둠 ${loginInfo.emp}
+        		var checkHours = 0;
+        		var checkMinutes = 0;
+        		
+        		$('.msger-chat').empty();
+	
+        		var content = '';
+
+        		if (!data.messageList || data.messageList.length === 0) {
+        			content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';	/* <p class="no-message">아무것도 없따... <i class="fa-solid fa-message"></i></p> */
+        		}
+        		for (item of data.messageList) {
+        			var date = new Date(item.send_datetime);
+        			var dateStr = date.toLocaleDateString("ko-KR");
+        			var hours = date.getHours();
+        			var minutes = date.getMinutes();
+        			
+        			//console.log(item.new_picname);
+        			
+        			
+        			
+        			if(emp === item.receiver) {
+        				content +=	'<div class="msg left-msg">';
+        				content +=		'<div class="msg-img"></div>';
+        				content +=		'<div class="msg-bubble">';
+        				content +=		'<div class="msg-info">';
+        				content +=		'<div class="msg-info-name">'+item.ohter_name+'</div>'; // 이름은 나중에 세션으로 가져오기
+        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
+        				content +=		'</div>';
+        				content +=		'<div class="msg-text">'+item.content+'</div>';
+        				content +=		'</div>';
+        			}
+        			
+        			else if (emp === item.sender) {
+        				content +=	'<div class="msg right-msg">';
+        				content +=		'<div class="msg-img"></div>';
+        				content +=		'<div class="msg-bubble">';
+        				content +=		'<div class="msg-info">';
+        				content +=		'<div class="msg-info-name">재민</div>'; // 이름은 나중에 세션으로 가져오기
+        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
+        				content +=		'</div>';
+        				content +=		'<div class="msg-text">'+item.content+'</div>';
+	        			content +=		'</div>';
+        			
+        			}
+	    				content +=		'</div>';
+	    				content +=		'</div>';
+        			/* 
+        				if(checkHours != hours || checkMinutes != minutes){
+        					content +=			'<img class="circle-img" src="/photo/'+data.profileImg+'" alt="상대방 프로필 사진">';
+        					content +=			'<div class="message-info">';
+        					content +=				'<p class="name">'+재민+'</p>'; 
+        					if (item.new_picname != null) content +=	'<img class="photo" src="/photo/'+item.new_picname+'" alt="'+item.message_idx+'번 쪽지 사진">';
+        					content +=				'<p class="content">'+item.content+'</p>';
+        					content +=			'</div>';
+        					checkHours = hours;
+        					checkMinutes = minutes;
+        				} else {
+        					content +=			'<div class="term"><p></p></div>';
+        					content +=			'<div class="message-info">';
+        					if (item.new_picname != null) content +=	'<img class="photo" src="/photo/'+item.new_picname+'" alt="'+item.message_idx+'번 쪽지 사진">';
+        					content +=				'<p class="content">'+item.content+'</p>';
+        					content +=			'</div>';
+        				}
+        				content +=		'</div>';
+        				content +=	'</div>';
+        			} else if (email === item.sender_email) {
+        				content +=	'<div class="send-msg-info" data-value="'+item.message_idx+'">';
+        				content +=		'<div class="size-cut">';
+        				content +=			'<div class="sendTime">';
+        				content +=				'<p>'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</p>';
+        				content +=			'</div>';
+        				content +=			'<div class="message-info">';
+        				if (item.new_picname != null) content +=	'<img class="photo" src="/photo/'+item.new_picname+'" alt="'+item.message_idx+'번 쪽지 사진">';
+        				content +=				'<p class="content">'+item.content+'</p>';
+        				content +=			'</div>';
+        				content +=		'</div>';
+        				content +=	'</div>';
+        			}
+        			*/
+        			
+        		}
+        		
+        		$('.msger-chat').append(content);
+         	}
+         	
+         	
+         	
+         	
+         	
+         	
              
              
-             
+            
+         	function DateToString(timesteamp){
+        		var date = new Date(timesteamp);
+        		var dateStr = date.toLocaleDateString("ko-KR");
+        		return dateStr;
+        	}
+            
              
              
              

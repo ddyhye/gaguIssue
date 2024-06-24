@@ -40,23 +40,34 @@ public class DocumentController {
 	}
 
 	@GetMapping(value = "/document/{form_name}/write.go")
-	public ModelAndView documentWriteGo(@PathVariable String form_name) {
+	public ModelAndView documentWriteGo(@PathVariable String form_name
+			,HttpSession session) {
 		logger.info("form_name : {}", form_name);
-		return document_service.getFormSrc(form_name);
+		// int idxEmployee = session.getAttribute("???");
+		int idxEmployee = 2;
+		return document_service.fetchFormTemplate(form_name, idxEmployee);
 	}
 	
 	@PostMapping(value = "/document/write.do")
 	@ResponseBody
-	public Map<String, Object> documentWriteDo(@RequestParam("file") MultipartFile file, 
-			@RequestParam("json") String json, HttpSession session) {
-		logger.info("작성한 문서의 내용 json : {}", json);
-		logger.info("작성한 문서의 파일 객체 : {}", file);
+	public Map<String, Object> documentWriteDo(@RequestParam("attachmentFiles") MultipartFile[] attachmentFiles
+			,@RequestParam("documentFile") MultipartFile documentFile 
+			,@RequestParam("documentData") String documentData
+			,@RequestParam("approvalLine") String approvalLine
+			,HttpSession session
+			 ) {
+		logger.info("작성한 문서의 내용 attachmentFiles : {}", attachmentFiles);
+		logger.info("작성한 문서의 파일 객체 documentfile : {}", documentFile);
 		Map<String, Object> response = new HashMap<>();
-		if (file == null || file.isEmpty() ||  !StringUtils.hasText(json)) {
+		if (documentFile == null || documentFile.isEmpty()
+				|| !StringUtils.hasText(documentData) 
+				|| !StringUtils.hasText(approvalLine)) {
 			logger.info("문서 작성 중 오류 발생");
 			response.put("success", false);
 		} else {
-			document_service.documentWrite(file, json, session, response);
+			// int idxEmployee = session.getAttribute("???");
+			int idxEmployee = 2;
+			document_service.documentWrite(documentFile, documentData, approvalLine, idxEmployee, response);
 		}	
 		return response;
 	} 

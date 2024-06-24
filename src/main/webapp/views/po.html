@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발주 주문서</title>
+    <style>
+        /* #d6d9e7 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .do-tContainer {
+            width: 800px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .no-border {
+            border: none;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+
+        .do-tbackColor {
+            background-color: #f0f0ff;
+        }
+        .do-tWidth0 {
+            width: 100px;
+        }
+        .do-tWidth1 {
+            width: 50px;
+        }
+        .do-tWidth2 {
+            width: 50px;
+        }
+        .do-none-border {
+            border-top: 1px solid white;
+            border-right: 1px solid white;
+        }
+
+        .do-tbWidth1 {
+            width: 5%;
+        }
+        .do-tbWidth2 {
+            width: 35%;
+        }
+        .do-tbWidth3 {
+            width: 10%;
+        }
+        .do-tbWidth4 {
+            width: 25%;
+        }
+        .do-tbWidth5 {
+            width: 25%;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="do-tContainer">
+        <h1>발주 주문서</h1>
+        <table>
+            <tr>
+                <td class="do-tWidth0 do-tbackColor">발주서 NO</td>
+                <td colspan="3"></td>
+                <td colspan="3" class="do-none-border"></td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="do-tWidth1 do-tbackColor">수주처</td>
+                <td class="do-tWidth2 do-tbackColor">상호</td>
+                <td colspan="3"></td>
+                <td class="do-tWidth2 do-tbackColor">대표자</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td class="do-tWidth2 do-tbackColor">주소</td>
+                <td colspan="3"></td>
+                <td class="do-tWidth2 do-tbackColor">연락처</td>
+                <td colspan="3"></td>
+            </tr>
+        </table>
+        <table>
+            <thead>
+                <tr class="do-tbackColor">
+                    <th class="do-tbWidth1">No</th>
+                    <th class="do-tbWidth2">품목명</th>
+                    <th class="do-tbWidth3">수량</th>
+                    <th class="do-tbWidth4">단가</th>
+                    <th class="do-tbWidth5">금액</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 반복 행을 위한 템플릿 -->
+                <tr>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!-- 추가 행들을 위한 공간 -->
+                <tr>
+                    <td>2</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!-- 여기에 더 많은 행들을 추가할 수 있습니다 -->
+                <tr>
+                    <td colspan="4" class="do-tbackColor">합계</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-center">상기와 같은 내용으로 발주하오니 기일 내에 승인하여 주시기 바랍니다.</p>
+        <p class="text-center">20 년 월 일</p>
+        <table>
+            <tr>
+                <td rowspan="2" class="do-tWidth1 do-tbackColor">발주자</td>
+                <td class="do-tWidth2 do-tbackColor">부서</td>
+                <td colspan="3"></td>
+                <td class="do-tWidth2 do-tbackColor">직급</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td class="do-tWidth2 do-tbackColor">성명</td>
+                <td colspan="3"></td>
+                <td class="do-tWidth2 do-tbackColor">연락처</td>
+                <td colspan="3"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

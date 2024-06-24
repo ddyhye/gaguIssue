@@ -18,7 +18,10 @@ public class MessageDTO {
 	private String name;
 	private Timestamp reg_date;
 	private String content;
-	private String other_emp;
+	private int other_emp;
+	private Timestamp send_datetime;
+	private int idx_message;
+	private int is_receiver_read;
 	
 	public int getIdx_messageroom() {
 		return idx_messageroom;
@@ -86,12 +89,31 @@ public class MessageDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getOther_emp() {
+	public int getOther_emp() {
 		return other_emp;
 	}
-	public void setOther_emp(String other_emp) {
+	public void setOther_emp(int other_emp) {
 		this.other_emp = other_emp;
 	}
+	public Timestamp getSend_datetime() {
+		return send_datetime;
+	}
+	public void setSend_datetime(Timestamp send_datetime) {
+		this.send_datetime = send_datetime;
+	}
+	public int getIdx_message() {
+		return idx_message;
+	}
+	public void setIdx_message(int idx_message) {
+		this.idx_message = idx_message;
+	}
+	public int getIs_receiver_read() {
+		return is_receiver_read;
+	}
+	public void setIs_receiver_read(int is_receiver_read) {
+		this.is_receiver_read = is_receiver_read;
+	}
+	
 	
 	
 

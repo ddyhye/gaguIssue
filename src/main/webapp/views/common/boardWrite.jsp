@@ -88,8 +88,8 @@
 				    <div class="mb-3">
 				        <label for="is_notice" class="form-label">구분</label>
 				        <select name="is_notice" id="is_notice" class="form-select">
-				            <option value="true">필독</option>
-				            <option value="false">공지</option>
+				            <option value="0">필독</option>
+				            <option value="1">공지</option>
 				        </select>
 				    </div>
 				    <div class="mb-3">
@@ -130,6 +130,19 @@
         </footer>
       </div>
     </div>
+    <script>
+    function setIsNoticeValue() {
+        var isNoticeSelect = document.getElementById('is_notice');
+        var isNoticeText = isNoticeSelect.options[isNoticeSelect.selectedIndex].text;
+
+        if (isNoticeText === '필독') {
+            isNoticeSelect.value = '0'; // 필독 선택 시 0으로 설정
+        } else if (isNoticeText === '공지') {
+            isNoticeSelect.value = '1'; // 공지 선택 시 1으로 설정
+        }
+    }
+
+	</script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
