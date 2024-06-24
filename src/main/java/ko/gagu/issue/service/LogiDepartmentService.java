@@ -34,12 +34,18 @@ public class LogiDepartmentService {
 	public ModelAndView inventoryList(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
+		List<String> categoryList = logiDeptDao.getCategoryList();
+		mav.addObject("categoryList", categoryList);
+		
+		List<String> clientList = logiDeptDao.getClientList();
+		mav.addObject("clientList", clientList);
+		
 		mav.setViewName("/logisticsDepartment/inventoryList");
 		
 		return mav;
 	}
-	public Map<String, Object> inventoryListDrow(Map<String, Object> map) {		
-		List<LogiDeptDTO> list = logiDeptDao.inventoryListDrow();
+	public Map<String, Object> inventoryListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {		
+		List<LogiDeptDTO> list = logiDeptDao.inventoryListDraw(productSearch, productCategory, clientList);
 		map.put("list",list);
 		
 		return map;

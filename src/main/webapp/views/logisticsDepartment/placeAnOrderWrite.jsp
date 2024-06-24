@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,9 +36,22 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+    
+    
+    
+    <!-- [do] css 추가 -->
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/inventoryList.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+    
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+  	
+  	<!-- J-Query -->
+  	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -59,13 +73,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">Inventory</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400">logisticsDept</li>
+              <li class="breadcrumb-item f-w-400 active">Inventory</li>
             </ol>
           </nav>
         </div>
@@ -78,13 +92,103 @@
         <!-- Page Sidebar Start-->
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
+        
+        
+        
+        
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          <div class="container-fluid">
+            <div class="row"> 
+              <div class="col-sm-12"> 
+                <div class="card"> 
+                  <div class="card-body">
+                  	<div class="card-header do-flexdirection-row">
+			          <h4>Inventory</h4>
+			          <div class="do-rightfixed"> 
+                        <a class="btn btn-primary" href="add-products.html"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
+                      </div>
+			        </div>
+			        
+			        
+                    <div class="list-product-header">
+                      <div class="do-annual-header-left">
+                      	<div class="do-left-search">
+	                      	<input type="text" name="memberSearch" id="memberSearch" placeholder="제품번호 또는 제품명..."/>
+	                      	<i class="fa-solid fa-magnifying-glass" id="productSearchBtn"></i>
+                      	</div>
+                      	<div class="do-left-category1">
+	                      	<p class="do-bold do-p-darkgray do-pCategory">카테고리&nbsp;</p>
+	                      	<div class="datatable-top do-pCategoryyy">
+	                      		<div class="datatable-dropdown">
+	                      			<label>
+	                      				<select class="datatable-selector" id="productCategory">
+	                      					<option value="전체">전체</option>
+	                      					<c:forEach items="${categoryList}" var="item">
+	                      						<option value="${item}">${item}</option>
+	                      					</c:forEach>
+	                      				</select>
+	                      			</label>
+	                      		</div>
+	                      	</div>
+	                    </div>
+                      	<div class="do-left-category2">
+	                      	<p class="do-bold do-p-darkgray do-margin">발주처&nbsp;</p>
+	                      	<div class="datatable-top do-pCategoryyy">
+	                      		<div class="datatable-dropdown">
+	                      			<label>
+	                      				<select class="datatable-selector" id="clientList">
+	                      					<option value="전체">전체</option>
+	                      					<c:forEach items="${clientList}" var="item">
+	                      						<option value="${item}">${item}</option>
+	                      					</c:forEach>
+	                      				</select>
+	                      			</label>
+	                      		</div>
+	                      	</div>
+	                    </div>
+                      </div>
+                      <div class="do-annual-header-right">
+                      	<div class="do-rightfixed"> 
+	                        <div class="do-warning" id="do-warning">
+	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;재고부족
+	                        </div>
+	                    </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="list-product">
+                      <table class="table do-table">
+                        <thead> 
+                          <tr> 
+                            <th class="do-table-1">제품번호</th>
+                            <th class="do-table-2">카테고리</th>
+                            <th class="do-table-3">제품명</th>
+                            <th class="do-table-4">수주처</th>
+                            <th class="do-table-5">현재 재고</th>
+                            <th class="do-table-6">안전 재고</th>
+                          </tr>
+                        </thead>
+                        <tbody class= "do-inventory"> 
+                          <tr>
+                          	<td colspan="6">loding...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
+        
+        
+        
+        
+        
         <!-- footer start-->
         <footer class="footer">
           <div class="container-fluid">
@@ -147,4 +251,10 @@
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>
+  
+  
+<script>
+</script>
+
+
 </html>

@@ -123,6 +123,16 @@
                       			<label>
                       				<select class="datatable-selector">
                       					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
+                      					<option value="06">06</option>
                       				</select>
                       			</label>
                       		</div>
