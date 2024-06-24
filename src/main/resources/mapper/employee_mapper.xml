@@ -6,7 +6,7 @@
 <mapper namespace="ko.gagu.issue.dao.EmployeeDAO">
 	
 	<select id="employeeGetAllEvents" resultType="employee">
-		SELECT * FROM employee_calendar_tb
+		SELECT * FROM employee_calendar_tb WHERE idx_employee=#{param1} and ec_status='SHOW'
 	</select>
 	
 	<insert id="employeeAddEvent" parameterType="employee">
@@ -14,6 +14,10 @@
 			(idx_employee,ec_title,ec_description,ec_start_datetime,ec_end_datetime,ec_color)
 		VALUES (2,#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},#{ec_color})
 	</insert>
+	
+	<update id="employeeDeleteEvent">
+		UPDATE employee_calendar_tb SET ec_status='SHOW' WHERE idx_employee=#{param1} and idx_emp_calendar=#{param2}	
+	</update>
 	
 	<select id="login" resultType="String">
 		SELECT emp_pw FROM employee_tb WHERE emp_id = #{param1}

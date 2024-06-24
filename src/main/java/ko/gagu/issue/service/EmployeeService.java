@@ -22,15 +22,18 @@ public class EmployeeService {
 	@Autowired EmployeeDAO dao;
 	@Autowired PasswordEncoder encoder;
 
-	public void employeeGetAllEvents(Map<String, Object> response) {
-		List<EmployeeDTO> events = dao.employeeGetAllEvents();
+	public void employeeGetAllEvents(Map<String, Object> response,Integer idx_employee) {
+		List<EmployeeDTO> events = dao.employeeGetAllEvents(idx_employee);
 		response.put("calendarEvents", events);	
 	}
 
 	public void employeeAddEvent(EmployeeDTO employee) {
 		dao.employeeAddEvent(employee);
 	}
-
+	
+	public void employeeDeleteEvent(int idx_employee, int idx_emp_calendar) {
+		dao.employeeDeleteEvent(idx_employee,idx_emp_calendar);
+	}
 	
 	
 	
@@ -88,6 +91,8 @@ public class EmployeeService {
 	public String findpw(String emp_id, String emp_name, String birthDate) {
 		return dao.findPW(emp_id, emp_name, birthDate);
 	}
+
+	
 
 	
 
