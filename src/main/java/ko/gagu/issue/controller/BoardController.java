@@ -1,5 +1,6 @@
 package ko.gagu.issue.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ko.gagu.issue.dao.BoardDAO;
+import ko.gagu.issue.dto.BoardDTO;
 import ko.gagu.issue.service.BoardService;
 
 @Controller
@@ -28,8 +31,12 @@ public class BoardController {
     BoardService boardService;
     
     @GetMapping(value="/boardlist.go")
-    public String home() {
-        return "common/board";
+    public ModelAndView listBoards() {
+        List<BoardDTO> boardList = boardService.getBoardList();
+        ModelAndView mav = new ModelAndView("common/board");
+        mav.addObject("boardList", boardList);
+
+        return mav;
     }
     
     @GetMapping(value="/boardwrite.go")
