@@ -56,6 +56,15 @@
 	</select>
 	
 	
+	
+	<!-- 발주서 작성... -->
+	<select id="getPONumber" resultType="String">
+		SELECT idx_purchase_order 
+		FROM purchase_order_tb
+		ORDER BY idx_purchase_order DESC
+		LIMIT 1
+	</select>
+	
 
 
 </mapper>

@@ -106,7 +106,7 @@
                   	<div class="card-header do-flexdirection-row">
 			          <h4>Inventory</h4>
 			          <div class="do-rightfixed"> 
-                        <a class="btn btn-primary" href="add-products.html"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
+                        <a class="btn btn-primary" href="<c:url value='/logisticsDepartment/poWrite.go'/>"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
                       </div>
 			        </div>
 			        

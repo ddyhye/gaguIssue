@@ -15,4 +15,10 @@ public interface LogiDepartmentDAO {
 
 	List<String> getClientList();
 
+	String getPONumber();
+
+	String getEmpDept(int idx_employee);
+
+	String getEmpLevel(int idx_employee);
+
 }
