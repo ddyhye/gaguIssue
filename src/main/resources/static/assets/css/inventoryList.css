@@ -3,166 +3,124 @@
 /* [do] 재고 리스트 */
 
 
-.memberM-top {
+/* 헤더 */
+.do-rightfixed {
+	position: absolute;
+	right: 0;
+}
+
+
+/* 필터링 헤더 */
+.list-product-header {
 	display: flex;
+	
+	margin-top: 14px;
+	border-bottom: 1px dashed rgba(106, 113, 133, 0.3);
+}
+.do-annual-header-left {
+	display: flex;
+	flex-direction: row;
 	align-items: center;
-	flex-direction: column;
+	justify-content: flex-start;
 	
 	position: relative;
-	width: 85%;
-	margin-bottom: 30px;
-	
-	border: 4px solid lightgray;
-	border-radius: 5px;
+	width: 70%;
+	margin-left: 20px;
 }
-.memberM-top-search {
+.do-annual-header-left p, .do-annual-header-left div  {
+	margin: 0;
+}
+.do-annual-header-right {
 	display: flex;
+	flex-direction: row;
 	align-items: center;
+	justify-content: flex-end;
+	
+	position: relative;
+	width: 30%;
+}
+.do-bold-p {
+	color: rgba(122, 112, 186);
+	font-weight: bold;
+}
+.do-margin {
+	margin-left: 20px;
+}
+
+
+.do-left-search {
+	display: flex;
 	flex-direction: row;
 	
 	position: relative;
-	width: 95%;
-	height: 80px;
-	margin: 5px auto;
 }
 #memberSearch {
-	width: 450px;
-	height: 30px;
+	width: 250px;
+	height: 35px;
+	border-radius: 5px;
+	border: 1px solid lightgray;
+}
+.fa-magnifying-glass {
+	position: absolute;
+	right: 0;
+	font-size: 20px;
+	color: lightgray;
+	margin-top: 8px;
 	margin-right: 5px;
 }
-#memberSearchBtn {
+.do-left-category1, .do-left-category2 {
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	
-	position: relative;
-	width: 50px;
-	height: 30px;
-	
-	color: white;
-	font-weight: bold;
-	background-color: #22382e;
-	border-radius: 2px;
-}
-#memberSearchBtn:hover {
-	background-color: #16251f;
-}
-.memberM-top-option {
-	display: flex;
-	align-items: flex-start;
-	justify-content: center;
-	flex-direction: column;
-	
-	position: relative;
-	width: 95%;
-}
-.memberM-top-option-skip {
-	display: flex;
-	align-items: center;
 	flex-direction: row;
-}
-.fa-caret-down, .fa-caret-up {
-  --fa-display: flex; /* 이제 이 변수를 flex로 재정의합니다 */
-}
-.fa-caret-down {
-  display: flex !important; /* 기본 상태 */
-}
-.fa-caret-down.active {
-  display: none !important; /* active 클래스가 추가되면 숨김 */
-}
-.fa-caret-up {
-  display: none !important; /* 기본 상태 */
-}
-.fa-caret-up.active {
-  display: flex !important; /* active 클래스가 추가되면 표시 */
-}
-.memberM-top-option-detail {
-	display: none;
-}
-.memberM-top-option-detail.active {
-	display: flex;
 	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	
-	position: relative;
-	width: 100%;
-	margin-top: 5px;
 }
-.memberM-top-option-detail-head {
-	position: relative;
-	width: 15%;
+/* .do-left-category1 {
+	margin-left: 20px !importent;
+} */
+.do-pCategoryyy {
+	margin-top: 6px !importent;
 }
-.memberM-top-option-detail-warning {
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	flex-direction: row;
-	
-	position: relative;
-	width: 100%;
-	height: 40px;
-	
-	border-top: 1px solid lightgray;
-	border-left: 2px solid lightgray;
-	border-right: 2px solid lightgray;
-	border-bottom: 1px solid lightgray;
+
+
+
+
+
+
+
+/* 테이블 */
+.do-table-1, .do-table-2, .do-table-3, .do-table-4, .do-table-5, .do-table-6 {
+	background-color: rgba(82, 82, 108, 0.8) !important;
+	font-weight: 600 !important;
+	color: white !important;
+	text-align: center !important;
+	border-left: 1px solid white;
+	border-top: 1px solid white;
 }
-.memberM-top-option-detail-memberState {
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	flex-direction: row;
-	
-	position: relative;
-	width: 100%;
-	height: 40px;
-	
-	border-left: 2px solid lightgray;
-	border-right: 2px solid lightgray;
-	border-bottom: 2px solid lightgray;
+.do-table-1 {
+	width: 10% !important;
 }
-.memberStateOption {
-  display: none;
+.do-table-2 {
+	width: 20% !important;
 }
-.memberStateOption + label {
-  position: relative;
-  padding-left: 25px;
-  cursor: pointer;
+.do-table-3 {
+	width: 30% !important;
 }
-.memberStateOption + label:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 15px;
-  height: 15px;
-  border: 2px solid #ddd;
-  border-radius: 50%;
-  background-color: white;
+.do-table-4 {
+	width: 20% !important;
 }
-.memberStateOption:checked + label:before {
-  background-color: white;
+.do-table-5 {
+	width: 10% !important;
 }
-.memberStateOption:checked + label:after {
-  content: '';
-  position: absolute;
-  left: 4.8px; 
-  top: 4.8px;
-  width: 10px;  
-  height: 10px; 
-  border-radius: 50%;
-  background-color: #22382e;
-  box-sizing: border-box;
+.do-table-6 {
+	width: 10% !important;
+	border-right: 1px solid white;
 }
-.memberM-top-optionReset {
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	flex-direction: row;
-	
-	position: relative;
-	width: 95%;
-	height: 50px;
-	margin-top: 10px;
+.do-table-td1, .do-table-td2, .do-table-td3, .do-table-td4, .do-table-td5, .do-table-td6 {
+	text-align: center !important;
+    vertical-align: middle; 
+    border-left: 1px solid #dee2e6 !important;
+	border-top: 1px solid #dee2e6 !important;
+	border-bottom: 1px solid #dee2e6 !important;
+}
+.do-table-td6 {
+	border-right: 1px solid #dee2e6 !important;
 }
