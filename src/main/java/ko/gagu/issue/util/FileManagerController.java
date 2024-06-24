@@ -25,7 +25,7 @@ public class FileManagerController {
 	@Value("${spring.servlet.multipart.location}")
 	private String root;
 
-	// 클라이언트가 서버에게 파일을 요청시 서버는 해당 경로의 파일을(확장자에 맞춰서) 보내준다.
+	// [jeong] 클라이언트가 서버에게 파일을 요청시 서버는 해당 경로의 파일을(확장자에 맞춰서) 보내준다.
 	@ResponseBody
 	@GetMapping("/file/{folder}/{filePath}")
 	public ResponseEntity<Resource> fileView(@PathVariable String folder, @PathVariable String filePath) {

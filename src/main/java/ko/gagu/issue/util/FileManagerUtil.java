@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -23,7 +28,8 @@ public class FileManagerUtil {
 	
 	@Value("${spring.servlet.multipart.location}")
 	private String root;
-	
+
+	// [jeong] folder 에는 파일을 저장할 폴더의 이름 C:/filestore/{foloder} 이 되고 file 의 정보로 해당 경로에 저장한다.
 	public String saveFile(MultipartFile file, String folder) {
 		// 1. 파일명 추출하기.
 		String origin_name = file.getOriginalFilename();
