@@ -50,14 +50,16 @@ public class DocumentController {
 	
 	@PostMapping(value = "/document/write.do")
 	@ResponseBody
-	public Map<String, Object> documentWriteDo(HttpSession session
-			,@RequestParam("file") MultipartFile file 
+	public Map<String, Object> documentWriteDo(@RequestParam("attachmentFiles") MultipartFile[] attachmentFiles
+			,@RequestParam("documentFile") MultipartFile documentFile 
 			,@RequestParam("documentData") String documentData
-			,@RequestParam("approvalLine") String approvalLine ) {
-		logger.info("작성한 문서의 내용 documentData : {}", documentData);
-		logger.info("작성한 문서의 파일 객체 : {}", file);
+			,@RequestParam("approvalLine") String approvalLine
+			,HttpSession session
+			 ) {
+		logger.info("작성한 문서의 내용 attachmentFiles : {}", attachmentFiles);
+		logger.info("작성한 문서의 파일 객체 documentfile : {}", documentFile);
 		Map<String, Object> response = new HashMap<>();
-		if (file == null || file.isEmpty() 
+		if (documentFile == null || documentFile.isEmpty()
 				|| !StringUtils.hasText(documentData) 
 				|| !StringUtils.hasText(approvalLine)) {
 			logger.info("문서 작성 중 오류 발생");
@@ -65,7 +67,7 @@ public class DocumentController {
 		} else {
 			// int idxEmployee = session.getAttribute("???");
 			int idxEmployee = 2;
-			document_service.documentWrite(file, documentData, approvalLine, idxEmployee, response);
+			document_service.documentWrite(documentFile, documentData, approvalLine, idxEmployee, response);
 		}	
 		return response;
 	} 
