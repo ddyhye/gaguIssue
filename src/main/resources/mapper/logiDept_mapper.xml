@@ -7,7 +7,7 @@
 	
 	
 	<!-- 인벤토리 리스트 그리그 -->
-	<select id="inventoryListDrow" resultType="logi">
+	<select id="inventoryListDraw" resultType="logi">
 		SELECT it.idx_product , 
 				pct.category ,
 				pt.product_name ,
@@ -18,7 +18,41 @@
 			JOIN client_tb ct ON ct.idx_business = pt.idx_business 
 			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
 			JOIN inventory_tb it ON it.idx_product = pt.idx_product
+		<where>
+			<choose>
+				<when test="param1 == 'warn'">
+					it.current_stock &lt; pt.minimum_stock
+				</when>
+				<otherwise>
+					<if test="param1 != null and param1 != '' and param1 != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{param1},'%')
+					</if>
+					<if test="param2 != null and param2 != '' and param2 != '전체'">
+						AND pct.category = #{param2}
+					</if>
+					<if test="param3 != null and param3 != '' and param3 != '전체'">
+						AND ct.client_name = #{param3}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+		GROUP BY pct.category
 		ORDER BY it.idx_product
+	</select>
+	
+	
+	<!-- 카테고리 리스트 -->
+	<select id="getCategoryList" resultType="String">
+		SELECT category 
+		FROM product_category_tb
+		ORDER BY idx_product_category
+	</select>
+	<!-- 발주처 리스트 -->
+	<select id="getClientList" resultType="String">
+		SELECT client_name 
+		FROM client_tb 
+		WHERE client_type = '발주처'
+		ORDER BY client_name
 	</select>
 	
 	

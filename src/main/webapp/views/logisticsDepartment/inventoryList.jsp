@@ -105,6 +105,9 @@
                   <div class="card-body">
                   	<div class="card-header do-flexdirection-row">
 			          <h4>Inventory</h4>
+			          <div class="do-rightfixed"> 
+                        <a class="btn btn-primary" href="add-products.html"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
+                      </div>
 			        </div>
 			        
 			        
@@ -112,15 +115,18 @@
                       <div class="do-annual-header-left">
                       	<div class="do-left-search">
 	                      	<input type="text" name="memberSearch" id="memberSearch" placeholder="제품번호 또는 제품명..."/>
-	                      	<i class="fa-solid fa-magnifying-glass"></i>
+	                      	<i class="fa-solid fa-magnifying-glass" id="productSearchBtn"></i>
                       	</div>
                       	<div class="do-left-category1">
 	                      	<p class="do-bold do-p-darkgray do-pCategory">카테고리&nbsp;</p>
 	                      	<div class="datatable-top do-pCategoryyy">
 	                      		<div class="datatable-dropdown">
 	                      			<label>
-	                      				<select class="datatable-selector">
-	                      					<option value="2024">2024</option>
+	                      				<select class="datatable-selector" id="productCategory">
+	                      					<option value="전체">전체</option>
+	                      					<c:forEach items="${categoryList}" var="item">
+	                      						<option value="${item}">${item}</option>
+	                      					</c:forEach>
 	                      				</select>
 	                      			</label>
 	                      		</div>
@@ -131,8 +137,11 @@
 	                      	<div class="datatable-top do-pCategoryyy">
 	                      		<div class="datatable-dropdown">
 	                      			<label>
-	                      				<select class="datatable-selector">
-	                      					<option value="2024">2024</option>
+	                      				<select class="datatable-selector" id="clientList">
+	                      					<option value="전체">전체</option>
+	                      					<c:forEach items="${clientList}" var="item">
+	                      						<option value="${item}">${item}</option>
+	                      					</c:forEach>
 	                      				</select>
 	                      			</label>
 	                      		</div>
@@ -141,7 +150,9 @@
                       </div>
                       <div class="do-annual-header-right">
                       	<div class="do-rightfixed"> 
-	                        <a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>재고부족</a>
+	                        <div class="do-warning" id="do-warning">
+	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;재고부족
+	                        </div>
 	                    </div>
                       </div>
                     </div>
@@ -161,12 +172,7 @@
                         </thead>
                         <tbody class= "do-inventory"> 
                           <tr>
-                          	<td class="do-table-td1">1</td>
-                          	<td class="do-table-td2">침대</td>
-                          	<td class="do-table-td3">무한 침대</td>
-                          	<td class="do-table-td4">(주)무한상사</td>
-                          	<td class="do-table-td5">2</td>
-                          	<td class="do-table-td6">5</td>
+                          	<td colspan="6">loding...</td>
                           </tr>
                         </tbody>
                       </table>
@@ -249,39 +255,53 @@
   
 <script>
 
-	//option 펼침/닫힘
-	$('.memberM-top-option-skip').on('click', function(){
-		var isToggled = $(this).data('toggled');
-		
-		// $() 특정 요소 명시
-	    var $caretDown = $(this).find('.fa-caret-down');
-	    var $caretUp = $(this).find('.fa-caret-up');
-	    var $details = $('.memberM-top-option-detail');
+	// 필터링 값
+	// memberSearch (productSearch)
+	// productCategory
+	// clientList
+	var productSearch = document.getElementById('memberSearch').value;
+	var productCategory = document.getElementById('productCategory').value;
+	var clientList = document.getElementById('clientList').value;
 	
-	    if (isToggled) {
-	        $caretDown.addClass('active');
-	        $caretUp.addClass('active');
-	        $details.addClass('active');
-	    } else {
-	        $caretDown.removeClass('active');
-	        $caretUp.removeClass('active');
-	        $details.removeClass('active');
-	    }
-	    
-	    $(this).data('toggled', !isToggled);
-		
+	listCall(productSearch, productCategory, clientList);
+
+    document.getElementById('memberSearch').addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            productSearch = document.getElementById('memberSearch').value;
+            listCall(productSearch, productCategory, clientList);
+        }
+    });
+    document.getElementById('productSearchBtn').addEventListener('click', () => {
+    	productSearch = document.getElementById('memberSearch').value;
+    	listCall(productSearch, productCategory, clientList);
 	});
+    document.getElementById('productCategory').addEventListener('change', () => {
+    	productCategory = document.getElementById('productCategory').value;
+    	listCall(productSearch, productCategory, clientList);
+	});
+    document.getElementById('clientList').addEventListener('change', () => {
+    	clientList = document.getElementById('clientList').value;
+    	listCall(productSearch, productCategory, clientList);
+	});
+    // 재고 부족 누를 경우,
+    document.getElementById('do-warning').addEventListener('click', () => {
+    	listCall('warn', 'warn', 'warn');
+	});
+    
 
-
-	listCall();
+	
 	
 
 	// 물품 리스트 출력
-	function listCall() {
+	function listCall(productSearch, productCategory, clientList) {
 		$.ajax({
 			type: 'post',
 			url: '<c:url value="/inventoryList.ajax"/>',
 			data: {
+				'productSearch': productSearch,
+				'productCategory': productCategory,
+				'clientList': clientList
 			},
 			dataType: 'JSON',
 			success: function(data) {
@@ -314,7 +334,16 @@
 			content += '<td class="do-table-td4">';
 			content += item.client_name;
 			content += '</td>';
-			content += '<td class="do-table-td5">';
+			
+			// 안전 재고 밑으로 떨어지면 css 설정
+	        let ddchange = '';
+	        if (item.current_stock < item.minimum_stock) {
+	        	ddchange = 'low-stock';  // 최소 재고보다 낮은 경우
+	        } else {
+	        	ddchange = 'normal-stock';  // 정상 재고
+	        }
+			
+			content += '<td class="do-table-td5 '+ddchange+'">';
 			content += item.current_stock;
 			content += '</td>';
 			content += '<td class="do-table-td6">';

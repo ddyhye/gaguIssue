@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,10 +39,12 @@ public class LogiDepartmentController {
 	// 인벤토리 리스트 그리기
 	@PostMapping(value="/inventoryList.ajax")
 	@ResponseBody
-	Map<String, Object> inventoryListAjax() {
+	Map<String, Object> inventoryListAjax(@RequestParam(value = "productSearch", required = false) String productSearch,
+            								@RequestParam(value = "productCategory", required = false) String productCategory,
+            								@RequestParam(value = "clientList", required = false) String clientList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		return logiDeptService.inventoryListDrow(map);
+		return logiDeptService.inventoryListDraw(map, productSearch, productCategory, clientList);
 	}
 	
 	

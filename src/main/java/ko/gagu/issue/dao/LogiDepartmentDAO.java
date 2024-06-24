@@ -9,6 +9,10 @@ import ko.gagu.issue.dto.LogiDeptDTO;
 @Mapper
 public interface LogiDepartmentDAO {
 
-	List<LogiDeptDTO> inventoryListDrow();
+	List<LogiDeptDTO> inventoryListDraw(String productSearch, String productCategory, String clientList);
+
+	List<String> getCategoryList();
+
+	List<String> getClientList();
 
 }

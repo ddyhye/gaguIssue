@@ -80,6 +80,15 @@
 	margin-top: 6px !importent;
 }
 
+.do-warning {
+	/* background-color: rgba(122, 112, 186);
+	border-radius: 5px;
+	width: 50px;
+	height: 30px; */
+	color: rgba(122, 112, 186, 0.5);
+	
+}
+
 
 
 
@@ -123,4 +132,8 @@
 }
 .do-table-td6 {
 	border-right: 1px solid #dee2e6 !important;
+}
+.low-stock {
+	color: #ff327c !important;
+	font-weight: bold;
 }
