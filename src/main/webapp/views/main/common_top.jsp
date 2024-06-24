@@ -308,9 +308,8 @@
         				content +=		'<div class="msg-img"></div>';
         				content +=		'<div class="msg-bubble">';
         				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">재민</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">';
-        				content +=			'<p>'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</p>';
+        				content +=		'<div class="msg-info-name">'+item.ohter_name+'</div>'; // 이름은 나중에 세션으로 가져오기
+        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
         				content +=		'</div>';
         				content +=		'<div class="msg-text">'+item.content+'</div>';
         				content +=		'</div>';
@@ -322,16 +321,14 @@
         				content +=		'<div class="msg-bubble">';
         				content +=		'<div class="msg-info">';
         				content +=		'<div class="msg-info-name">재민</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">';
-        				content +=			'<p>'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</p>';
+        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
         				content +=		'</div>';
         				content +=		'<div class="msg-text">'+item.content+'</div>';
-        				content +=		'</div>';
-        				content +=		'</div>';
-        				content +=		'</div>';
-        				
-        			}
+	        			content +=		'</div>';
         			
+        			}
+	    				content +=		'</div>';
+	    				content +=		'</div>';
         			/* 
         				if(checkHours != hours || checkMinutes != minutes){
         					content +=			'<img class="circle-img" src="/photo/'+data.profileImg+'" alt="상대방 프로필 사진">';
