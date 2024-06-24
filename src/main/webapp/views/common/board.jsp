@@ -108,30 +108,28 @@
 			                </div>
 			
 			                <!-- 공지사항 목록 테이블 -->
-			                <div class="table-responsive">
-			                    <table class="table table-bordered table-striped">
-			                        <thead>
-			                            <tr>
-			                                <th>구분</th>
-			                                <th>제목</th>
-			                                <th>작성자</th>
-			                                <th>작성일</th>
-			                                <th>조회수</th>
-			                            </tr>
-			                        </thead>
-			                        <tbody>
-			                            <c:forEach var="post_list_tb" items="${post_list_tb}">
-			                                <tr>
-			                                    <td>${is_notice}</td>
-			                                    <td><a href="boarddetail.go?id=${post_id}">${po_title}</a></td>
-			                                    <td>${writer}</td>
-			                                    <td>${written_datetime}</td>
-			                                    <td>${po_view_count}</td>
-			                                </tr>
-			                            </c:forEach>
-			                        </tbody>
-			                    </table>
-			                </div>
+					         <div class="table-responsive">
+		                      <table class="table table-bordered table-striped">
+		                        <thead>
+		                          <tr>
+		                            <th>구분</th>
+		                            <th>제목</th>
+		                            <th>작성일</th>
+		                            <th>조회수</th>
+		                          </tr>
+		                        </thead>
+		                        <tbody>
+		                          <c:forEach var="post" items="${boardList}">
+		                             <tr>
+							            <td>${post.is_notice == 0 ? '필독' : '공지'}</td>
+							            <td><a href="boarddetail.go?id=${post.post_id}">${post.po_title}</a></td>
+							            <td>${post.written_datetime}</td>
+							            <td>${post.po_view_count}</td>
+							        </tr>
+		                          </c:forEach>
+		                        </tbody>
+		                      </table>
+		                    </div>
 			
 			                <!-- 페이지네이션 -->
 			                <nav>
@@ -184,6 +182,7 @@
         </footer>
       </div>
     </div>
+    
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

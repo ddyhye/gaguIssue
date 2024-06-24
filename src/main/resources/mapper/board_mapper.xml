@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ko.gagu.issue.dao.BoardDAO">
-	<insert id="insertBoard" parameterType="ko.gagu.issue.dto.BoardDTO">
-	    INSERT INTO post_list_tb (is_notice, po_title, po_content, idx_file)
-	    VALUES (
-	        #{is_notice},
-	        #{po_title},
-	        #{po_content},
-	        (SELECT IFNULL(ft.idx_file, NULL)
-	         FROM filestore_tb ft
-	         WHERE ft.idx_file = #{idx_file})
-	    );
-	</insert>
-	
-	<insert id="insertFile" parameterType="java.util.Map">
-        INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name)
+
+   <!-- 게시글 삽입 -->
+		<insert id="insertBoard" parameterType="ko.gagu.issue.dto.BoardDTO"
+		        useGeneratedKeys="true"
+		        keyColumn="post_id"
+		        keyProperty="post_id">
+		    INSERT INTO post_list_tb (is_notice, po_title, po_content)
+		    VALUES (#{is_notice}, #{po_title}, #{po_content});
+		</insert>
+
+    
+    <!-- 게시글 파일 업데이트 -->
+    <update id="updateBoardFile" parameterType="map">
+        UPDATE post_list_tb
+        SET idx_file = #{idx_file}
+        WHERE post_id = #{post_id};
+    </update>
+
+    <!-- 파일 정보 삽입 -->
+    <insert id="insertFile" parameterType="java.util.Map">
+        INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name, upload_datetime)
         VALUES (
-        	3,
-        	#{post_id},
+            3,  <!-- 이 값은 실제 파일 유형을 반영하도록 조정 필요 -->
+            #{post_id},
             #{origin_name},
-            #{file_name}
+            #{file_name},
+            CURRENT_TIMESTAMP
         )
     </insert>
 
-	
 </mapper>
