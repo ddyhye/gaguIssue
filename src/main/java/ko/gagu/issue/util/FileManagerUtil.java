@@ -4,11 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -16,10 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ko.gagu.issue.dto.DocumentDTO;
 
 @Component
 public class FileManagerUtil {
@@ -49,6 +40,6 @@ public class FileManagerUtil {
 			e.printStackTrace();
 			return null;
 		}		
-		return file_name;
+		return  folder + "/" + file_name;
 	}
 }

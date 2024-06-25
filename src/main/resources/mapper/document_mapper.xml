@@ -25,6 +25,12 @@
 		INSERT INTO approval_tb (idx_employee, idx_dc, ap_content) 
 			VALUES (#{idx_employee}, #{idx_dc}, #{ap_content})
 	</insert>
+	
+	<!-- [jeong] 작성한 문서의 첨부파일을 파일 저장소에 저장함 -->
+	<insert id="saveAttachmentFile">
+		INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name)
+			VALUES (#{idx_filetype}, #{idx_ref}, #{origin_name}, #{file_name})
+	</insert>	
 
 	<!-- [jeong] 문서의 작성자와 양식 번호 내용을 approval 테이블에 저장 -->
 	<insert id="saveApprovalLine">
@@ -67,5 +73,53 @@
 		    NULL AS title         
 		FROM department_tb dt 
 		WHERE dt.idx_department IN (2,3,4)
+	</select>
+	
+	<!-- [jeong] 해당 문서에 접근할 권한(작성자, 결재권자, 부서원)이 무엇인지 그리고 결재 순서가 몇번인지 알려줌 -->
+	<select id="getApproval" resultType="approval">
+		SELECT
+			att.idx_approval AS idxApproval,
+			att.idx_employee AS idxEmployee,
+			att.idx_dc AS idxDc,
+			att.final_ap_status AS finalApStatus,
+			att.ap_content AS apContent,
+			att.written_datetime AS writtenDatetime,
+			et.idx_employee AS accessIdxEmployee,
+			CASE
+				WHEN et.idx_employee = att.idx_employee THEN '작성자'
+				WHEN alt.idx_employee IS NOT NULL THEN '결재권자'
+				WHEN et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = att.idx_employee) IS NOT NULL THEN '같은부서원'
+				ELSE '접근불가'
+			END AS accessPermission,
+			CASE 
+				WHEN alt.idx_employee IS NOT NULL THEN alt.sequence
+				ELSE NULL
+			END AS approvalSequence
+		FROM approval_tb att
+			LEFT JOIN employee_tb et ON et.idx_employee = #{accessIdxEmployee}
+			LEFT JOIN approval_line_tb alt ON alt.idx_approval = att.idx_approval AND alt.idx_employee = et.idx_employee
+		WHERE att.idx_approval = #{idxApproval}
 	</select>	
+	
+	<!-- [jeong] 해당 문서의 관련된 모든파일(문서, 첨부파일)들을 가져옴 -->
+	<select id="getDocumentFiles">
+		SELECT 
+			ft.idx_file AS idxFile,
+			ft.idx_filetype AS idxFiletype,
+			ft.upload_datetime AS uploadDatetime,
+			ft.origin_name AS orginName,
+			ft.file_name AS fileName
+		FROM filestore_tb ft 
+		WHERE ft.idx_ref = #{idxApproval} AND (ft.idx_filetype = 4 OR ft.idx_filetype = 8)
+	</select>
+	
+	<!-- [jeong] 해당 문서의 결재 라인의 데이터를 가져옴 -->
+	<select id="getApprovalLineList">
+		SELECT
+			alt.idx_employee AS idxEmployee,
+			alt.sequence AS sequence,
+			alt.ap_comment AS apComment,
+			alt.approval_datetime AS approvalDatetime
+		FROM approval_line_tb alt WHERE alt.idx_approval = #{idxApproval};
+	</select>
 </mapper>
