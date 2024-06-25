@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
 <html lang="ko">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,6 +40,7 @@
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
   </head>
+  
   
   <body> 
     <div class="loader-wrapper"> 
@@ -119,42 +121,59 @@
 		                          </tr>
 		                        </thead>
 		                        <tbody>
-		                          <c:forEach var="post" items="${boardList}">
-		                             <tr>
-							            <td>${post.is_notice == 0 ? '필독' : '공지'}</td>
-							            <td><a href="boarddetail.go?id=${post.post_id}">${post.po_title}</a></td>
-							            <td>${post.written_datetime}</td>
-							            <td>${post.po_view_count}</td>
-							        </tr>
-		                          </c:forEach>
+		                        <!-- 필독 -->
+								<c:forEach var="post" items="${boardList}">
+								    <c:if test="${post.is_notice}">
+								        <tr>
+								            <td style="color: purple; font-weight: bold;">필독</td>
+								            <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
+								            <td class="date-column">${post.written_datetime}</td>
+								            <td>${post.po_view_count}</td>
+								        </tr>
+								    </c:if>
+								</c:forEach>
+								
+								<!-- 공지 -->
+								<c:forEach var="post" items="${boardList}">
+								    <c:if test="${!post.is_notice}">
+								        <tr>
+								            <td style="color: black;">공지</td>
+								            <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
+								            <td class="date-column">${post.written_datetime}</td>
+								            <td>${post.po_view_count}</td>
+								        </tr>
+								    </c:if>
+								</c:forEach>
+
+
 		                        </tbody>
 		                      </table>
 		                    </div>
 			
-			                <!-- 페이지네이션 -->
-			                <nav>
-			                    <ul class="pagination justify-content-center">
-			                        <c:if test="${page > 1}">
-			                            <li class="page-item">
-			                                <a class="page-link" href="noticeList.do?page=${page - 1}" aria-label="Previous">
-			                                    <span aria-hidden="true">&laquo;</span>
-			                                </a>
-			                            </li>
-			                        </c:if>
-			                        <c:forEach begin="1" end="${totalPages}" var="i">
-			                            <li class="page-item <c:if test='${i == page}'>active</c:if>">
-			                                <a class="page-link" href="noticeList.do?page=${i}">${i}</a>
-			                            </li>
-			                        </c:forEach>
-			                        <c:if test="${page < totalPages}">
-			                            <li class="page-item">
-			                                <a class="page-link" href="noticeList.do?page=${page + 1}" aria-label="Next">
-			                                    <span aria-hidden="true">&raquo;</span>
-			                                </a>
-			                            </li>
-			                        </c:if>
-			                    </ul>
-			                </nav>
+			                 <!-- 페이지네이션 -->
+						    <nav>
+						        <ul class="pagination justify-content-center">
+						            <c:if test="${page > 1}">
+						                <li class="page-item">
+						                    <a class="page-link" href="boardlist.go?page=${page - 1}" aria-label="Previous">
+						                        <span aria-hidden="true">&laquo;</span>
+						                    </a>
+						                </li>
+						            </c:if>
+						            <c:forEach begin="1" end="${totalPages}" var="i">
+						                <li class="page-item <c:if test='${i == page}'>active</c:if>">
+						                    <a class="page-link" href="boardlist.go?page=${i}">${i}</a>
+						                </li>
+						            </c:forEach>
+						            <c:if test="${page < totalPages}">
+						                <li class="page-item">
+						                    <a class="page-link" href="boardlist.go?page=${page + 1}" aria-label="Next">
+						                        <span aria-hidden="true">&raquo;</span>
+						                    </a>
+						                </li>
+						            </c:if>
+						        </ul>
+						    </nav>
 			            </div>
 			        </div>
 			    </div>
@@ -183,6 +202,23 @@
       </div>
     </div>
     
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateColumns = document.querySelectorAll('.date-column');
+
+            dateColumns.forEach(column => {
+                const originalDateStr = column.textContent.trim();
+
+                if (originalDateStr) {
+                    const dateParts = originalDateStr.split(' ')[0];
+                    column.textContent = dateParts;
+                } else {
+                    column.textContent = '--';
+                }
+            });
+        });
+    </script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

@@ -16,7 +16,17 @@
 	</insert>
 	
 	<update id="employeeDeleteEvent">
-		UPDATE employee_calendar_tb SET ec_status='SHOW' WHERE idx_employee=#{param1} and idx_emp_calendar=#{param2}	
+		UPDATE employee_calendar_tb SET ec_status='BLIND' WHERE idx_emp_calendar=#{param1} and idx_employee=#{param2}
+	</update>
+	
+	<update id="employeeUpdateEvent">
+		UPDATE employee_calendar_tb SET
+			ec_title=#{param3},
+			ec_start_datetime=#{param4},
+			ec_end_datetime=#{param5},
+			ec_description=#{param6},
+			ec_color=#{param7}
+		WHERE idx_emp_calendar=#{param1} AND idx_employee=#{param2}
 	</update>
 	
 	<select id="login" resultType="String">

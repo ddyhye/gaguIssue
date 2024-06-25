@@ -88,8 +88,8 @@
 				    <div class="mb-3">
 				        <label for="is_notice" class="form-label">구분</label>
 				        <select name="is_notice" id="is_notice" class="form-select">
-				            <option value="0">필독</option>
-				            <option value="1">공지</option>
+				            <option value="true">필독</option>
+				            <option value="false">공지</option>
 				        </select>
 				    </div>
 				    <div class="mb-3">
