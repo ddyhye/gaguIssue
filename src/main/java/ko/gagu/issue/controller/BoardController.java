@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ko.gagu.issue.dao.BoardDAO;
 import ko.gagu.issue.dto.BoardDTO;
 import ko.gagu.issue.service.BoardService;
 
@@ -31,10 +30,19 @@ public class BoardController {
     BoardService boardService;
     
     @GetMapping(value="/boardlist.go")
-    public ModelAndView listBoards() {
-        List<BoardDTO> boardList = boardService.getBoardList();
+    public ModelAndView listBoards(@RequestParam(defaultValue = "1") int page,
+                                   @RequestParam(defaultValue = "8") int pageSize) {
+        // 페이지네이션을 위한 데이터 계산
+        int startIndex = (page - 1) * pageSize;
+        List<BoardDTO> boardList = boardService.getPaginatedBoardList(startIndex, pageSize);
+        int totalItems = boardService.getTotalBoardCount(); // 전체 항목 수
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize); // 전체 페이지 수
+
         ModelAndView mav = new ModelAndView("common/board");
         mav.addObject("boardList", boardList);
+        mav.addObject("page", page);
+        mav.addObject("totalPages", totalPages);
+        
 
         return mav;
     }
@@ -45,11 +53,30 @@ public class BoardController {
         return "common/boardWrite";
     }
     
-    @GetMapping(value="/boarddetail.go")
-    public String detail_go() {
-        logger.info("공지사항 상세보기");
-        return "common/boardDetail";
+    @GetMapping(value = "/boarddetail.go")
+    public ModelAndView viewBoardDetail(@RequestParam int post_id) {
+        ModelAndView mav = new ModelAndView();
+
+        // 게시글 조회
+        BoardDTO board = boardService.getBoardById(post_id);
+        if (board != null) {
+            // 조회수 증가 처리
+            boardService.increaseViewCount(post_id);
+            mav.addObject("board", board);
+            mav.setViewName("common/boardDetail");
+            logger.info("Requested post_id: " + post_id);
+        } else {
+            mav.setViewName("errorPage");
+        }
+
+        return mav;
     }
+    
+    
+
+
+    
+
     
     @PostMapping(value="boardwrite.do")
     public ModelAndView write_do(RedirectAttributes rAttr, 
