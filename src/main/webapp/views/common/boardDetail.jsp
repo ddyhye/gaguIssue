@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
-    <title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
+    <title>공지사항 상세보기 | Mofi - Premium Admin Template By Pixelstrap</title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -38,14 +39,14 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
-  </head>
-  <body> 
+</head>
+<body> 
     <div class="loader-wrapper"> 
-      <div class="loader loader-1">
-        <div class="loader-outter"></div>
-        <div class="loader-inner"></div>
-        <div class="loader-inner-1"></div>
-      </div>
+        <div class="loader loader-1">
+            <div class="loader-outter"></div>
+            <div class="loader-inner"></div>
+            <div class="loader-inner-1"></div>
+        </div>
     </div>
     <!-- loader ends-->
     <!-- tap on top starts-->
@@ -53,44 +54,71 @@
     <!-- tap on tap ends-->
     <!-- page-wrapper Start-->
     <div class="page-wrapper compact-wrapper" id="pageWrapper">
-      <div class="page-header row">
-        <div class="header-logo-wrapper col-auto">
-          <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt=""/></a></div>
+        <div class="page-header row">
+            <div class="header-logo-wrapper col-auto">
+                <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt=""/></a></div>
+            </div>
+            <div class="col-4 col-xl-4 page-title">
+                <h4 class="f-w-700">공지사항 상세보기</h4>
+                <nav>
+                    <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
+                        <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
+                        <li class="breadcrumb-item f-w-400">Dashboard</li>
+                        <li class="breadcrumb-item f-w-400 active">BoardDetail</li>
+                    </ol>
+                </nav>
+            </div>
+            <!-- Page Header Start -->
+            <%@ include file="../main/common_top.jsp" %>
+            <!-- Page Header Ends -->
         </div>
-        <div class="col-4 col-xl-4 page-title">
-          <h4 class="f-w-700">공지사항 상세보기</h4>
-          <nav>
-            <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
-              <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">BoardDetail</li>
-            </ol>
-          </nav>
-        </div>
-        <!-- Page Header Start -->
-        <%@ include file="../main/common_top.jsp" %>
-        <!-- Page Header Ends -->
-      </div>
-      <!-- Page Body Start-->
-      <div class="page-body-wrapper">
-        <!-- Page Sidebar Start-->
-        <%@ include file="../main/common_sidebar.jsp" %>
-        <!-- Page Sidebar Ends-->
-        <div class="page-body">
-          <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+            <%@ include file="../main/common_sidebar.jsp" %>
+            <!-- Page Sidebar Ends-->
+            <div class="page-body">
+                <!-- Container-fluid starts-->
+                <div class="container-fluid default-dashboard">
                     <div class="row">
                         <div class="col-12">
                             <h3>공지사항 상세보기</h3>
                             <hr>
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">제목: ${po_title}</h5>
-                                    <p class="card-text">내용: ${po_content}</p>
-                                    
-                                    <c:if test="${not empty attachment}">
-                                        <p>첨부 파일: <a href="/uploads/${attachment}">${notice.attachment}</a></p>
-                                    </c:if>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <!-- 제목 -->
+                                            <h5 class="card-title">${board.po_title}</h5>
+                                            <!-- 필독/공지 여부 -->
+                                            <p>
+											    <c:choose>
+											        <c:when test="${board.is_notice == false}">
+											            <span class="badge bg-primary">공지</span>
+											        </c:when>
+											        <c:otherwise>
+											            <span class="badge bg-info">필독</span>
+											        </c:otherwise>
+											    </c:choose>
+											</p>
+
+                                            <!-- 작성일 -->
+                                            <p>작성일: <span class="date-column">${board.written_datetime}</span></p>
+                                            <!-- 조회수 -->
+                                            <p>조회수: ${board.po_view_count}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!-- 첨부파일 -->
+                                            <c:if test="${not empty board.file_name}">
+                                                <p>첨부 파일: 
+                                                    <a href="<c:url value='/download/${board.file_name}'/>" download="${board.origin_name}">${board.origin_name}</a>
+                                                </p>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- 내용 -->
+                                    <p class="card-text">${board.po_content}</p>
                                 </div>
                             </div>
                             <br>
@@ -100,25 +128,40 @@
                 </div>
                 <!-- Container-fluid Ends-->
             </div>
-          <!-- Container-fluid Ends-->
+            <!-- footer start-->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
+                            <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
+                            <p class="mb-0 f-w-600">Hand crafted & made with
+                                <svg class="footer-icon">
+                                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
+                                </svg>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateColumns = document.querySelectorAll('.date-column');
+
+            dateColumns.forEach(column => {
+                const originalDateStr = column.textContent.trim();
+
+                if (originalDateStr) {
+                    const dateParts = originalDateStr.split(' ')[0];
+                    column.textContent = dateParts;
+                } else {
+                    column.textContent = '--';
+                }
+            });
+        });
+    </script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
@@ -163,5 +206,5 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
-  </body>
+</body>
 </html>

@@ -24,12 +24,69 @@
     <insert id="insertFile" parameterType="java.util.Map">
         INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name, upload_datetime)
         VALUES (
-            3,  <!-- 이 값은 실제 파일 유형을 반영하도록 조정 필요 -->
+            3, 
             #{post_id},
             #{origin_name},
             #{file_name},
             CURRENT_TIMESTAMP
-        )
+        ) 
     </insert>
+    
+    <select id="selectBoardList" parameterType="java.util.Map" resultType="ko.gagu.issue.dto.BoardDTO">
+    SELECT
+        p.post_id,
+        p.is_notice,
+        p.po_title,
+        p.po_view_count,
+        p.written_datetime
+        
+    FROM
+        post_list_tb p
+        LEFT JOIN filestore_tb f ON p.post_id = f.idx_ref
+    ORDER BY p.post_id DESC;   
+</select>
+
+    
+    <update id="increaseViewCount" parameterType="int">
+        UPDATE post_list_tb
+        SET po_view_count = po_view_count + 1
+        WHERE post_id = #{post_id}
+    </update>
+    
+    <!-- 게시글 조회 -->
+		<select id="getBoardById" parameterType="int" resultType="ko.gagu.issue.dto.BoardDTO">
+		    SELECT *
+		    FROM post_list_tb
+		    WHERE post_id = #{post_id}
+		</select>
+		
+		<select id="getFileById" parameterType="int" resultType="ko.gagu.issue.dto.BoardDTO">
+        SELECT
+            idx_file,
+            idx_filetype,
+            idx_ref AS post_id,
+            origin_name,
+            file_name,
+            upload_datetime
+        FROM
+            filestore_tb
+        WHERE
+            idx_ref = #{post_id} and idx_filetype = 3
+    </select>
+    
+    <!-- 페이징 처리 -->
+    <select id="selectPaginatedBoardList" parameterType="map" resultType="ko.gagu.issue.dto.BoardDTO">
+        SELECT * FROM post_list_tb
+        ORDER BY post_id DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+    
+    <select id="selectTotalBoardCount" resultType="java.lang.Integer">
+	    SELECT COUNT(*)
+	    FROM post_list_tb
+	</select>
+	
+	
+    
 
 </mapper>
