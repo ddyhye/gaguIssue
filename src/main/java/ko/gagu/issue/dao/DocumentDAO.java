@@ -5,8 +5,11 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ko.gagu.issue.dto.ApprovalDTO;
+import ko.gagu.issue.dto.ApprovalLineDTO;
 import ko.gagu.issue.dto.DocumentDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.FileDTO;
 
 @Mapper
 public interface DocumentDAO {
@@ -22,5 +25,13 @@ public interface DocumentDAO {
 	List<Map<String, String>> getOrganization();
 
 	void saveApprovalLine(int idx_approval, Integer idx_employee, int sequence);
+
+	void saveAttachmentFile(int idx_filetype, int idx_ref, String origin_name, String file_name);
+
+	ApprovalDTO getApproval(int accessIdxEmployee, String idxApproval);
+
+	List<FileDTO> getDocumentFiles(int idxApproval);
+
+	List<ApprovalLineDTO> getApprovalLineList(int idxApproval);
 
 }
