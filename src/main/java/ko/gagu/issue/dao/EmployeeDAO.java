@@ -24,6 +24,10 @@ public interface EmployeeDAO {
 
 	String findPW(String emp_id, String emp_name, String birthDate);
 
-	void employeeDeleteEvent(int idx_employee, int idx_emp_calendar);
+	void employeeDeleteEvent(Integer idx_emp_calendar,Integer idx_employee);
+
+	void employeeUpdateEvent(Integer idx_emp_calendar, Integer idx_employee, String ec_title, String ec_start_datetime,
+			String ec_end_datetime, String ec_description, String ec_color);
+
 
 }

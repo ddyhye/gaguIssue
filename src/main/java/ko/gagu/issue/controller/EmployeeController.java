@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,11 +39,11 @@ public class EmployeeController {
 	
 	@GetMapping(value="/employee/getAllEvents.ajax")
 	@ResponseBody
-	public Map<String, Object> employeeGetAllEvents(Integer idx_employee){
+	public Map<String, Object> employeeGetAllEvents(Integer idx_employee,Model model){
 		logger.info("getAllEvenets진입");
 		logger.info("idx_employee:{}",idx_employee);
 		Map<String, Object>response = new HashMap<String, Object>();
-		employeeService.employeeGetAllEvents(response,idx_employee);
+		employeeService.employeeGetAllEvents(response,idx_employee,model);
 		logger.info("response : {}",response);
 		return response;
 	}
@@ -59,22 +60,58 @@ public class EmployeeController {
 	
 	@PostMapping(value="/employee/updateEvent.ajax")
 	@ResponseBody
-	public Map<String, Object>employeeUpdateEvent(@RequestParam Map<String, Object>param,Integer idx_emp_calendar){
-		logger.info("updateEvent 진입");
-		logger.info("idx_emp_calendar : {}",idx_emp_calendar);
-		logger.info("param : {}",param);
-		Map<String, Object>response=new HashMap<String, Object>();
+	public Map<String, Object>employeeUpdateEvent(@RequestBody Map<String, Object> requestBody){
+		Integer idx_emp_calendar = Integer.valueOf(requestBody.get("idx_emp_calendar").toString());
+        Integer idx_employee = Integer.valueOf(requestBody.get("idx_employee").toString());
+
+        logger.info("idx_emp_calendar : {}", idx_emp_calendar);
+        logger.info("idx_employee :{}", idx_employee);
+        
+        Map<String, Object> updatedEvent = (Map<String, Object>) requestBody.get("updatedEvent");
+        String ec_title = (String) updatedEvent.get("ec_title");
+        String ec_start_datetime = (String) updatedEvent.get("ec_start_datetime");
+        String ec_end_datetime = (String) updatedEvent.get("ec_end_datetime");
+        String ec_description = (String) updatedEvent.get("ec_description");
+        String ec_color = (String) updatedEvent.get("ec_color");
+        
+        employeeService.employeeUpdateEvent(idx_emp_calendar, idx_employee, ec_title, ec_start_datetime, ec_end_datetime, ec_description, ec_color);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "이벤트 수정이 완료되었습니다.");
+		
 		
 		return response;
 	}
 	
-	@PostMapping(value="/employee/deleteEvent.ajax")
+	@PostMapping(value = "/employee/deleteEvent.ajax")
 	@ResponseBody
-	public void employeeDeleteEvent(Integer idx_employee,Integer idx_emp_calendar) {
-		logger.info("idx_employee : {}",idx_employee);
-		logger.info("idx_emp_calendar : {}",idx_emp_calendar);
-		employeeService.employeeDeleteEvent(idx_employee,idx_emp_calendar);
+	public Map<String, String> employeeDeleteEvent(@RequestBody Map<String, Object> requestBody) {
+	    try {
+	        Integer idx_emp_calendar = Integer.valueOf(requestBody.get("idx_emp_calendar").toString());
+	        Integer idx_employee = Integer.valueOf(requestBody.get("idx_employee").toString());
+
+	        logger.info("idx_emp_calendar : {}", idx_emp_calendar);
+	        logger.info("idx_employee :{}", idx_employee);
+
+	        employeeService.employeeDeleteEvent(idx_emp_calendar, idx_employee);
+
+	        Map<String, String> response = new HashMap<>();
+	        response.put("status", "success");
+	        response.put("message", "이벤트 삭제가 완료되었습니다.");
+	        return response;
+	    } catch (Exception e) {
+	        logger.error("Error processing deleteEvent request", e);
+
+	        // 예외 처리 로직 추가 및 오류 응답 반환
+	        Map<String, String> errorResponse = new HashMap<>();
+	        errorResponse.put("status", "error");
+	        errorResponse.put("message", "이벤트 삭제에 실패했습니다.");
+	        return errorResponse;
+	    }
 	}
+
+
 	
 	
 	

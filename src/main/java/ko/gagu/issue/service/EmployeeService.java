@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,7 +23,10 @@ public class EmployeeService {
 	@Autowired EmployeeDAO dao;
 	@Autowired PasswordEncoder encoder;
 
-	public void employeeGetAllEvents(Map<String, Object> response,Integer idx_employee) {
+	public void employeeGetAllEvents(Map<String, Object> response,Integer idx_employee,Model model) {
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		model.addAttribute("employee",employeeDTO);
+		logger.info("employeeDTO : {}",employeeDTO);
 		List<EmployeeDTO> events = dao.employeeGetAllEvents(idx_employee);
 		response.put("calendarEvents", events);	
 	}
@@ -30,14 +34,15 @@ public class EmployeeService {
 	public void employeeAddEvent(EmployeeDTO employee) {
 		dao.employeeAddEvent(employee);
 	}
+
 	
-	public void employeeDeleteEvent(int idx_employee, int idx_emp_calendar) {
-		dao.employeeDeleteEvent(idx_employee,idx_emp_calendar);
+	public void employeeDeleteEvent(Integer idx_emp_calendar,Integer idx_employee) {
+		dao.employeeDeleteEvent(idx_emp_calendar,idx_employee);
 	}
 	
-	
-	
-	
+	public void employeeUpdateEvent(Integer idx_emp_calendar, Integer idx_employee, String ec_title, String ec_start_datetime, String ec_end_datetime, String ec_description, String ec_color) {
+		dao.employeeUpdateEvent(idx_emp_calendar,idx_employee,ec_title,ec_start_datetime,ec_end_datetime,ec_description,ec_color);
+	}
 	
 	
 	
@@ -91,6 +96,8 @@ public class EmployeeService {
 	public String findpw(String emp_id, String emp_name, String birthDate) {
 		return dao.findPW(emp_id, emp_name, birthDate);
 	}
+
+	
 
 	
 
