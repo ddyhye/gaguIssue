@@ -86,7 +86,11 @@
 	width: 50px;
 	height: 30px; */
 	color: rgba(122, 112, 186, 0.5);
+	margin: 20px 0;
 	
+}
+.do-warning:hover {
+	color: rgba(122, 112, 186);
 }
 
 
@@ -136,4 +140,95 @@
 .low-stock {
 	color: #ff327c !important;
 	font-weight: bold;
+}
+
+
+
+
+
+
+/* powrite */
+.do-lackList {
+	display: none;
+}
+.do-lackList.active {
+	display: flex;
+	flex-direction: column;
+	
+	position: absolute !important;
+   	width: 500px;
+   	height: 350px;
+   	top: 50%;
+   	left: 50%;
+   	transform: translate(-50%, -50%);
+   	z-index: 100;
+   	
+   	background-color: white;
+   	border: 1px solid lightgray;
+	border-radius: 3px;
+	
+	gap: 15px;
+	
+}
+.do-lackList-x {
+	display: flex;
+	justify-content: flex-end;
+	color: lightgray;
+	font-size: 20px;
+	margin-top: 10px;
+}
+.do-lackList-client {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+}
+
+
+.do-lackList-list {
+	border: 1px solid lightgray;
+}
+.do-table-11, .do-table-22, .do-table-33, .do-table-44 {
+	background-color: rgba(82, 82, 108, 0.8) !important;
+	font-weight: 600 !important;
+	color: white !important;
+	text-align: center !important;
+	border-left: 1px solid white;
+	border-top: 1px solid white;
+}
+.do-table-11 {
+	width: 40% !important;
+}
+.do-table-22 {
+	width: 44% !important;
+}
+.do-table-33 {
+	width: 13% !important;
+}
+.do-table-44 {
+	width: 3% !important;
+	border-right: 1px solid white;
+}
+.do-table-td11, .do-table-td22, .do-table-td33, .do-table-td44 {
+	text-align: center !important;
+    vertical-align: middle; 
+    border-left: 1px solid #dee2e6 !important;
+	border-top: 1px solid #dee2e6 !important;
+	border-bottom: 1px solid #dee2e6 !important;
+}
+.do-table-td44 {
+	border-right: 1px solid #dee2e6 !important;
+}
+.do-lackList-ok {
+	display: flex;
+	justify-content: flex-end;
+}
+#lackBtn {
+	background-color: rgba(82, 82, 108, 0.8);
+	border: none;
+	border-radius: 5px;
+	color: white;
+	font-weight: bold;
+}
+#lackBtn:hover {
+	background-color: rgba(82, 82, 108);
 }

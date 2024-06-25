@@ -99,15 +99,15 @@
             <tr>
                 <td rowspan="2" class="do-tWidth1 do-tbackColor">수주처</td>
                 <td class="do-tWidth2 do-tbackColor">상호</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
+                <td colspan="3" id="client_name"><input type="text" class="do-inputText"/></td>
                 <td class="do-tWidth2 do-tbackColor">대표자</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
+                <td colspan="3" id="ceo_name"><input type="text" class="do-inputText"/></td>
             </tr>
             <tr>
                 <td class="do-tWidth2 do-tbackColor">주소</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
-                <td class="do-tWidth2 do-tbackColor">연락처</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
+                <td colspan="3" id="address"><input type="text" class="do-inputText"/></td>
+                <td class="do-tWidth2 do-tbackColor">유형</td>
+                <td colspan="3" id="client_type"><input type="text" class="do-inputText"/></td>
             </tr>
         </table>
         <table>
@@ -120,59 +120,59 @@
                     <th class="do-tbWidth5">금액</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- 반복 행을 위한 템플릿 -->
+            <tbody id="do-serverInput">
+                <!-- 발주 주문 -->
                 <tr class="do-tr1">
-                    <td>1</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td></td>
                 </tr>
                 <tr class="do-tr2">
-                    <td>2</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td></td>
                 </tr>
                 <tr class="do-tr3">
-                    <td>3</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td></td>
                 </tr>
                 <tr class="do-tr4">
-                    <td>4</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td></td>
                 </tr>
                 <tr class="do-tr5">
-                    <td>5</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td></td>
                 </tr>
                 <tr class="do-tr6">
-                    <td>6</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td></td>
                 </tr>
                 <tr class="do-tr7">
-                    <td>7</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td></td>
                 </tr>
                 <tr class="do-tr8">
-                    <td>8</td>
+                    <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
                     <td><input type="text" class="do-inputText"/></td>
@@ -188,17 +188,18 @@
         <p class="text-center">20 년 월 일</p>
         <table>
             <tr>
+            	<input type="hidden" id="emp_idx"/>
                 <td rowspan="2" class="do-tWidth1 do-tbackColor">발주자</td>
                 <td class="do-tWidth2 do-tbackColor">부서</td>
-                <td colspan="3"><input type="text" class="do-inputText" id="emp_part"/></td>
+                <td colspan="3" id="emp_part"></td>
                 <td class="do-tWidth2 do-tbackColor">직급</td>
-                <td colspan="3"><input type="text" class="do-inputText" id="emp_level"/></td>
+                <td colspan="3" id="emp_level"></td>
             </tr>
             <tr>
                 <td class="do-tWidth2 do-tbackColor">성명</td>
-                <td colspan="3"><input type="text" class="do-inputText" id="emp_name"/></td>
+                <td colspan="3" id="emp_name"></td>
                 <td class="do-tWidth2 do-tbackColor">연락처</td>
-                <td colspan="3"><input type="text" class="do-inputText" id="emp_phone"/></td>
+                <td colspan="3" id="emp_phone"></td>
             </tr>
         </table>
     </div>
@@ -210,9 +211,12 @@
 	    fetch('/poBasic.ajax')
 	        .then(response => response.json())
 	        .then(data => {
-	        	console.log(data);
-	        	console.log(data.no);
 	            document.getElementById('no').textContent = data.no;
+	            document.getElementById('emp_idx').value = data.emp_idx;
+	            document.getElementById('emp_part').textContent = data.emp_part;
+	            document.getElementById('emp_level').textContent = data.emp_level;
+	            document.getElementById('emp_name').textContent = data.emp_name;
+	            document.getElementById('emp_phone').textContent = data.emp_phone;
 	        });
 	});
 </script>

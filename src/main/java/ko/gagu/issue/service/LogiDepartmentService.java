@@ -1,5 +1,6 @@
 package ko.gagu.issue.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import ko.gagu.issue.dao.LogiDepartmentDAO;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.LogiDeptDTO;
+import ko.gagu.issue.dto.client_tbDTO;
 
 @Service
 public class LogiDepartmentService {
@@ -50,9 +52,6 @@ public class LogiDepartmentService {
 		
 		return map;
 	}
-
-	
-	
 	
 	
 	public ModelAndView poWrite_go(HttpSession session) {
@@ -62,10 +61,6 @@ public class LogiDepartmentService {
 		
 		return mav;
 	}
-	
-	
-	
-	
 	
 	
 	public Map<String, Object> poBasic(Map<String, Object> map, HttpSession session) {
@@ -85,12 +80,57 @@ public class LogiDepartmentService {
 		EmployeeDTO emp = getEmpData(session);
 		String dept = logiDeptDao.getEmpDept(emp.getIdx_employee());
 		String level = logiDeptDao.getEmpLevel(emp.getIdx_employee());
+		map.put("emp_idx", emp.getIdx_employee());
+		map.put("emp_part", dept);
+		map.put("emp_level", level);
 		map.put("emp_name", emp.getEmp_name());
 		map.put("emp_phone", emp.getEmp_phone_number());
 		
 		return map;
 	}
 	
+	
+	public Map<String, Object> lackProductList(Map<String, Object> map) {
+		List<String> clientList = logiDeptDao.lackClient();
+		map.put("clientList", clientList);
+		
+		return map;
+	}
+	
+	
+	public Map<String, Object> lackProductByClient(Map<String, Object> map, String client) {
+		List<LogiDeptDTO> list = logiDeptDao.lackProductByClient(client);
+		map.put("list", list);
+		
+		return map;
+	}
+	
+	
+	public Map<String, Object> autoWriteIframe(Map<String, Object> map, String client, List<String> selectedArr) {
+		// 발주처 정보
+		client_tbDTO clientDto = logiDeptDao.getClientData(client);
+		map.put("client", clientDto);
+		
+		// 발주할 제품
+		List<LogiDeptDTO> list = new ArrayList<LogiDeptDTO>();
+		for (int i = 0; i < selectedArr.size(); i++) {
+			int idx_product = Integer.parseInt(selectedArr.get(i));
+			LogiDeptDTO dto = logiDeptDao.getPOProduct(idx_product);
+			list.add(dto);
+		}
+		map.put("list", list);
+		
+		return map;
+	}
+	
+	
+	public ModelAndView poWriteFinish_go(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("/logisticsDepartment/poWriteFinish");
+		
+		return mav;
+	}
 	
 	
 	
@@ -105,6 +145,21 @@ public class LogiDepartmentService {
 		
 		return emp;
 	}
+
+
+
+
+
+
+	
+
+
+
+	
+
+
+
+
 
 
 

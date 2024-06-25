@@ -254,21 +254,9 @@
 							<div class='row'>
 								<div class='col-1'></div>
 								<div class='col-10'>
-									<div class="do-rightfixed"> 
-				                        <div class="do-warning" id="do-warning">
-				                        	<i class="fa-solid fa-pen"></i>&nbsp;자동 작성
-				                        </div>
-					                </div>
-									<div class='row do-poForm'
-										style='display: flex; flex-direction: column; align-items: center;'>
-										<div id='form' class='row'>
-											<iframe id="form-document" src="po.html"></iframe>
-										</div>
-									</div>
 									<div class='row'>
 										<div class="do-poSubmit"> 
-					                      <a class="btn btn-primary" id="submitBtn">발주하기</a>
-<!-- 					                      <a class="btn btn-primary" id="submitBtn" href="add-products.html">발주하기</a> -->
+											발주 완료
 					                    </div>
 									</div>
 								</div>
@@ -276,45 +264,6 @@
 							</div>
 						</div>
 						
-						
-						<!-- 자동 작성 -->
-						<div class="do-lackList">
-							<div class="do-lackList-x">
-								<i class="fa-solid fa-xmark" id="cancelBtn"></i>
-							</div>
-							<div class="do-lackList-client">
-								<p class="do-bold do-p-darkgray do-margin">발주처&nbsp;</p>
-								<div class="datatable-top do-pCategoryyy">
-		                      		<div class="datatable-dropdown">
-		                      			<label>
-		                      				<select class="datatable-selector" id="clientList">
-		                      					<option value=""></option>
-		                      				</select>
-		                      			</label>
-		                      		</div>
-		                      	</div>
-							</div>
-							<div class="do-lackList-list">
-								<table class="table do-table">
-			                        <thead> 
-			                          <tr> 
-			                            <th class="do-table-11">상호명</th>
-			                            <th class="do-table-22">제품명</th>
-			                            <th class="do-table-33">잔고</th>
-			                            <th class="do-table-44"><input type="checkbox" name="all" id="selectAll"/></th>
-			                          </tr>
-			                        </thead>
-			                        <tbody class= "do-inventory"> 
-			                          <tr>
-			                          	<td colspan="4">Select Client...</td>
-			                          </tr>
-			                        </tbody>
-			                      </table>
-							</div>
-							<div class="do-lackList-ok">
-								<button id="lackBtn">발주</button>
-							</div>
-						</div>
                     </div>
                   </div>
                 </div>
@@ -591,15 +540,6 @@
         });
     }
  	
- 	
- 	
- 	
- 	
- 	
- 	// 발주하기 버튼
- 	document.getElementById('submitBtn').addEventListener('click', () => {
- 		window.location.href="/logisticsDepartment/poWriteFinish.go";
- 	});
  	
  	
  	// 파일로 저장, 파일의 데이터들(발주번호, 직원번호, 거래처번호, 제품번호(들))은 디비에 저장

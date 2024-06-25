@@ -77,3 +77,14 @@
 	text-align: center !important;
     vertical-align: middle; 
 }
+
+
+
+
+/* po write */
+#do-warning {
+	margin: 20px 0;
+}
+#do-warning:hover {
+	color: rgba(122, 112, 186);
+}

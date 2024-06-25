@@ -2,6 +2,7 @@ package ko.gagu.issue.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +11,13 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.service.LogiDepartmentService;
@@ -63,6 +67,59 @@ public class LogiDepartmentController {
 		
 		return logiDeptService.poBasic(map, session);
 	}
+	// 발주 필요한 클라이언트 불러오기
+	@PostMapping(value="/lackProduct.ajax")
+	@ResponseBody
+	Map<String, Object> lackProductList() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return logiDeptService.lackProductList(map);
+	}
+	// 발주 필요한 재고 불러오기
+	@PostMapping(value="/lackProductByClient.ajax")
+	@ResponseBody
+	Map<String, Object> lackProductByClient(@RequestBody Map<String, Object> payload) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		String client = (String) payload.get("client");
+		
+		return logiDeptService.lackProductByClient(map, client);
+	}
+	// 자동으로 발주주문서에 넣을 제품 정보 번환
+	@PostMapping(value="/autoWriteIframe.ajax")
+	@ResponseBody
+	Map<String, Object> autoWriteIframe(@RequestBody Map<String, Object> payload) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		// 클라이언트명
+		String client = (String) payload.get("client");
+		// 발주할 제품
+		List<String> selectedArr = (List<String>) payload.get("selectedArr");
+		
+		return logiDeptService.autoWriteIframe(map, client, selectedArr);
+	}
+	// 발주서 작성,,,,,클릭,,,,
+	@PostMapping(value = "/savePO.ajax")
+	@ResponseBody
+	public Map<String, Object> savePO(@RequestParam("file") MultipartFile file) {
+		Map<String, Object> response = new HashMap<>();
+//		if (documentFile == null || documentFile.isEmpty()
+//				|| !StringUtils.hasText(documentData) 
+//				|| !StringUtils.hasText(approvalLine)) {
+//			logger.info("문서 작성 중 오류 발생");
+//			response.put("success", false);
+//		} else {
+//			// int idxEmployee = session.getAttribute("???");
+//			int idxEmployee = 2;
+//			//document_service.documentWrite(documentFile, documentData, approvalLine, idxEmployee, response);
+//		}	
+		return response;
+	} 
 	
 	
+	
+	// 발주 완료 페이지
+	@GetMapping(value="/logisticsDepartment/poWriteFinish.go")
+	public ModelAndView poWriteFinish_go(HttpSession session) {
+		return logiDeptService.poWriteFinish_go(session);
+	}
 }

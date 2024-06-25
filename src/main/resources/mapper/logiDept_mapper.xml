@@ -64,6 +64,48 @@
 		ORDER BY idx_purchase_order DESC
 		LIMIT 1
 	</select>
+	<select id="getEmpDept" resultType="String">
+		SELECT de_name 
+		FROM department_tb dt
+			JOIN employee_tb et ON dt.idx_department = et.idx_department 
+		WHERE et.idx_employee = #{param1}
+	</select>
+	<select id="getEmpLevel" resultType="String">
+		SELECT tt.title_name 
+		FROM title_tb tt 
+			JOIN employee_tb et ON tt.idx_title = et.idx_title 
+		WHERE et.idx_employee = #{param1}
+	</select>
+	<!-- 발주 - 클라이언트리스트 -->
+	<select id="lackClient" resultType="String">
+		SELECT ct.client_name
+		FROM product_tb pt 
+			JOIN client_tb ct ON ct.idx_business = pt.idx_business 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+			JOIN inventory_tb it ON it.idx_product = pt.idx_product 
+		WHERE it.current_stock &lt; pt.minimum_stock
+	</select>
+	<!-- 발주 - 클라이언트에 따른 재고부족리스트 -->
+	<select id="lackProductByClient" resultType="logi">
+		SELECT it.idx_product , 
+				pt.product_name ,
+				ct.client_name ,
+				it.current_stock ,
+				pt.minimum_stock 
+		FROM product_tb pt 
+			join client_tb ct on ct.idx_business = pt.idx_business 
+			join product_category_tb pct on pct.idx_product_category = pt.idx_product_category 
+			join inventory_tb it on it.idx_product = pt.idx_product 
+		WHERE it.current_stock &lt; pt.minimum_stock AND ct.client_name = #{param1}
+	</select>
+	<!-- 발주 - 재고부족리스트로 html 채워넣기 -->
+	<select id="getClientData" resultType="client">
+		SELECT * FROM client_tb WHERE client_name=#{param1}
+	</select>
+	<select id="getPOProduct" resultType="logi">
+		SELECT * FROM product_tb WHERE idx_product = #{param1}
+	</select>
+	
 	
 
 
