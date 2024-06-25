@@ -10,7 +10,7 @@
 	</style>
 	
 	
-</head> -->
+</head> 
 
 		<div class="header-wrapper col m-0">
           <div class="row">
@@ -179,6 +179,7 @@
             	                $('body').append(response);
             	                // 모달 표시
             	                $('#myModal').modal('show');
+            	               
             	                
             	                // 대화방 목록을 불러오는 함수 호출
             	                loadChatRooms();
@@ -191,13 +192,18 @@
             	});
              
              
-             function loadChatRooms() {
+             function loadChatRooms(search) {
+            	 console.log("대화방 불러오기 아작스 요청");
+            	 console.log(search);
                  $.ajax({
                      url: '/getChatRooms',
                      method: 'POST',
                      dataType:'JSON',
+                     data: {
+                    	 'messageSearch': search,                    	 
+                     },
                      success: function(data) {
-                    	 console.log(data);
+                    	 // console.log(data);
                          //  대화방 목록을 화면에 표시하는 로직
                          drawRoomList(data);
                      },
@@ -233,7 +239,7 @@
          			content +=		'</div>';
          			content +=		'<div>';
          			content +=		'<p>'+DateToString(item.reg_date)+'</p>';
-         			content +=      '<div class="badge badge-light-success">'+15+'</div>';
+         			content +=      '<div class="badge badge-light-success">'+item.no_read+'</div>';
          			content +=		'</div>';
          			content +=		'</li>';
          			if (item.no_read > 0) {
@@ -242,25 +248,50 @@
          			content +=	'</div>';	
          		}
          		
+         		
+         		
          		$('.chats-user').append(content);
+
          		
          	  
          	}
          	
              function viewRoomContent(idx, other_emp){
-         		// subjectCall(idx);
+         		subjectCall(other_emp);
          		var emp_id = 1;
          		messageCall(idx, emp_id , other_emp);
+         		
          		chat_idx = idx;
          		chat_user = other_emp;
          	}
+             
+             
+            
+             function subjectCall(other_emp) {
+         		$.ajax({
+         			type: 'POST',
+         			url: '/subjectCall.ajax',
+         			data: {
+         				'other_emp': other_emp
+         			},
+         			dataType: 'JSON',
+         			success: function(data) {
+         				
+         				drawSubject(data);
+         				
+         			}, error: function(error) {
+         				console.log(error);
+         			}
+         		});
+         	}
+             
              
              
          	// 특정 방 message 출력
          	function messageCall(idx, emp, otherEmp) {
          		$.ajax({
          			type: 'POST',
-         			url: './messageCall.ajax',
+         			url: '/messageCall.ajax',
          			data: {
          				'idx': idx,
          				'emp': emp,
@@ -269,13 +300,14 @@
          			dataType: 'JSON',
          			success: function(data) {
          				drawMessage(data);
+         				loadChatRooms();
          			}, error: function(error) {
          				console.log(error);
          			}
          		});
          		
          	}
-             
+            
             
          	
          	
@@ -287,12 +319,26 @@
         		var checkMinutes = 0;
         		
         		$('.msger-chat').empty();
-	
+//        		$('.chat-time').empty();
+        		
         		var content = '';
+        		var content2 = '';
 
         		if (!data.messageList || data.messageList.length === 0) {
         			content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';	/* <p class="no-message">아무것도 없따... <i class="fa-solid fa-message"></i></p> */
         		}
+        		/* 
+        			content2 += '<div class="active-profile">';
+        			content2 += '<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+        			content2 += '<div class="status bg-success"></div>';
+        			content2 +=		'</div>';
+        			content2 +=		'<div>';
+        			content2 +=		'<span>'+data.messageList.other_name+'</span>';
+        			content2 +=		'<p>부서</p>';
+        			content2 +=		'</div>';
+        		*/
+        			
+        		
         		for (item of data.messageList) {
         			var date = new Date(item.send_datetime);
         			var dateStr = date.toLocaleDateString("ko-KR");
@@ -300,15 +346,14 @@
         			var minutes = date.getMinutes();
         			
         			//console.log(item.new_picname);
-        			
-        			
+        
         			
         			if(emp === item.receiver) {
         				content +=	'<div class="msg left-msg">';
         				content +=		'<div class="msg-img"></div>';
         				content +=		'<div class="msg-bubble">';
         				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">'+item.ohter_name+'</div>'; // 이름은 나중에 세션으로 가져오기
+        				content +=		'<div class="msg-info-name">'+item.other_name+'</div>'; // 이름은 나중에 세션으로 가져오기
         				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
         				content +=		'</div>';
         				content +=		'<div class="msg-text">'+item.content+'</div>';
@@ -320,7 +365,7 @@
         				content +=		'<div class="msg-img"></div>';
         				content +=		'<div class="msg-bubble">';
         				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">재민</div>'; // 이름은 나중에 세션으로 가져오기
+        				content +=		'<div class="msg-info-name">나</div>'; // 이름은 나중에 세션으로 가져오기
         				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
         				content +=		'</div>';
         				content +=		'<div class="msg-text">'+item.content+'</div>';
@@ -329,43 +374,11 @@
         			}
 	    				content +=		'</div>';
 	    				content +=		'</div>';
-        			/* 
-        				if(checkHours != hours || checkMinutes != minutes){
-        					content +=			'<img class="circle-img" src="/photo/'+data.profileImg+'" alt="상대방 프로필 사진">';
-        					content +=			'<div class="message-info">';
-        					content +=				'<p class="name">'+재민+'</p>'; 
-        					if (item.new_picname != null) content +=	'<img class="photo" src="/photo/'+item.new_picname+'" alt="'+item.message_idx+'번 쪽지 사진">';
-        					content +=				'<p class="content">'+item.content+'</p>';
-        					content +=			'</div>';
-        					checkHours = hours;
-        					checkMinutes = minutes;
-        				} else {
-        					content +=			'<div class="term"><p></p></div>';
-        					content +=			'<div class="message-info">';
-        					if (item.new_picname != null) content +=	'<img class="photo" src="/photo/'+item.new_picname+'" alt="'+item.message_idx+'번 쪽지 사진">';
-        					content +=				'<p class="content">'+item.content+'</p>';
-        					content +=			'</div>';
-        				}
-        				content +=		'</div>';
-        				content +=	'</div>';
-        			} else if (email === item.sender_email) {
-        				content +=	'<div class="send-msg-info" data-value="'+item.message_idx+'">';
-        				content +=		'<div class="size-cut">';
-        				content +=			'<div class="sendTime">';
-        				content +=				'<p>'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</p>';
-        				content +=			'</div>';
-        				content +=			'<div class="message-info">';
-        				if (item.new_picname != null) content +=	'<img class="photo" src="/photo/'+item.new_picname+'" alt="'+item.message_idx+'번 쪽지 사진">';
-        				content +=				'<p class="content">'+item.content+'</p>';
-        				content +=			'</div>';
-        				content +=		'</div>';
-        				content +=	'</div>';
-        			}
-        			*/
-        			
+     
         		}
         		
         		$('.msger-chat').append(content);
+//        		$('.chat-time').append(content2);
          	}
          	
          	

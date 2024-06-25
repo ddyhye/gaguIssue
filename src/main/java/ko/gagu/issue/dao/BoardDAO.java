@@ -1,6 +1,7 @@
 package ko.gagu.issue.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,5 +18,16 @@ public interface BoardDAO {
 	void updateBoardFile(int post_id, int fileIdx);
 
 	List<BoardDTO> selectBoardList();
+
+	void increaseViewCount(int post_id);
+
+	BoardDTO getBoardById(int post_id);
+
+	BoardDTO getFileById(Integer idx_file);
+	
+	List<BoardDTO> selectPaginatedBoardList(int startIndex, int pageSize);
+
+    // 전체 게시글 수 조회 메서드
+    int selectTotalBoardCount();
 
 }

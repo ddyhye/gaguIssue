@@ -30,7 +30,7 @@ public class DocumentController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired DocumentService document_service;
+	@Autowired DocumentService ds;
 
 	@GetMapping(value = "/document/formSelect.go")
 	public ModelAndView documentFormSelectGo(String msg) {
@@ -39,13 +39,23 @@ public class DocumentController {
 		return mav;
 	}
 
-	@GetMapping(value = "/document/{form_name}/write.go")
-	public ModelAndView documentWriteGo(@PathVariable String form_name
+	@GetMapping(value = "/document/{idxDc}/write.go")
+	public ModelAndView documentWriteGo(@PathVariable String idxDc
 			,HttpSession session) {
-		logger.info("form_name : {}", form_name);
+		logger.info("form_name : {}", idxDc);
 		// int idxEmployee = session.getAttribute("???");
-		int idxEmployee = 2;
-		return document_service.fetchFormTemplate(form_name, idxEmployee);
+		int idxEmployee = 1;
+		return ds.fetchFormTemplate(idxDc, idxEmployee);
+	}
+	
+	@GetMapping(value = "/document/{idxApproval}/detail.go")
+	public ModelAndView documentDetailGo(@PathVariable String idxApproval, HttpSession session) {
+		logger.info("idxApproval : {}", idxApproval);
+
+		
+		// int idxEmployee = session.getAttribute("???");
+		int accessIdxEmployee = 1;
+		return ds.fetchDocumentPage(accessIdxEmployee, idxApproval);
 	}
 	
 	@PostMapping(value = "/document/write.do")
@@ -66,8 +76,8 @@ public class DocumentController {
 			response.put("success", false);
 		} else {
 			// int idxEmployee = session.getAttribute("???");
-			int idxEmployee = 2;
-			document_service.documentWrite(documentFile, documentData, approvalLine, idxEmployee, response);
+			int idxEmployee = 1;
+			ds.documentWrite(attachmentFiles, documentFile, documentData, approvalLine, idxEmployee, response);
 		}	
 		return response;
 	} 

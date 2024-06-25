@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +28,13 @@ import ko.gagu.issue.dto.BoardDTO;
 @Service
 public class BoardService {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
+    private static final String UPLOAD_DIR = "C:/filestore";
+    private Logger logger = LoggerFactory.getLogger(BoardService.class);
 
     @Autowired
-    BoardDAO boardDao;
+    private BoardDAO boardDao;
 
-    private static final String UPLOAD_DIR = "C:/filestore";
-
+    // 게시글 작성 메서드
     public ModelAndView write(RedirectAttributes rAttr, Map<String, String> param, MultipartFile file) {
         ModelAndView mav = new ModelAndView();
         String page = "boardWrite";
@@ -50,17 +49,16 @@ public class BoardService {
 
         // 게시글을 데이터베이스에 삽입
         int result = boardDao.insertBoard(dto);
-        int post_id = dto.getPost_id(); // 게시글 ID 가져오기
+        int post_id = dto.getPost_id(); // 삽입된 게시글 ID 가져오기
 
         try {
             if (file != null && !file.isEmpty()) {
-                String storedFileName = storeFile(file); // 파일 저장
-                int fileIdx = saveFileInfoToDatabase(post_id, file.getOriginalFilename(), storedFileName); // 파일 정보 데이터베이스에 저장
-                // 게시글에 파일 인덱스 업데이트
-                dto.setIdx_file(fileIdx);
-                //boardDao.updateBoardFile(post_id, fileIdx);
+                // 파일 저장 및 파일 정보 데이터베이스에 저장
+                String storedFileName = storeFile(file);
+                int fileIdx = saveFileInfoToDatabase(post_id, file.getOriginalFilename(), storedFileName);
+                dto.setIdx_file(fileIdx); // 게시글에 파일 인덱스 업데이트
             } else {
-                dto.setIdx_file(null); 
+                dto.setIdx_file(null);
             }
         } catch (IOException e) {
             logger.error("파일 업로드 중 오류 발생: " + e.getMessage());
@@ -69,7 +67,7 @@ public class BoardService {
         if (result > 0) {
             logger.info("게시글 작성 성공");
             rAttr.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다.");
-            mav.setViewName("common/board");
+            mav.setViewName("redirect:/boardlist.go");
         } else {
             logger.error("게시글 작성 실패");
             rAttr.addFlashAttribute("message", "게시글 작성에 실패하였습니다.");
@@ -79,11 +77,11 @@ public class BoardService {
         return mav;
     }
 
+    // 단일 파일 업로드 메서드
     public String upload(MultipartFile file) {
         try {
             if (file != null && !file.isEmpty()) {
-                String storedFileName = storeFile(file);
-                return storedFileName;
+                return storeFile(file); // 파일 저장
             }
         } catch (IOException e) {
             logger.error("파일 업로드 중 오류 발생: " + e.getMessage());
@@ -91,14 +89,11 @@ public class BoardService {
         return null;
     }
 
+    // 다중 파일 업로드 메서드
     public String multiUpload(MultipartFile[] files) {
         try {
             if (files != null && files.length > 0) {
-                String[] storedFileNames = new String[files.length];
-                for (int i = 0; i < files.length; i++) {
-                    storedFileNames[i] = storeFile(files[i]);
-                }
-                return storedFileNames[0];
+                return storeFile(files[0]); // 첫 번째 파일 저장
             }
         } catch (IOException e) {
             logger.error("다중 파일 업로드 중 오류 발생: " + e.getMessage());
@@ -106,6 +101,7 @@ public class BoardService {
         return null;
     }
 
+    // 파일 다운로드 메서드
     public ResponseEntity<Resource> download(String fileName) {
         try {
             Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
@@ -124,12 +120,23 @@ public class BoardService {
         }
     }
 
+    // 파일 저장 메서드
     private String storeFile(MultipartFile file) throws IOException {
         String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
         String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
         Path targetLocation = Paths.get(UPLOAD_DIR).resolve(storedFileName);
         Files.copy(file.getInputStream(), targetLocation);
         return storedFileName;
+    }
+    
+    // 페이지네이션을 위한 게시글 목록 조회 메서드
+    public List<BoardDTO> getPaginatedBoardList(int startIndex, int pageSize) {
+        return boardDao.selectPaginatedBoardList(startIndex, pageSize);
+    }
+
+    // 전체 게시글 수 조회 메서드
+    public int getTotalBoardCount() {
+        return boardDao.selectTotalBoardCount();
     }
 
     private int saveFileInfoToDatabase(int post_id, String origin_name, String file_name) {
@@ -138,5 +145,20 @@ public class BoardService {
 
     public List<BoardDTO> getBoardList() {
         return boardDao.selectBoardList(); 
+    }
+    
+    public void increaseViewCount(int post_id) {
+        boardDao.increaseViewCount(post_id);
+    }
+
+    public BoardDTO getBoardById(int post_id) {
+        BoardDTO board = boardDao.getBoardById(post_id);
+        BoardDTO fileInfo = boardDao.getFileById(post_id);
+        if (fileInfo != null) {
+        	
+        	board.setOrigin_name(fileInfo.getOrigin_name());
+        	board.setFile_name(fileInfo.getFile_name());
+        }
+        return board;
     }
 }

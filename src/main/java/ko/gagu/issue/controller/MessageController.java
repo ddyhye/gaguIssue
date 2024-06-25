@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ko.gagu.issue.service.MessageService;
@@ -36,11 +37,12 @@ public class MessageController {
 	 	// 대화방 리스트 요청 ajax
 		@RequestMapping(value = "/getChatRooms", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> roomListCallAjax(){
-			logger.info("{}의 대화방 리스트 출력");
+		public Map<String, Object> roomListCallAjax(@RequestParam(value="messageSearch", required = false) String messageSearch){
+			logger.info("--------대화방 리스트 출력---------");
+			logger.info("messageSearch :" + messageSearch);
 			int emp_id = 1;
 			
-			return messageService.roomListCallAjax(emp_id);
+			return messageService.roomListCallAjax(emp_id, messageSearch);
 		
 		}
 		
@@ -50,15 +52,33 @@ public class MessageController {
 		@RequestMapping(value = "/messageCall.ajax", method = RequestMethod.POST)
 		@ResponseBody
 		public Map<String, Object> messageCallAjax(int idx, String emp, String otherEmp){
-			logger.info("{}번 게시물, {}가 요청", idx, emp);
+			logger.info("{}번 게시물, {}가 요청, other_emp: {}", idx, emp, otherEmp);
 			return messageService.messageCallAjax(idx, emp, otherEmp);
+		}
+			
+		
+		// 쪽지 보내기 ajax
+		@RequestMapping(value = "/messageSend.ajax", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> messageSendAjax(int idx, String emp_id, String other_emp, String content){
+			logger.info("{}번 방, {}가 쪽지 전송", idx, emp_id);
+			return messageService.messageSend(idx, emp_id, other_emp, content);
 		}
 		
 		
 		
-		
-		
-		
-		
-		
+		/*
+		@RequestMapping(value = "/message/subjectCall.ajax", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> subjectCallAjax(HttpSession session, int idx){
+			logger.info("{}번 게시물, 제목 요청", idx);
+			Map<String, Object> map = new HashMap<String, Object>();
+			MemberDTO loginInfo = (MemberDTO) session.getAttribute("loginInfo");
+			if (loginInfo != null) {
+				String myEmail = loginInfo.getEmail();
+				map = messageService.subjectCallAjax(myEmail, idx);			
+			}
+			return map;
+		}
+		 */
 }

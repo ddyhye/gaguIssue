@@ -20,10 +20,10 @@ public class MessageService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired MessageDAO messageDAO;
 	
-	public Map<String, Object> roomListCallAjax(int emp_id) {
+	public Map<String, Object> roomListCallAjax(int emp_id, String messageSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.info("emp_id : " + emp_id);
-		List<MessageDTO> roomList = messageDAO.roomList(emp_id);
+		List<MessageDTO> roomList = messageDAO.roomList(emp_id, messageSearch);
 		
 		for (int i = 0; i < roomList.size(); i++) {
 			MessageDTO messageDTO = roomList.get(i);
@@ -58,7 +58,7 @@ public class MessageService {
 		
 		List<Integer> messageIdxs = new ArrayList<Integer>();
 		List<MessageDTO> messageList = messageDAO.messageList(idx, emp, otherEmp); // [min] 쪽지 내역 가져오기
-		// messageDAO.messageRead(idx, emp, otherEmp);
+		messageDAO.messageRead(idx, emp, otherEmp);
 		
 		/*
 		for (int i = 0; i < messageList.size(); i++) {
@@ -80,6 +80,21 @@ public class MessageService {
 		
 		map.put("messageList", messageList);
 		map.put("msgIdxs", messageIdxs);
+		
+		return map;
+	}
+
+	public Map<String, Object> messageSend(int idx, String emp_id, String other_emp, String content) {
+		boolean result = false;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int row = messageDAO.sendMessage(content, emp_id, other_emp, idx);
+		if(row == 1) {
+			result = true;
+			// messageDAO.alarmSend(idx+"번 게시물 : "+content, emp_id);
+		} 
+		map.put("result", "보낸 결과"+result);
+		
 		
 		return map;
 	}

@@ -15,6 +15,8 @@ public class BoardDTO {
 	private boolean is_notice;
 	private Timestamp written_datetime;
 	private Integer idx_file;
+	 private String origin_name;
+	 private String file_name;
 	
 	
 	public int getPost_id() {
@@ -66,6 +68,26 @@ public class BoardDTO {
 	public void setIdx_file(Integer idx_file) {
 		this.idx_file = idx_file;
 	}
+	public String getOrigin_name() {
+		return origin_name;
+	}
+	public void setOrigin_name(String origin_name) {
+		this.origin_name = origin_name;
+	}
+	public String getFile_name() {
+		return file_name;
+	}
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
+	}
+	@Override
+	public String toString() {
+		return "BoardDTO [post_id=" + post_id + ", writer=" + writer + ", po_title=" + po_title + ", po_content="
+				+ po_content + ", po_view_count=" + po_view_count + ", is_notice=" + is_notice + ", written_datetime="
+				+ written_datetime + ", idx_file=" + idx_file + ", origin_name=" + origin_name + ", file_name="
+				+ file_name + "]";
+	}
+	
 	
 	
 

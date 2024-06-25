@@ -16,12 +16,14 @@ public class MessageDTO {
 	private int no_read;
 	private String new_picname;
 	private String name;
+	private String other_name;
 	private Timestamp reg_date;
 	private String content;
 	private int other_emp;
 	private Timestamp send_datetime;
 	private int idx_message;
 	private int is_receiver_read;
+	
 	
 	public int getIdx_messageroom() {
 		return idx_messageroom;
@@ -112,6 +114,12 @@ public class MessageDTO {
 	}
 	public void setIs_receiver_read(int is_receiver_read) {
 		this.is_receiver_read = is_receiver_read;
+	}
+	public String getOther_name() {
+		return other_name;
+	}
+	public void setOther_name(String other_name) {
+		this.other_name = other_name;
 	}
 	
 	

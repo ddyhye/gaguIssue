@@ -93,7 +93,7 @@
         <table>
             <tr>
                 <td class="do-tWidth0 do-tbackColor">발주서 NO</td>
-                <td colspan="3"></td>
+                <td colspan="3" id="no"></td>
                 <td colspan="3" class="do-none-border"></td>
             </tr>
             <tr>
@@ -190,17 +190,31 @@
             <tr>
                 <td rowspan="2" class="do-tWidth1 do-tbackColor">발주자</td>
                 <td class="do-tWidth2 do-tbackColor">부서</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
+                <td colspan="3"><input type="text" class="do-inputText" id="emp_part"/></td>
                 <td class="do-tWidth2 do-tbackColor">직급</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
+                <td colspan="3"><input type="text" class="do-inputText" id="emp_level"/></td>
             </tr>
             <tr>
                 <td class="do-tWidth2 do-tbackColor">성명</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
+                <td colspan="3"><input type="text" class="do-inputText" id="emp_name"/></td>
                 <td class="do-tWidth2 do-tbackColor">연락처</td>
-                <td colspan="3"><input type="text" class="do-inputText"/></td>
+                <td colspan="3"><input type="text" class="do-inputText" id="emp_phone"/></td>
             </tr>
         </table>
     </div>
 </body>
+
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    fetch('/poBasic.ajax')
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.log(data);
+	        	console.log(data.no);
+	            document.getElementById('no').textContent = data.no;
+	        });
+	});
+</script>
+
 </html>

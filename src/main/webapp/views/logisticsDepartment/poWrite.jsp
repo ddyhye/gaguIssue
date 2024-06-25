@@ -52,6 +52,113 @@
   	
   	<!-- J-Query -->
   	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .container-fluid {
+		display: flex;
+		justify-content: center;
+	}
+	
+	iframe {
+		border: none;
+		width: 90%;
+		text-align: center;
+		height: 100%;
+		margin-top: 5%;
+	}
+	
+	#form {
+		width: 100%;
+		display: flex;
+		height: 750px;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid;
+		background: white;
+	}
+	
+	#form-document {
+		width: 100%;
+		height: 700px; /* 원하는 높이로 설정 */
+		overflow: scroll; /* 스크롤바를 항상 표시 */
+		border: none; /* 테두리를 없애려면 사용 */
+	}
+	
+	#ex9 {
+		margin-top: 20px;
+		display: flex;
+		justify-content: center;
+	}
+	
+	#ex9 .upload-box {
+		width: 85%;
+		height: 150px;
+		border: 1px dashed black;
+		display: flex;
+		justify-content: center;
+		background: white;
+		align-items: center;
+	}
+	.upload-box span {
+		font-size: 12px;
+	}
+	#jstree {
+		overflow-y: auto;
+		max-height: 300px;
+		height: 290px;
+		border: 1px solid #ccc;
+	}
+	#approvalLine {
+		font-family: outfit;
+		font-size: 15px;
+		text-align: center;
+		border: 1px #dbdbdb solid;
+	}
+	.approvalHr {
+		color: #000000;
+		background: #F4F4F4;
+		font-weight: bold;
+		border: 1.5px #dbdbdb solid;
+	}
+	#writer {
+		color: #aeaeae;
+	}
+	
+	#approvalLineHeader {
+		font-size: 18px;
+	}
+	.no-checkbox > .jstree-checkbox {
+		display: none;
+	}
+	.seectionBorder {
+		border: 1px solid black;
+	}
+	
+	
+	
+	/* [do] */
+	.row {
+		width: 100%;
+	}
+	.do-rowChild {
+		display: flex;
+		flex-direction: row;
+	}
+	.do-poSide {
+		position:relative;
+		width: 20%;
+	}
+	.do-poMain {
+		position: relative;
+		width: 80%;
+	}
+	.do-poForm {
+		margin: 20px 0;
+	}
+	.do-poSubmit {
+		display: flex;
+		justify-content: flex-end;
+	}
+  </style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -73,13 +180,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Inventory</h4>
+          <h4 class="f-w-700">PO write</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
               <li class="breadcrumb-item f-w-400">logisticsDept</li>
-              <li class="breadcrumb-item f-w-400 active">Inventory</li>
+              <li class="breadcrumb-item f-w-400 active">PO write</li>
             </ol>
           </nav>
         </div>
@@ -104,78 +211,69 @@
                 <div class="card"> 
                   <div class="card-body">
                   	<div class="card-header do-flexdirection-row">
-			          <h4>Inventory</h4>
-			          <div class="do-rightfixed"> 
-                        <a class="btn btn-primary" href="add-products.html"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
-                      </div>
+			          <h4>발주 서류 작성</h4>
 			        </div>
 			        
-			        
-                    <div class="list-product-header">
-                      <div class="do-annual-header-left">
-                      	<div class="do-left-search">
-	                      	<input type="text" name="memberSearch" id="memberSearch" placeholder="제품번호 또는 제품명..."/>
-	                      	<i class="fa-solid fa-magnifying-glass" id="productSearchBtn"></i>
-                      	</div>
-                      	<div class="do-left-category1">
-	                      	<p class="do-bold do-p-darkgray do-pCategory">카테고리&nbsp;</p>
-	                      	<div class="datatable-top do-pCategoryyy">
-	                      		<div class="datatable-dropdown">
-	                      			<label>
-	                      				<select class="datatable-selector" id="productCategory">
-	                      					<option value="전체">전체</option>
-	                      					<c:forEach items="${categoryList}" var="item">
-	                      						<option value="${item}">${item}</option>
-	                      					</c:forEach>
-	                      				</select>
-	                      			</label>
-	                      		</div>
-	                      	</div>
-	                    </div>
-                      	<div class="do-left-category2">
-	                      	<p class="do-bold do-p-darkgray do-margin">발주처&nbsp;</p>
-	                      	<div class="datatable-top do-pCategoryyy">
-	                      		<div class="datatable-dropdown">
-	                      			<label>
-	                      				<select class="datatable-selector" id="clientList">
-	                      					<option value="전체">전체</option>
-	                      					<c:forEach items="${clientList}" var="item">
-	                      						<option value="${item}">${item}</option>
-	                      					</c:forEach>
-	                      				</select>
-	                      			</label>
-	                      		</div>
-	                      	</div>
-	                    </div>
-                      </div>
-                      <div class="do-annual-header-right">
-                      	<div class="do-rightfixed"> 
-	                        <div class="do-warning" id="do-warning">
-	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;재고부족
-	                        </div>
-	                    </div>
-                      </div>
-                    </div>
                     
-                    
-                    <div class="list-product">
-                      <table class="table do-table">
-                        <thead> 
-                          <tr> 
-                            <th class="do-table-1">제품번호</th>
-                            <th class="do-table-2">카테고리</th>
-                            <th class="do-table-3">제품명</th>
-                            <th class="do-table-4">수주처</th>
-                            <th class="do-table-5">현재 재고</th>
-                            <th class="do-table-6">안전 재고</th>
-                          </tr>
-                        </thead>
-                        <tbody class= "do-inventory"> 
-                          <tr>
-                          	<td colspan="6">loding...</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    <div class='row h-100 w-100 do-rowChild'>
+                      <!-- [do] 사이드바 -->
+						<div class='col-2 sidebar-left-wrapper do-poSide' style='padding-right: 24px;'>
+							<ul class='sidebar-left-icons nav nav-pills' id='add-product-pills-tab' role='tablist'>
+								<li class='nav-item'><a class='nav-link active'>
+										<div class='nav-rounded'>
+											<div class='product-icons'>
+												<svg class='stroke-icon'>
+                                    			<use
+														href='/assets/svg/icon-sprite.svg#pencil'></use>
+                                  			</svg>
+											</div>
+										</div>
+										<div class='product-tab-content'>
+											<h5>서류 작성</h5>
+										</div>
+								</a></li>
+								<li class='nav-item'><a class='nav-link'>
+										<div class='nav-rounded'>
+											<div class='product-icons'>
+												<svg class='stroke-icon'>
+                                    			<use
+														href='/assets/svg/icon-sprite.svg#orders'> </use>
+                                  			</svg>
+											</div>
+										</div>
+										<div class='product-tab-content'>
+											<h5>발주 완료</h5>
+										</div>
+								</a></li>
+							</ul>
+						</div>
+
+						<!-- [do] 메인 -->
+						<div class='col-10 h-100 do-poMain'>
+							<div class='row'>
+								<div class='col-1'></div>
+								<div class='col-10'>
+									<div class="do-rightfixed"> 
+				                        <div class="do-warning" id="do-warning">
+				                        	<i class="fa-solid fa-pen"></i>&nbsp;자동 작성
+				                        </div>
+					                </div>
+									<div class='row do-poForm'
+										style='display: flex; flex-direction: column; align-items: center;'>
+										<div id='form' class='row'>
+											<iframe id="form-document" src="po.html"></iframe>
+										</div>
+									</div>
+									<div class='row'>
+										<div class="do-poSubmit"> 
+					                      <a class="btn btn-primary" href="add-products.html">제출</a>
+					                    </div>
+									</div>
+								</div>
+								<div class='col-1'></div>
+							</div>
+						</div>
+						<!-- jeong : 문서 양식 작성하는 영역 끝 -->
                     </div>
                   </div>
                 </div>
@@ -184,6 +282,7 @@
           </div>
           <!-- Container-fluid Ends-->
         </div>
+        
         
         
         

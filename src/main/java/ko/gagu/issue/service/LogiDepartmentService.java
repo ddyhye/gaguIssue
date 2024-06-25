@@ -55,6 +55,47 @@ public class LogiDepartmentService {
 	
 	
 	
+	public ModelAndView poWrite_go(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("/logisticsDepartment/poWrite");
+		
+		return mav;
+	}
+	
+	
+	
+	
+	
+	
+	public Map<String, Object> poBasic(Map<String, Object> map, HttpSession session) {
+		
+		// 발주서 번호
+		String no = logiDeptDao.getPONumber();
+		int noInt = 1;	// 발주서가 없을 경우, 작성될 발주서의 번호는 1
+		if (no != null || no == "") {
+			noInt = Integer.parseInt(no);
+			noInt++;
+			
+		}
+		map.put("no", noInt);
+		
+		
+		// 직원 정보 자동 입력
+		EmployeeDTO emp = getEmpData(session);
+		String dept = logiDeptDao.getEmpDept(emp.getIdx_employee());
+		String level = logiDeptDao.getEmpLevel(emp.getIdx_employee());
+		map.put("emp_name", emp.getEmp_name());
+		map.put("emp_phone", emp.getEmp_phone_number());
+		
+		return map;
+	}
+	
+	
+	
+	
+	
+	
 	
 	// [do] 로그인한 직원 정보 가져오기
 	public EmployeeDTO getEmpData(HttpSession session) {
@@ -64,6 +105,13 @@ public class LogiDepartmentService {
 		
 		return emp;
 	}
+
+
+
+	
+
+
+
 
 
 

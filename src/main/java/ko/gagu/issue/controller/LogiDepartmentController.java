@@ -48,4 +48,21 @@ public class LogiDepartmentController {
 	}
 	
 	
+	
+	// [do] 물류관리부서 - 발주 서류 작성
+	// 발주 서류 작성 페이지
+	@GetMapping(value="/logisticsDepartment/poWrite.go")
+	public ModelAndView poWrite_go(HttpSession session) {
+		return logiDeptService.poWrite_go(session);
+	}
+	// 발주 서류의 기본 정보 자동 삽입 (발주서 번호, 로그인 회원 정보)
+	@GetMapping(value="/poBasic.ajax")
+	@ResponseBody
+	Map<String, Object> poBasic(HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return logiDeptService.poBasic(map, session);
+	}
+	
+	
 }

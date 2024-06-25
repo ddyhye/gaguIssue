@@ -40,6 +40,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'/>" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
     .modal-dialog {
       max-width: 85%; /* 원하는 너비를 설정합니다 */
@@ -78,7 +79,7 @@
 				        <div class="left-sidebar-chat">
 				          <div class="input-group">
 				            <span class="input-group-text"><i class="search-icon text-gray" data-feather="search"></i></span>
-				            <input class="form-control" type="text" placeholder="대화방 검색">
+				            <input class="form-control" type="text" name="messageSearch" id="messageSearch" placeholder="이름으로 검색">
 				          </div>
 				        </div>
 				        <div class="advance-options">
@@ -94,23 +95,7 @@
 				              </div>
 				              <ul class="chats-user">
 				               
-				                <li class="common-space" onclick="messagecal()">
-				                  <div class="chat-time">
-				                    <div class="active-profile">
-				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                      <div class="status bg-success"></div>
-				                    </div>
-				                    <div>
-				                      <span>Cameron Williamson</span>
-				                      <p>Hey, How are you?</p>
-				                    </div>
-				                  </div>
-				                  <div>
-				                    <p>2 min</p>
-				                    <div class="badge badge-light-success">15</div>
-				                  </div>
-				                </li>
-				               
+				                
 				              </ul>
 				            </div>
 				            <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
@@ -267,11 +252,11 @@
 				                  </div>
 				                </div>
 				              </div>
-				              <input class="msger-input two uk-textarea" type="text" placeholder="보내실 쪽지를 입력해주세요.">
+				              <input class="msger-input two uk-textarea" type="text" id="sendText" placeholder="보내실 쪽지를 입력해주세요.">
 				              <div class="open-emoji">
 				                <div class="second-btn uk-button"></div>
 				              </div>
-				              <button class="msger-send-btn" type="submit"><i class="fa fa-location-arrow"></i></button>
+				              <button class="msger-send-btn" id="send_btn" type="submit"><i class="fa fa-location-arrow"></i></button>
 				            </form>
 				          </div>
 				        </div>
@@ -289,8 +274,71 @@
 		</div>
 	</div>
 		
-		
-			
+	<script>
+	
+	var messageSearch = document.getElementById('messageSearch').value;
+	
+    document.getElementById('messageSearch').addEventListener('keydown', function(event) {
+	console.log(messageSearch);
+        if (event.key === "Enter") {
+            event.preventDefault();
+            messageSearch = document.getElementById('messageSearch').value;
+            loadChatRooms(messageSearch);
+        }
+    });
+	
+    
+    $('#send_btn').click(function(event) {
+    	event.preventDefault();
+    	console.log("보내기 click");
+    	var emp_id = 1; // 나중에 세션으로 대체
+	    sendMessage(chat_idx, chat_user);
+	    setTimeout(function() {
+			messageCall(chat_idx, emp_id, chat_user);
+			loadChatRooms(); // '${loginInfo.email}' 나중에 세션으로 대체
+		}, 100);
+	    $('#sendText').val('');
+	});
+    
+
+    document.getElementById('send_btn').addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼 제출 기본 동작 막기
+        var idx = 0; // 적절한 값으로 설정
+        var other_emp = ''; // 적절한 값으로 설정
+        sendMessage(idx, other_emp);
+    });    
+    
+    
+	function sendMessage(idx, other_emp) {
+		console.log("메시지 보내기");
+		var content = $('#sendText').val();
+		if(content == '') return alert("빈 내용은 전송할 수 없습니다.");
+		if(idx === 0 || other_emp === '') return alert("시스템 에러");
+		$.ajax({
+			type: 'POST',
+			url: '/messageSend.ajax',
+			data: {
+				'idx': idx,
+				'emp_id': 1, // 나중에 세션값으로 대체
+				'other_emp' : other_emp,
+				'content': content
+			},
+			dataType: 'JSON',
+			success: function(data) {
+				console.log(data.result);
+			}, error: function(error) {
+				console.log(error);
+			}
+		});
+	}
+
+    
+    
+    
+    
+	</script>
+	
+	<script src="../main/common_top.js"></script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
