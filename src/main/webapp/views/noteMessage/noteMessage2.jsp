@@ -38,9 +38,9 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'/>" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
     .modal-dialog {
       max-width: 85%; /* 원하는 너비를 설정합니다 */
@@ -53,19 +53,22 @@
 		    font-family: "Outfit", sans-serif, sans-serif;
 		    font-weight: 500;
 		}
+	.search-contacts {
+			margin-top: 10px;
+	}
 	</style>
   </head>
   <body> 
    
           
-	          <div class="modal" id="myModal" data-bs-backdrop="static">
+	          <div class="modal" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false"> 	
 				  <div class="modal-dialog">
 				    <div class="modal-content">          
           
 		      <!-- Modal Header -->
 		      <div class="modal-header">
 		        <h4 class="modal-title">사내 쪽지함</h4>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		        <button type="button" class="btn-close" id="closeModal" onclick="closeModal()" data-bs-dismiss="modal"></button>
 		      </div>
 		
 		      <!-- Modal body -->
@@ -89,26 +92,19 @@
 				          </ul>
 				          <div class="tab-content" id="chat-options-tabContent">
 				            <div class="tab-pane fade show active" id="chats" role="tabpanel" aria-labelledby="chats-tab">
-				              <div class="common-space">
-				                <p>Recent chats</p>
-				                <div class="header-top"><a class="btn badge-light-primary f-w-500" href="#!"><i class="fa fa-plus"></i></a></div>
-				              </div>
+				              
 				              <ul class="chats-user">
 				               
-				                
 				              </ul>
+				              
 				            </div>
 				            <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-				              <div class="common-space">
-				                <p>Contacts</p>
-				                <div class="header-top"><a class="btn badge-light-primary f-w-500" href="#!"><i class="fa fa-plus"></i></a></div>
-				              </div>
+				              
 				              <div class="search-contacts">
-				                <input class="form-control" type="text" placeholder="Name and phone number">
+				                <input class="form-control"" type="text" placeholder="이름 또는 전화번호 검색 ">
 				                <svg>
 				                  <use href="/assets/svg/icon-sprite.svg#stroke-search"></use>
 				                </svg>
-				                <i class="mic-search" data-feather="mic"></i>
 				              </div>
 				              <div class="contact-wrapper">
 				                <p>A</p>
@@ -241,15 +237,12 @@
 				              <div class="dropdown-form dropdown-toggle" role="main" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-plus"></i>
 				                <div class="chat-icon dropdown-menu dropdown-menu-start">
 				                  <div class="dropdown-item mb-2">
-				                    <svg>
-				                      <use href="/assets/svg/icon-sprite.svg#camera"></use>
-				                    </svg>
+				                  <!-- [JAE] SVG 요소의 viewBox 속성을 사용하여 SVG의 보이는 영역과 실제 클릭 가능한 영역을 조정 -->
+				                    <svg id="attachment-btn" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+									  <use href="/assets/svg/icon-sprite.svg#attchment"></use>
+									</svg>
 				                  </div>
-				                  <div class="dropdown-item">
-				                    <svg>
-				                      <use href="/assets/svg/icon-sprite.svg#attchment"></use>
-				                    </svg>
-				                  </div>
+				                  
 				                </div>
 				              </div>
 				              <input class="msger-input two uk-textarea" type="text" id="sendText" placeholder="보내실 쪽지를 입력해주세요.">
@@ -257,6 +250,9 @@
 				                <div class="second-btn uk-button"></div>
 				              </div>
 				              <button class="msger-send-btn" id="send_btn" type="submit"><i class="fa fa-location-arrow"></i></button>
+				              
+				              <!-- 숨겨진 파일 입력 요소 -->
+  							<input type="file" id="file-upload" style="display: none;">
 				            </form>
 				          </div>
 				        </div>
@@ -267,14 +263,44 @@
 		      </div>
 		      	<!-- Modal footer -->
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger"
-						data-bs-dismiss="modal">나가기</button>
+					<button type="button" id="closeModal2" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="closeModal()">나가기</button>
 				</div>
 			</div>
 		</div>
 	</div>
 		
+		
+		
+	<!-- The Modal -->
+	<div class="modal" id="myModal2">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">Modal Heading</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	        Modal body..
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>	
+		
+		
+		
 	<script>
+	
+	
 	
 	var messageSearch = document.getElementById('messageSearch').value;
 	
@@ -287,6 +313,13 @@
         }
     });
 	
+  	
+    function closeModal(){
+    	
+    	 document.getElementById('myModal').style.display = 'none';
+    }
+    
+    
     
     $('#send_btn').click(function(event) {
     	event.preventDefault();
@@ -332,13 +365,36 @@
 		});
 	}
 
+
+	  var attachmentBtn = document.getElementById('attachment-btn');
+	  var fileUpload = document.getElementById('file-upload');
+
+	  attachmentBtn.addEventListener('click', function () {
+		  console.log("탐색기 열기ㅣㅣㅣ");
+		  event.preventDefault();  // 기본 동작 방지
+	      fileUpload.click(); // 파일 탐색기 열기
+	  });
+
+	  fileUpload.addEventListener('change', function (event) {
+	    var files = event.target.files;
+	    if (files.length > 0) {
+	      // 파일이 선택된 경우 처리 로직 추가
+	      console.log('Selected file:', files[0]);
+	    }
+	  });
+	  
     
-    
-    
+	  document.addEventListener('DOMContentLoaded', function() {
+		  console.log("00000002번쨰 모달0000000");
+	    document.getElementById('openSecondModal').addEventListener('click', function(event) {
+	      event.preventDefault();
+	      var secondModal = new bootstrap.Modal(document.getElementById('myModal2'));
+	      secondModal.show();
+	    });
+	  });
     
 	</script>
 	
-	<script src="../main/common_top.js"></script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

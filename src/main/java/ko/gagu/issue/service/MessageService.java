@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ko.gagu.issue.dao.EmployeeDAO;
 import ko.gagu.issue.dao.MessageDAO;
+import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.MessageDTO;
 
 @Service
@@ -19,6 +21,7 @@ public class MessageService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired MessageDAO messageDAO;
+	@Autowired EmployeeDAO dao;
 	
 	public Map<String, Object> roomListCallAjax(int emp_id, String messageSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -96,6 +99,24 @@ public class MessageService {
 		map.put("result", "보낸 결과"+result);
 		
 		
+		return map;
+	}
+
+	public Map<String, Object> subjectCall(int other_emp) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<MessageDTO> subjectCall = messageDAO.subjectCall(other_emp); // [min] 쪽지 내역 가져오기
+		
+		map.put("subjectCall", subjectCall);
+		return map;
+	}
+
+	public Map<String, Object> getContact(int emp_id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		logger.info("emp_id : " + emp_id);
+		List<EmployeeDTO> ContactList = dao.getContact(emp_id);
+		
+		map.put("ContackList", ContactList);
 		return map;
 	}
 	

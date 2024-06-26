@@ -86,6 +86,36 @@
 	    FROM post_list_tb
 	</select>
 	
+	<update id="update" parameterType="ko.gagu.issue.dto.BoardDTO">
+	    UPDATE post_list_tb
+	    SET is_notice = #{is_notice}
+	    WHERE post_id = #{post_id}
+	</update>
+    
+    <select id="findById" parameterType="int" resultType="ko.gagu.issue.dto.BoardDTO">
+        SELECT *
+        FROM post_list_tb
+        WHERE post_id = #{post_id}
+    </select>
+	
+	<!-- 제목으로 게시글 검색 -->
+    <select id="searchByTitle" parameterType="java.lang.String" resultType="ko.gagu.issue.dto.BoardDTO">
+        SELECT *
+        FROM post_list_tb
+        WHERE po_title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY post_id DESC
+    </select>
+
+    <!-- 제목 및 내용으로 게시글 검색 -->
+    <!-- 제목 및 내용으로 게시글 검색 (OR 조건) -->
+		<select id="searchByTitleAndContent" parameterType="java.lang.String" resultType="ko.gagu.issue.dto.BoardDTO">
+		    SELECT *
+		    FROM post_list_tb
+		    WHERE po_title LIKE CONCAT('%', #{keyword}, '%')
+		    OR po_content LIKE CONCAT('%', #{keyword}, '%')
+		    ORDER BY post_id DESC
+		</select>
+
 	
     
 

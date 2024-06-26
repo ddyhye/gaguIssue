@@ -115,7 +115,7 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <!-- [il] 캘린더 시작 -->
-          <h2><center>Javascript Fullcalendar</center></h2>
+          <h2><center>Employee Fullcalendar</center></h2>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
 		    <input type="hidden" id="idx_employee" value="2"> 		    
@@ -168,54 +168,96 @@
 			<!-- [il] 상세보기 Modal -->
 			<!-- Event Detail Modal -->
 			<div id="eventDetailModal" class="modal" role="dialog">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h4 class="modal-title">일정 상세보기</h4>
-		            </div>
-		            <div class="modal-body">					                        	
-		                <div class="form-group">
-		                    <label for="detailTitle">일정명:</label>
-		                    <input type="text" class="form-control" id="detailTitle">
-		                    <input type="hidden" id="detailEventId" value="${employee.idx_emp_calendar}"> 	
-		                </div>
-		                <div class="form-group">
-		                    <label for="detailStartDate">시작 날짜:</label>
-		                    <input type="date" class="form-control" id="detailStartDate">
-		                </div>
-		                <div class="form-group">
-		                    <label for="detailStartTime">시작 시간:</label>
-		                    <select class="form-control" id="detailStartTime">
-		                        <!-- Option elements will be added dynamically -->
-		                    </select>
-		                </div>
-		                <div class="form-group">
-		                    <label for="detailEndDate">종료 날짜:</label>
-		                    <input type="date" class="form-control" id="detailEndDate">
-		                </div>
-		                <div class="form-group">
-		                    <label for="detailEndTime">종료 시간:</label>
-		                    <select class="form-control" id="detailEndTime">
-		                        <!-- Option elements will be added dynamically -->
-		                    </select>
-		                </div>
-		                <div class="form-group">
-		                    <label for="detailDescription">설명:</label>
-		                    <textarea class="form-control" id="detailDescription"></textarea>
-		                </div>
-		                <div class="form-group">
-		                    <label for="detailColor">색상:</label>
-		                    <input type="color" class="form-control" id="detailColor">
-		                </div>
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-primary" onclick="editEvent()">수정</button>
-		                <button type="button" class="btn btn-default" onclick="deleteEvent()">삭제</button>
-		                <button type="button" class="btn btn-default custom-close-detail">닫기</button>
-		            </div>
-		        </div>
-		    </div>
-		</div>
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h4 class="modal-title">일정 상세보기</h4>
+			            </div>
+			            <div class="modal-body">					                        	
+			                <div class="form-group">
+			                    <label for="detailTitle">일정명:</label>
+			                    <input type="text" class="form-control" id="detailTitle">
+			                    <input type="hidden" id="detailEventId" value="${employee.idx_emp_calendar}"> 	
+			                </div>
+			                <div class="form-group">
+			                    <label for="detailStartDate">시작 날짜:</label>
+			                    <input type="date" class="form-control" id="detailStartDate">
+			                </div>
+			                <div class="form-group">
+			                    <label for="detailStartTime">시작 시간:</label>
+			                    <select class="form-control" id="detailStartTime">
+			                    </select>
+			                </div>
+			                <div class="form-group">
+			                    <label for="detailEndDate">종료 날짜:</label>
+			                    <input type="date" class="form-control" id="detailEndDate">
+			                </div>
+			                <div class="form-group">
+			                    <label for="detailEndTime">종료 시간:</label>
+			                    <select class="form-control" id="detailEndTime">
+			                    </select>
+			                </div>
+			                <div class="form-group">
+			                    <label for="detailDescription">설명:</label>
+			                    <textarea class="form-control" id="detailDescription"></textarea>
+			                </div>
+			                <div class="form-group">
+			                    <label for="detailColor">색상:</label>
+			                    <input type="color" class="form-control" id="detailColor">
+			                </div>
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-primary" onclick="editEvent()">수정</button>
+			                <button type="button" class="btn btn-default" onclick="deleteEvent()">삭제</button>
+			                <button type="button" class="btn btn-default custom-close-detail">닫기</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<!-- [il] 회사일정 모달창 -->
+			<div id="companyEventDetailModal" class="modal" role="dialog">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h4 class="modal-title">회사 일정 상세보기</h4>
+			            </div>
+			            <div class="modal-body">
+			                <div class="form-group">
+			                    <label for="companyDetailTitle">일정명:</label>
+			                    <input type="text" class="form-control" id="companyDetailTitle" readonly>
+			                </div>
+			                <div class="form-group">
+			                    <label for="companyDetailStartDate">시작 날짜:</label>
+			                    <input type="date" class="form-control" id="companyDetailStartDate" readonly>
+			                </div>
+			                <div class="form-group">
+			                    <label for="companyDetailStartTime">시작 시간:</label>
+			                    <input type="text" class="form-control" id="companyDetailStartTime" readonly>
+			                </div>
+			                <div class="form-group">
+			                    <label for="companyDetailEndDate">종료 날짜:</label>
+			                    <input type="date" class="form-control" id="companyDetailEndDate" readonly>
+			                </div>
+			                <div class="form-group">
+			                    <label for="companyDetailEndTime">종료 시간:</label>
+			                    <input type="text" class="form-control" id="companyDetailEndTime" readonly>
+			                </div>
+			                <div class="form-group">
+			                    <label for="companyDetailDescription">설명:</label>
+			                    <textarea class="form-control" id="companyDetailDescription" readonly></textarea>
+			                </div>
+			                <div class="form-group">
+			                    <label for="companyDetailColor">색상:</label>
+			                    <input type="color" class="form-control" id="companyDetailColor" readonly>
+			                </div>
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-default custom-close-company-detail">닫기</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		
 
 
           <!-- Container-fluid Ends-->
@@ -238,8 +280,7 @@
       </div>
     </div>
       <script>
-      var idx_employee = document.getElementById('idx_employee').value; // 직원 ID 변수
-
+      var idx_employee = document.getElementById('idx_employee').value; 
       document.addEventListener('DOMContentLoaded', function() {
           var calendarEl = document.getElementById('calendar');
           var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -313,7 +354,10 @@
           });
 
           calendar.render();
-
+          
+		  
+          
+          
           document.querySelector('.custom-close').addEventListener('click', function() {
               $('#myModal').modal('hide');
           });
@@ -363,7 +407,8 @@
           }
           document.getElementById('startTime').innerHTML = selectOptions;
           document.getElementById('endTime').innerHTML = selectOptions;
-
+		  
+          // 개인일정 불러오기
           function fetchEvents(info, successCallback, failureCallback) {
               $.ajax({
                   url: './getAllEvents.ajax',
@@ -393,6 +438,37 @@
                   }
               });
           }
+          
+          /* // 회사 일정 불러오기
+          function fetchEvents(info, successCallback, failureCallback) {
+              $.ajax({
+                  url: './getAllCompanyEvents.ajax',
+                  method: 'GET',
+                  success: function(response) {
+                      var eventss = [];
+                      for (var i = 0; i < response.CompanyEvents.length; i++) {
+                          var event = {
+                              id: response.CompanyEvents[i].idx_company_calendar,
+                              title: response.CompanyEvents[i].cc_title,
+                              description: response.CompanyEvents[i].cc_description,
+                              start: response.CompanyEvents[i].cc_start_datetime,
+                              end: response.CompanyEvents[i].cc_end_datetime,
+                              backgroundColor: response.CompanyEvents[i].cc_color
+                          };
+                          eventss.push(event);
+                      }
+                      successCallback(eventss);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('이벤트 로딩에 실패했습니다: ' + error);
+                      if (typeof failureCallback === "function") {
+                          failureCallback(xhr, status, error);
+                      }
+                  }
+              });
+          } */
+          
+          
       });
 
       function editEvent() {

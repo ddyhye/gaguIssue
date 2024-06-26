@@ -10,7 +10,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
-    <title>공지사항 상세보기 | Mofi - Premium Admin Template By Pixelstrap</title>
+    <title>공지사항 수정 | Mofi - Premium Admin Template By Pixelstrap</title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -59,12 +59,13 @@
                 <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt=""/></a></div>
             </div>
             <div class="col-4 col-xl-4 page-title">
-                <h4 class="f-w-700">공지사항 상세보기</h4>
+                <h4 class="f-w-700">공지사항 수정</h4>
                 <nav>
                     <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
                         <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
                         <li class="breadcrumb-item f-w-400">Dashboard</li>
-                        <li class="breadcrumb-item f-w-400 active">BoardDetail</li>
+                        <li class="breadcrumb-item f-w-400 active">Board</li>
+                        <li class="breadcrumb-item f-w-400 active">Boardupdate</li>
                     </ol>
                 </nav>
             </div>
@@ -82,53 +83,29 @@
                 <div class="container-fluid default-dashboard">
                     <div class="row">
                         <div class="col-12">
-                            <h3>공지사항 상세보기</h3>
-                            <hr>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <!-- 제목 -->
-                                            <h5 class="card-title">${board.po_title}</h5>
-                                            <!-- 필독/공지 여부 -->
-                                            <p>
-											    <c:choose>
-											        <c:when test="${board.is_notice == false}">
-											            <span class="badge bg-primary">공지</span>
-											        </c:when>
-											        <c:otherwise>
-											            <span class="badge bg-info">필독</span>
-											        </c:otherwise>
-											    </c:choose>
-											</p>
+                            <h3 class="mb-4">공지사항 수정</h3>
+                            <form action="<c:url value='/boardupdate.do'/>" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="post_id" value="${board.post_id}">
+                                <div class="mb-3">
+                                    <label for="is_notice" class="form-label">구분</label>
+                                    <select name="is_notice" id="is_notice" class="form-select">
+									    <option value="1">필독</option>
+									    <option value="0">공지</option>
+									</select>
 
-                                            <!-- 작성일 -->
-                                            <p>작성일: <span class="date-column">${board.written_datetime}</span></p>
-                                            <!-- 조회수 -->
-                                            <p>조회수: ${board.po_view_count}</p>
-                                        </div>
-                                        <div class="col-md-6 d-flex justify-content-end align-items-center">
-                                            <!-- 수정 버튼 -->
-                                            <a href="boardupdate.go?id=${board.post_id}" class="btn btn-primary btn-sm">
-                                                수정
-                                            </a>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!-- 첨부파일 -->
-                                            <c:if test="${not empty board.file_name}">
-                                                <p>첨부 파일: 
-                                                    <a href="<c:url value='/download/${board.file_name}'/>" download="${board.origin_name}">${board.origin_name}</a>
-                                                </p>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <!-- 내용 -->
-                                    <p class="card-text">${board.po_content}</p>
                                 </div>
-                            </div>
-                            <br>
-                            <a href="boardlist.go" class="btn btn-secondary">목록으로 돌아가기</a>
+                                <div class="mb-3">
+                                    <label for="po_title" class="form-label">제목</label>
+                                    <input type="text" name="po_title" id="po_title" class="form-control" value="${board.po_title}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="po_content" class="form-label">내용</label>
+                                    <textarea name="po_content" id="po_content" class="form-control" rows="6" readonly>${board.po_content}</textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">수정</button>
+                                <a href="<c:url value='/boardlist.go'/>" class="btn btn-secondary">취소</a>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -139,7 +116,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                            <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
+                            <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> © Mofi theme by pixelstrap  </p>
                             <p class="mb-0 f-w-600">Hand crafted & made with
                                 <svg class="footer-icon">
                                     <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
@@ -151,23 +128,6 @@
             </footer>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dateColumns = document.querySelectorAll('.date-column');
-
-            dateColumns.forEach(column => {
-                const originalDateStr = column.textContent.trim();
-
-                if (originalDateStr) {
-                    const dateParts = originalDateStr.split(' ')[0];
-                    column.textContent = dateParts;
-                } else {
-                    column.textContent = '--';
-                }
-            });
-        });
-    </script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

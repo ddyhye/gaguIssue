@@ -1,5 +1,6 @@
 package ko.gagu.issue.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +28,7 @@ public class MessageController {
 	        return "noteMessage/noteMessage2";  // JSP 파일 경로를 반환 (확장자 없이)
 	    }
 	 
-		/*
-		 * @GetMapping("/getChatRooms")
-		 * 
-		 * @ResponseBody public List<ChatRoom> getChatRooms() { // 대화방 목록을 반환하는 로직을 구현
-		 * return messageService.getAllChatRooms(); }
-		 */
+		
 	 
 	 	// 대화방 리스트 요청 ajax
 		@RequestMapping(value = "/getChatRooms", method = RequestMethod.POST)
@@ -67,18 +63,26 @@ public class MessageController {
 		
 		
 		
-		/*
-		@RequestMapping(value = "/message/subjectCall.ajax", method = RequestMethod.POST)
+		// 쪽지상대요청
+		@RequestMapping(value = "/subjectCall.ajax", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> subjectCallAjax(HttpSession session, int idx){
-			logger.info("{}번 게시물, 제목 요청", idx);
+		public Map<String, Object> subjectCallAjax(int other_emp){
+			logger.info("{}번 게시물, 제목 요청", other_emp);
 			Map<String, Object> map = new HashMap<String, Object>();
-			MemberDTO loginInfo = (MemberDTO) session.getAttribute("loginInfo");
-			if (loginInfo != null) {
-				String myEmail = loginInfo.getEmail();
-				map = messageService.subjectCallAjax(myEmail, idx);			
-			}
+			
+			map = messageService.subjectCall(other_emp);			
 			return map;
 		}
-		 */
+		
+		// 연락처 요청
+		@RequestMapping(value = "/getContact.ajax", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> getContact(){
+			logger.info("-------------연락처 요청-------------");
+			Map<String, Object> map = new HashMap<String, Object>();
+			int emp_id = 1;
+			map = messageService.getContact(emp_id);			
+			return map;
+		}
+		 
 }
