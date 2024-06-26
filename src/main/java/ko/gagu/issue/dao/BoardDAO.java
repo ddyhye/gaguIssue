@@ -30,4 +30,12 @@ public interface BoardDAO {
     // 전체 게시글 수 조회 메서드
     int selectTotalBoardCount();
 
+	BoardDTO findById(int post_id);
+
+	void update(BoardDTO boarddto);
+
+	List<BoardDTO> searchByTitle(String keyword);
+
+	List<BoardDTO> searchByTitleAndContent(String keyword);
+
 }
