@@ -87,8 +87,8 @@
                         <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
                       </svg><span>전자 결재</span></a>
                     <ul class="sidebar-submenu">
-                      <li><a href="add-products.go">기안서 작성</a></li>
-                      <li><a href="list-products.go">기안서 리스트</a></li>
+                      <li><a href="<c:url value='/document/formSelect.go'/>">기안서 작성</a></li>
+                      <li><a href="<c:url value='/document/list.go'/>">기안서 리스트</a></li>
                     </ul>
                   </li>
                   

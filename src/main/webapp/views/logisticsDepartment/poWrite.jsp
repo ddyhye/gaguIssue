@@ -544,6 +544,7 @@
  		iframeDocument.getElementById('ceo_name').innerHTML = data.client.ceo_name;
  		iframeDocument.getElementById('address').innerHTML = data.client.address;
  		iframeDocument.getElementById('client_type').innerHTML = data.client.client_type;
+ 		iframeDocument.getElementById('idx_business').innerHTML = data.client.idx_business;
  		
  		
  		// 발주할 제품
@@ -598,6 +599,11 @@
  	
  	// 발주하기 버튼
  	document.getElementById('submitBtn').addEventListener('click', () => {
+ 		// 발주서 저장
+ 		savePO();
+ 		
+ 		// 발주서 DB 저장
+ 		
  		window.location.href="/logisticsDepartment/poWriteFinish.go";
  	});
  	
@@ -610,21 +616,65 @@
         var htmlContent = iframeDocument.documentElement.outerHTML;
 
         var blob = new Blob([htmlContent], { type: 'text/html' });
+        var formData = new FormData();
+        formData.append('file', blob, 'po.html'); // 'po.html'은 파일 이름입니다.
         
         fetch('/savePO.ajax', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ file: blob})
+			body: formData
 		})
 		.then(response => response.json())
 		.then(data=> {
-			drawProduct(data);
-			// 저장 성공 시 페이지 이동하자. window.location.href="";
 		})
 		.catch(error => { console.error('Fetch error:', error); });
     }
+ 	// iFrame 내용을 DB에 저장하는 함수
+ 	function savePOforDB() {
+ 		var iframe = document.getElementById('form-document');
+        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+        
+        // 발주서 정보
+        var poNum = iframeDocument.getElementById('no').innerText;
+        var idx_employee = iframeDocument.getElementById('emp_idx').value;		// 직원정보
+        var idx_business = iframeDocument.getElementById('idx_business').value;	// 발주처 정보
+        var tableBody = iframeDocument.getElementById('do-serverInput');		// 발주할 제품들
+        var rows = tableBody.getElementsByTagName('tr');
+        var data = [];
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName('td');
+            var rowData = {
+                idx_product: cells[0].innerText,
+                product_name: cells[1].innerText,
+                minimum_stock: cells[2].innerText,
+                unit_price: cells[3].innerText,
+                total_price: cells[4].innerText
+            };
+            data.push(rowData);
+        }
+        
+        // 서버로 보낼 데이터 한꺼번에 담기
+        var payload = {
+            idx_employee: idx_employee,
+            idx_business: idx_business,
+            productArr: data
+        };
+        
+        fetch('/savePOforDB.ajax', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 저장 성공 시 페이지 이동
+            window.location.href = "/logisticsDepartment/poWriteFinish.go";
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+ 	}
 </script>
 
 

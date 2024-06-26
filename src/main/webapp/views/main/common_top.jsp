@@ -144,7 +144,7 @@
                     <li><a href="user-profile.go"><i data-feather="user"></i><span>My Profile </span></a></li>
                     <li><a href="letter-box.go"><i data-feather="users"></i><span>조직도</span></a></li>
                     <li><a href="task.go"><i data-feather="check-circle"></i><span>나의 근태</span></a></li>
-                    <li><a href="edit-profile.go"><i data-feather="calendar"></i><span>Calendar</span></a></li>
+                    <li><a href="<c:url value='/employee/calendar.go'/>"><i data-feather="calendar"></i><span>Calendar</span></a></li>
                     <li><a href="todo.go"><i data-feather="edit-3"> </i><span>To Do !</span></a></li>
                     <li><a href="login.go"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                   </ul>
