@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,9 +36,22 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+    
+    
+    
+    <!-- [do] css 추가 -->
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/receivingHistory.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+    
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+  	
+  	<!-- J-Query -->
+  	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -59,13 +73,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">Inventory</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400">logisticsDept</li>
+              <li class="breadcrumb-item f-w-400 active">입고 내역</li>
             </ol>
           </nav>
         </div>
@@ -78,13 +92,105 @@
         <!-- Page Sidebar Start-->
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
+        
+        
+        
+        
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          <div class="container-fluid">
+            <div class="row"> 
+              <div class="col-sm-12"> 
+                <div class="card"> 
+                  <div class="card-body">
+                  	<div class="card-header do-flexdirection-row">
+			          <h4>입고 내역</h4>
+			          <div class="do-rightfixed"> 
+                        <a class="btn btn-primary" href="<c:url value='/logisticsDepartment/poWrite.go'/>"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
+                      </div>
+			        </div>
+			        
+			        
+                    <div class="list-product-header">
+                      <div class="do-annual-header-left">
+                      	<div class="do-left-search">
+	                      	<input type="text" name="memberSearch" id="memberSearch" placeholder="제품번호 또는 제품명..."/>
+	                      	<i class="fa-solid fa-magnifying-glass" id="productSearchBtn"></i>
+                      	</div>
+                      	<div class="do-left-category1">
+	                      	<p class="do-bold do-p-darkgray do-pCategory">카테고리&nbsp;</p>
+	                      	<div class="datatable-top do-pCategoryyy">
+	                      		<div class="datatable-dropdown">
+	                      			<label>
+	                      				<select class="datatable-selector" id="productCategory">
+	                      					<option value="전체">전체</option>
+	                      					<c:forEach items="${categoryList}" var="item">
+	                      						<option value="${item}">${item}</option>
+	                      					</c:forEach>
+	                      				</select>
+	                      			</label>
+	                      		</div>
+	                      	</div>
+	                    </div>
+                      	<div class="do-left-category2">
+	                      	<p class="do-bold do-p-darkgray do-margin">발주처&nbsp;</p>
+	                      	<div class="datatable-top do-pCategoryyy">
+	                      		<div class="datatable-dropdown">
+	                      			<label>
+	                      				<select class="datatable-selector" id="clientList">
+	                      					<option value="전체">전체</option>
+	                      					<c:forEach items="${clientList}" var="item">
+	                      						<option value="${item}">${item}</option>
+	                      					</c:forEach>
+	                      				</select>
+	                      			</label>
+	                      		</div>
+	                      	</div>
+	                    </div>
+                      </div>
+                      <div class="do-annual-header-right">
+                      	<div class="do-rightfixed"> 
+	                        <div class="do-warning" id="do-warning">
+	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;재고부족
+	                        </div>
+	                    </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="list-product">
+                      <table class="table do-table">
+                        <thead> 
+                          <tr> 
+                            <th class="do-table-1">No</th>
+                            <th class="do-table-2">입고일자</th>
+                            <th class="do-table-3">수주처</th>
+                            <th class="do-table-4">제품명</th>
+                            <th class="do-table-5">주문수량</th>
+                            <th class="do-table-6">입고수량</th>
+                            <th class="do-table-7">입고상태</th>
+                            <th class="do-table-8">발주서</th>
+                          </tr>
+                        </thead>
+                        <tbody class= "do-inventory"> 
+                          <tr>
+                          	<td colspan="8">loding...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
+        
+        
+        
+        
+        
         <!-- footer start-->
         <footer class="footer">
           <div class="container-fluid">
@@ -147,4 +253,128 @@
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>
+  
+  
+<script>
+
+	// 필터링 값
+	// memberSearch (productSearch)
+	// productCategory
+	// clientList
+	var productSearch = document.getElementById('memberSearch').value;
+	var productCategory = document.getElementById('productCategory').value;
+	var clientList = document.getElementById('clientList').value;
+	
+	listCall(productSearch, productCategory, clientList);
+
+    document.getElementById('memberSearch').addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            productSearch = document.getElementById('memberSearch').value;
+            listCall(productSearch, productCategory, clientList);
+        }
+    });
+    document.getElementById('productSearchBtn').addEventListener('click', () => {
+    	productSearch = document.getElementById('memberSearch').value;
+    	listCall(productSearch, productCategory, clientList);
+	});
+    document.getElementById('productCategory').addEventListener('change', () => {
+    	productCategory = document.getElementById('productCategory').value;
+    	listCall(productSearch, productCategory, clientList);
+	});
+    document.getElementById('clientList').addEventListener('change', () => {
+    	clientList = document.getElementById('clientList').value;
+    	listCall(productSearch, productCategory, clientList);
+	});
+    // 재고 부족 누를 경우,
+    document.getElementById('do-warning').addEventListener('click', () => {
+    	listCall('warn', 'warn', 'warn');
+	});
+    
+
+	
+	
+
+	// 물품 리스트 출력
+	function listCall(productSearch, productCategory, clientList) {
+		$.ajax({
+			type: 'post',
+			url: '<c:url value="/receivingHisList.ajax"/>',
+			data: {
+				'productSearch': productSearch,
+				'productCategory': productCategory,
+				'clientList': clientList
+			},
+			dataType: 'JSON',
+			success: function(data) {
+				drawHistoryList(data);
+			}, error: function(error) {
+				console.log(error);
+			}
+		});
+	}
+	// drawHistory 함수 : 히스토리 그리기
+	function drawHistoryList(data) {
+		$('.do-inventory').empty();
+		
+		var content = '';
+
+		if (!data.list || data.list.length === 0) {
+			content += '<tr><td colspan="8">LODING...</td></tr>';
+		}
+		for (item of data.list) {
+			content += '<tr>';
+			content += '<td class="do-table-td1">';
+			content += item.idx_purchasehtml;
+			content += '</td>';
+			content += '<td class="do-table-td2">';
+			var dateOnly = item.stock_datetime.split('T')[0];
+			content += dateOnly
+			content += '</td>';
+			content += '<td class="do-table-td3">';
+			content += item.client_name;
+			content += '</td>';
+			content += '<td class="do-table-td4">';
+			content += item.product_name;
+			content += '</td>';
+			content += '<td class="do-table-td5">';
+			content += item.order_quantity;
+			content += '</td>';
+			content += '<td class="do-table-td6">';
+			content += item.stock_quantity;
+			content += '</td>';
+			content += '<td class="do-table-td7">';
+			content += item.stock_status;
+			content += '</td>';
+			content += '<td class="do-table-td8">';
+			content += '<button class="do-poBtn" value="'+item.html_filename+'"><i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i></button>';
+			content += '</td>';
+			content += '</tr>';
+		}
+		
+		$('.do-inventory').append(content);
+	}
+	// timestamp 형식인 거 문자열로 변환하는 함수
+	function DateToString(timesteamp){
+	  	var date = new Date(timesteamp);
+	  	var dateStr = date.toLocaleDateString("ko-KR");
+	  	return dateStr;
+	}
+	
+	
+	
+	
+	document.querySelector('.do-inventory').addEventListener('click', function(e){
+		if (e.target && e.target.closest('button.do-poBtn')) {
+	        var button = e.target.closest('button.do-poBtn');
+	        var fileName = button.value;
+	        
+	        console.log(fileName);
+
+	        window.open("/filestore/"+encodeURIComponent(fileName), "_blank", "width=1000,height=700");
+	    }		
+	});
+</script>
+
+
 </html>

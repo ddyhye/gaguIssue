@@ -135,7 +135,7 @@
                     <ul class="sidebar-submenu">
                       <li><a href="<c:url value='/logisticsDepartment/inventoryList.go'/>">Inventory</a></li>
                       <li><a href="<c:url value='/logisticsDepartment/poWrite.go'/>">발주 서류 작성</a></li>
-                      <li><a href="add-products.go">입고 내역</a></li>
+                      <li><a href="<c:url value='/logisticsDepartment/receivingHistory.go'/>">입고 내역</a></li>
                       <li><a href="list-products.go">주문</a></li>
                       <li><a href="list-products.go">출고 내역</a></li>
                     </ul>

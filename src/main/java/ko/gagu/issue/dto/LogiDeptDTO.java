@@ -224,5 +224,96 @@ public class LogiDeptDTO {
 	}
 	
 	
+	
+	// 발주
+	private int idx_purchase_order;
+	private int idx_purchasehtml;
+	private int idx_employee;
+//	private int idx_business;
+//	private int idx_product;
+	private LocalDateTime written_datetime;
+	private String html_filename;
+	private int total_price;
+	
+	
+	public int getTotal_price() {
+		return total_price;
+	}
+	public void setTotal_price(int total_price) {
+		this.total_price = total_price;
+	}
+	public int getIdx_purchase_order() {
+		return idx_purchase_order;
+	}
+	public int getIdx_employee() {
+		return idx_employee;
+	}
+	public int getIdx_purchasehtml() {
+		return idx_purchasehtml;
+	}
+	public LocalDateTime getWritten_datetime() {
+		return written_datetime;
+	}
+	public void setIdx_purchase_order(int idx_purchase_order) {
+		this.idx_purchase_order = idx_purchase_order;
+	}
+	public void setIdx_employee(int idx_employee) {
+		this.idx_employee = idx_employee;
+	}
+	public void setIdx_purchasehtml(int idx_purchasehtml) {
+		this.idx_purchasehtml = idx_purchasehtml;
+	}
+	public void setWritten_datetime(LocalDateTime written_datetime) {
+		this.written_datetime = written_datetime;
+	}
+	public String getHtml_filename() {
+		return html_filename;
+	}
+	public void setHtml_filename(String html_filename) {
+		this.html_filename = html_filename;
+	}
+	
+	
+	
+	// 입고 내역
+	private int idx;
+//	private int idx_purchase_order;
+//	private int idx_product;
+	private int order_quantity;
+	private int stock_quantity;
+	private String stock_status;
+	private LocalDateTime stock_datetime;
+	public int getIdx() {
+		return idx;
+	}
+	public int getOrder_quantity() {
+		return order_quantity;
+	}
+	public int getStock_quantity() {
+		return stock_quantity;
+	}
+	public String getStock_status() {
+		return stock_status;
+	}
+	public LocalDateTime getStock_datetime() {
+		return stock_datetime;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+	public void setOrder_quantity(int order_quantity) {
+		this.order_quantity = order_quantity;
+	}
+	public void setStock_quantity(int stock_quantity) {
+		this.stock_quantity = stock_quantity;
+	}
+	public void setStock_status(String stock_status) {
+		this.stock_status = stock_status;
+	}
+	public void setStock_datetime(LocalDateTime stock_datetime) {
+		this.stock_datetime = stock_datetime;
+	}
+	
+	
 
 }
