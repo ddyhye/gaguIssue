@@ -13,9 +13,16 @@ public class ApprovalDTO {
     private Timestamp writtenDatetime;
     private String apContent;
     
+	/* [jeong] 기안자 이름 */
+    private String empName;
+    
+	/* [jeong] 문서에 접근하려는 직원의 번호 */
     private int accessIdxEmployee;
+    
+	/* [jeong] 접근하려는 직원의 권한 [결재권자, 작성자, 제3자] */
     private String accessPermission;
-	private int approvalSequence;
+    
+	private int approvalStep;
 	
 	public int getIdxApproval() {
 		return idxApproval;
@@ -65,12 +72,25 @@ public class ApprovalDTO {
 	public void setAccessPermission(String accessPermission) {
 		this.accessPermission = accessPermission;
 	}
-	public int getApprovalSequence() {
-		return approvalSequence;
+	public int getApprovalStep() {
+		return approvalStep;
 	}
-	public void setApprovalSequence(int approvalSequence) {
-		this.approvalSequence = approvalSequence;
+	public void setApprovalStep(int approvalStep) {
+		this.approvalStep = approvalStep;
 	}
-	
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	@Override
+	public String toString() {
+		return "ApprovalDTO [idxApproval=" + idxApproval + ", idxEmployee=" + idxEmployee + ", idxDc=" + idxDc
+				+ ", finalApStatus=" + finalApStatus + ", writtenDatetime=" + writtenDatetime + ", apContent="
+				+ apContent + ", empName=" + empName + ", accessIdxEmployee=" + accessIdxEmployee
+				+ ", accessPermission=" + accessPermission + ", approvalStep=" + approvalStep + "]";
+	}
+ 
 	
 }
