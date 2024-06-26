@@ -35,9 +35,51 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
-    <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
+    
+	<!-- [il]id color->cc_color로 바꿈 / 06.22 -->
+    <link id="cc_color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
+    
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    
+    <!-- [il] 캘린더 -->
+    <!-- [il]jquery / 원래는 3.2.1 버전이었으나, 3.7.1버전으로 바꿔둠 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	
+	<!-- FullCalendar List Plugin -->
+	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.13/index.global.min.js"></script>
+
+	
+	
+	<!-- modal창 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+	<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/calendar.css'/>"> -->	
+    
+    <style>
+	#calendar {
+	   width: 80%;
+	   margin: 5px auto;
+	}
+	.datepicker-input {
+    position: relative;
+	}
+	.datepicker-input input, .timepicker-input select, .modal-body textarea {
+	    width: 100%;
+	}
+	.datepicker-input .ui-datepicker-trigger, .timepicker-input .ui-timepicker-trigger {
+	    position: absolute;
+	    right: 5px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+	</style>
+    
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -80,9 +122,106 @@
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
+          <!-- [il] 캘린더 시작 -->
+          <h2><center>Company Fullcalendar</center></h2>
+		    <div id="calendar"></div>
+		    <!-- [il] : value 나중에 바꿔줘야함. -->
+		    <!-- <input type="hidden" id="idx_company_calendar" value="2"> 	 -->	    
+		    <br>
+		    <!-- [il]Modal -->
+		    <!-- Modal -->
+			<div id="myModal" class="modal" role="dialog">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h4 class="modal-title">일정 추가</h4>
+			            </div>
+			            <div class="modal-body">
+			                <div class="form-group">
+			                    <label for="title">일정명:</label>
+			                    <input type="text" class="form-control" id="title">
+			                </div>
+			                <div class="form-group">
+			                    <label for="startDate">시작 날짜:</label>
+			                    <input type="date" class="form-control" id="startDate">
+			                </div>
+			                <div class="form-group">
+			                    <label for="startTime">시작 시간:</label>
+			                    <select class="form-control" id="startTime"></select>
+			                </div>
+			                <div class="form-group">
+			                    <label for="endDate">종료 날짜:</label>
+			                    <input type="date" class="form-control" id="endDate">
+			                </div>
+			                <div class="form-group">
+			                    <label for="endTime">종료 시간:</label>
+			                    <select class="form-control" id="endTime"></select>
+			                </div>
+			                <div class="form-group">
+			                    <label for="description">설명:</label>
+			                    <textarea class="form-control" id="description"></textarea>
+			                </div>
+			                <div class="form-group">
+			                    <label for="color">색상:</label>
+			                    <input type="color" class="form-control" id="color" disabled="disabled">
+			                </div>
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-default" id="addEventBtn">등록</button>
+			                <button type="button" class="btn btn-default custom-close">닫기</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<!-- [il] 상세보기 Modal -->
+			<!-- Event Detail Modal -->
+			<div id="eventDetailModal" class="modal" role="dialog">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h4 class="modal-title">일정 상세보기</h4>
+		            </div>
+		            <div class="modal-body">					                        	
+		                <div class="form-group">
+		                    <label for="detailTitle">일정명:</label>
+		                    <input type="text" class="form-control" id="detailTitle">
+		                    <input type="hidden" id="detailEventId" value="${company.idx_company_calendar}"> 	
+		                </div>
+		                <div class="form-group">
+		                    <label for="detailStartDate">시작 날짜:</label>
+		                    <input type="date" class="form-control" id="detailStartDate">
+		                </div>
+		                <div class="form-group">
+		                    <label for="detailStartTime">시작 시간:</label>
+		                    <select class="form-control" id="detailStartTime">
+		                    </select>
+		                </div>
+		                <div class="form-group">
+		                    <label for="detailEndDate">종료 날짜:</label>
+		                    <input type="date" class="form-control" id="detailEndDate">
+		                </div>
+		                <div class="form-group">
+		                    <label for="detailEndTime">종료 시간:</label>
+		                    <select class="form-control" id="detailEndTime">
+		                    </select>
+		                </div>
+		                <div class="form-group">
+		                    <label for="detailDescription">설명:</label>
+		                    <textarea class="form-control" id="detailDescription"></textarea>
+		                </div>
+		                <div class="form-group">
+		                    <label for="detailColor">색상:</label>
+		                    <input type="color" class="form-control" id="detailColor" disabled="disabled">
+		                </div>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-primary" onclick="editEvent()">수정</button>
+		                <button type="button" class="btn btn-default" onclick="deleteEvent()">삭제</button>
+		                <button type="button" class="btn btn-default custom-close-detail">닫기</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
@@ -102,8 +241,235 @@
         </footer>
       </div>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            editable: true,
+            selectable: true,
+            droppable: true,
+            headerToolbar: {
+                left: 'prev,next today addEventButton',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,listWeek,listDay'
+            },
+            customButtons: {
+                addEventButton: {
+                    text: '일정 추가',
+                    click: function() {
+                        $('#myModal').modal('show');
+                    }
+                }
+            },
+            events: fetchEvents,
+            select: function(info) {
+                var startDateInput = document.getElementById('startDate');
+                var endDateInput = document.getElementById('endDate');
+
+                startDateInput.value = info.startStr;
+                endDateInput.value = info.endStr;
+
+                $('#myModal').modal('show');
+            },
+            eventClick: function(info) {
+                var event = info.event;
+                document.getElementById('detailEventId').value = event.id;
+                document.getElementById('detailTitle').value = event.title;
+                document.getElementById('detailStartDate').value = event.start.toISOString().slice(0, 10);
+                document.getElementById('detailEndDate').value = event.end ? event.end.toISOString().slice(0, 10) : '';
+                document.getElementById('detailStartTime').value = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('detailEndTime').value = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                document.getElementById('detailDescription').value = event.extendedProps.description;
+                document.getElementById('detailColor').value = event.backgroundColor;
+
+                // 시작 시간 select box 설정
+                var startTimeSelect = document.getElementById('detailStartTime');
+                startTimeSelect.innerHTML = '';
+                for (var i = 0; i < 24; i++) {
+                    var hour = (i < 10) ? '0' + i : i;
+                    var option = document.createElement('option');
+                    option.value = hour + ':00';
+                    option.textContent = hour + ':00';
+                    startTimeSelect.appendChild(option);
+                }
+
+                // 종료 시간 select box 설정
+                var endTimeSelect = document.getElementById('detailEndTime');
+                endTimeSelect.innerHTML = '';
+                for (var i = 0; i < 24; i++) {
+                    var hour = (i < 10) ? '0' + i : i;
+                    var option = document.createElement('option');
+                    option.value = hour + ':00';
+                    option.textContent = hour + ':00';
+                    endTimeSelect.appendChild(option);
+                }
+
+                $('#eventDetailModal').modal('show');
+            },
+            eventContent: function(arg) {
+                var eventTitle = arg.event.title;
+                return { html: '<div>' + eventTitle + '</div>' };
+            },
+            dayMaxEvents: 5
+        });
+
+        calendar.render();
+
+        document.querySelector('.custom-close').addEventListener('click', function() {
+            $('#myModal').modal('hide');
+        });
+
+        document.querySelector('.custom-close-detail').addEventListener('click', function() {
+            $('#eventDetailModal').modal('hide');
+        });
+
+        document.getElementById('addEventBtn').addEventListener('click', function() {
+            var startDate = document.getElementById('startDate').value;
+            var startTime = document.getElementById('startTime').value;
+            var endDate = document.getElementById('endDate').value;
+            var endTime = document.getElementById('endTime').value;
+            var title = document.getElementById('title').value;
+            var description = document.getElementById('description').value;
+            var color = document.getElementById('color').value;
+
+            var event = {
+                cc_title: title,
+                cc_description: description,
+                cc_start_datetime: startDate + 'T' + startTime,
+                cc_end_datetime: endDate + 'T' + endTime,
+                cc_color: color
+            };
+
+            $.ajax({
+                url: './addCompanyEvent.ajax',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(event),
+                success: function(response) {
+                    console.log('이벤트 추가가 완료되었습니다.');
+                    $('#myModal').modal('hide');
+                    calendar.getEventSources()[0].refetch(); 
+                },
+                error: function(xhr, status, error) {
+                    console.error('이벤트 추가에 실패했습니다: ' + error);
+                }
+            });
+        });
+
+        var selectOptions = '';
+        for (var i = 0; i < 24; i++) {
+            var hour = (i < 10) ? '0' + i : i;
+            selectOptions += '<option value="' + hour + ':00">' + hour + ':00</option>';
+        }
+        document.getElementById('startTime').innerHTML = selectOptions;
+        document.getElementById('endTime').innerHTML = selectOptions;
+
+        function fetchEvents(info, successCallback, failureCallback) {
+            $.ajax({
+                url: './getAllCompanyEvents.ajax',
+                method: 'GET',
+                success: function(response) {
+                    var events = [];
+                    for (var i = 0; i < response.CompanyEvents.length; i++) {
+                        var event = {
+                            id: response.CompanyEvents[i].idx_company_calendar,
+                            title: response.CompanyEvents[i].cc_title,
+                            description: response.CompanyEvents[i].cc_description,
+                            start: response.CompanyEvents[i].cc_start_datetime,
+                            end: response.CompanyEvents[i].cc_end_datetime,
+                            backgroundColor: response.CompanyEvents[i].cc_color
+                        };
+                        events.push(event);
+                    }
+                    successCallback(events);
+                },
+                error: function(xhr, status, error) {
+                    console.error('이벤트 로딩에 실패했습니다: ' + error);
+                    if (typeof failureCallback === "function") {
+                        failureCallback(xhr, status, error);
+                    }
+                }
+            });
+        }
+    });
+
+    function editEvent() {
+  	    var eventId = document.getElementById('detailEventId').value;
+  	    var title = document.getElementById('detailTitle').value;
+  	    var startDate = document.getElementById('detailStartDate').value;
+  	    var startTime = document.getElementById('detailStartTime').value;
+  	    var endDate = document.getElementById('detailEndDate').value;
+  	    var endTime = document.getElementById('detailEndTime').value;
+  	    var description = document.getElementById('detailDescription').value;
+  	    var color = document.getElementById('detailColor').value;
+
+  	    var updatedEvent = {
+  	        idx_emp_calendar: eventId,
+  	        cc_title: title,
+  	        cc_start_datetime: startDate + 'T' + startTime,
+  	        cc_end_datetime: endDate + 'T' + endTime,
+  	        cc_description: description,
+  	        cc_color: color
+  	    };
+
+  	    $.ajax({
+  	        url: './updateCompanyEvent.ajax',
+  	        method: 'POST',
+  	        contentType: 'application/json',
+  	        data: JSON.stringify({
+  	            updatedEvent,
+  	          	idx_company_calendar: eventId
+  	        }),
+  	        success: function(response) {
+  	            console.log('일정 수정이 완료되었습니다.');
+  	            $('#eventDetailModal').modal('hide');
+  	            location.reload();
+  	        },
+  	        error: function(xhr, status, error) {
+  	            console.error('일정 수정에 실패했습니다: ' + error);
+  	        }
+  	    });
+  	}
+
+
+    function deleteEvent() {
+        var eventId = document.getElementById('detailEventId').value;
+        console.log(eventId);
+        $.ajax({
+            url: './deleteCompanyEvent.ajax',
+            method: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+            	idx_company_calendar: eventId
+            }),
+            success: function(response) {
+	            console.log('일정 수정이 완료되었습니다.');
+	            $('#eventDetailModal').modal('hide');
+	            location.reload();
+	        },
+            /* success: function(response) {
+                if (response.status === 'success') {
+                    console.log(response.message);
+                    $('#eventDetailModal').modal('hide');
+                    calendar.getEventSources()[0].refetch();
+                } else {
+                    console.error(response.message);
+                }
+            }, */
+            error: function(xhr, status, error) {
+                console.error('이벤트 삭제에 실패했습니다: ' + error);
+            }
+        });
+    }
+    </script>
+    
+    
+    
     <!-- latest jquery-->
-    <script src="/assets/js/jquery.min.js"></script>
+    <!-- [il]부트스트랩 jquery 버전 : 3.7.1 -->
+    <!-- <script src="/assets/js/jquery.min.js"></script>  -->
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
@@ -130,8 +496,9 @@
     <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
+    <!-- [il] datepicker 겹치는 부분 있어서 주석처리했습니다.
     <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script> -->
     <script src="/assets/js/typeahead/handlebars.js"></script>
     <script src="/assets/js/typeahead/typeahead.bundle.js"></script>
     <script src="/assets/js/typeahead/typeahead.custom.js"></script>
