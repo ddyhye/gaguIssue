@@ -97,24 +97,33 @@ public class LogiDepartmentController {
 		
 		return logiDeptService.autoWriteIframe(map, client, selectedArr);
 	}
-	// 발주서 작성,,,,,클릭,,,,
+	// 발주서 내용 디비에 저장
+	@PostMapping("/savePOforDB.ajax")
+    @ResponseBody
+    public Map<String, Object> savePOforDB(@RequestBody Map<String, Object> payload) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        int poNum = (int) payload.get("poNum");
+        int idx_employee = (int) payload.get("idx_employee");
+        int idx_business = (int) payload.get("idx_business");
+        
+        List<Map<String, Object>> productArr = (List<Map<String, Object>>) payload.get("productArr");
+
+        for (Map<String, Object> product : productArr) {
+			int idx_product = (int) product.get("idx_product");
+			logiDeptService.insertPurchase(map, poNum, idx_employee, idx_business, idx_product);
+		}
+        
+        return map;
+    }
+	// 발주서 파일 저장
 	@PostMapping(value = "/savePO.ajax")
 	@ResponseBody
 	public Map<String, Object> savePO(@RequestParam("file") MultipartFile file) {
-		Map<String, Object> response = new HashMap<>();
-//		if (documentFile == null || documentFile.isEmpty()
-//				|| !StringUtils.hasText(documentData) 
-//				|| !StringUtils.hasText(approvalLine)) {
-//			logger.info("문서 작성 중 오류 발생");
-//			response.put("success", false);
-//		} else {
-//			// int idxEmployee = session.getAttribute("???");
-//			int idxEmployee = 2;
-//			//document_service.documentWrite(documentFile, documentData, approvalLine, idxEmployee, response);
-//		}	
-		return response;
+		Map<String, Object> map = new HashMap<>();
+
+		return logiDeptService.savePO(map, file);
 	} 
-	
 	
 	
 	// 발주 완료 페이지
