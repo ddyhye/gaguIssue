@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ko.gagu.issue.dao.EmployeeDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.HRDepartmentDTO;
 
 @Service
 public class EmployeeService {
@@ -28,8 +29,21 @@ public class EmployeeService {
 		model.addAttribute("employee",employeeDTO);
 		logger.info("employeeDTO : {}",employeeDTO);
 		List<EmployeeDTO> events = dao.employeeGetAllEvents(idx_employee);
-		response.put("calendarEvents", events);	
+		response.put("calendarEvents", events);
 	}
+	
+	public void getAllCompanyEvents(Map<String, Object> response, Model model) {
+		// [il] 회사일정 보여주기
+		HRDepartmentDTO hrDepartmentDTO = new HRDepartmentDTO();
+		model.addAttribute("company",hrDepartmentDTO);
+		logger.info("hrDepartmentDTO : {}",hrDepartmentDTO);
+		
+		List<HRDepartmentDTO>eventss=dao.getAllCompanyEvents();
+		response.put("CompanyEvents", eventss);
+
+		
+	}
+	
 
 	public void employeeAddEvent(EmployeeDTO employee) {
 		dao.employeeAddEvent(employee);
@@ -96,6 +110,8 @@ public class EmployeeService {
 	public String findpw(String emp_id, String emp_name, String birthDate) {
 		return dao.findPW(emp_id, emp_name, birthDate);
 	}
+
+	
 
 	
 

@@ -24,7 +24,7 @@ public interface DocumentDAO {
 
 	List<Map<String, String>> getOrganization();
 
-	void saveApprovalLine(int idx_approval, Integer idx_employee, int sequence);
+	void saveApprovalLine(int idx_approval, Integer idx_employee, int ap_step);
 
 	void saveAttachmentFile(int idx_filetype, int idx_ref, String origin_name, String file_name);
 
@@ -33,5 +33,11 @@ public interface DocumentDAO {
 	List<FileDTO> getDocumentFiles(int idxApproval);
 
 	List<ApprovalLineDTO> getApprovalLineList(int idxApproval);
+
+	void saveSignImage(int idxFiletype, String idxApprovalLine, String signImageName);
+
+	int getEmpApprovalStep(int employeeId);
+
+	void updateApproval(String idxApproval, String idxApprovalLine, String apStep, int isApproval);
 
 }

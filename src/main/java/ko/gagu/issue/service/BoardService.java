@@ -161,4 +161,21 @@ public class BoardService {
         }
         return board;
     }
+
+    public BoardDTO findBoardById(int post_id) {
+        return boardDao.findById(post_id);
+    }
+
+    public void updateBoard(BoardDTO boardDTO) {
+        boardDao.update(boardDTO);
+    }
+    // 제목 검색
+    public List<BoardDTO> searchByTitle(String keyword) {
+        return boardDao.searchByTitle(keyword);
+    }
+
+    // 제목 및 내용으로 게시글 검색
+    public List<BoardDTO> searchByTitleAndContent(String keyword) {
+        return boardDao.searchByTitleAndContent(keyword);
+    }
 }

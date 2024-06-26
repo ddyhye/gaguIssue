@@ -1,5 +1,8 @@
 package ko.gagu.issue.service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;import java.util.List;
 import java.util.Map;
@@ -8,7 +11,9 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.dao.LogiDepartmentDAO;
@@ -21,6 +26,9 @@ import ko.gagu.issue.dto.client_tbDTO;
 public class LogiDepartmentService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@Value("${spring.servlet.multipart.location}")
+	private String root;
 	
 	
 	private final MainDAO mainDao;
@@ -122,6 +130,38 @@ public class LogiDepartmentService {
 		
 		return map;
 	}
+
+	
+	// 발주서 내용 디비에 저장
+	public Map<String, Object> insertPurchase(Map<String, Object> map, int poNum, int idx_employee, int idx_business, int idx_product) {
+		logiDeptDao.insertPurchase(poNum, idx_employee, idx_business, idx_product);
+		
+		return null;
+	}
+	// 파일 단일 업로드
+	public Map<String, Object> savePO(Map<String, Object> map, MultipartFile file) {
+		upload(file);
+		
+		return map;
+	}
+	public void upload(MultipartFile file) {
+		// 1. 파일명 추출
+		//String fileName = file.getOriginalFilename();
+		
+		// 2. 새 파일명 생성
+		//String ext = fileName.substring(fileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+".html";
+		
+		// 3. 파일저장
+		try {
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(root+"/"+newFileName);
+			Files.write(path, bytes);
+			//logiDeptDao.updatePurchase(newFileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	public ModelAndView poWriteFinish_go(HttpSession session) {
@@ -137,6 +177,13 @@ public class LogiDepartmentService {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
 	// [do] 로그인한 직원 정보 가져오기
 	public EmployeeDTO getEmpData(HttpSession session) {
 		// 로그인한 직원 정보 불러오기
@@ -145,30 +192,6 @@ public class LogiDepartmentService {
 		
 		return emp;
 	}
-
-
-
-
-
-
-	
-
-
-
-	
-
-
-
-
-
-
-
-	
-
-
-
-
-
 
 	
 }

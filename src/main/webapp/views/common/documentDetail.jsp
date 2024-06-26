@@ -99,12 +99,20 @@ td, tr {
 	font-size: 10px;
 }
 
-#signatureModal {
-	top: 15%;
+#approvalModal {
+	top: 20%;
 }
 
 #signature-pad {
-	width: 100%;
+	display: block;
+	background: #f6f6f6;
+	margin: auto;
+	height: 100%;
+}
+
+table img {
+	width: 100px;
+	height: 75px;
 }
 </style>
 </head>
@@ -159,6 +167,8 @@ td, tr {
 								<button type="button" class="btn btn-primary documentBtn">목록으로 이동하기</button>
 							</div>
 							<div class="d-flex justify-content-end">
+								<button type="button" class="btn btn-primary" style="background: red !important;border-color: red !important;'"  onClick="forceLogin()">강제로그인하기</button>
+								<input type="text" name="empId" style="margin: 4 0 0 5;"/>
 								<button type="button" class="btn btn-primary documentBtn">회수하기</button>
 								<button type="button" class="btn btn-primary documentBtn">PDF로 내려받기</button>
 							</div>
@@ -168,39 +178,71 @@ td, tr {
 						<div class="d-flex justify-content-end" style="width: 70%; margin: auto;'">
 							<table>
 								<tr style="background: #eaeaea;">
-									<td rowspan="2">
+									<td rowspan="4">
 										결<br>재
 									</td>
 									<td>기안</td>
-									<td>대리</td>
+									<c:forEach items="${approvalSteps}" var="emp">
+										<td>${emp.titleName}</td>
+									</c:forEach>
+<!-- 									<td>대리</td>
 									<td>부장</td>
-									<td>대표이사</td>
+									<td>대표이사</td> -->
 								</tr>
 								<tr>
-									<td>김정원</td>
-									<td>
-										승인<br> 김정원 <br>
-										<span class="approvalDateTime">2024/06/23 09:23</span>
+									<!-- 기안자 이름 들어가야함 -->
+									<td>${approvalDetails.empName}</td>
+									<c:forEach items="${approvalSteps}" var="step">
+										<td>
+ 											<c:choose>
+												<c:when test="${step.isApproval == 1}">
+													<!-- <td><img src="/file/document/signature/a4ce8e22-d146-48a3-a15b-8098002033f3.png"/></td> -->
+													<img src="${step.signatureFilePath}" alt="서명 이미지" />
+													<br />
+								                        ${step.approvalDatetime}
+								                    </c:when>
+												<c:when test="${step.isApproval == 0}">
+								                        반려
+								                        <br />
+								                        ${step.approvalDatetime}
+                    								</c:when>
+												<c:otherwise>
+													<!-- 														<button type="button" class="btn btn-primary btn-xs" id="rejectionBtn">반려</button>
+														<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#approvalModal">승인</button> -->
+														<c:if test="${step.apStep == step.currentApprovalStep}">
+															<button type="button" class="btn btn-primary btn-xs" id="rejectionBtn">반려</button>
+															<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#approvalModal">승인</button>
+														</c:if>
+												</c:otherwise>
+											</c:choose>
+										</td>
+									</c:forEach>
+<!-- 									<td rowspan="2">김정원</td>
+									<td></td>
+									<td>반려</td>
+									<td rowspan="2">
+										<button type="button" class="btn btn-primary btn-xs" id="rejectionBtn">반려</button>
+										<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#approvalModal">승인</button>
 									</td>
+								</tr>
+								<tr>
 									<td>
-										반려<br> 김정원 <br>
 										<span class="approvalDateTime">2024/06/25 14:57</span>
 									</td>
 									<td>
-										<button type="button" class="btn btn-primary btn-xs" id="rejectionBtn">반려</button>
-										<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#signatureModal">승인</button>
+										<span class="approvalDateTime">2024/06/23 09:23</span>
 									</td>
-								</tr>
+								</tr> -->
 							</table>
 						</div>
 						<!-- [jeong] 결재 라인 테이블 끝 -->
 						<!-- [jeong] 결재 문서 시작 -->
 						<div class="d-flex justify-content-center">
 							<div id="document">
-								<iframe id="form-document" src="/file/${documentFileSrc}"></iframe>
+								<iframe id="form-document" src="/file/${documentFilePath}"></iframe>
 							</div>
 						</div>
-						<!-- [jeong] 결재 문서 끝 -->
+						<!-- [jeng] 결재 문서 끝 -->
 						<!-- [jeong] 첨부파일 시작 -->
 						<div id="attachment" class="row area">
 							<div class="col-2">
@@ -244,7 +286,29 @@ td, tr {
 				</div>
 			</footer>
 			<!-- footer ends-->
-			<!-- [jeong] 승인 및 전자서명 모달 시작 -->
+			<!-- [jeong] 승인 및 서명 모달 시작 -->
+			<div class="modal fade" id="approvalModal" tabindex="-1" role="dialog" aria-labelledby="approvalModal" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="signatureModalLabel">결재처리</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<canvas id="signature-pad"></canvas>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" onClick="approval()">승인</button>
+							<button type="button" class="btn btn-secondary" onClick="clearSignature()">서명 지우기</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- [jeong] 승인 및 서명 모달 끝 -->
+			<!-- [jeong] 반려 모달 시작 -->
 			<div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -260,11 +324,12 @@ td, tr {
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 							<button type="button" class="btn btn-primary" onclick="clearSignature()">서명 지우기</button>
+							<button type="button" class="btn btn-primary" onclick="approval()">결재하기</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- [jeong] 승인 및 전자서명 모달 끝 -->
+			<!-- [jeong] 반려 모달 끝 -->
 		</div>
 	</div>
 	<!-- latest jquery-->
@@ -316,28 +381,62 @@ td, tr {
 		new WOW().init();
 	</script>
 	<script>
+		function forceLogin() {
+			const empId = document.querySelector('input[name="empId"]').value;
+			console.log(empId);
+			if (empId != null && empId != '') {				
+				window.location.href = '/document/' + '${approvalDetails.idxApproval}' + '/' + empId +'/detail.go';	
+			}
+		}
+	</script>
+	<script>
 		
 		var signaturePad;
 		
 		$(document).ready(function () {
             const canvas = document.getElementById('signature-pad');
-            resizeCanvas(canvas);
+            
             signaturePad = new SignaturePad(canvas, {
-                minWidth: 1,
-                maxWidth: 5,
-                penColor: 'rgb(0, 0, 0)'
-            });			
-
+                throttle: 16,
+                minWidth: 0.5,
+                maxWidth: 2.5
+            });		
 		});
-		
-        function resizeCanvas(canvas) {
-            const parent = canvas.parentNode;
-            canvas.width = parent.clientWidth;
-            canvas.height = 200; // 높이는 고정 또는 조정 가능
-        }		
         
-		function rejectionBtnClick() {
-			console.log('반려 버튼 클릭 감지');
+		function clearSignature() {
+			signaturePad.clear();
+		}
+		
+		function approval() {
+			// const signatureImage = new Blob([signaturePad.toDataURL('image/png')], {type: 'image/png'});
+			// 시그니처 이미지를 데이터 URL로 변환
+			const dataURL = signaturePad.toDataURL('image/png');
+			
+			// 데이터 URL을 Blob으로 변환하는 함수
+			function dataURLToBlob(dataURL) {
+			    const binary = atob(dataURL.split(',')[1]);
+			    const array = [];
+			    for (let i = 0; i < binary.length; i++) {
+			        array.push(binary.charCodeAt(i));
+			    }
+			    return new Blob([new Uint8Array(array)], {type: 'image/png'});
+			}
+			
+			// Blob으로 변환
+			const signatureImage = dataURLToBlob(dataURL);
+			
+	        const data = new FormData();
+	        data.append('signatureImage', signatureImage, 'a.png');
+	        data.append('idxApprovalLine', '${approvalSteps[0].idxApprovalLine}');
+	        data.append('apStep', '${approvalSteps[0].apStep}');
+	        
+	        fetch('/document/${idxApproval}/approval.do', {
+	            method: 'POST',
+	            body: data
+	        })
+	        .then(response => response.json())
+	        .then(data => console.log('Success:', data))
+	        .catch(error => console.error('Error:', error));	
 		}
 	</script>
 </body>

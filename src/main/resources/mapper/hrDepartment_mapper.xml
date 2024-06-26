@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ko.gagu.issue.dao.HRDepartmentDAO">
+	
+	<select id="getAllCompanyEvents" resultType="HRDept">
+		SELECT * FROM company_calendar_tb WHERE cc_status='SHOW'
+	</select>
+	
+	<insert id="companyAddEvent" parameterType="HRDept">
+		INSERT INTO company_calendar_tb 
+			(cc_title,cc_description,cc_start_datetime,cc_end_datetime,cc_color)
+		VALUES (#{cc_title},#{cc_description},#{cc_start_datetime},#{cc_end_datetime},'#7a70ba')
+	</insert>
+	
+	<update id="updateCompanyEvent">
+		UPDATE company_calendar_tb SET
+			cc_title=#{param2},
+			cc_start_datetime=#{param3},
+			cc_end_datetime=#{param4},
+			cc_description=#{param5},
+			cc_color=#{param6}
+		WHERE idx_company_calendar=#{param1}
+	</update>
+	
+	<update id="deleteCompanyEvent">
+		UPDATE company_calendar_tb SET cc_status='BLIND' WHERE idx_company_calendar=#{param1}
+	</update>
+	
+	
+</mapper>

@@ -93,87 +93,151 @@
 			                <a href="boardwrite.go" class="btn btn-primary">공지사항 작성</a>
 			            </div>
 			            <div class="card-body">
-			                <!-- 검색 바 -->
-			                <div class="row mb-3">
-			                    <div class="col-md-4">
-			                        <form action="searchNotice.do" method="get" class="form-inline">
-			                            <div class="input-group">
-			                                <select name="searchType" class="form-select">
-			                                    <option value="title">제목</option>
-			                                    <option value="content">제목+내용</option>
-			                                </select>
-			                                <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
-			                                <button type="submit" class="btn btn-primary">검색</button>
-			                            </div>
-			                        </form>
-			                    </div>
-			                </div>
-			
-			                <!-- 공지사항 목록 테이블 -->
-					         <div class="table-responsive">
-		                      <table class="table table-bordered table-striped">
-		                        <thead>
-		                          <tr>
-		                            <th>구분</th>
-		                            <th>제목</th>
-		                            <th>작성일</th>
-		                            <th>조회수</th>
-		                          </tr>
-		                        </thead>
-		                        <tbody>
-		                        <!-- 필독 -->
-								<c:forEach var="post" items="${boardList}">
-								    <c:if test="${post.is_notice}">
-								        <tr>
-								            <td style="color: purple; font-weight: bold;">필독</td>
-								            <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
-								            <td class="date-column">${post.written_datetime}</td>
-								            <td>${post.po_view_count}</td>
-								        </tr>
-								    </c:if>
-								</c:forEach>
-								
-								<!-- 공지 -->
-								<c:forEach var="post" items="${boardList}">
-								    <c:if test="${!post.is_notice}">
-								        <tr>
-								            <td style="color: black;">공지</td>
-								            <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
-								            <td class="date-column">${post.written_datetime}</td>
-								            <td>${post.po_view_count}</td>
-								        </tr>
-								    </c:if>
-								</c:forEach>
+			              <!-- 검색 바 -->
+					    <form id="searchForm" class="form-inline" action="searchboard.do" method="GET">
+						    <div class="input-group">
+						        <select id="searchType" name="searchType" class="form-select">
+						            <option value="po_title">제목</option>
+						            <option value="po_title||po_content">제목+내용</option>
+						        </select>
+						        <input id="keyword" type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요" value="${keyword}">
+						        <button type="submit" class="btn btn-primary">검색</button>
+						    </div>
+						</form>
 
-
-		                        </tbody>
-		                      </table>
-		                    </div>
+		    
+					    <!-- 검색된 결과 출력 -->
+					<div class="table-responsive">
+					    <table class="table table-bordered table-striped">
+					        <thead>
+					            <tr>
+					                <th>구분</th>
+					                <th>제목</th>
+					                <th>작성일</th>
+					                <th>조회수</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					            <!-- 필독 -->
+					            <c:forEach var="post" items="${boardList}">
+					                <c:if test="${post.is_notice}">
+					                    <tr>
+					                        <td style="color: purple; font-weight: bold;">필독</td>
+					                        <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
+					                        <td class="date-column">${post.written_datetime}</td>
+					                        <td>${post.po_view_count}</td>
+					                    </tr>
+					                </c:if>
+					            </c:forEach>
+					
+					            <!-- 공지 -->
+					            <c:forEach var="post" items="${boardList}">
+					                <c:if test="${!post.is_notice}">
+					                    <tr>
+					                        <td style="color: black;">공지</td>
+					                        <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
+					                        <td class="date-column">${post.written_datetime}</td>
+					                        <td>${post.po_view_count}</td>
+					                    </tr>
+					                </c:if>
+					            </c:forEach>
+					
+					            <!-- 검색된 결과가 없을 때만 표시 -->
+					            <c:if test="${not empty searchType and not empty keyword}">
+					                <c:choose>
+					                    <c:when test="${not empty searchResults}">
+					                        <c:forEach var="post" items="${searchResults}">
+					                        	<c:if test="${post.is_notice}">
+						                            <tr>
+						                                <td style="color: purple; font-weight: bold;">필독</td>
+								                        <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
+								                        <td class="date-column">${post.written_datetime}</td>
+								                        <td>${post.po_view_count}</td>
+						                            </tr>
+					                        	</c:if>
+					                        	<c:if test="${!post.is_notice}">
+						                            <tr>
+						                                <td style="color: black;">공지</td>
+								                        <td><a href="boarddetail.go?post_id=${post.post_id}">${post.po_title}</a></td>
+								                        <td class="date-column">${post.written_datetime}</td>
+								                        <td>${post.po_view_count}</td>
+						                            </tr>
+					                        	</c:if>
+					                        </c:forEach>
+					                    </c:when>
+					                    <c:otherwise>
+					                        <tr>
+					                            <td colspan="4">검색된 결과가 없습니다.</td>
+					                        </tr>
+					                    </c:otherwise>
+					                </c:choose>
+					            </c:if>
+					
+					            <!-- 전체 게시물이 없을 때 표시 -->
+					            <c:if test="${empty boardList and (empty searchType or empty keyword)}">
+					                <tr>
+					                    <td colspan="4">게시물이 없습니다.</td>
+					                </tr>
+					            </c:if>
+					
+					        </tbody>
+					    </table>
+					</div>
+				</div>
 			
-			                 <!-- 페이지네이션 -->
+			                <!-- 일반 Pagination -->
+							<nav>
+							    <ul class="pagination justify-content-center">
+							        <c:if test="${page > 1}">
+							            <li class="page-item">
+							                <a class="page-link" href="boardlist.go?page=${page - 1}" aria-label="Previous">
+							                    <span aria-hidden="true">&laquo;</span>
+							                </a>
+							            </li>
+							        </c:if>
+							        <c:forEach begin="1" end="${totalPages}" var="i">
+							            <li class="page-item <c:if test='${i == page}'>active</c:if>">
+							                <a class="page-link" href="boardlist.go?page=${i}">${i}</a>
+							            </li>
+							        </c:forEach>
+							        <c:if test="${page < totalPages}">
+							            <li class="page-item">
+							                <a class="page-link" href="boardlist.go?page=${page + 1}" aria-label="Next">
+							                    <span aria-hidden="true">&raquo;</span>
+							                </a>
+							            </li>
+							        </c:if>
+							    </ul>
+							</nav>
+
+						<!-- 검색결과 Pagination -->
+						<c:if test="${not empty searchType and not empty keyword}">
 						    <nav>
 						        <ul class="pagination justify-content-center">
 						            <c:if test="${page > 1}">
 						                <li class="page-item">
-						                    <a class="page-link" href="boardlist.go?page=${page - 1}" aria-label="Previous">
+						                    <a class="page-link" href="searchboard.do?page=${page - 1}&searchType=${searchType}&keyword=${keyword}" aria-label="Previous">
 						                        <span aria-hidden="true">&laquo;</span>
 						                    </a>
 						                </li>
 						            </c:if>
-						            <c:forEach begin="1" end="${totalPages}" var="i">
+						            <c:forEach begin="1" end="${searchTotalPages}" var="i">
 						                <li class="page-item <c:if test='${i == page}'>active</c:if>">
-						                    <a class="page-link" href="boardlist.go?page=${i}">${i}</a>
+						                    <a class="page-link" href="searchboard.do?page=${i}&searchType=${searchType}&keyword=${keyword}">${i}</a>
 						                </li>
 						            </c:forEach>
-						            <c:if test="${page < totalPages}">
+						            <c:if test="${page < searchTotalPages}">
 						                <li class="page-item">
-						                    <a class="page-link" href="boardlist.go?page=${page + 1}" aria-label="Next">
+						                    <a class="page-link" href="searchboard.do?page=${page + 1}&searchType=${searchType}&keyword=${keyword}" aria-label="Next">
 						                        <span aria-hidden="true">&raquo;</span>
 						                    </a>
 						                </li>
 						            </c:if>
 						        </ul>
 						    </nav>
+						</c:if>
+
+						    
 			            </div>
 			        </div>
 			    </div>
@@ -218,6 +282,9 @@
                 }
             });
         });
+        
+        
+
     </script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>

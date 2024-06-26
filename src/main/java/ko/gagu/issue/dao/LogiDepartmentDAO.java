@@ -30,4 +30,8 @@ public interface LogiDepartmentDAO {
 
 	client_tbDTO getClientData(String client);
 
+	void insertPurchase(int poNum, int idx_employee, int idx_business, int idx_product);
+
+	void updatePurchase(String newFileName);
+
 }

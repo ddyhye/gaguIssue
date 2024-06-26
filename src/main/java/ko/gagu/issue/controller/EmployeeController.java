@@ -47,6 +47,16 @@ public class EmployeeController {
 		logger.info("response : {}",response);
 		return response;
 	}
+
+	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
+	@ResponseBody
+	public Map<String, Object> getAllCompanyEvents(Model model){
+		logger.info("getAllCompanyEvents 진입");
+		Map<String, Object>response=new HashMap<String, Object>();
+		employeeService.getAllCompanyEvents(response,model);
+		logger.info("response : {}",response);
+		return response;
+	}
 	
 	@PostMapping(value="/employee/addEvent.ajax")
 	@ResponseBody
@@ -103,7 +113,6 @@ public class EmployeeController {
 	    } catch (Exception e) {
 	        logger.error("Error processing deleteEvent request", e);
 
-	        // 예외 처리 로직 추가 및 오류 응답 반환
 	        Map<String, String> errorResponse = new HashMap<>();
 	        errorResponse.put("status", "error");
 	        errorResponse.put("message", "이벤트 삭제에 실패했습니다.");

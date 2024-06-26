@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.HRDepartmentDTO;
 
 @Mapper
 public interface EmployeeDAO {
@@ -30,6 +31,8 @@ public interface EmployeeDAO {
 			String ec_end_datetime, String ec_description, String ec_color);
 
 	List<EmployeeDTO> getContact(int emp_id);
+
+	List<HRDepartmentDTO> getAllCompanyEvents();
 
 
 }
