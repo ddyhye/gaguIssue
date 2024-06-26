@@ -53,7 +53,11 @@
 		AND emp_birth_date = #{birthDate}
     </select>
 	
-	
+	<select id="getContact" resultType="employee">
+		SELECT et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address
+		FROM employee_tb et, department_tb dt 
+		WHERE et.idx_department = dt.idx_department AND idx_employee != #{param1}
+	</select>
 	
 	
 

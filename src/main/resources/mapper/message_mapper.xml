@@ -36,7 +36,7 @@
 	GROUP BY
 	    mt.idx_messageroom, other_emp
 	ORDER BY 
-	    reg_date DESC;
+	    reg_date DESC
 	
 	</select>
 	
@@ -76,13 +76,20 @@
 			WHERE idx_messageroom  = #{param1}
 			AND receiver = #{param2} 
 			AND sender = #{param3}
-			AND is_receiver_read = 0;
+			AND is_receiver_read = 0
 	</update>
 	
 	<insert id="sendMessage">
 		INSERT INTO message_history_tb (idx_messageroom, sender, receiver , msg_content) 
-			values (#{param4}, #{param2}, #{param3}, #{param1});
+			values (#{param4}, #{param2}, #{param3}, #{param1})
 	</insert>
 
+
+	<select id="subjectCall" resultType="message">
+		SELECT et.emp_name as other_name, dt.de_name 
+		FROM employee_tb et, department_tb dt 
+		WHERE et.idx_department = dt.idx_department AND idx_employee = #{param1}
+ 
+	</select>
 
 </mapper>

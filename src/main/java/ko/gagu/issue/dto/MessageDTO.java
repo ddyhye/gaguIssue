@@ -24,6 +24,7 @@ public class MessageDTO {
 	private int idx_message;
 	private int is_receiver_read;
 	
+	private String de_name;
 	
 	public int getIdx_messageroom() {
 		return idx_messageroom;
@@ -120,6 +121,12 @@ public class MessageDTO {
 	}
 	public void setOther_name(String other_name) {
 		this.other_name = other_name;
+	}
+	public String getDe_name() {
+		return de_name;
+	}
+	public void setDe_name(String de_name) {
+		this.de_name = de_name;
 	}
 	
 	

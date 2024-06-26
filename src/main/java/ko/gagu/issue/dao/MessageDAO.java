@@ -19,4 +19,6 @@ public interface MessageDAO {
 
 	int sendMessage(String content, String emp_id, String other_emp, int idx);
 
+	List<MessageDTO> subjectCall(int other_emp);
+
 }

@@ -174,7 +174,7 @@
             	            method: 'GET',
             	            success: function(response) {
             	                // 기존 모달 제거 (중복 방지)
-            	                $('#myModal').remove();
+            	               // $('#myModal').remove();
             	                // 모달 내용을 body에 추가
             	                $('body').append(response);
             	                // 모달 표시
@@ -183,6 +183,7 @@
             	                
             	                // 대화방 목록을 불러오는 함수 호출
             	                loadChatRooms();
+            	                loadContact();
             	            },
             	            error: function() {
             	                alert('쪽지함을 불러오는데 실패했습니다.');
@@ -190,6 +191,54 @@
             	        });
             	    });
             	});
+             
+             function loadContact(){
+            	 console.log("연락처 불러오기 아작스 요청");
+            	 $.ajax({
+                     url: '/getContact.ajax',
+                     method: 'POST',
+                     dataType:'JSON',
+                     success: function(data) {
+                    	 // console.log(data);
+                    	 drawContactList(data);
+                     },
+                     error: function(error) {
+                    	 console.log(error);
+                         alert('연락처를 불러오는데 실패하였습니다.');
+                     }
+                 });
+             }
+             
+             function drawContactList(data){
+            	 console.log(data);
+            	 $('.contact-wrapper').empty();
+            	 var content = '';
+            	 
+            	 for (item of data.ContackList) {
+          			content +=	'<ul class="border-0">'; 
+          			content +=		'<li class="common-space">';
+          			content +=		'<div class="chat-time">';
+          			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+          			content +=		'<span>'+item.emp_name+'</span>';
+          			content +=		'<p>'+item.emp_phone_number+'</p>';
+          			content +=		'</div>';
+          			content +=		'</div>';
+          			content +=		'<div class="contact-edit">';
+          			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
+          			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
+          			content +=		'</svg>';
+          			content +=		'<div class="dropdown-menu dropdown-menu-end"><button type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button><button id="openSecondModal" onclick="secModal()" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">쪽지 보내기</button>';
+          			content +=		'</div>';
+          			content +=		'</li>';
+          			content +=		'</ul>';
+          		}
+            	 $('.contact-wrapper').append(content);
+             }
+             
+             function secModal(){
+            	 console.log("두번째 모달 오픈");
+            	 document.getElementById('myModal').style.display = 'block';
+             }
              
              
              function loadChatRooms(search) {
@@ -214,11 +263,13 @@
                  });
              }
              
-              
+           
+             
+           
               
              
              function drawRoomList(data) {
-            	 console.log(data);
+            	// console.log(data);
          		$('.chats-user').empty();
          		var content = '';
          		if (!data.roomList || data.roomList.length === 0) {
@@ -268,6 +319,7 @@
              
             
              function subjectCall(other_emp) {
+            	 console.log(other_emp);
          		$.ajax({
          			type: 'POST',
          			url: '/subjectCall.ajax',
@@ -285,6 +337,27 @@
          		});
          	}
              
+             
+             
+            function drawSubject(data){
+            	$('.chat-time').empty();
+            	var content = '';
+            	 
+            	
+            	for (item of data.subjectCall) {	
+	    			content += '<div class="active-profile">';
+	    			content += '<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+	    			content += '<div class="status bg-success"></div>';
+	    			content +=		'</div>';
+	    			content +=		'<div>';
+	    			content +=		'<span>'+item.other_name+'</span>';
+	    			content +=		'<p>'+item.de_name+'</p>';
+	    			content +=		'</div>';
+	    			
+            	}
+
+        		$('.chat-time').append(content);
+            }
              
              
          	// 특정 방 message 출력
@@ -319,24 +392,14 @@
         		var checkMinutes = 0;
         		
         		$('.msger-chat').empty();
-//        		$('.chat-time').empty();
         		
         		var content = '';
-        		var content2 = '';
+        		
 
         		if (!data.messageList || data.messageList.length === 0) {
         			content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';	/* <p class="no-message">아무것도 없따... <i class="fa-solid fa-message"></i></p> */
         		}
-        		/* 
-        			content2 += '<div class="active-profile">';
-        			content2 += '<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
-        			content2 += '<div class="status bg-success"></div>';
-        			content2 +=		'</div>';
-        			content2 +=		'<div>';
-        			content2 +=		'<span>'+data.messageList.other_name+'</span>';
-        			content2 +=		'<p>부서</p>';
-        			content2 +=		'</div>';
-        		*/
+        		
         			
         		
         		for (item of data.messageList) {
@@ -378,7 +441,6 @@
         		}
         		
         		$('.msger-chat').append(content);
-//        		$('.chat-time').append(content2);
          	}
          	
          	
