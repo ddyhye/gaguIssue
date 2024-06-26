@@ -105,6 +105,18 @@
 	<select id="getPOProduct" resultType="logi">
 		SELECT * FROM product_tb WHERE idx_product = #{param1}
 	</select>
+	<!-- 발주 주문 저장 -->
+	<!-- 발주 데이터 DB 저장 -->
+	<insert id="insertPurchase">
+		INSERT INTO purchase_order_tb (idx_purchasehtml , idx_employee, idx_business, idx_product)
+		VALUES(#{param1}, #{param2}, #{param3}, #{param4})
+	</insert>
+	<!-- 발주서 파일명 저장 -->
+	<update id="updatePurchase">
+		update purchase_order_tb
+		set html_filename = #{param1}
+		where idx_purchasehtml = #{param2}
+	</update>
 	
 	
 
