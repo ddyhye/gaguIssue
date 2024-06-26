@@ -55,14 +55,13 @@ public class DocumentService {
 		
 		// 2. 클라이언트가 JSON 형태로 보내온것을 objectmapper 통해 변환한다.
 		Map<String, Object> documentMap = null;
-		List<Integer> approvalLineList = null;
+		List<Integer> employeeList = null;
 		try {
 			documentMap = objectMapper.readValue(documentData, Map.class);
-			approvalLineList = objectMapper.readValue(approvalLine, List.class);
+			employeeList = objectMapper.readValue(approvalLine, List.class);
 			documentDTO.setIdx_employee(idxEmployee);
 			documentDTO.setIdx_dc((int) documentMap.get("idxDc"));
 			documentDTO.setAp_content(documentData);
-			logger.info("approvalLineList : {}", approvalLineList);
 		} catch (JsonProcessingException e) {
 			response.put("success", false);
 			return;
@@ -74,17 +73,18 @@ public class DocumentService {
 		dao.saveDocument(documentDTO);
 		int idxApproval = documentDTO.getIdx_approval();
 		// 지정한 결재자 라인을 approval_line_tb 테이블에 저장한다
-		for (int sequence = 0; sequence < approvalLineList.size(); sequence++) {
-			dao.saveApprovalLine(idxApproval, approvalLineList.get(sequence), sequence);
+		for (int sequence = 0; sequence < employeeList.size(); sequence++) {
+			dao.saveApprovalLine(idxApproval, employeeList.get(sequence), sequence);
 		}
 		
 		// 4. 파일을 저장하고 데이터베이스에 저장한 문서의 경로(이름)을 저장한다.
 		// 파일을 실제로 서버에 저장한다. 그리고 그 파일의 이름을 file_name 에 저장한다.
-		
-		String[] attachmentFileNames = new String[attachmentFiles.length];
-		for (int index = 0; index < attachmentFileNames.length; index++) {
-			attachmentFileNames[index] = fm.saveFile(attachmentFiles[index], "document/attachment");
-			dao.saveAttachmentFile(8, idxApproval, attachmentFiles[index].getOriginalFilename(), attachmentFileNames[index]);
+		if (attachmentFiles != null) {
+			String[] attachmentFileNames = new String[attachmentFiles.length];
+			for (int index = 0; index < attachmentFileNames.length; index++) {
+				attachmentFileNames[index] = fm.saveFile(attachmentFiles[index], "document/attachment");
+				dao.saveAttachmentFile(8, idxApproval, attachmentFiles[index].getOriginalFilename(), attachmentFileNames[index]);
+			}
 		}
 		String documentFileName = fm.saveFile(documentFile, "document");
 		
@@ -138,57 +138,82 @@ public class DocumentService {
 		return mav;
 	}
 
-	public ModelAndView fetchDocumentPage(int accessIdxEmployee, String idxApproval) {
-		ModelAndView mav = new ModelAndView("common/documentDetail");
-		// 1. 현재 세션이 결재자인지 작성자인지 제 3자인지 확인하기
-		
-		// 1-1. 여기서 제3자는 기안자(문서 작성자)의 같은 부서 사람들을 말한다 직원번호 1, 결재자, 작성자, 제3자도 아니라면 문서에 접근할 수 없어야한다
-		// 1번과 1-1을 합쳐서 쿼리문을 짜자
-		ApprovalDTO approval = dao.getApproval(accessIdxEmployee, idxApproval);
-		 if (approval.getAccessPermission() == "접근불가"){
-				mav.addObject("msg", "해당 문서를 열람할 권한이 없습니다.");
-				mav.setViewName("common/documentList");
-				return mav;
-		}
-		// 2. 회수 상태인지 확인하기(결재자라면 안보이게, 작성자라면 보이게, 제3자는 안보이게)
-		List<String> additionalElements = new ArrayList<String>();
-		if (approval.getFinalApStatus() == "회수") {
-			if (approval.getAccessPermission() == "결재권자" || approval.getAccessPermission() == "같은부서원") {
-				mav.addObject("msg", "해당 문서는 기안자가 회수하여 열람할 수 없습니다.");
-				mav.setViewName("common/documentList");
-				return mav;
-			}
-		}
+	/* [jeong] 결재(문서) 번호로 접근 권한을 확인하고, 문서 파일, 첨부파일, 결재라인을 뿌려준다 */
+	public ModelAndView fetchDocumentPage(int employeeId, String approvalId) {
+	    ModelAndView mav = new ModelAndView("common/documentDetail");
+	    // 1. 현재 세션이 결재자인지 작성자인지 제 3자인지 확인하기
 
-		// 2-1. 회수 상태가 아닌 진행중, 최종승인, 반려 문서는 접근 권한에 따라서
-		// 요소가 달라진다
-		if (approval.getAccessPermission() == "결재권자") {
-			// 승인, 반려 버튼
-			additionalElements.add("approval");
-			
-		} else if (approval.getAccessPermission() == "작성자") {
-			// 회수
-			additionalElements.add("retrieved");
-		}
-		// 3. 첨부 파일과 파일을 FileDTO 형태로 리스트 형태로 가져오기 0번 인덱스는 문서 파일로~
-		List<FileDTO> documentFiles = dao.getDocumentFiles(approval.getIdxApproval());
-		String documentFileSrc = "";
-		// 결재 문서 파일의 경로만 따로 저장한 후 documentFiles 에서 지워준다
-		// 그러면 첨부 파일들만 남게 된다
-		for (int idx = 0; idx < documentFiles.size(); idx++) {
-			if (documentFiles.get(idx).getIdxFiletype() == 4) {
-				documentFileSrc = documentFiles.get(idx).getFileName();
-				documentFiles.remove(idx);
-				break;
-			}
-		}
-		mav.addObject("documentFileSrc", documentFileSrc);
-		mav.addObject("attachmentFiles", documentFiles);
-		
-		// 3-1. 문서 권한, 상태, 첨부 파일, 결재 현황 뿌려주기
-		List<ApprovalLineDTO> approvalLine = dao.getApprovalLineList(approval.getIdxApproval());
-		mav.addObject("approvalLine", approvalLine);
-		return mav;
+	    // 1-1. 여기서 제3자는 기안자(문서 작성자)의 같은 부서 사람들을 말한다 직원번호 1, 결재자, 작성자, 제3자도 아니라면 문서에 접근할 수 없어야한다
+	    // 1번과 1-1을 합쳐서 쿼리문을 짜자
+	    ApprovalDTO approvalDetails = dao.getApproval(employeeId, approvalId);
+	    if (approvalDetails == null) {
+	        mav.addObject("msg", "문서를 불러오는 도중에 오류가 발생하여 목록 페이지로 이동합니다.");
+	        mav.setViewName("common/documentList");
+	        return mav;
+	    }
+	    if (approvalDetails.getAccessPermission().equals("접근불가")) {
+	        mav.addObject("msg", "해당 문서를 열람할 권한이 없습니다.");
+	        mav.setViewName("common/documentList");
+	        return mav;
+	    }
+	    // 2. 회수 상태인지 확인하기(결재자라면 안보이게, 작성자라면 보이게, 제3자는 안보이게)
+	    List<String> elementsToShow = new ArrayList<String>();
+	    if (approvalDetails.getFinalApStatus().equals("회수")) {
+	        if (approvalDetails.getAccessPermission().equals("결재권자") || approvalDetails.getAccessPermission().equals("같은부서원")) {
+	            mav.addObject("msg", "해당 문서는 기안자가 회수하여 열람할 수 없습니다.");
+	            mav.setViewName("common/documentList");
+	            return mav;
+	        }
+	    }
+	    List<ApprovalLineDTO> approvalSteps = dao.getApprovalLineList(approvalDetails.getIdxApproval());
+	    logger.info(approvalSteps.toString());
+	    // 2-1. 회수 상태가 아닌 진행중, 최종승인, 반려 문서는 접근 권한에 따라서
+	    // 요소가 달라진다
+	    if (approvalDetails.getAccessPermission().equals("결재권자")) {
+	        // 승인, 반려 버튼
+	        if (!approvalDetails.getFinalApStatus().equals("반려") && approvalSteps.get(0).getCurrentApprovalStep() != -1) {
+	            for (ApprovalLineDTO approvalStep : approvalSteps) {
+	                // 결재 라인에서 몇번째에 위치하는지 확인한다
+	                if (approvalStep.getCurrentApprovalStep() == approvalDetails.getApprovalStep()) {
+	                    // 현재 결재 순서와 본인의 순서가 일치하는지 확인한다
+	                    if (approvalStep.getCurrentApprovalStep() == approvalDetails.getApprovalStep()) {
+	                    	mav.addObject("approvalBtn", true);
+	                    }
+	                }
+	            }
+
+	        }
+	    } else if (approvalDetails.getAccessPermission().equals("작성자")) {
+	        // 회수 버튼
+	        elementsToShow.add("retrieved");
+	    }
+	    // 3. 첨부 파일과 파일을 FileDTO 형태로 리스트 형태로 가져오기 0번 인덱스는 문서 파일로~
+	    List<FileDTO> documentFiles = dao.getDocumentFiles(approvalDetails.getIdxApproval());
+	    String documentFilePath = "";
+	    // 결재 문서 파일의 경로만 따로 저장한 후 documentFiles 에서 지워준다
+	    // 그러면 첨부 파일들만 남게 된다
+	    for (int idx = 0; idx < documentFiles.size(); idx++) {
+	        if (documentFiles.get(idx).getIdxFiletype() == 4) {
+	        	documentFilePath = documentFiles.get(idx).getFileName();
+	            documentFiles.remove(idx);
+	            break;
+	        }
+	    }
+	    // 3-1. 문서 권한, 상태, 첨부 파일, 결재 현황 뿌려주기
+	    mav.addObject("elementsToShow", elementsToShow);
+	    mav.addObject("documentFilePath", documentFilePath);
+	    mav.addObject("attachmentFiles", documentFiles);
+	    mav.addObject("approvalSteps", approvalSteps);
+	    mav.addObject("approvalId", approvalId);
+	    mav.addObject("approvalDetails", approvalDetails);
+	    return mav;
+	}
+
+	public void approval(MultipartFile signatureImage, String idxApproval, String apStep, String idxApprovalLine) {
+		String signImageName = fm.saveFile(signatureImage, "document/signature");
+		dao.saveSignImage(9, idxApprovalLine, signImageName);
+		dao.updateApproval(idxApproval, idxApprovalLine, apStep, 1);
+		logger.info("signImageName : {}", signImageName);
 	}
 
 }

@@ -34,14 +34,20 @@
 
 	<!-- [jeong] 문서의 작성자와 양식 번호 내용을 approval 테이블에 저장 -->
 	<insert id="saveApprovalLine">
-		INSERT INTO approval_line_tb (idx_approval, idx_employee, sequence) 
-			VALUES (#{idx_approval}, #{idx_employee}, #{sequence})
+		INSERT INTO approval_line_tb (idx_approval, idx_employee, ap_step, is_approval) 
+			VALUES (#{idx_approval}, #{idx_employee}, #{ap_step}, -1)
 	</insert>
 	
 	<!-- [jeong] 작성한 문서의 파일 이름을 filestore 테이블에 저장 -->
 	<insert id="saveDocumentFile">
 		INSERT INTO filestore_tb (idx_filetype, idx_ref, file_name)
 			VALUES (#{idx_filetype}, #{idx_ref}, #{file_name})
+	</insert>
+
+	<!-- [jeong] 결재권자가 승인 처리시 서명한 이미지 filestore 에 저장 -->
+	<insert id="saveSignImage">
+		INSERT INTO filestore_tb (idx_filetype, idx_ref, file_name)
+			VALUES (#{idxFiletype}, #{idxApprovalLine}, #{signImageName})
 	</insert>
 	
 	<!-- [jeong] jstree 에서 사용할 조직도를 조회 -->
@@ -80,6 +86,7 @@
 		SELECT
 			att.idx_approval AS idxApproval,
 			att.idx_employee AS idxEmployee,
+			(SELECT emp_name FROM employee_tb WHERE idx_employee = att.idx_employee) AS empName,
 			att.idx_dc AS idxDc,
 			att.final_ap_status AS finalApStatus,
 			att.ap_content AS apContent,
@@ -92,9 +99,9 @@
 				ELSE '접근불가'
 			END AS accessPermission,
 			CASE 
-				WHEN alt.idx_employee IS NOT NULL THEN alt.sequence
+				WHEN alt.idx_employee IS NOT NULL THEN alt.ap_step
 				ELSE NULL
-			END AS approvalSequence
+			END AS approvalStep
 		FROM approval_tb att
 			LEFT JOIN employee_tb et ON et.idx_employee = #{accessIdxEmployee}
 			LEFT JOIN approval_line_tb alt ON alt.idx_approval = att.idx_approval AND alt.idx_employee = et.idx_employee
@@ -116,10 +123,28 @@
 	<!-- [jeong] 해당 문서의 결재 라인의 데이터를 가져옴 -->
 	<select id="getApprovalLineList">
 		SELECT
+			alt.idx_approval_line AS idxApprovalLine,
+			alt.idx_approval AS idxApproval,	
 			alt.idx_employee AS idxEmployee,
-			alt.sequence AS sequence,
+			tt.title_name AS titleName,
+			dt.de_name AS departmentName,
+			alt.ap_step AS apStep,
+			alt.is_approval AS isApproval,
 			alt.ap_comment AS apComment,
-			alt.approval_datetime AS approvalDatetime
-		FROM approval_line_tb alt WHERE alt.idx_approval = #{idxApproval};
+			alt.approval_datetime AS approvalDatetime,
+			CASE 
+				WHEN EXISTS (SELECT 1 FROM approval_line_tb WHERE is_approval = 0) THEN -1
+				ELSE (SELECT SUM(is_approval) FROM approval_line_tb WHERE idx_approval =#{idxApproval})
+			END AS currentApprovalStep,
+			(SELECT file_name FROM filestore_tb ft WHERE ft.idx_filetype = 9 AND ft.idx_ref = alt.idx_approval_line) AS signatureFilePath
+		FROM (SELECT * FROM approval_line_tb WHERE idx_approval = #{idxApproval}) alt
+		JOIN employee_tb et ON et.idx_employee = alt.idx_employee
+		JOIN title_tb tt ON tt.idx_title = et.idx_title 
+		JOIN department_tb dt ON dt.idx_department = et.idx_department
+		ORDER BY alt.ap_step
 	</select>
+	
+	<update id="updateApproval">
+		UPDATE approval_line_tb SET is_approval = #{isApproval} WHERE idx_approval = #{idxApproval} AND idx_approval_line = #{idxApprovalLine}
+	</update>
 </mapper>
