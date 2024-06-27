@@ -139,11 +139,15 @@ public class LogiDepartmentController {
 	} 
 	
 	
+	
+	
 	// 발주 완료 페이지
 	@GetMapping(value="/logisticsDepartment/poWriteFinish.go")
 	public ModelAndView poWriteFinish_go(HttpSession session) {
 		return logiDeptService.poWriteFinish_go(session);
 	}
+	
+	
 	
 	
 	// 입고 내역 페이지
@@ -164,5 +168,60 @@ public class LogiDepartmentController {
 	public ResponseEntity<Resource> htmlView(@PathVariable String fileName) {
 		logger.info("fileName: "+fileName);
 		return logiDeptService.htmlView(fileName);
+	}
+	
+	
+	
+	// 주문 내역 페이지 (관리를 해야 출고내역으로 이동)
+	@GetMapping(value="/logisticsDepartment/orderList.go")
+	public ModelAndView orderList_go() {
+		return logiDeptService.orderList_go();
+	}
+	// 주문 내역 리스트 그리기
+	@PostMapping(value="/orderList.ajax")
+	@ResponseBody
+	Map<String, Object> orderList() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return logiDeptService.orderListDraw(map);
+	}
+	// 주문 상세 내역 팝업창 채우기
+	@PostMapping(value="/clientPerOrder.ajax")
+	@ResponseBody
+	Map<String, Object> clientPerOrder(@RequestBody Map<String, Object> payload) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String orderNoStr = (String) payload.get("orderNo");
+		int orderNo = Integer.parseInt(orderNoStr);
+		
+		return logiDeptService.clientPerOrder(map, orderNo);
+	}
+	// 주문 출고하기
+	@PostMapping(value="/orderDelivery.ajax")
+	@ResponseBody
+	Map<String, Object> orderDelivery(@RequestBody Map<String, Object> payload) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String orderNoStr = (String) payload.get("orderNo");
+		int orderNo = Integer.parseInt(orderNoStr);
+		
+		return logiDeptService.orderDelivery(map, orderNo);
+	}
+	
+	
+	
+	// 출고 내역 페이지
+	// 주문 내역 페이지 (관리를 해야 출고내역으로 이동)
+	@GetMapping(value="/logisticsDepartment/deliveryHistory.go")
+	public ModelAndView deliveryHistory_go() {
+		return logiDeptService.deliveryHistory_go();
+	}
+	// 주문 내역 리스트 그리기
+	@PostMapping(value="/deliveryHisList.ajax")
+	@ResponseBody
+	Map<String, Object> deliveryHisList() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return logiDeptService.deliveryHisListDraw(map);
 	}
 }
