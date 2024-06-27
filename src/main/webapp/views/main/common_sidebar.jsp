@@ -117,7 +117,7 @@
                         <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
                       </svg><span>인사 관리</span></a>
                     <ul class="sidebar-submenu">
-                      <li><a href="add-products.go">직원 관리</a></li>
+                      <li><a href="employeeManage.go">직원 관리</a></li>
                       <li><a href="list-products.go">직원 근태 현황</a></li>
                       <li><a href="list-products.go">회사 일정 관리</a></li>
                     </ul>
