@@ -40,5 +40,20 @@ public interface LogiDepartmentDAO {
 
 	List<LogiDeptDTO> getReceivingHistory();
 
+	List<LogiDeptDTO> getOrderList();
+
+	
+	String getOrderTime(int orderNo);
+	String getOrderClient(int orderNo);
+	int getOrderTotal(int orderNo);
+	List<LogiDeptDTO> getOrderProductList(int orderNo);
+	String getOrderAccept(int orderNo);
+
+	void insertDelivery(int idx_order);
+	void updateOrderState(int idx_order);
+
+	List<LogiDeptDTO> getDeliveryList();
+
+
 
 }
