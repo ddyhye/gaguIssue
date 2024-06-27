@@ -315,5 +315,105 @@ public class LogiDeptDTO {
 	}
 	
 	
+	
+	// 주문
+	private int idx_order;
+	private int order_no;
+	private int order_row;
+	private int order_per_price;
+	private int order_total_price;
+//	private int idx_business;
+//	private int idx_product;
+	private int quantity;
+	private int sum_price;
+	private String accept;
+	private LocalDateTime order_datetime;
+
+
+	public int getOrder_per_price() {
+		return order_per_price;
+	}
+	public void setOrder_per_price(int order_per_price) {
+		this.order_per_price = order_per_price;
+	}
+	public LocalDateTime getOrder_datetime() {
+		return order_datetime;
+	}
+	public void setOrder_datetime(LocalDateTime order_datetime) {
+		this.order_datetime = order_datetime;
+	}
+	public int getIdx_order() {
+		return idx_order;
+	}
+	public int getOrder_no() {
+		return order_no;
+	}
+	public int getOrder_row() {
+		return order_row;
+	}
+	public int getOrder_total_price() {
+		return order_total_price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public int getSum_price() {
+		return sum_price;
+	}
+	public String getAccept() {
+		return accept;
+	}
+	public void setIdx_order(int idx_order) {
+		this.idx_order = idx_order;
+	}
+	public void setOrder_no(int order_no) {
+		this.order_no = order_no;
+	}
+	public void setOrder_row(int order_row) {
+		this.order_row = order_row;
+	}
+	public void setOrder_total_price(int order_total_price) {
+		this.order_total_price = order_total_price;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public void setSum_price(int sum_price) {
+		this.sum_price = sum_price;
+	}
+	public void setAccept(String accept) {
+		this.accept = accept;
+	}
+	
+	
+	
+	
+	// 출고 내역
+	private int idx_delivery;
+	//private int idx_order;
+    private String delivery_state;
+    private LocalDateTime delivery_datetime;
+
+
+	public int getIdx_delivery() {
+		return idx_delivery;
+	}
+	public String getDelivery_state() {
+		return delivery_state;
+	}
+	public LocalDateTime getDelivery_datetime() {
+		return delivery_datetime;
+	}
+	public void setIdx_delivery(int idx_delivery) {
+		this.idx_delivery = idx_delivery;
+	}
+	public void setDelivery_state(String delivery_state) {
+		this.delivery_state = delivery_state;
+	}
+	public void setDelivery_datetime(LocalDateTime delivery_datetime) {
+		this.delivery_datetime = delivery_datetime;
+	}
+    
+    
 
 }

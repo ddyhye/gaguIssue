@@ -73,7 +73,7 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Inventory</h4>
+          <h4 class="f-w-700">입고 내역</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
@@ -164,7 +164,7 @@
                           <tr> 
                             <th class="do-table-1">No</th>
                             <th class="do-table-2">입고일자</th>
-                            <th class="do-table-3">수주처</th>
+                            <th class="do-table-3">발주처</th>
                             <th class="do-table-4">제품명</th>
                             <th class="do-table-5">주문수량</th>
                             <th class="do-table-6">입고수량</th>
