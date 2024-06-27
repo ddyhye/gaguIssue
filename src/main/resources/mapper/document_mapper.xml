@@ -114,7 +114,7 @@
 			ft.idx_file AS idxFile,
 			ft.idx_filetype AS idxFiletype,
 			ft.upload_datetime AS uploadDatetime,
-			ft.origin_name AS orginName,
+			ft.origin_name AS originName,
 			ft.file_name AS fileName
 		FROM filestore_tb ft 
 		WHERE ft.idx_ref = #{idxApproval} AND (ft.idx_filetype = 4 OR ft.idx_filetype = 8)
@@ -131,10 +131,10 @@
 			alt.ap_step AS apStep,
 			alt.is_approval AS isApproval,
 			alt.ap_comment AS apComment,
-			alt.approval_datetime AS approvalDatetime,
+			DATE_FORMAT(alt.approval_datetime, '%Y/%m/%d %H:%i') AS approvalDatetimeS,
 			CASE 
-				WHEN EXISTS (SELECT 1 FROM approval_line_tb WHERE is_approval = 0) THEN -1
-				ELSE (SELECT SUM(is_approval) FROM approval_line_tb WHERE idx_approval =#{idxApproval})
+				WHEN EXISTS (SELECT 1 FROM approval_line_tb WHERE is_approval = 0 AND idx_approval = #{idxApproval}) THEN -1
+				ELSE (SELECT SUM(is_approval) FROM approval_line_tb WHERE idx_approval = #{idxApproval} AND is_approval = 1)
 			END AS currentApprovalStep,
 			(SELECT file_name FROM filestore_tb ft WHERE ft.idx_filetype = 9 AND ft.idx_ref = alt.idx_approval_line) AS signatureFilePath
 		FROM (SELECT * FROM approval_line_tb WHERE idx_approval = #{idxApproval}) alt
@@ -144,7 +144,17 @@
 		ORDER BY alt.ap_step
 	</select>
 	
-	<update id="updateApproval">
-		UPDATE approval_line_tb SET is_approval = #{isApproval} WHERE idx_approval = #{idxApproval} AND idx_approval_line = #{idxApprovalLine}
+	<update id="approval">
+		UPDATE approval_line_tb SET is_approval = 1, approval_datetime = current_timestamp()
+			WHERE idx_approval = #{idxApproval} AND idx_approval_line = #{idxApprovalLine}
+	</update>
+	
+	<update id="reject">
+		UPDATE approval_line_tb SET is_approval = 0, approval_datetime = current_timestamp(), ap_comment = #{apComment}
+			WHERE idx_approval = #{idxApproval} AND idx_approval_line = #{idxApprovalLine}
+	</update>
+	
+	<update id="retract">
+		UPDATE approval_tb SET final_ap_status = '회수' WHERE idx_approval = #{idxApproval}
 	</update>
 </mapper>

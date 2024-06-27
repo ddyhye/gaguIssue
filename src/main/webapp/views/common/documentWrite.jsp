@@ -523,8 +523,8 @@ iframe {
 		/* [jeong] 조직도에서 선택한 직원을 결재 라인에 추가한다 */
 		function approvalAdd() {
 			if (selectedEmp != 0) {
-				if (approvalLine.length == 5) {
-					Swal.fire('최대 결재자 지정은 5명까지 가능합니다.');
+				if (approvalLine.length == 4) {
+					Swal.fire('최대 결재자 지정은 4명까지 가능합니다.');
 					return;
 				} 
 				// 결재자를 추가
@@ -658,7 +658,7 @@ iframe {
 	        .then(response => response.json())
 	        .then(data => {
 	        	if (data.success) {
-	        		window.location.href = '/document/'+ data.idxApproval +'/detail.go'; 
+	        		window.location.href = '/document/'+ data.idxApproval +'/1/detail.go'; 
 	        	} else {
 	        		// 오류 메시지 뜨게 하기
 	        		Swal.fire({
