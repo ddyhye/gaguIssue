@@ -41,7 +41,7 @@
     
     <!-- [do] css 추가 -->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
-    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/orderList.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/receivingHistory.css'/>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     
@@ -73,13 +73,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">들어온 주문 내역</h4>
+          <h4 class="f-w-700">출고 내역</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
               <li class="breadcrumb-item f-w-400">logisticsDept</li>
-              <li class="breadcrumb-item f-w-400 active">들어온 주문 내역</li>
+              <li class="breadcrumb-item f-w-400 active">출고 내역</li>
             </ol>
           </nav>
         </div>
@@ -104,7 +104,7 @@
                 <div class="card"> 
                   <div class="card-body">
                   	<div class="card-header do-flexdirection-row">
-			          <h4>들어온 주문 내역</h4>
+			          <h4>입고 내역</h4>
 			          <div class="do-rightfixed"> 
                         <a class="btn btn-primary" href="<c:url value='/logisticsDepartment/poWrite.go'/>"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
                       </div>
@@ -162,81 +162,23 @@
                       <table class="table do-table">
                         <thead> 
                           <tr> 
-                          <!-- 주문번호 수주처 상품정보(첫번째상품명 외 n건) 합계 관리 -->
                             <th class="do-table-1">No</th>
-                            <th class="do-table-2">주문일자</th>
+                            <th class="do-table-2">출고일자</th>
                             <th class="do-table-3">수주처</th>
                             <th class="do-table-4">제품명</th>
-                            <th class="do-table-5">합계</th>
-                            <th class="do-table-6">상태</th>
+                            <th class="do-table-5">주문수량</th>
+                            <th class="do-table-6">단가</th>
+                            <th class="do-table-7">금액</th>
+                            <th class="do-table-8">출고상태</th>
                           </tr>
                         </thead>
                         <tbody class= "do-inventory"> 
                           <tr>
-                          	<td colspan="6">loding...</td>
+                          	<td colspan="8">loding...</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    
-                    
-                    <!-- 주문 상세보기 -->
-					<div class="do-lackList">
-						<div class="do-lackList-x">
-							<i class="fa-solid fa-xmark" id="cancelBtn"></i>
-						</div>
-						<div class="do-lackList-header">
-							<h4>주문 상세 내역</h4>
-						</div>
-						<div class="do-lackList-client">
-							<p class="do-bold do-p-darkgray do-margin">주문번호&nbsp;</p>
-							<div class="do-client do-popup1">
-	                      		<p>1</p>
-	                      	</div>
-						</div>
-						<div class="do-lackList-client">
-							<p class="do-bold do-p-darkgray do-margin">주문일자&nbsp;</p>
-							<div class="do-client do-popup2">
-	                      		<p>2024-06-27</p>
-	                      	</div>
-						</div>
-						<div class="do-lackList-client">
-							<p class="do-bold do-p-darkgray do-margin">수주처&nbsp;</p>
-							<div class="do-client do-popup3">
-	                      		<p>(주)메이플스토리</p>
-	                      	</div>
-						</div>
-						<div class="do-lackList-client">
-							<p class="do-bold do-p-darkgray do-margin">주문금액&nbsp;</p>
-							<div class="do-client do-popup4">
-	                      		<p>870000</p>
-	                      	</div>
-						</div>
-						<div class="do-lackList-list">
-							<table class="table do-table">
-		                        <thead> 
-		                          <tr> 
-		                            <th class="do-table-11">No</th>
-		                            <th class="do-table-22">제품명</th>
-		                            <th class="do-table-33">잔고</th>
-		                            <th class="do-table-44">수량</th>
-		                            <th class="do-table-55">단가</th>
-		                            <th class="do-table-66">금액</th>
-		                          </tr>
-		                        </thead>
-		                        <tbody class= " do-popup5"> 
-		                          <tr>
-		                          	<td colspan="5">Select Client...</td>
-		                          </tr>
-		                        </tbody>
-		                      </table>
-						</div>
-						<div class="do-lackList-ok">
-							<button id="lackBtn">출고하기</button>
-						</div>
-					</div>
-						
-						
                   </div>
                 </div>
               </div>
@@ -322,6 +264,8 @@
 	var productSearch = document.getElementById('memberSearch').value;
 	var productCategory = document.getElementById('productCategory').value;
 	var clientList = document.getElementById('clientList').value;
+	
+	listCall(productSearch, productCategory, clientList);
 
     document.getElementById('memberSearch').addEventListener('keydown', function(event) {
         if (event.key === "Enter") {
@@ -348,14 +292,14 @@
 	});
     
 
-    listCall(productSearch, productCategory, clientList);
+	
 	
 
 	// 물품 리스트 출력
 	function listCall(productSearch, productCategory, clientList) {
 		$.ajax({
 			type: 'post',
-			url: '<c:url value="/orderList.ajax"/>',
+			url: '<c:url value="/deliveryHisList.ajax"/>',
 			data: {
 				'productSearch': productSearch,
 				'productCategory': productCategory,
@@ -363,49 +307,47 @@
 			},
 			dataType: 'JSON',
 			success: function(data) {
-				drawList(data);
+				drawHistoryList(data);
 			}, error: function(error) {
 				console.log(error);
 			}
 		});
 	}
-	function drawList(data) {
+	// drawHistory 함수 : 히스토리 그리기
+	function drawHistoryList(data) {
 		$('.do-inventory').empty();
 		
 		var content = '';
 
 		if (!data.list || data.list.length === 0) {
-			content += '<tr><td colspan="6">NOTHING...</td></tr>';
+			content += '<tr><td colspan="8">LODING...</td></tr>';
 		}
 		for (item of data.list) {
-			content += '<tr class="orderDetail">';
+			content += '<tr>';
 			content += '<td class="do-table-td1">';
 			content += item.order_no;
 			content += '</td>';
 			content += '<td class="do-table-td2">';
-			var dateOnly = item.order_datetime.split('T')[0];
-			content += dateOnly;
+			var dateOnly = item.delivery_datetime.split('T')[0];
+			content += dateOnly
 			content += '</td>';
 			content += '<td class="do-table-td3">';
 			content += item.client_name;
 			content += '</td>';
 			content += '<td class="do-table-td4">';
-			var orderContent = item.product_name;
-			orderContent += ' 외 ';
-			orderContent += item.order_row - 1;
-			orderContent += '건';
-			content += orderContent;
+			content += item.product_name;
 			content += '</td>';
 			content += '<td class="do-table-td5">';
-			content += item.order_total_price;
+			content += item.quantity;
 			content += '</td>';
 			content += '<td class="do-table-td6">';
-			
-			if (item.accept === 'n') {
-				content += 'new';
-			} else {
-				content += '처리완료';
-			}
+			content += item.unit_price;
+			content += '</td>';
+			content += '<td class="do-table-td7">';
+			content += item.order_total_price;
+			content += '</td>';
+			content += '<td class="do-table-td8">';
+			content += item.delivery_state;
 			content += '</td>';
 			content += '</tr>';
 		}
@@ -421,148 +363,16 @@
 	
 	
 	
-	// 각 행을 누르면 detail 페이지로 이동
-	document.querySelector('.do-inventory').addEventListener('mouseover', function(e){
-		if (e.target && e.target.closest('.orderDetail')) {
-			var orderDetailRow = e.target.closest('.orderDetail');
-			orderDetailRow.style.backgroundColor = 'rgba(106, 113, 133, 0.1)';
-	    }		
-	});
-	document.querySelector('.do-inventory').addEventListener('mouseout', function(e) {
-	    if (e.target && e.target.closest('.orderDetail')) {
-	        var orderDetailRow = e.target.closest('.orderDetail');
-	        orderDetailRow.style.backgroundColor = '';
-	    }
-	});
+	
 	document.querySelector('.do-inventory').addEventListener('click', function(e){
-		if (e.target && e.target.closest('.orderDetail')) {
-			var orderDetailRow = e.target.closest('.orderDetail');
-			
-			// 주문 상세 내역 모달창 출력
-			document.getElementsByClassName('do-lackList')[0].classList.add('active');
-			
-			// 해당 행의 주문번호 불러오기
-			var orderNo = orderDetailRow.querySelector('.do-table-td1').innerText;
-			
-			fetch('/clientPerOrder.ajax', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ orderNo: orderNo})
-			})
-			.then(response => response.json())
-			.then(data=> {
-				drawProduct(data);
-			})
-			.catch(error => { console.error('Fetch error:', error); });
+		if (e.target && e.target.closest('button.do-poBtn')) {
+	        var button = e.target.closest('button.do-poBtn');
+	        var fileName = button.value;
+	        
+	        console.log(fileName);
+
+	        window.open("/filestore/"+encodeURIComponent(fileName), "_blank", "width=1000,height=700");
 	    }		
-	});
-	// drawProduct 함수 : 재고 부족 제품 그리기
-	function drawProduct(data) {
-		// 주문번호
-		$('.do-popup1').empty();
-		var content = '';
-		content += '<p>'+data.orderNo+'</p>';
-		$('.do-popup1').append(content);
-		
-		// 주문일자
-		$('.do-popup2').empty();
-		content = '';
-		content += '<p>'+data.order_datetime+'</p>';
-		$('.do-popup2').append(content);
-		
-		// 수주처
-		$('.do-popup3').empty();
-		content = '';
-		content += '<p>'+data.order_client+'</p>';
-		$('.do-popup3').append(content);
-		
-		// 합계
-		$('.do-popup4').empty();
-		content = '';
-		content += '<p>'+data.order_total+'</p>';
-		$('.do-popup4').append(content);
-			
-		// 주문 내역
-		$('.do-popup5').empty();
-		content = '';
-		if (!data.list || data.list.length === 0) {
-			content += '<tr><td colspan="5">Error...</td></tr>';
-		}
-		for (item of data.list) {
-			content += '<tr>';
-			content += '<td class="do-table-td11">';
-			content += '<input type="hidden" value="'+item.idx_product+'"/>';
-			content += item.idx_product;
-			content += '</td>';
-			content += '<td class="do-table-td22">';
-			content += item.product_name;
-			content += '</td>';
-			
-			let ddchange = '';
-			if (item.current_stock < item.quantity) {
-				ddchange = 'low-stock';
-			} else {
-				ddchange = 'normal-stock';
-			}
-			
-			content += '<td class="do-table-td33 '+ddchange+'">';
-			content += item.current_stock;
-			content += '</td>';
-			content += '<td class="do-table-td44">';
-			content += item.quantity;
-			content += '</td>';
-			content += '<td class="do-table-td55">';
-			content += item.unit_price;
-			content += '</td>';
-			content += '<td class="do-table-td66">';
-			content += item.order_per_price;
-			content += '</td>';
-			content += '</tr>';
-		}
-		$('.do-popup5').append(content);
-		
-		
-		// 출고 버튼
-		$('.do-lackList-ok').empty();
-		content = '';
-		if (data.accept === 'n') {
-			content += '<button id="lackBtn" class="lackBtn">출고하기</button>';
-		} else {
-			content += '<button id="lackBtn2">출고완료</button>';
-		}
-		$('.do-lackList-ok').append(content);
-		
-		
-		// low-stock 클래스가 있는지 확인하여 버튼 텍스트 변경
-		if (document.querySelector('.low-stock')) {
-		    document.getElementById('lackBtn').textContent = '재고부족';
-		    document.getElementById('lackBtn').style.backgroundColor = 'darkgray';
-		}
-	}
-	document.getElementById('cancelBtn').addEventListener('click', () => {
-		document.getElementsByClassName('do-lackList')[0].classList.remove('active');
-	})
-	// 출고하기
-	document.querySelector('.do-lackList-ok').addEventListener('click', function(e){
-		if (e.target && e.target.closest('.lackBtn') && e.target.closest('.lackBtn').innerText==='출고하기') {			
-			var orderNo = document.querySelector('.do-popup1').innerText;
-			
-			fetch('/orderDelivery.ajax', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ orderNo: orderNo})
-			})
-			.then(response => response.json())
-			.then(data=> {
-				alert('출고 완료!\n재고 관리 > 출고 내역 을 확인해 주세요...');
-				listCall(productSearch, productCategory, clientList);
-			})
-			.catch(error => { console.error('Fetch error:', error); });
-		}
 	});
 </script>
 

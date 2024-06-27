@@ -198,9 +198,6 @@ public class LogiDepartmentService {
 	public ModelAndView receivingHistory_go() {
 		ModelAndView mav = new ModelAndView();
 		
-//		List<LogiDeptDTO> list = logiDeptDao.getReceivingHistory();
-//		mav.addObject("list", list);
-		
 		mav.setViewName("/logisticsDepartment/receivingHistory");
 		
 		return mav;
@@ -230,6 +227,70 @@ public class LogiDepartmentService {
 	
 	
 	
+	public ModelAndView orderList_go() {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("/logisticsDepartment/orderList");
+		
+		return mav;
+	}
+	public Map<String, Object> orderListDraw(Map<String, Object> map) {
+		List<LogiDeptDTO> list = logiDeptDao.getOrderList();
+		map.put("list", list);
+		
+		return map;
+	}
+	
+	public Map<String, Object> clientPerOrder(Map<String, Object> map, int orderNo) {
+		map.put("orderNo", orderNo);
+		String order_datetime = logiDeptDao.getOrderTime(orderNo);
+		map.put("order_datetime", order_datetime);
+		String order_client = logiDeptDao.getOrderClient(orderNo);
+		map.put("order_client", order_client);
+		int order_total = logiDeptDao.getOrderTotal(orderNo);
+		map.put("order_total", order_total);
+		List<LogiDeptDTO> list = logiDeptDao.getOrderProductList(orderNo);
+		map.put("list", list);
+		
+		// 출고 상태
+		String accept = logiDeptDao.getOrderAccept(orderNo);
+		map.put("accept", accept);
+		
+		return map;
+	}
+	
+	public Map<String, Object> orderDelivery(Map<String, Object> map, int orderNo) {
+		List<LogiDeptDTO> list = logiDeptDao.getOrderProductList(orderNo);
+		
+		for (LogiDeptDTO dto : list) {
+			logiDeptDao.insertDelivery(dto.getIdx_order());
+			logiDeptDao.updateOrderState(dto.getIdx_order());
+		}
+		
+		return map;
+	}
+
+
+	public ModelAndView deliveryHistory_go() {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("/logisticsDepartment/deliveryHistory");
+		
+		return mav;
+	}
+	public Map<String, Object> deliveryHisListDraw(Map<String, Object> map) {
+		List<LogiDeptDTO> list = logiDeptDao.getDeliveryList();
+		map.put("list", list);
+		
+		return map;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	// [do] 로그인한 직원 정보 가져오기
 	public EmployeeDTO getEmpData(HttpSession session) {
@@ -240,15 +301,4 @@ public class LogiDepartmentService {
 		return emp;
 	}
 
-
-
-	
-
-
-
-
-
-
-
-	
 }
