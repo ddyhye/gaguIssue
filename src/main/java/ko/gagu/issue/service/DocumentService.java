@@ -221,6 +221,14 @@ public class DocumentService {
 
 	public ModelAndView fetchDocumentList(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("common/documentList");
+		int page = 1;
+		int pageSize = 10;
+		String keyword = "";
+		String searchOption = "";
+		String filter = "";
+		Map<String, Object> response = new HashMap<>();
+		
+		response.put("success", true);
 		// dao.getDocumentList();
 		return mav;
 	}

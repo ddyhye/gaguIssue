@@ -50,6 +50,7 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
 <!-- Plugins css Ends-->
+<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <!-- Bootstrap css-->
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
@@ -95,6 +96,14 @@
 
 .document-list-table tr:last-child td:last-child {
     border-bottom-right-radius: 5px; /* 오른쪽 하단 모서리 둥글게 */
+}
+.pagination li a {
+	color: #7a70ba; 
+}
+
+.pagination li.active a {
+	background-color: #7a70ba; 
+	border-color: #7a70ba;
 }
 </style>
 </head>
@@ -156,19 +165,29 @@
 							<div>
 								<ul class="simple-wrapper nav nav-tabs" id="myTab" role="tablist">
 									<li class="nav-item">
-										<a class="nav-link active txt-primary" data-bs-toggle="tab" href="#all" role="tab">전체</a>
+										<a class="nav-link active txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="fetchDocumentList('all')">전체</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#pending" role="tab">결재해야할 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="fetchDocumentList('pending')">결재해야할 문서</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#rejected" role="tab">반려된 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="fetchDocumentList('rejected')">반려된 문서</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#approved" role="tab">승인된 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="fetchDocumentList('approved')">승인된 문서</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#retracted" role="tab">회수한 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="fetchDocumentList('retracted')">회수한 문서</a>
 									</li>																											
 								</ul>
 							</div>
@@ -182,7 +201,7 @@
 							</div>
 						</div>
 						<div class="tab-content" id="myTabContent">
-							<div class="tab-pane fade show active" id="all" role="tabpanel">
+							<div class="tab-pane fade show active" id="list" role="tabpanel">
 								<table class="table table-striped document-list-table">
 									<tr>
 										<th><span class="f-light f-w-600">문서 제목</span></th>
@@ -205,8 +224,13 @@
 										<td>연차 및 휴가 신청서</td>
 									</tr>																		
 								</table>
+								<div class="d-flex justify-content-center">								
+									<div id="pagination">
+									
+									</div>
+								</div>
 							</div>
-							<div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="profile-tabs">
+<!-- 							<div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="profile-tabs">
 								<p class="pt-3">
 									결재해야할 문서
 								</p>							
@@ -225,7 +249,7 @@
 								<p class="pt-3">
 									회수한 문서
 								</p>							
-							</div>							
+							</div> -->							
 						</div>
 					</div>
 				</div>
@@ -298,12 +322,17 @@
 	<script src="/assets/js/script1.js"></script>
 	<script src="/assets/js/theme-customizer/customizer.js"></script>	    
 	<!-- Plugin used-->
+	<!-- flatpickr -->
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+    <!-- pagination js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+ 
 	<script>
 		new WOW().init();
 	</script>
 	<script>
+		/* [jeong] flatpickr 생성 및 초기화 함수 */
 	    function getToday() {
 	        const today = new Date();
 	        const yyyy = today.getFullYear();
@@ -311,23 +340,146 @@
 	        const dd = String(today.getDate()).padStart(2, '0');
 	        return '${yyyy}-${mm}-${dd}';
 	    }	
-		var startDate = flatpickr("#startDate", {
+		
+        function convertToKST(date) {
+            // 입력된 date를 밀리초 단위로 가져옴
+            const localTime = date.getTime();
+            // 현재 date의 타임존 오프셋을 분 단위로 가져옴
+            const localOffset = date.getTimezoneOffset() * 60000;
+            // 입력된 date와 타임존 오프셋을 더하여 UTC 시간 계산
+            const utcTime = localTime + localOffset;
+            // KST 시간대 오프셋을 적용하여 새로운 date 생성 (KST는 GMT+9)
+            const kstOffset = 9 * 60 * 60000; // 9시간을 밀리초로 변환
+            const kstTime = utcTime + kstOffset;
+            return new Date(kstTime);
+        }
+        
+        // var startDate = document.getElementById('startDate').value;
+        // var endDate = document.getElementById('endDate').value;
+        
+		var startflatpickr = flatpickr("#startDate", {
 			locale: "ko",
 			maxDate: "today"
 		});
 		
-		var endDate = flatpickr("#endDate", {
+		var endflatpickr = flatpickr("#endDate", {
 			locale: "ko",
 			maxDate: "today",
 			defaultDate: "today"
 		});	
 		
+        var startDate = startflatpickr.selectedDates[0];
+        var endDate = endflatpickr.selectedDates[0];
+		
 	    function dateClear() {
 	    	startDate.clear();
 	    	endDate.clear();
-	    	endDate.setDate("today", true);
+	    	document.getElementById('startDate').value = '날짜 선택';
+	    	endDate.setDate('today', true);
 	    }
-	
+	</script>
+	<script>
+		var page = 1;
+		var totalPage = 10; // totalPages 는 서버에서 불러와야한다
+		var filter = 'all';
+		
+		$(document).ready(function () {
+			pagination();
+		});
+		
+		function pagination() {
+			console.log('page');
+		    $('#pagination').twbsPagination({
+				startPage:page, //시작페이지
+				totalPages:totalPage, //총 페이지 갯수
+				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+		        first: '처음', // 첫 페이지 버튼 텍스트 변경
+		        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+		        next: '다음', // 다음 페이지 버튼 텍스트 변경
+		        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+				onPageClick:function(evt, clickPageIdx){
+					// 페이지 이동 번호 클릭시 이벤트 발동
+                    if (page !== clickPageIdx) {
+                        page = clickPageIdx;
+                        console.log('a');
+                        fetchDocumentList(filter);
+                    }
+				}
+		    });			
+		}
+	    
+		function fetchDocumentList(filter) {
+			console.log('fetch');
+			// 1. 날짜 필터링
+			// 시작 날짜는 undefined 로 들어오면 모든 과거 내용을 가져와야한다
+			//console.log(startDate.selectedDates[0]);
+			//console.log(endDate.selectedDates[0]);
+			
+			// 2. filter 는 문서 유형을 나눈다  
+			//console.log(filter);
+			console.log();
+			console.log();
+			const pagingDTO = {
+				filter : filter,
+				page : page,
+				totalPage : totalPage,
+				startDate : startDate,
+				endDate : endDate
+			}
+			
+/* 			var data = new FormData();
+			data.append('filter', filter);
+			data.append('page', page);
+			data.append('totalPage', totalPage);
+			data.append('startDate', startDate);
+			data.append('endDate', endDate); */
+			console.log(pagingDTO);
+			
+	        fetch('/document/list.do', {
+	            method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+	            body: JSON.stringify(pagingDTO)
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.log('Success:', data);
+	        })
+	        .catch(error => {
+	        	console.error('Error:', error);
+	        });
+			
+			// 3. 현재 페이지 번호가 몇번인지 알아야한다
+			pagination();
+		}	
+		
+/* 		function searchResultPagination(startpage) {
+			//console.log(choice);
+			$.ajax({
+				type:'post', 
+				url:'/searchResult.ajax',  
+				data:{
+				},
+				dataType:'json',
+				success:function(response){ 
+					drawSearchResultList(response);	
+		            $('#pagination').twbsPagination({
+						startPage:startpage,       //시작페이지
+						totalPages:response.totalPages,    //총 페이지 갯수
+						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+						onPageClick:function(evt, clickPageIdx){
+							// 페이지 이동 번호 클릭시 이벤트 발동
+							searchResultPageIndex = clickPageIdx;
+							searchResultPagination(clickPageIdx);
+						}
+		            });
+				}, 
+				error:function(error){ // 통신 실패 시
+					console.log(error);
+				} 
+			});
+		} */
 	</script>
 </body>
 </html>

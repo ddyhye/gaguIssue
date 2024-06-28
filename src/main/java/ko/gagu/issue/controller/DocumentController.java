@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.service.DocumentService;
 
 
@@ -146,17 +148,13 @@ public class DocumentController {
 	
 	@PostMapping(value = "/document/list.do")
 	@ResponseBody	
-	public Map<String, Object> documentListDo(HttpSession session) {
-		int page = 1;
-		int pageSize = 10;
-		String keyword = "";
-		String searchOption = "";
-		String filter = "";
-		Timestamp startDateTime = new Timestamp(System.currentTimeMillis());
-		Map<String, Object> response = new HashMap<>();
+	public Map<String, Object> documentListDo(@RequestBody PagingDTO pagingDTO
+			,HttpSession session) {
+
+		logger.info("pagingDTO : {}", pagingDTO);
+		int 
 		
-		response.put("success", true);
-		return response;		
+		return ds.fetchDocumentList(pagingDTO, idxEmployee, idxApproval);		
 	}
 
 	
