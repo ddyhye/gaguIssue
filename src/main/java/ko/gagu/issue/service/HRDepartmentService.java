@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import ko.gagu.issue.dao.HRDepartmentDAO;
+import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
 
 @Service
@@ -41,6 +42,19 @@ public class HRDepartmentService {
 	public void deleteCompanyEvent(Integer idx_company_calendar) {
 		hrDepartmentDao.deleteCompanyEvent(idx_company_calendar);
 	}
+
+	public List<HRDepartmentDTO> getAllEmployees() {
+        return hrDepartmentDao.getAllEmployees();
+    }
+
+	public void createEmployee(EmployeeDTO employee) {
+		hrDepartmentDao.createEmployee(employee);
+		
+	}
+
+	
+
+	
 
 	
 

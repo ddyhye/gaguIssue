@@ -1,8 +1,11 @@
-package ko.gagu.issue.util;
+package ko.gagu.issue.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,5 +76,39 @@ public class FileManagerController {
 		}
 		// 클라이언트에게 보낼 내용(데이터), 헤더, 상태(200 또는 HttpStatus.OK 는 정상이라는 의미이다)
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+	
+	// [jeong] 클라이언트가 서버에게 파일을 요청시 서버는 해당 경로의 파일을(확장자에 맞춰서) 보내준다.
+	@ResponseBody
+	@GetMapping("/download/{rootPath}/{subPath}/{fileName}/{originName}")
+	public ResponseEntity<Resource> fileDownload(@PathVariable String rootPath, @PathVariable String subPath,
+			@PathVariable String fileName, @PathVariable String originName) {
+		Resource resource = new FileSystemResource(root + "/" + rootPath + "/" + subPath + "/" + fileName);
+		HttpHeaders header = new HttpHeaders();
+
+		try {
+			String type = Files.probeContentType(Paths.get(root + "/" + rootPath + "/" + subPath + "/" + fileName)); // 경로를 주면 해당 파일의 mime-type 을 알아낸다
+			header.add("content-type", "application/force-download");
+			String oriFile = URLEncoder.encode(originName, "UTF-8");
+			oriFile = oriFile.replaceAll("\\+", " ");
+			header.add("content-Disposition", "attachment;filename=\""+ oriFile +"\"");
+		} catch (IOException e) {
+			e.getStackTrace();
+		}
+		// 클라이언트에게 보낼 내용(데이터), 헤더, 상태(200 또는 HttpStatus.OK 는 정상이라는 의미이다)
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}	
+	
+	@ResponseBody
+	@GetMapping("/pdf")
+	public ResponseEntity<Resource> pdfFileDownload(HttpSession session) {
+		// Resource resource = new FileSystemResource();
+		HttpHeaders header = new HttpHeaders();
+		//File 
+		//Document htmlDoc = Jsoup.parse(, "UTF-8", "");
+		
+		
+		//return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+		return null;
 	}
 }

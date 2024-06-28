@@ -13,11 +13,11 @@
 		SELECT * FROM company_calendar_tb WHERE cc_status='SHOW'
 	</select>
 	
-	<!-- [il] 임의로 idx_employee =2집어넣었음 나중에 바꿔줘야함!! -->
+	<!-- [il] 임의로 idx_employee =1 집어넣었음 나중에 바꿔줘야함!! -->
 	<insert id="employeeAddEvent" parameterType="employee">
 		INSERT INTO employee_calendar_tb
 			(idx_employee,ec_title,ec_description,ec_start_datetime,ec_end_datetime,ec_color)
-		VALUES (2,#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},#{ec_color})
+		VALUES (1,#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},'#7a70ba')
 	</insert>
 	
 	<update id="employeeDeleteEvent">
@@ -59,11 +59,23 @@
     </select>
 	
 	<select id="getContact" resultType="employee">
-		SELECT et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address
+		SELECT et.idx_employee ,et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title
 		FROM employee_tb et, department_tb dt 
 		WHERE et.idx_department = dt.idx_department AND idx_employee != #{param1}
+		<if test="param2 != null and param2 != '' and param2 != '전체'">
+           	AND (et.emp_name LIKE CONCAT('%', #{param2}, '%') OR et.idx_title LIKE CONCAT('%', #{param2}, '%'))
+        </if>
+		
 	</select>
 	
+	<select id="getempDetail" parameterType="map">
+		SELECT et.idx_employee ,tt.title_name, et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title 
+		FROM employee_tb et
+		JOIN department_tb dt ON et.idx_department = dt.idx_department 
+		JOIN title_tb tt ON et.idx_title = tt.idx_title
+		WHERE idx_employee = #{idx_emp};
+	
+	</select>
 	
 	
 	

@@ -1,6 +1,7 @@
 package ko.gagu.issue.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +45,15 @@ public class DocumentController {
 		return mav;
 	}
 
+	@GetMapping(value = "/document/list.go")
+	public ModelAndView documentListGo(HttpSession session) {
+		
+		// 1. 부서번호 가져와야함
+		// 2. 
+		int idxEmployee = 1;
+		return ds.fetchDocumentList(idxEmployee);
+	}	
+	
 	/* [jeong] 문서 양식 번호를 입력 받고 해당 양식 문서 파일을 불러와 작성 페이지로 이동 */
 	@GetMapping(value = "/document/{idxDc}/write.go")
 	public ModelAndView documentWriteGo(@PathVariable String idxDc
@@ -66,7 +76,7 @@ public class DocumentController {
 		
 		// int idxEmployee = session.getAttribute("???");
 		int accessIdxEmployee = empId;
-		return ds.fetchDocumentPage(accessIdxEmployee, idxApproval);
+		return ds.fetchDocumentPage(accessIdxEmployee, idxApproval, session);
 	}
 	
 	/* [jeong] 문서 파일, 첨부파일 결재라인들을 요청 받고 데이터베이스와 서버에 파일을 저장함 */
@@ -76,6 +86,7 @@ public class DocumentController {
 			,@RequestParam("documentFile") MultipartFile documentFile 
 			,@RequestParam("documentData") String documentData
 			,@RequestParam("approvalLine") String approvalLine
+			,@RequestParam("documentTtile") String documentTtile
 			,HttpSession session
 			 ) {
 		logger.info("작성한 문서의 파일 객체 documentfile : {}", documentFile);
@@ -88,20 +99,65 @@ public class DocumentController {
 		} else {
 			// int idxEmployee = session.getAttribute("???");
 			int idxEmployee = 1;
-			ds.documentWrite(attachmentFiles, documentFile, documentData, approvalLine, idxEmployee, response);
+			ds.write(attachmentFiles, documentFile, documentData, approvalLine, documentTtile, idxEmployee, response);
 		}	
 		return response;
 	} 
 	
-	@PostMapping(value = "document/{idxApproval}/approval.do")
+	@PostMapping(value = "/document/approval.do")
 	@ResponseBody
 	public Map<String, Object> documentApprovalDo(@RequestParam("signatureImage") MultipartFile signatureImage
-			,@PathVariable String idxApproval, @RequestParam("idxApprovalLine") String idxApprovalLine
-			,@RequestParam("apStep") String apStep) {
+			,HttpSession session) {
 		Map<String, Object> response = new HashMap<>();
+		int idxApproval = (Integer) session.getAttribute("idxApproval");
+		int idxApprovalLine = (Integer) session.getAttribute("idxApprovalLine");
+		int apStep = (Integer) session.getAttribute("apStep");
+		
 		ds.approval(signatureImage, idxApproval, apStep, idxApprovalLine);
-		logger.info("idxApprovalLine : {}", idxApprovalLine);
 		response.put("success", true);
 		return response;
 	}
+	
+	@PostMapping(value = "/document/reject.do")
+	@ResponseBody
+	public Map<String, Object> documentRejectDo(HttpSession session
+			,@RequestParam("apComment") String apComment) {
+		Map<String, Object> response = new HashMap<>();
+		int idxApproval = (Integer) session.getAttribute("idxApproval");
+		int idxApprovalLine = (Integer) session.getAttribute("idxApprovalLine");
+		int apStep = (Integer) session.getAttribute("apStep");
+		
+		ds.reject(idxApproval, apStep, idxApprovalLine, apComment);
+		response.put("success", true);
+		return response;
+	}	
+
+	@PostMapping(value = "/document/retract.do")
+	@ResponseBody
+	public Map<String, Object> documentRetractDo(HttpSession session) {
+		Map<String, Object> response = new HashMap<>();
+		int idxApproval = (Integer) session.getAttribute("idxApproval");
+		
+		ds.retract(idxApproval);
+		response.put("success", true);
+		return response;
+	}
+	
+	
+	@PostMapping(value = "/document/list.do")
+	@ResponseBody	
+	public Map<String, Object> documentListDo(HttpSession session) {
+		int page = 1;
+		int pageSize = 10;
+		String keyword = "";
+		String searchOption = "";
+		String filter = "";
+		Timestamp startDateTime = new Timestamp(System.currentTimeMillis());
+		Map<String, Object> response = new HashMap<>();
+		
+		response.put("success", true);
+		return response;		
+	}
+
+	
 }

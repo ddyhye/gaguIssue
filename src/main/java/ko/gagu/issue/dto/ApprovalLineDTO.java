@@ -13,6 +13,7 @@ public class ApprovalLineDTO {
     private int isApproval;
     private String apComment;
     private Timestamp approvalDatetime;
+    private String approvalDatetimeS;
 
 	// [jeong] 결재권자 직위
     private String titleName;
@@ -92,6 +93,12 @@ public class ApprovalLineDTO {
 	}
 	public void setIdxApprovalLine(int idxApprovalLine) {
 		this.idxApprovalLine = idxApprovalLine;
+	}
+	public String getApprovalDatetimeS() {
+		return approvalDatetimeS;
+	}
+	public void setApprovalDatetimeS(String approvalDatetimeS) {
+		this.approvalDatetimeS = approvalDatetimeS;
 	}
 	@Override
 	public String toString() {

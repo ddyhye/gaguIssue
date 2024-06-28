@@ -50,15 +50,15 @@ public class EmployeeController {
 		return response;
 	}
 
-	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
-	@ResponseBody
-	public Map<String, Object> getAllCompanyEvents(Model model){
-		logger.info("getAllCompanyEvents 진입");
-		Map<String, Object>response=new HashMap<String, Object>();
-		employeeService.getAllCompanyEvents(response,model);
-		logger.info("response : {}",response);
-		return response;
-	}
+//	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
+//	@ResponseBody
+//	public Map<String, Object> getAllCompanyEvents(Model model){
+//		logger.info("getAllCompanyEvents 진입");
+//		Map<String, Object>response=new HashMap<String, Object>();
+//		employeeService.getAllCompanyEvents(response,model);
+//		logger.info("response : {}",response);
+//		return response;
+//	}
 	
 	@PostMapping(value="/employee/addEvent.ajax")
 	@ResponseBody
@@ -217,6 +217,7 @@ public class EmployeeController {
 
 	@GetMapping(value = "/todo.go")
 	public String todo() {
+		
 		return "employee/ToDo";
 	}
 	

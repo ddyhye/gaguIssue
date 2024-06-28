@@ -34,10 +34,14 @@ public interface DocumentDAO {
 
 	List<ApprovalLineDTO> getApprovalLineList(int idxApproval);
 
-	void saveSignImage(int idxFiletype, String idxApprovalLine, String signImageName);
+	void saveSignImage(int idxFiletype, int idxApprovalLine, String signImageName);
 
 	int getEmpApprovalStep(int employeeId);
 
-	void updateApproval(String idxApproval, String idxApprovalLine, String apStep, int isApproval);
+	void reject(int idxApproval, int idxApprovalLine, int apStep, String apComment);
+
+	void approval(int idxApproval, int idxApprovalLine, int apStep);
+
+	void retract(int idxApproval);
 
 }

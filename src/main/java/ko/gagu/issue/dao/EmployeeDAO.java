@@ -30,11 +30,13 @@ public interface EmployeeDAO {
 	void employeeUpdateEvent(Integer idx_emp_calendar, Integer idx_employee, String ec_title, String ec_start_datetime,
 			String ec_end_datetime, String ec_description, String ec_color);
 
-	List<EmployeeDTO> getContact(int emp_id);
+	List<EmployeeDTO> getContact(int emp_id, String contactSearch);
 
 	List<HRDepartmentDTO> getAllCompanyEvents();
 
 	EmployeeDTO employeeData(String emp_id);
+	
+	Map<String, Object> getempDetail(int idx_emp);
 
 
 }

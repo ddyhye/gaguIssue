@@ -27,24 +27,34 @@ public class EmployeeService {
 	@Autowired PasswordEncoder encoder;
 
 	public void employeeGetAllEvents(Map<String, Object> response,Integer idx_employee,Model model) {
+		// [il] 개인일정 보여주기
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		model.addAttribute("employee",employeeDTO);
 		logger.info("employeeDTO : {}",employeeDTO);
 		List<EmployeeDTO> events = dao.employeeGetAllEvents(idx_employee);
-		response.put("calendarEvents", events);
-	}
-	
-	public void getAllCompanyEvents(Map<String, Object> response, Model model) {
+		
 		// [il] 회사일정 보여주기
 		HRDepartmentDTO hrDepartmentDTO = new HRDepartmentDTO();
 		model.addAttribute("company",hrDepartmentDTO);
 		logger.info("hrDepartmentDTO : {}",hrDepartmentDTO);
-		
 		List<HRDepartmentDTO>eventss=dao.getAllCompanyEvents();
-		response.put("CompanyEvents", eventss);
-
 		
+		
+		response.put("calendarEvents", events);
+		response.put("companyEvents",eventss);
 	}
+	
+//	public void getAllCompanyEvents(Map<String, Object> response, Model model) {
+//		// [il] 회사일정 보여주기
+//		HRDepartmentDTO hrDepartmentDTO = new HRDepartmentDTO();
+//		model.addAttribute("company",hrDepartmentDTO);
+//		logger.info("hrDepartmentDTO : {}",hrDepartmentDTO);
+//		
+//		List<HRDepartmentDTO>eventss=dao.getAllCompanyEvents();
+//		response.put("companyEvents", eventss);
+//
+//		
+//	}
 	
 
 	public void employeeAddEvent(EmployeeDTO employee) {

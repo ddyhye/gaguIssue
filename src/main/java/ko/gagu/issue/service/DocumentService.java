@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,9 +47,9 @@ public class DocumentService {
 	
 	// [jeong] 직원이 작성한 문서를 파일로 filestore/document 에 저장하고 파일의 이름을 데이터베이스에 저장한다.
 	@Transactional(rollbackFor = Exception.class)
-	public void documentWrite(MultipartFile[] attachmentFiles, MultipartFile documentFile, 
+	public void write(MultipartFile[] attachmentFiles, MultipartFile documentFile, 
 			String documentData, String approvalLine, 
-			int idxEmployee ,Map<String, Object> response) {
+			String documentTtile, int idxEmployee ,Map<String, Object> response) {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		// 1. 데이터베이스에 저장할 문서의 정보를 DTO 에 담는다.
@@ -62,6 +64,7 @@ public class DocumentService {
 			documentDTO.setIdx_employee(idxEmployee);
 			documentDTO.setIdx_dc((int) documentMap.get("idxDc"));
 			documentDTO.setAp_content(documentData);
+			documentDTO.setAp_title(documentTtile);
 		} catch (JsonProcessingException e) {
 			response.put("success", false);
 			return;
@@ -83,6 +86,7 @@ public class DocumentService {
 			String[] attachmentFileNames = new String[attachmentFiles.length];
 			for (int index = 0; index < attachmentFileNames.length; index++) {
 				attachmentFileNames[index] = fm.saveFile(attachmentFiles[index], "document/attachment");
+				logger.info("attachmentFiles[index].getOriginalFilename() : {}", attachmentFiles[index].getOriginalFilename());
 				dao.saveAttachmentFile(8, idxApproval, attachmentFiles[index].getOriginalFilename(), attachmentFileNames[index]);
 			}
 		}
@@ -139,7 +143,7 @@ public class DocumentService {
 	}
 
 	/* [jeong] 결재(문서) 번호로 접근 권한을 확인하고, 문서 파일, 첨부파일, 결재라인을 뿌려준다 */
-	public ModelAndView fetchDocumentPage(int employeeId, String approvalId) {
+	public ModelAndView fetchDocumentPage(int employeeId, String approvalId, HttpSession session) {
 	    ModelAndView mav = new ModelAndView("common/documentDetail");
 	    // 1. 현재 세션이 결재자인지 작성자인지 제 3자인지 확인하기
 
@@ -147,46 +151,23 @@ public class DocumentService {
 	    // 1번과 1-1을 합쳐서 쿼리문을 짜자
 	    ApprovalDTO approvalDetails = dao.getApproval(employeeId, approvalId);
 	    if (approvalDetails == null) {
-	        mav.addObject("msg", "문서를 불러오는 도중에 오류가 발생하여 목록 페이지로 이동합니다.");
-	        mav.setViewName("common/documentList");
+	        mav.addObject("errorMsg", "문서를 불러오는 도중에 오류가 발생하여 목록 페이지로 이동합니다.");
 	        return mav;
 	    }
 	    if (approvalDetails.getAccessPermission().equals("접근불가")) {
-	        mav.addObject("msg", "해당 문서를 열람할 권한이 없습니다.");
-	        mav.setViewName("common/documentList");
+	        mav.addObject("errorMsg", "해당 문서를 열람할 권한이 없습니다.");
 	        return mav;
 	    }
 	    // 2. 회수 상태인지 확인하기(결재자라면 안보이게, 작성자라면 보이게, 제3자는 안보이게)
 	    List<String> elementsToShow = new ArrayList<String>();
 	    if (approvalDetails.getFinalApStatus().equals("회수")) {
 	        if (approvalDetails.getAccessPermission().equals("결재권자") || approvalDetails.getAccessPermission().equals("같은부서원")) {
-	            mav.addObject("msg", "해당 문서는 기안자가 회수하여 열람할 수 없습니다.");
-	            mav.setViewName("common/documentList");
+	            mav.addObject("errorMsg", "해당 문서는 기안자가 회수하여 열람할 수 없습니다.");
 	            return mav;
 	        }
 	    }
 	    List<ApprovalLineDTO> approvalSteps = dao.getApprovalLineList(approvalDetails.getIdxApproval());
-	    logger.info(approvalSteps.toString());
-	    // 2-1. 회수 상태가 아닌 진행중, 최종승인, 반려 문서는 접근 권한에 따라서
-	    // 요소가 달라진다
-	    if (approvalDetails.getAccessPermission().equals("결재권자")) {
-	        // 승인, 반려 버튼
-	        if (!approvalDetails.getFinalApStatus().equals("반려") && approvalSteps.get(0).getCurrentApprovalStep() != -1) {
-	            for (ApprovalLineDTO approvalStep : approvalSteps) {
-	                // 결재 라인에서 몇번째에 위치하는지 확인한다
-	                if (approvalStep.getCurrentApprovalStep() == approvalDetails.getApprovalStep()) {
-	                    // 현재 결재 순서와 본인의 순서가 일치하는지 확인한다
-	                    if (approvalStep.getCurrentApprovalStep() == approvalDetails.getApprovalStep()) {
-	                    	mav.addObject("approvalBtn", true);
-	                    }
-	                }
-	            }
 
-	        }
-	    } else if (approvalDetails.getAccessPermission().equals("작성자")) {
-	        // 회수 버튼
-	        elementsToShow.add("retrieved");
-	    }
 	    // 3. 첨부 파일과 파일을 FileDTO 형태로 리스트 형태로 가져오기 0번 인덱스는 문서 파일로~
 	    List<FileDTO> documentFiles = dao.getDocumentFiles(approvalDetails.getIdxApproval());
 	    String documentFilePath = "";
@@ -196,11 +177,24 @@ public class DocumentService {
 	        if (documentFiles.get(idx).getIdxFiletype() == 4) {
 	        	documentFilePath = documentFiles.get(idx).getFileName();
 	            documentFiles.remove(idx);
-	            break;
 	        }
 	    }
+	    for (int idx = 0; idx < documentFiles.size(); idx++) {
+	        String filename = documentFiles.get(idx).getFileName();
+	        String[] imageExt = { "jpeg", "png", "gif", "bmp", "webp" };
+	        documentFiles.get(idx).setIsImage(0);
+	        for (String ext : imageExt) {
+	        	if (ext.equals(filename.substring(filename.indexOf(".") + 1))) {
+	        		documentFiles.get(idx).setIsImage(1);
+		        }
+	        	logger.info("{}", filename.substring(filename.indexOf(".") + 1));
+	        }	    	
+	    }
+	    session.setAttribute("idxApproval", approvalDetails.getIdxApproval());
+	    session.setAttribute("idxApprovalLine", approvalSteps.get(approvalDetails.getApprovalStep()).getIdxApprovalLine());
+	    session.setAttribute("apStep", approvalDetails.getApprovalStep());
+	    
 	    // 3-1. 문서 권한, 상태, 첨부 파일, 결재 현황 뿌려주기
-	    mav.addObject("elementsToShow", elementsToShow);
 	    mav.addObject("documentFilePath", documentFilePath);
 	    mav.addObject("attachmentFiles", documentFiles);
 	    mav.addObject("approvalSteps", approvalSteps);
@@ -209,11 +203,26 @@ public class DocumentService {
 	    return mav;
 	}
 
-	public void approval(MultipartFile signatureImage, String idxApproval, String apStep, String idxApprovalLine) {
+	@Transactional(rollbackFor = Exception.class)
+	public void approval(MultipartFile signatureImage, int idxApproval, int apStep, int idxApprovalLine) {
 		String signImageName = fm.saveFile(signatureImage, "document/signature");
 		dao.saveSignImage(9, idxApprovalLine, signImageName);
-		dao.updateApproval(idxApproval, idxApprovalLine, apStep, 1);
-		logger.info("signImageName : {}", signImageName);
+		dao.approval(idxApproval, idxApprovalLine, apStep);
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	public void reject(int idxApproval, int apStep, int idxApprovalLine, String apComment) {
+		dao.reject(idxApproval, idxApprovalLine, apStep, apComment);
+	}
+
+	public void retract(int idxApproval) {
+		dao.retract(idxApproval);
+	}
+
+	public ModelAndView fetchDocumentList(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("common/documentList");
+		// dao.getDocumentList();
+		return mav;
 	}
 
 }
