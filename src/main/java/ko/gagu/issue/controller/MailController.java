@@ -29,9 +29,9 @@ public class MailController {
 		logger.info("메일작성 페이지 진입");
 		return "common/mailWrite";
 	}
-	
-	@PostMapping(value="/common/mailWrite.do")
-	publci Stirng send
+//	
+//	@PostMapping(value="/common/mailWrite.do")
+//	publci Stirng send
 	
 	
 	
