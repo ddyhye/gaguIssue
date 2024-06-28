@@ -49,7 +49,7 @@ public class DocumentService {
 	@Transactional(rollbackFor = Exception.class)
 	public void write(MultipartFile[] attachmentFiles, MultipartFile documentFile, 
 			String documentData, String approvalLine, 
-			int idxEmployee ,Map<String, Object> response) {
+			String documentTtile, int idxEmployee ,Map<String, Object> response) {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		// 1. 데이터베이스에 저장할 문서의 정보를 DTO 에 담는다.
@@ -64,6 +64,7 @@ public class DocumentService {
 			documentDTO.setIdx_employee(idxEmployee);
 			documentDTO.setIdx_dc((int) documentMap.get("idxDc"));
 			documentDTO.setAp_content(documentData);
+			documentDTO.setAp_title(documentTtile);
 		} catch (JsonProcessingException e) {
 			response.put("success", false);
 			return;

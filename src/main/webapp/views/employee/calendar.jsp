@@ -177,7 +177,7 @@
           <h2><center>Employee Fullcalendar</center></h2>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
-		    <input type="hidden" id="idx_employee" value="2"> 		    
+		    <input type="hidden" id="idx_employee" value="1"> 		    
 		    <br>
 		    <!-- [il]Modal -->
 		    <!-- Modal -->
@@ -475,6 +475,36 @@
               var title = document.getElementById('title').value;
               var description = document.getElementById('description').value;
               var color = document.getElementById('color').value;
+              
+           	  // [il] 유효성 검사
+              if (!title) {
+                  alert("일정명을 입력하세요.");
+                  return;
+              }
+              if (!startDate) {
+                  alert("시작 날짜를 입력하세요.");
+                  return;
+              }
+              if (!startTime) {
+                  alert("시작 시간을 입력하세요.");
+                  return;
+              }
+              if (!endDate) {
+                  alert("종료 날짜를 입력하세요.");
+                  return;
+              }
+              if (!endTime) {
+                  alert("종료 시간을 입력하세요.");
+                  return;
+              }
+              if (!description) {
+                  alert("일정 설명을 작성해주세요.");
+                  return;
+              }
+              if (new Date(startDate + 'T' + startTime) >= new Date(endDate + 'T' + endTime)) {
+                  alert("종료 일시는 시작 일시보다 나중이어야 합니다.");
+                  return;
+              }
 
               var event = {
                   ec_title: title,
@@ -600,6 +630,36 @@
     	    var endTime = document.getElementById('detailEndTime').value;
     	    var description = document.getElementById('detailDescription').value;
     	    var color = document.getElementById('detailColor').value;
+    	    
+    	    // [il] 유효성 검사
+            if (!title) {
+                alert("일정명을 입력하세요.");
+                return;
+            }
+            if (!startDate) {
+                alert("시작 날짜를 입력하세요.");
+                return;
+            }
+            if (!startTime) {
+                alert("시작 시간을 입력하세요.");
+                return;
+            }
+            if (!endDate) {
+                alert("종료 날짜를 입력하세요.");
+                return;
+            }
+            if (!endTime) {
+                alert("종료 시간을 입력하세요.");
+                return;
+            }
+            if (!description) {
+                alert("일정 설명을 작성해주세요.");
+                return;
+            }
+            if (new Date(startDate + 'T' + startTime) >= new Date(endDate + 'T' + endTime)) {
+                alert("종료 일시는 시작 일시보다 나중이어야 합니다.");
+                return;
+            }
 
     	    var updatedEvent = {
     	        idx_emp_calendar: eventId,
