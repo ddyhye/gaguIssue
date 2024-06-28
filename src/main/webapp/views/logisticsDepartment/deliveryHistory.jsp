@@ -104,10 +104,7 @@
                 <div class="card"> 
                   <div class="card-body">
                   	<div class="card-header do-flexdirection-row">
-			          <h4>입고 내역</h4>
-			          <div class="do-rightfixed"> 
-                        <a class="btn btn-primary" href="<c:url value='/logisticsDepartment/poWrite.go'/>"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
-                      </div>
+			          <h4>출고 내역</h4>
 			        </div>
 			        
 			        
@@ -280,6 +277,7 @@
 	});
     document.getElementById('productCategory').addEventListener('change', () => {
     	productCategory = document.getElementById('productCategory').value;
+    	console.log(productCategory);
     	listCall(productSearch, productCategory, clientList);
 	});
     document.getElementById('clientList').addEventListener('change', () => {

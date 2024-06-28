@@ -3,6 +3,8 @@ package ko.gagu.issue.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +73,9 @@ public class EmployeeService {
 	
 	
 	
-
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr) {
+	// [do] 수정 - 인터셉터 및 로그인
+	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
 		logger.info("id :{}",emp_id);
 		logger.info("pw : {}",emp_pw);
@@ -80,10 +83,11 @@ public class EmployeeService {
 		String memPw = dao.login(emp_id);
 		logger.info("mem_Pw = "+memPw);
 		
-		ModelAndView mav = new ModelAndView();
-		
 		if(encoder.matches(emp_pw, memPw)) {
-			mav.setViewName("redirect:/");
+			mav.setViewName("redirect:/main/dashboard.go");
+//			EmployeeDTO dto = dao.employeeData(emp_id);
+//			session.setAttribute("loginInfo", dto);
+			session.setAttribute("emp_id", emp_id);
 			rAttr.addFlashAttribute("msg","환영합니다.");
 		}else {
 			mav.setViewName("redirect:/login.go");
@@ -94,13 +98,13 @@ public class EmployeeService {
 	}
 
 	public ModelAndView join(Map<String, String> param) {
-		logger.info("param : {}", param);
-		String emp_pw = encoder.encode(param.get("emp_pw"));
+		ModelAndView mav = new ModelAndView();
 		
+		logger.info("param : {}", param);
+		
+		String emp_pw = encoder.encode(param.get("emp_pw"));
 		param.put("emp_pw", emp_pw);
 		logger.info("encoded password : {}", param.get("emp_pw"));
-		
-		ModelAndView mav = new ModelAndView();
 		
 		int row = dao.join(param);
 		

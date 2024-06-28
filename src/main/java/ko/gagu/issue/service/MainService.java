@@ -1,5 +1,7 @@
 package ko.gagu.issue.service;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -8,20 +10,33 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
 import ko.gagu.issue.dto.Leave_usage_tbDTO;
+import ko.gagu.issue.dto.product_tbDTO;
 
 @Service
 public class MainService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
+	
+	
+	@Value("${spring.servlet.multipart.location}")
+	private String root;
 	
 	
 	@Autowired MainDAO mainDao;
@@ -162,6 +177,52 @@ public class MainService {
 		EmployeeDTO emp = mainDao.getEmpData(empID);
 		
 		return emp;
+	}
+	
+	
+	
+	
+	// 바코드 생성할 제품명 불러오기
+	public List<String> getProductList() {
+		return mainDao.getProductList();
+	}
+	public List<product_tbDTO> getProducts() {
+		return mainDao.getProducts();
+	}
+	// 바코드 생성
+	public void createBarcode() {
+		List<product_tbDTO> productList = mainDao.getProducts();
+		String barcodePath = "";
+		
+		logger.info("바코드 생성 함수 실행 >> ");
+		
+		if (productList.size() != 0) {
+			for (product_tbDTO product : productList) {
+				logger.info("바코드 생성할 제품명 >> "+product.getProduct_name());
+				
+				// 제품명 중복이 있으면 안됨. 제품명을 기준으로 바코드 생성할거라서
+				barcodePath = product.getIdx_product()+".png";
+				
+//				QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//				int width = 350;
+//				int height = 350;
+				
+				String idxStr = "";
+				idxStr += product.getIdx_product();
+				
+				try {
+					// 제품 번호 저장
+					BitMatrix bitMatrix = new MultiFormatWriter().encode(idxStr, BarcodeFormat.CODE_128, 300, 100);
+                    // 경로는 dto.png
+					Path path = FileSystems.getDefault().getPath(root + "/" + barcodePath);
+                    MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+                    mainDao.updateBarcode(product.getIdx_product());
+                    logger.info("바코드 생성할 로직 마지막 >> ");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

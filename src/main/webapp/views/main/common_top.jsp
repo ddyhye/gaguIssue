@@ -166,6 +166,9 @@
             
              
              <script>
+             
+            
+             
              $(document).ready(function() {
             	    $('#messageButton').click(function(e) {
             	        e.preventDefault();
@@ -183,7 +186,7 @@
             	                
             	                // 대화방 목록을 불러오는 함수 호출
             	                loadChatRooms();
-            	                loadContact();
+            	              //  loadContact();
             	            },
             	            error: function() {
             	                alert('쪽지함을 불러오는데 실패했습니다.');
@@ -192,12 +195,15 @@
             	    });
             	});
              
-             function loadContact(){
+             function loadContact(search){
             	 console.log("연락처 불러오기 아작스 요청");
             	 $.ajax({
                      url: '/getContact.ajax',
                      method: 'POST',
                      dataType:'JSON',
+                     data: {
+                    	 'contactSearch': search,                    	 
+                     },
                      success: function(data) {
                     	 // console.log(data);
                     	 drawContactList(data);
@@ -219,15 +225,18 @@
           			content +=		'<li class="common-space">';
           			content +=		'<div class="chat-time">';
           			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+          			content +=		'<div>';
           			content +=		'<span>'+item.emp_name+'</span>';
-          			content +=		'<p>'+item.emp_phone_number+'</p>';
+          			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
           			content +=		'</div>';
           			content +=		'</div>';
           			content +=		'<div class="contact-edit">';
           			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
           			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
           			content +=		'</svg>';
-          			content +=		'<div class="dropdown-menu dropdown-menu-end"><button type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button><button id="openSecondModal" onclick="secModal()" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">쪽지 보내기</button>';
+          			content +=		'<div class="dropdown-menu dropdown-menu-end">';
+          			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
+          			content +=		'<button id="openSecondModal" onclick="secModal2(\'' + item.idx_employee + '\')" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button>';
           			content +=		'</div>';
           			content +=		'</li>';
           			content +=		'</ul>';
@@ -235,10 +244,7 @@
             	 $('.contact-wrapper').append(content);
              }
              
-             function secModal(){
-            	 console.log("두번째 모달 오픈");
-            	 document.getElementById('myModal').style.display = 'block';
-             }
+            
              
              
              function loadChatRooms(search) {
@@ -277,7 +283,7 @@
          		}
          		
          		for (item of data.roomList) {
-         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\')">'; 
+         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
          			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
@@ -290,7 +296,9 @@
          			content +=		'</div>';
          			content +=		'<div>';
          			content +=		'<p>'+DateToString(item.reg_date)+'</p>';
-         			content +=      '<div class="badge badge-light-success">'+item.no_read+'</div>';
+         			if(item.no_read > 0){
+         			content +=      '<div class="badge badge-light-success">'+item.no_read+'</div>';         				
+         			}
          			content +=		'</div>';
          			content +=		'</li>';
          			if (item.no_read > 0) {
@@ -308,9 +316,9 @@
          	}
          	
              function viewRoomContent(idx, other_emp){
-         		subjectCall(other_emp);
          		var emp_id = 1;
          		messageCall(idx, emp_id , other_emp);
+         		subjectCall(other_emp);
          		
          		chat_idx = idx;
          		chat_user = other_emp;

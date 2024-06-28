@@ -33,14 +33,15 @@ public interface LogiDepartmentDAO {
 
 	void insertPurchase(int poNum, int idx_employee, int idx_business, int idx_product);
 	int insertPurchaseGetIdx(purchase_order_tbDTO dto);	// dto로 삽입. (인덱스번호얻기위해)
+	void updateInventoryPo(int idx_purchase_order);
 
 	void updatePurchase(String newFileName, int poNum);
 
 	void insertReceiving(int idx_poIdx, int idx_product, int minimum_stock);
 
-	List<LogiDeptDTO> getReceivingHistory();
+	List<LogiDeptDTO> getReceivingHistory(String productSearch, String productCategory, String clientList);
 
-	List<LogiDeptDTO> getOrderList();
+	List<LogiDeptDTO> getOrderList(String productSearch, String productCategory, String clientList);
 
 	
 	String getOrderTime(int orderNo);
@@ -51,8 +52,22 @@ public interface LogiDepartmentDAO {
 
 	void insertDelivery(int idx_order);
 	void updateOrderState(int idx_order);
+	void updateInventory(int idx_order);
 
-	List<LogiDeptDTO> getDeliveryList();
+	List<LogiDeptDTO> getDeliveryList(String productSearch, String productCategory, String clientList);
+
+	void updatePOQuantity(int idx_product);
+
+
+	int isReceivingFinish(int idx_product);
+
+	void updateReceivingFinish(int idx_product);
+
+	void updateInventoryReceive(int idx_product);
+
+	List<String> getClientList2();
+
+
 
 
 

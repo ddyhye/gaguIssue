@@ -105,9 +105,6 @@
                   <div class="card-body">
                   	<div class="card-header do-flexdirection-row">
 			          <h4>입고 내역</h4>
-			          <div class="do-rightfixed"> 
-                        <a class="btn btn-primary" href="<c:url value='/logisticsDepartment/poWrite.go'/>"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
-                      </div>
 			        </div>
 			        
 			        
@@ -151,7 +148,7 @@
                       <div class="do-annual-header-right">
                       	<div class="do-rightfixed"> 
 	                        <div class="do-warning" id="do-warning">
-	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;재고부족
+	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;입고지연
 	                        </div>
 	                    </div>
                       </div>
@@ -286,7 +283,7 @@
     	clientList = document.getElementById('clientList').value;
     	listCall(productSearch, productCategory, clientList);
 	});
-    // 재고 부족 누를 경우,
+    // 입고지연을 누른 경우,
     document.getElementById('do-warning').addEventListener('click', () => {
     	listCall('warn', 'warn', 'warn');
 	});
@@ -325,7 +322,7 @@
 		for (item of data.list) {
 			content += '<tr>';
 			content += '<td class="do-table-td1">';
-			content += item.idx_purchasehtml;
+			content += item.idx_product;
 			content += '</td>';
 			content += '<td class="do-table-td2">';
 			var dateOnly = item.stock_datetime.split('T')[0];
@@ -363,16 +360,54 @@
 	
 	
 	
-	
+	// 발주서 html 파일 
 	document.querySelector('.do-inventory').addEventListener('click', function(e){
 		if (e.target && e.target.closest('button.do-poBtn')) {
 	        var button = e.target.closest('button.do-poBtn');
 	        var fileName = button.value;
-	        
-	        console.log(fileName);
 
 	        window.open("/filestore/"+encodeURIComponent(fileName), "_blank", "width=1000,height=700");
 	    }		
+	});
+	
+	
+	// 바코드 읽기
+	document.addEventListener('DOMContentLoaded', (event) => {
+		let barcodeData = '';
+		let barcodeTimeout;
+
+	    document.addEventListener('keypress', (e) => {
+	        clearTimeout(barcodeTimeout);
+
+	        // 바코드 작동 방식은 데이터를 읽어온 후, enter를 누르는 방식이다.
+	        // 즉, 데이터를 저장한 후, Enter가 눌릴 때 데이터를 처리하면 된다.
+	        if (e.key === 'Enter') {
+	            console.log('Scanned Barcode: ' + barcodeData);
+
+	            // 바코드 인식 시, 해당 제품의 입고수량이 추가된다.
+	            // 주문수량 = 입고수량 이 되면 입고 상태는 '입고완료'로 변경되며,
+	            // 인벤토리에도 해당 제품의 재고가 주문수량만큼 늘어난다.
+	            fetch('/updateInventoryPO.ajax', {
+	                method: 'POST',
+	                headers: {
+	                    'Content-Type': 'application/json'
+	                },
+	                body: JSON.stringify({barcodeData : barcodeData})
+	            })
+	            .then(response => response.text())
+	            .then(data => {
+	            	listCall(productSearch, productCategory, clientList);
+	            })
+	            .catch(error => { console.error('Error:', error); });
+	            
+	            barcodeData = '';
+	        } else {
+	            barcodeData += e.key;
+	            barcodeTimeout = setTimeout(() => {
+	                barcodeData = '';
+	            }, 100);
+	        }
+	    });
 	});
 </script>
 

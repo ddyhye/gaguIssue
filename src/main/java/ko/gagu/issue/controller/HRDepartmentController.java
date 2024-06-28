@@ -1,10 +1,13 @@
 package ko.gagu.issue.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
 import ko.gagu.issue.service.HRDepartmentService;
 import ko.gagu.issue.service.LogiDepartmentService;
@@ -102,8 +107,32 @@ public class HRDepartmentController {
 	}
 	
 	@GetMapping(value="/employeeManage.go")
-	public String employeeManage() {
-		return "HRDepartment/employeeManage";
+	public ModelAndView employeeManage() {
+		ModelAndView mav = new ModelAndView("HRDepartment/employeeManage");
+        
+		List<HRDepartmentDTO> employees = hrDepartmentService.getAllEmployees();
+        logger.info("emp : "+employees);
+        mav.addObject("employees", employees);
+        
+        return mav;
+    }
+	
+	@PostMapping(value="/employeeInsert")
+		public ResponseEntity<Map<String, Object>> createEmployee(@RequestBody EmployeeDTO employee) {
+	        Map<String, Object> response = new HashMap<>();
+	        
+	        try {
+	        	hrDepartmentService.createEmployee(employee);
+	            response.put("status", "success");
+	            response.put("message", "Employee created successfully");
+	            return ResponseEntity.ok(response);
+	        } catch (Exception e) {
+	            response.put("status", "error");
+	            response.put("message", "Failed to create employee: " + e.getMessage());
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	        }
+	    
 	}
+		
 
 }

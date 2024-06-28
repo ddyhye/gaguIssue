@@ -84,6 +84,7 @@
 			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
 			JOIN inventory_tb it ON it.idx_product = pt.idx_product 
 		WHERE it.current_stock &lt; pt.minimum_stock
+			AND it.is_po = 'n'
 	</select>
 	<!-- 발주 - 클라이언트에 따른 재고부족리스트 -->
 	<select id="lackProductByClient" resultType="logi">
@@ -96,7 +97,10 @@
 			join client_tb ct on ct.idx_business = pt.idx_business 
 			join product_category_tb pct on pct.idx_product_category = pt.idx_product_category 
 			join inventory_tb it on it.idx_product = pt.idx_product 
-		WHERE it.current_stock &lt; pt.minimum_stock AND ct.client_name = #{param1}
+			left join stockentries_tb st on it.idx_product = st.idx_product
+		WHERE it.current_stock &lt; pt.minimum_stock 
+			AND ct.client_name = #{param1}
+			AND (st.stock_status is null OR st.stock_status!='입고예정')
 	</select>
 	<!-- 발주 - 재고부족리스트로 html 채워넣기 -->
 	<select id="getClientData" resultType="client">
@@ -119,6 +123,7 @@
 		INSERT INTO purchase_order_tb (idx_purchasehtml , idx_employee, idx_business, idx_product, total_price)
 		VALUES(#{idx_purchasehtml}, #{idx_employee}, #{idx_business}, #{idx_product}, #{total_price})
 	</insert>
+	<!-- 발주한 제품은 po 작성 자동채우기에서 제외하기 -->
 	<!-- 발주서 파일명 저장 -->
 	<update id="updatePurchase">
 		UPDATE purchase_order_tb
@@ -136,16 +141,87 @@
 	
 	<!-- 입고 내역 -->
 	<select id="getReceivingHistory" resultType="logi">
-		SELECT pot.idx_purchasehtml, st.stock_datetime, ct.client_name,
-				pt.product_name, st.order_quantity, st.stock_quantity, 
-				st.stock_status, pot.html_filename
+		SELECT pot.idx_purchasehtml, 
+				pt.idx_product,
+				st.stock_datetime, 
+				ct.client_name,
+				pt.product_name, 
+				st.order_quantity, 
+				st.stock_quantity, 
+				st.stock_status, 
+				pot.html_filename
 		FROM stockentries_tb st 
 			JOIN purchase_order_tb pot ON st.idx_purchase_order = pot.idx_purchase_order 
 			JOIN client_tb ct ON pot.idx_business = ct.idx_business 
 			JOIN product_tb pt ON st.idx_product = pt.idx_product 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		<where>
+			<choose>
+				<when test="param1 == 'warn'">
+					st.stock_status = '입고예정'
+				</when>
+				<otherwise>
+					<if test="param1 != null and param1 != '' and param1 != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{param1},'%')
+					</if>
+					<if test="param2 != null and param2 != '' and param2 != '전체'">
+						AND pct.category = #{param2}
+					</if>
+					<if test="param3 != null and param3 != '' and param3 != '전체'">
+						AND ct.client_name = #{param3}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
 		ORDER BY st.stock_datetime DESC
 	</select>
-	
+	<!-- 바코드로 입고 수량 증가 -->
+	<update id="updatePOQuantity">
+		UPDATE stockentries_tb 
+		SET stock_quantity = stock_quantity + 1
+		WHERE idx = (SELECT st.idx 
+						FROM stockentries_tb st 
+						WHERE idx_product = #{param1}
+							AND stock_status ='입고예정'
+						ORDER BY st.idx DESC
+						LIMIT 1)
+	</update>
+	<!-- 주문 수량과 입고 수량이 동일한가? -->
+	<select id="isReceivingFinish" resultType="Integer">
+		SELECT count(*) as cnt
+		FROM stockentries_tb
+		WHERE idx = (SELECT st.idx 
+						FROM stockentries_tb st 
+						WHERE idx_product = #{param1}
+							AND stock_status ='입고예정'
+						ORDER BY st.idx DESC
+						LIMIT 1)
+			AND order_quantity = stock_quantity
+	</select>
+	<!-- 주문 수량 == 입고 수량, 입고 상태 업데이트 -->
+	<update id="updateReceivingFinish">
+		UPDATE stockentries_tb 
+		SET stock_status = '입고완료'
+		WHERE idx = (SELECT st.idx 
+						FROM stockentries_tb st 
+						WHERE idx_product = #{param1}
+							AND stock_status ='입고예정'
+						ORDER BY st.idx DESC
+						LIMIT 1)
+	</update>
+	<!-- 주문 수량 == 입고 수량, 재고 수량 업데이트 -->
+	<update id="updateInventoryReceive">
+		UPDATE inventory_tb 
+		SET current_stock = current_stock + (select stock_quantity 
+											from stockentries_tb 
+											where idx = (SELECT st.idx 
+															FROM stockentries_tb st 
+															WHERE idx_product = #{param1}
+																AND stock_status ='입고완료'
+															ORDER BY st.idx DESC
+															LIMIT 1))
+		WHERE idx_product = #{param1}
+	</update>
 	
 	
 	
@@ -165,6 +241,25 @@
 		FROM
 		    order_tb ot JOIN product_tb pt ON ot.idx_product = pt.idx_product
 		    			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+		    			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		<where>
+			<choose>
+				<when test="param1 == 'warn'">
+					ot.accept='n'
+				</when>
+				<otherwise>
+					<if test="param1 != null and param1 != '' and param1 != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{param1},'%')
+					</if>
+					<if test="param2 != null and param2 != '' and param2 != '전체'">
+						AND pct.category = #{param2}
+					</if>
+					<if test="param3 != null and param3 != '' and param3 != '전체'">
+						AND ct.client_name = #{param3}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
 		GROUP BY ot.order_no DESC
 	</select>
 	
@@ -221,8 +316,25 @@
 		SET accept = 'y'
 		WHERE idx_order = #{param1}
 	</update>
+	<!-- 주문 수락 시, 인벤토리 감소 -->
+	<update id="updateInventory">
+		UPDATE inventory_tb 
+		SET current_stock = current_stock - (SELECT quantity 
+											FROM order_tb
+											WHERE idx_order = #{param1})
+		WHERE idx_product = (SELECT idx_product 
+							FROM order_tb
+							WHERE idx_order = #{param1})
+	</update>
 	
 	
+	<!-- 수주처 리스트 -->
+	<select id="getClientList2" resultType="String">
+		SELECT client_name 
+		FROM client_tb 
+		WHERE client_type = '수주처'
+		ORDER BY client_name
+	</select>
 	<!-- 출고 내역 -->
 	<select id="getDeliveryList" resultType="logi">
 		select ot.order_no, 
@@ -240,7 +352,27 @@
 			JOIN order_tb ot ON dt.idx_order = ot.idx_order 
 			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
 			JOIN product_tb pt ON ot.idx_product = pt.idx_product
-		</select>
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		<where>
+			<choose>
+				<when test="param1 == 'warn'">
+				</when>
+				<otherwise>
+					<if test="param1 != null and param1 != '' and param1 != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{param1},'%')
+					</if>
+					<if test="param2 != null and param2 != '' and param2 != '전체'">
+						AND pct.category = #{param2}
+					</if>
+					<if test="param3 != null and param3 != '' and param3 != '전체'">
+						AND ct.client_name = #{param3}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	
+	
 	
 	
 

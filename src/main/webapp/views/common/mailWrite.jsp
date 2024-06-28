@@ -38,6 +38,9 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    
+    
+    
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -80,6 +83,51 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
           <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          	<div class="container">
+				<div style="float: left; width: 50%;">
+				    <h1>메일 보내기</h1>
+				 
+				    <form th:action="@{/mail/send}" method="post" enctype="multipart/form-data">
+				        <table>
+				            <tr class="form-group">
+				                <td>보내는 사람</td>
+				                <td>
+				                    <input type="text" class="form-control" name="from" placeholder="이메일 주소를 입력하세요">
+				                </td>
+				            </tr>
+				            <tr id="box" class="form-group">
+				                <td>받는 사람</td>
+				                <td>
+				                    <input type="text" class="form-control" name="address" placeholder="이메일 주소를 입력하세요">
+				                </td>
+				                <td>
+									<input type="button" class="form-control" value="추가" onclick="add_textbox(this)">
+								</td>
+				            </tr>
+				            <tr class="form-group">
+				            	<td>첨부 파일 </td>
+				            	<td>
+				            		<input type="file" name="file" class="file-input" />
+				            	</td>
+				            </tr>
+				            <tr class="form-group">
+				                <td>제목</td>
+				                <td>
+				                    <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
+				                </td>
+				            </tr>
+				            <tr class="form-group">
+				                <td>내용</td>
+				                <td>
+				                    <textarea class="form-control" name="content" placeholder="보낼 내용을 입력하세요"> </textarea>
+				                </td>
+				            </tr>				            
+				        </table>
+				        <button class="btn btn-default">발송</button>
+				    </form>
+				 
+				 </div>
+			 </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
@@ -100,6 +148,32 @@
         </footer>
       </div>
     </div>
+    <script>
+	const add_textbox = (obj) => {
+	    const box = obj.parentElement.parentElement; 
+	    const newP = document.createElement("tr");
+	
+	    newP.innerHTML = "<tr class='form-group'><td>메일 주소</td><td><input type='text' class='form-control' name='address' ></td><td><input type='button' class='form-control' value='삭제' onclick='opt_remove(this)'></td></tr>";
+		box.parentNode.insertBefore(newP, box.nextSibling);
+	}
+	
+	const add_textbox2 = (obj) => {
+	    const box = obj.parentElement.parentElement; 
+	    const newP = document.createElement("tr");
+ 
+	    newP.innerHTML = "<tr class='form-group'><td>참조 메일 주소</td><td><input type='text' class='form-control' name='ccAddress' ></td><td><input type='button' class='form-control' value='삭제' onclick='opt_remove2(this)'></td></tr>";
+		box.parentNode.insertBefore(newP, box.nextSibling);
+		}
+	
+	const opt_remove = (obj) => {
+		obj.parentElement.parentElement.parentElement.removeChild(obj.parentElement.parentElement);
+	}
+	const opt_remove2 = (obj) => {
+		obj.parentElement.parentElement.parentElement.removeChild(obj.parentElement.parentElement);
+	}
+	</script>
+    
+    
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

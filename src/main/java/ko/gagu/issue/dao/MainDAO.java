@@ -8,6 +8,7 @@ import ko.gagu.issue.dto.Attendance_history_tbDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
 import ko.gagu.issue.dto.Leave_usage_tbDTO;
+import ko.gagu.issue.dto.product_tbDTO;
 
 @Mapper
 public interface MainDAO {
@@ -35,5 +36,15 @@ public interface MainDAO {
 	Leave_accruals_tbDTO getempLeaveData(int idx_employee);
 
 	List<Leave_usage_tbDTO> getempLeaveHistory(int idx_employee);
+
+	
+	
+	
+	
+	List<String> getProductList();
+
+	List<product_tbDTO> getProducts();
+
+	void updateBarcode(int i);
 
 }

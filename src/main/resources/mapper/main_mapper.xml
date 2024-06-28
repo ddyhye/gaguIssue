@@ -74,4 +74,25 @@
 		ORDER BY lu_start_date DESC;
 	</select>
 	
+	
+	
+	
+	<!-- 바코드 생성할 제품명 불러오기 -->
+	<select id="getProductList" resultType="String">
+		SELECT pt.product_name 
+		FROM product_tb pt 
+		WHERE is_barcode = 'n'
+	</select>
+	<select id="getProducts" resultType="product">
+		SELECT pt.idx_product, pt.product_name
+		FROM product_tb pt 
+		WHERE is_barcode = 'n'
+	</select>
+	<!-- 바코드 생성한 제품은 is_barcode 변경 -->
+	<update id="updateBarcode">
+		UPDATE product_tb
+		SET is_barcode = 'y'
+		WHERE idx_product = #{param1}
+	</update>
+	
 </mapper>

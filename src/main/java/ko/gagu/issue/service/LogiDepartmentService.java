@@ -154,6 +154,9 @@ public class LogiDepartmentService {
 		// 입고내역 저장 (default 입고상태 = '입고예정')
 		if (idx_purchase_order > 0) {
 			logiDeptDao.insertReceiving(idx_purchase_order, idx_product, minimum_stock);
+			
+			// 인벤토리에서 제품이 현재 발주가 들어갔는지 업데이트 (발주넣으면 발주 작성에서 자동채우기 안됨)
+			//logiDeptDao.updateInventoryPo(idx_purchase_order);
 		}
 		
 		return null;
@@ -198,12 +201,18 @@ public class LogiDepartmentService {
 	public ModelAndView receivingHistory_go() {
 		ModelAndView mav = new ModelAndView();
 		
+		List<String> categoryList = logiDeptDao.getCategoryList();
+		mav.addObject("categoryList", categoryList);
+		
+		List<String> clientList = logiDeptDao.getClientList();
+		mav.addObject("clientList", clientList);
+		
 		mav.setViewName("/logisticsDepartment/receivingHistory");
 		
 		return mav;
 	}
-	public Map<String, Object> receivingHisListDraw(Map<String, Object> map) {
-		List<LogiDeptDTO> list = logiDeptDao.getReceivingHistory();
+	public Map<String, Object> receivingHisListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {
+		List<LogiDeptDTO> list = logiDeptDao.getReceivingHistory(productSearch, productCategory, clientList);
 		map.put("list", list);
 		
 		return map;
@@ -223,6 +232,23 @@ public class LogiDepartmentService {
 		
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
+	public Map<String, Object> updateInventoryPO(Map<String, Object> map, String barcodeData) {
+		// barcodeDate 입고 수량 증가
+		int idx_product = Integer.parseInt(barcodeData);
+		logiDeptDao.updatePOQuantity(idx_product);
+		
+		// 주문 수량 = 입고 수량 시,
+		// 	1) 입고 완료
+		//	2) 인벤토리 재고에 주문수량만큼 증가
+		int finish = logiDeptDao.isReceivingFinish(idx_product);
+		if (finish == 1) {
+			logiDeptDao.updateReceivingFinish(idx_product);
+			logiDeptDao.updateInventoryReceive(idx_product);
+		}
+		
+		
+		return map;
+	}
 	
 	
 	
@@ -230,12 +256,18 @@ public class LogiDepartmentService {
 	public ModelAndView orderList_go() {
 		ModelAndView mav = new ModelAndView();
 		
+		List<String> categoryList = logiDeptDao.getCategoryList();
+		mav.addObject("categoryList", categoryList);
+		
+		List<String> clientList = logiDeptDao.getClientList2();
+		mav.addObject("clientList", clientList);
+		
 		mav.setViewName("/logisticsDepartment/orderList");
 		
 		return mav;
 	}
-	public Map<String, Object> orderListDraw(Map<String, Object> map) {
-		List<LogiDeptDTO> list = logiDeptDao.getOrderList();
+	public Map<String, Object> orderListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {
+		List<LogiDeptDTO> list = logiDeptDao.getOrderList(productSearch, productCategory, clientList);
 		map.put("list", list);
 		
 		return map;
@@ -265,6 +297,9 @@ public class LogiDepartmentService {
 		for (LogiDeptDTO dto : list) {
 			logiDeptDao.insertDelivery(dto.getIdx_order());
 			logiDeptDao.updateOrderState(dto.getIdx_order());
+			// 재고 인벤토리에서 감소하기
+			// 이건 바코드로 하자. --> 아니지! 출고완료를 한 순간 빠져야지. 그래야 오버오더 막으니께
+			logiDeptDao.updateInventory(dto.getIdx_order());
 		}
 		
 		return map;
@@ -274,16 +309,36 @@ public class LogiDepartmentService {
 	public ModelAndView deliveryHistory_go() {
 		ModelAndView mav = new ModelAndView();
 		
+		List<String> categoryList = logiDeptDao.getCategoryList();
+		mav.addObject("categoryList", categoryList);
+		
+		List<String> clientList = logiDeptDao.getClientList2();
+		mav.addObject("clientList", clientList);
+		
 		mav.setViewName("/logisticsDepartment/deliveryHistory");
 		
 		return mav;
 	}
-	public Map<String, Object> deliveryHisListDraw(Map<String, Object> map) {
-		List<LogiDeptDTO> list = logiDeptDao.getDeliveryList();
+	public Map<String, Object> deliveryHisListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {
+		List<LogiDeptDTO> list = logiDeptDao.getDeliveryList(productSearch, productCategory, clientList);
 		map.put("list", list);
 		
 		return map;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
 	
 	
 	
@@ -300,5 +355,9 @@ public class LogiDepartmentService {
 		
 		return emp;
 	}
+
+
+
+	
 
 }

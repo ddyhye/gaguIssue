@@ -3,6 +3,8 @@ package ko.gagu.issue.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,12 +129,13 @@ public class EmployeeController {
 	// 로그인페이지 이동 ><
 	@GetMapping(value="/login.go")
 	public String home() {
+		logger.info("로그인 페이지 요청...");
 		return "login/login";
 	}
 	// 로그인
 	@PostMapping(value="/login.do")
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr) {
-		return employeeService.login(emp_id, emp_pw, rAttr);
+	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+		return employeeService.login(emp_id, emp_pw, rAttr, session);
 	}
 	
 	@GetMapping(value = "/joinForm.go")
@@ -215,6 +218,7 @@ public class EmployeeController {
 
 	@GetMapping(value = "/todo.go")
 	public String todo() {
+		
 		return "employee/ToDo";
 	}
 	
