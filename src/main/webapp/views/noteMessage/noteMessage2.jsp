@@ -61,10 +61,7 @@
 		margin-left	: 10px;
 		margin-top : 10px;
 	}
-	.custom-text {
- 		color: black;
-	}
-	.custom-text {
+	.custom-text1, .custom-text2, .custom-text3 {
 		color: black;
 		background-color: lightgray; /* 유지하고 싶은 백그라운드 컬러 */
 		padding: 0.5rem; /* 필요에 따라 패딩 조정 */
@@ -76,6 +73,10 @@
 	.detailmodal{
 		margin-left: 232px;
 	}
+	
+	.selected-chat {
+    background-color: lightgray; /* 원하는 배경색으로 변경 */
+}
 	</style>
   </head>
   <body> 
@@ -314,8 +315,8 @@
                             <div class="d-flex">                        
                             <img class="img-70 rounded-circle" alt="" src="/img/ahruru.png">
                               <div class="flex-grow-1">
-                                <h4 class="mb-1">김정원</h4>
-                                <p>직위</p>
+                                <h4 class="mb-1"></h4>
+                                <p class="title">직위</p>
                               </div>
                             </div>
                           </div>
@@ -323,17 +324,16 @@
                         
                         <div class="mb-3">
                           <label class="form-label">부서</label>
-                          <p class="form-control-plaintext custom-text">물류관리부서</p>
+                          <p class="form-control-plaintext custom-text1">물류관리부서</p>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">사원번호</label>
-                          <p class="form-control-plaintext custom-text">240611B02</p>
+                          <p class="form-control-plaintext custom-text2">240611B02</p>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">이메일</label>
-                          <p class="form-control-plaintext custom-text">your-email@domain.com</p>
+                          <p class="form-control-plaintext custom-text3">your-email@domain.com</p>
                         </div>
-                        
                     </div>
                   </div>
                 </div>
@@ -426,10 +426,38 @@
     }
     
     
-    function secModal2(){
+    function secModal2(idx_emp){
       	 console.log("회원 상세보기 모달 오픈");
       	 document.getElementById('myModal').style.display = 'block';
+      	 employeeDetail(idx_emp);
        }
+    
+    
+    function employeeDetail(idx_emp){
+    	 console.log("회원 상세 정보");
+    	 console.log(idx_emp);
+         $.ajax({
+             url: '/getempDetail',
+             method: 'POST',
+             data: {
+            	 'idx_emp': idx_emp,                    	 
+             },
+             success: function(data) {
+            	 console.log(data);
+            	 $('h4.mb-1').text(data.emp_name);
+            	 $('p.title').text(data.title_name);
+            	 $('p.custom-text1').text(data.de_name);
+            	 $('p.custom-text2').text(data.idx_title);
+            	 $('p.custom-text3').text(data.emp_email);
+             },
+             error: function(error) {
+            	 console.log("error",error);
+                 alert('회원 상세를 불러오는데 실패했습니다.');
+             }
+         });
+    	
+    }
+    
     
     $('#send_btn').click(function(event) {
     	event.preventDefault();
@@ -512,6 +540,21 @@
 	    });
 	  });  
 	 
+	  
+	  
+
+	  function selectChatRoom(element) {
+		  console.log("클릭한 대화방 색 변경");
+		  console.log("element",element);
+	      // 모든 채팅방 리스트에서 선택된 클래스 제거
+	      var chatRooms = document.querySelectorAll('.chats-user .common-space');
+	      chatRooms.forEach(function(chatRoom) {
+	          chatRoom.classList.remove('selected-chat');
+	      });
+
+	      // 클릭된 채팅방에 선택된 클래스 추가
+	      element.classList.add('selected-chat');
+	  }
 	</script>
 	
     <!-- latest jquery-->
@@ -553,7 +596,6 @@
     <script src="/assets/js/animation/wow/wow.min.js"></script>
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
-    <script src="/assets/js/script.js"></script>
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->

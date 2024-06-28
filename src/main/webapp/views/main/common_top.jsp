@@ -236,7 +236,7 @@
           			content +=		'</svg>';
           			content +=		'<div class="dropdown-menu dropdown-menu-end">';
           			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
-          			content +=		'<button id="openSecondModal" onclick="secModal2()" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button>';
+          			content +=		'<button id="openSecondModal" onclick="secModal2(\'' + item.idx_employee + '\')" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button>';
           			content +=		'</div>';
           			content +=		'</li>';
           			content +=		'</ul>';
@@ -283,7 +283,7 @@
          		}
          		
          		for (item of data.roomList) {
-         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\')">'; 
+         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
          			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';

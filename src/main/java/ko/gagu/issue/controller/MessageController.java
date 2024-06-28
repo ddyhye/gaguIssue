@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.service.MessageService;
 
@@ -86,4 +87,15 @@ public class MessageController {
 			return map;
 		}
 		 
+		
+		@RequestMapping(value = "/getempDetail", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> getempDetail(int idx_emp){
+			logger.info("-------------회원 상세 요청-------------");
+			logger.info("회원 인덱스 : "+idx_emp);
+			Map<String, Object> map = messageService.getempDetail(idx_emp);
+			logger.info("map : "+ map);
+			
+			return map;
+		}
 }

@@ -21,7 +21,7 @@ public class MessageService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired MessageDAO messageDAO;
-	@Autowired EmployeeDAO dao;
+	@Autowired EmployeeDAO employeeDAO;
 	
 	public Map<String, Object> roomListCallAjax(int emp_id, String messageSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -114,10 +114,15 @@ public class MessageService {
 	public Map<String, Object> getContact(int emp_id, String contactSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.info("emp_id : " + emp_id);
-		List<EmployeeDTO> ContactList = dao.getContact(emp_id, contactSearch);
+		List<EmployeeDTO> ContactList = employeeDAO.getContact(emp_id, contactSearch);
 		
 		map.put("ContackList", ContactList);
 		return map;
+	}
+
+	public Map<String, Object> getempDetail(int idx_emp) {
+		
+		return employeeDAO.getempDetail(idx_emp);
 	}
 
 	

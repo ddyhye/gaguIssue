@@ -34,5 +34,7 @@ public interface EmployeeDAO {
 
 	List<HRDepartmentDTO> getAllCompanyEvents();
 
+	Map<String, Object> getempDetail(int idx_emp);
+
 
 }
