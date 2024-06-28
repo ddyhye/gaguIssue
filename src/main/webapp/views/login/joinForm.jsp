@@ -16,6 +16,7 @@
 		<table>
 			<tr>
 				<th>IDX_emplpoyees</th>
+				<!-- 여긴 default auto_increment -->
 				<td><input type="text" name="idx_employee"></td>
 			</tr>
 			<tr>
@@ -40,6 +41,7 @@
 			</tr>
 			<tr>
 				<th>emp_status</th>
+				<!-- 여긴 default 재직 -->
 				<td><input type="text" name="emp_status"></td>
 			</tr>
 			<tr>
@@ -60,10 +62,12 @@
 			</tr>
 			<tr>
 				<th>emp_hire_date</th>
+				<!-- 여기도 default 오늘 -->
 				<td><input type="text" name="emp_hire_date"></td>
 			</tr>
 			<tr>
 				<th>emp_term_date</th>
+				<!-- 여긴 회원가입시 필요없음 -->
 				<td><input type="text" name="emp_term_date"></td>
 			</tr>
 			<tr>

@@ -127,8 +127,16 @@ public class LogiDeptDTO {
 	private int unit_price;
 	private int minimum_stock;
 	private String product_description;
+	private String is_barcode;
 	
 	
+	
+	public String getIs_barcode() {
+		return is_barcode;
+	}
+	public void setIs_barcode(String is_barcode) {
+		this.is_barcode = is_barcode;
+	}
 	public int getIdx_product() {
 		return idx_product;
 	}

@@ -158,16 +158,29 @@ public class LogiDepartmentController {
 	// 입고 내역 리스트 그리기
 	@PostMapping(value="/receivingHisList.ajax")
 	@ResponseBody
-	Map<String, Object> receivingHisList() {
+	Map<String, Object> receivingHisList(@RequestParam(value = "productSearch", required = false) String productSearch,
+											@RequestParam(value = "productCategory", required = false) String productCategory,
+											@RequestParam(value = "clientList", required = false) String clientList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		return logiDeptService.receivingHisListDraw(map);
+		return logiDeptService.receivingHisListDraw(map, productSearch, productCategory, clientList);
 	}
 	// 발주서 불러오기
 	@RequestMapping(value="/filestore/{fileName}")
 	public ResponseEntity<Resource> htmlView(@PathVariable String fileName) {
 		logger.info("fileName: "+fileName);
 		return logiDeptService.htmlView(fileName);
+	}
+	// 입고 내역, 바코드 스캔 시 입고 완료
+	// 입고 내역 리스트 그리기
+	@PostMapping(value="/updateInventoryPO.ajax")
+	@ResponseBody
+	Map<String, Object> updateInventoryPO(@RequestBody Map<String, String> payload) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String barcodeData = payload.get("barcodeData");
+		
+		return logiDeptService.updateInventoryPO(map, barcodeData);
 	}
 	
 	
@@ -180,10 +193,12 @@ public class LogiDepartmentController {
 	// 주문 내역 리스트 그리기
 	@PostMapping(value="/orderList.ajax")
 	@ResponseBody
-	Map<String, Object> orderList() {
+	Map<String, Object> orderList(@RequestParam(value = "productSearch", required = false) String productSearch,
+									@RequestParam(value = "productCategory", required = false) String productCategory,
+									@RequestParam(value = "clientList", required = false) String clientList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		return logiDeptService.orderListDraw(map);
+		return logiDeptService.orderListDraw(map, productSearch, productCategory, clientList);
 	}
 	// 주문 상세 내역 팝업창 채우기
 	@PostMapping(value="/clientPerOrder.ajax")
@@ -219,9 +234,11 @@ public class LogiDepartmentController {
 	// 주문 내역 리스트 그리기
 	@PostMapping(value="/deliveryHisList.ajax")
 	@ResponseBody
-	Map<String, Object> deliveryHisList() {
+	Map<String, Object> deliveryHisList(@RequestParam(value = "productSearch", required = false) String productSearch,
+											@RequestParam(value = "productCategory", required = false) String productCategory,
+											@RequestParam(value = "clientList", required = false) String clientList) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		return logiDeptService.deliveryHisListDraw(map);
+		return logiDeptService.deliveryHisListDraw(map, productSearch, productCategory, clientList);
 	}
 }

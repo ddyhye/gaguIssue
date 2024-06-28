@@ -39,8 +39,8 @@
 	</select>
 	
 	<insert id="join" parameterType="map">
-		INSERT INTO employee_tb (idx_employee,idx_department,idx_title,emp_id,emp_pw,emp_name,emp_status,emp_email,emp_email_pw,emp_phone_number,emp_birth_date,emp_hire_date,emp_term_date,emp_address,first_login)
-			VALUES (2,#{idx_department},#{idx_title},#{emp_id},#{emp_pw},#{emp_name},#{emp_status},#{emp_email},#{emp_email_pw},#{emp_phone_number},#{emp_birth_date},#{emp_hire_date},#{emp_term_date},#{emp_address},#{first_login})
+		INSERT INTO employee_tb (idx_department,idx_title,emp_id,emp_pw,emp_name,emp_email,emp_email_pw,emp_phone_number,emp_birth_date,emp_address)
+			VALUES (#{idx_department},#{idx_title},#{emp_id},#{emp_pw},#{emp_name},#{emp_email},#{emp_email_pw},#{emp_phone_number},#{emp_birth_date},#{emp_address})
 	</insert>
 	
 	 <select id="findEmployeeNumber" parameterType="map" resultType="string">
@@ -62,6 +62,16 @@
 		SELECT et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address
 		FROM employee_tb et, department_tb dt 
 		WHERE et.idx_department = dt.idx_department AND idx_employee != #{param1}
+	</select>
+	
+	
+	
+	
+	<!-- [do] 로그인 인터셉터 관련 -->
+	<select id="employeeData" resultType="employee">
+		SELECT *
+		FROM employee_tb
+		WHERE emp_id = #{param1}
 	</select>
 	
 	

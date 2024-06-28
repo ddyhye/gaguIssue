@@ -151,7 +151,7 @@
                       <div class="do-annual-header-right">
                       	<div class="do-rightfixed"> 
 	                        <div class="do-warning" id="do-warning">
-	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;재고부족
+	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;미처리
 	                        </div>
 	                    </div>
                       </div>
@@ -399,7 +399,16 @@
 			content += '<td class="do-table-td5">';
 			content += item.order_total_price;
 			content += '</td>';
-			content += '<td class="do-table-td6">';
+			
+			
+			let ddchange = '';
+			if (item.accept === 'n') {
+				ddchange = 'low-stock';
+			} else {
+				ddchange = 'normal-stock';
+			}
+			
+			content += '<td class="do-table-td6 '+ddchange+'">';;
 			
 			if (item.accept === 'n') {
 				content += 'new';
@@ -407,6 +416,8 @@
 				content += '처리완료';
 			}
 			content += '</td>';
+			
+			
 			content += '</tr>';
 		}
 		
@@ -527,8 +538,10 @@
 		// 출고 버튼
 		$('.do-lackList-ok').empty();
 		content = '';
-		if (data.accept === 'n') {
+		if (data.accept === 'n' || item.current_stock < item.minimum_stock) {
 			content += '<button id="lackBtn" class="lackBtn">출고하기</button>';
+		} else if(data.accept === 'n') {
+			content += '<button id="lackBtn2">재고부족</button>';
 		} else {
 			content += '<button id="lackBtn2">출고완료</button>';
 		}
@@ -536,10 +549,10 @@
 		
 		
 		// low-stock 클래스가 있는지 확인하여 버튼 텍스트 변경
-		if (document.querySelector('.low-stock')) {
-		    document.getElementById('lackBtn').textContent = '재고부족';
-		    document.getElementById('lackBtn').style.backgroundColor = 'darkgray';
-		}
+// 		if (document.querySelector('.low-stock')) {
+// 		    document.getElementById('lackBtn').textContent = '재고부족';
+// 		    document.getElementById('lackBtn').style.backgroundColor = 'darkgray';
+// 		}
 	}
 	document.getElementById('cancelBtn').addEventListener('click', () => {
 		document.getElementsByClassName('do-lackList')[0].classList.remove('active');
@@ -559,6 +572,7 @@
 			.then(response => response.json())
 			.then(data=> {
 				alert('출고 완료!\n재고 관리 > 출고 내역 을 확인해 주세요...');
+				document.getElementsByClassName('do-lackList')[0].classList.remove('active');
 				listCall(productSearch, productCategory, clientList);
 			})
 			.catch(error => { console.error('Fetch error:', error); });

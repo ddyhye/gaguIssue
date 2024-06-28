@@ -4,6 +4,7 @@ package ko.gagu.issue.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ko.gagu.issue.dto.product_tbDTO;
 import ko.gagu.issue.service.MainService;
 
 @Controller
@@ -35,14 +37,21 @@ public class MainController {
 	
 	// [do] 로그인 세션 정보 저장 다시 하기!
 	
-	// [do] 메인페이지, 대시보드
 	@GetMapping(value = "/")
+	public String login() {
+		// [do] 바코드 생성하기
+		mainService.createBarcode();
+				
+		return "login/login";
+	}
+	
+	// [do] 메인페이지, 대시보드
+	@GetMapping(value="/main/dashboard.go")
 	public ModelAndView dashboard(Model model, HttpSession session, RedirectAttributes rAttr) {
 		logger.info("/main/dashboard.jsp 로 이동");
 		
-		session.setAttribute("emp_id", "admin");
-		session.setAttribute("emp_name", "관리자");
-		session.setAttribute("de_name", "관리자");
+		// 로그인 인터셉터로 처리하기
+		//session.setAttribute("emp_id", "admin");
 		
 		//birthDateTest();
 		
@@ -54,6 +63,7 @@ public class MainController {
 		 * model.addAttribute("emp_name", emp_name); model.addAttribute("de_name",
 		 * de_name); }
 		 */
+		
 		
 		return mainService.dashboard(session, rAttr);
 	}
@@ -124,6 +134,7 @@ public class MainController {
 	}
 
 	// 1단 경로
+	/*
 	@GetMapping(value = "/{path}.go")
 	public String path(@PathVariable String path, Model model, HttpSession session) {
 		logger.info(path + ".jsp 로 이동");
@@ -138,7 +149,7 @@ public class MainController {
 		
 		
 		return path;
-	}
+	}*/
 	
 	// 2단 경로
 	/*

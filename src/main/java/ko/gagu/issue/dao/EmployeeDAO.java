@@ -34,5 +34,7 @@ public interface EmployeeDAO {
 
 	List<HRDepartmentDTO> getAllCompanyEvents();
 
+	EmployeeDTO employeeData(String emp_id);
+
 
 }
