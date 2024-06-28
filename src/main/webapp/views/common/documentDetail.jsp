@@ -44,14 +44,14 @@
 <style>
 #document {
 	width: 70%;
-	height: 950px;
+	height: 1000px;
 	border: 1px solid;
 	background: white;
 }
 
 #form-document {
 	width: 100%;
-	height: 950px;
+	height: 1000px;
 	border: none;
 }
 
@@ -88,7 +88,6 @@ table {
 	border: 1px solid black;
 	text-align: center;
 	margin-bottom: 20px;
-	width: 500px;
 }
 
 td, tr {
@@ -99,7 +98,7 @@ td, tr {
 	font-size: 10px;
 }
 
-#approvalModal {
+.modal {
 	top: 20%;
 }
 
@@ -113,6 +112,12 @@ td, tr {
 table img {
 	width: 100px;
 	height: 75px;
+}
+
+#apComment {
+	width: 100%;
+	height: 100px;
+	resize: none;
 }
 </style>
 </head>
@@ -167,9 +172,12 @@ table img {
 								<button type="button" class="btn btn-primary documentBtn">목록으로 이동하기</button>
 							</div>
 							<div class="d-flex justify-content-end">
-								<button type="button" class="btn btn-primary" style="background: red !important;border-color: red !important;'"  onClick="forceLogin()">강제로그인하기</button>
-								<input type="text" name="empId" style="margin: 4 0 0 5;"/>
-								<button type="button" class="btn btn-primary documentBtn">회수하기</button>
+								<button type="button" class="btn btn-primary" style="background: red !important; border-color: red !important;'" onClick="forceLogin()">강제로그인하기</button>
+								<input type="text" name="empId" style="margin: 4 0 0 5;" />
+								
+								<c:if test="${approvalDetails.idxEmployee == approvalDetails.accessIdxEmployee}">
+									<button type="button" class="btn btn-primary documentBtn" onClick="retract()">회수하기</button>
+								</c:if>								
 								<button type="button" class="btn btn-primary documentBtn">PDF로 내려받기</button>
 							</div>
 						</div>
@@ -177,62 +185,71 @@ table img {
 						<!-- [jeong] 결재 라인 테이블 시작 -->
 						<div class="d-flex justify-content-end" style="width: 70%; margin: auto;'">
 							<table>
+								<!-- [jeong] 결재권자 직위 시작 -->
 								<tr style="background: #eaeaea;">
-									<td rowspan="4">
+									<td rowspan="4" style="width: 20px;">
 										결<br>재
 									</td>
-									<td>기안</td>
+									<td style="width: 100px;">기안</td>
 									<c:forEach items="${approvalSteps}" var="emp">
-										<td>${emp.titleName}</td>
+										<td style="width: 150px;">${emp.titleName}</td>
 									</c:forEach>
-<!-- 									<td>대리</td>
-									<td>부장</td>
-									<td>대표이사</td> -->
 								</tr>
+								<!-- [jeong] 결재권자 직위 끝 -->
 								<tr>
-									<!-- 기안자 이름 들어가야함 -->
-									<td>${approvalDetails.empName}</td>
+									<!-- [jeong] 반려, 승인, 전자서명 이미지 시작 -->
+									<td style="height: 100px;" rowspan="2">${approvalDetails.empName}</td>
 									<c:forEach items="${approvalSteps}" var="step">
-										<td>
- 											<c:choose>
-												<c:when test="${step.isApproval == 1}">
-													<!-- <td><img src="/file/document/signature/a4ce8e22-d146-48a3-a15b-8098002033f3.png"/></td> -->
-													<img src="${step.signatureFilePath}" alt="서명 이미지" />
-													<br />
-								                        ${step.approvalDatetime}
-								                    </c:when>
-												<c:when test="${step.isApproval == 0}">
-								                        반려
-								                        <br />
-								                        ${step.approvalDatetime}
-                    								</c:when>
-												<c:otherwise>
-													<!-- 														<button type="button" class="btn btn-primary btn-xs" id="rejectionBtn">반려</button>
-														<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#approvalModal">승인</button> -->
-														<c:if test="${step.apStep == step.currentApprovalStep}">
-															<button type="button" class="btn btn-primary btn-xs" id="rejectionBtn">반려</button>
+										<c:choose>
+											<c:when test="${step.isApproval == 1}">
+												<td>
+													<img src="/file/${step.signatureFilePath}" alt="서명 이미지" />
+												</td>
+											</c:when>
+											<c:when test="${step.isApproval == 0}">
+												<td>
+													<span style="color: red; font-weight: bold; font-size: 18px;">반려</span>
+													<div>
+														<a  data-toggle="modal" data-target="#rejectCommentModal" >
+															<i class="f-15 fa fa-comment" style="color: red;"></i>
+														</a>
+													</div>
+												</td>
+											</c:when>
+											<c:otherwise>
+												<c:choose>
+													<c:when test="${approvalDetails.accessIdxEmployee == step.idxEmployee 
+															and step.currentApprovalStep == approvalDetails.approvalStep}">
+														<td rowspan="2">
+															<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rejectModal" id="rejectionBtn">반려</button>
 															<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#approvalModal">승인</button>
-														</c:if>
-												</c:otherwise>
-											</c:choose>
-										</td>
+														</td>
+													</c:when>
+													<c:otherwise>
+														<td rowspan="2"></td>
+													</c:otherwise>
+												</c:choose>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
-<!-- 									<td rowspan="2">김정원</td>
-									<td></td>
-									<td>반려</td>
-									<td rowspan="2">
-										<button type="button" class="btn btn-primary btn-xs" id="rejectionBtn">반려</button>
-										<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#approvalModal">승인</button>
-									</td>
+									<!-- [jeong] 반려, 승인, 전자서명 이미지 끝 -->
 								</tr>
 								<tr>
-									<td>
-										<span class="approvalDateTime">2024/06/25 14:57</span>
-									</td>
-									<td>
-										<span class="approvalDateTime">2024/06/23 09:23</span>
-									</td>
-								</tr> -->
+									<!-- [jeong] 결재일시 시작 -->
+									<c:forEach items="${approvalSteps}" var="step">
+										<c:choose>
+											<c:when test="${step.isApproval == 1 or step.isApproval == 0}">
+												<td>${step.approvalDatetimeS}</td>
+											</c:when>
+											<c:otherwise>
+												<c:if test="${approvalDetails.accessIdxEmployee != step.idxEmployee 
+														or step.currentApprovalStep != approvalDetails.approvalStep}">
+												</c:if>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									<!-- [jeong] 결재일시 끝 -->
+								</tr>
 							</table>
 						</div>
 						<!-- [jeong] 결재 라인 테이블 끝 -->
@@ -251,15 +268,26 @@ table img {
 								</div>
 							</div>
 							<div class="col-10">
-								<div class="d-flex">
-									<div style="margin-right: 10px;">
-										<i class="f-30 fa fa-file-excel-o font-success"></i>
-									</div>
-									<div>
-										<h6>Backend.xls</h6>
-										<p>2 Day ago, 3.0 GB</p>
-									</div>
-								</div>
+								<c:if test="${empty attachmentFiles}">
+									<h3 style="text-align: center;">첨부한 파일이 없습니다.</h3>
+								</c:if>
+								<c:forEach items="${attachmentFiles}" var="file">
+									<a href="/download/${file.fileName}/${file.originName}">
+										<div class="d-flex align-items-center m-15">
+											<div style="margin-right: 10px;">
+												<c:choose>
+													<c:when test="${file.isImage == 1}">
+														<i class="f-30 fa fa-file-image-o font-success"></i>
+													</c:when>
+													<c:otherwise>
+														<i class="f-30 fa fa-file-excel-o font-success"></i>
+													</c:otherwise>
+												</c:choose>
+											</div>
+											<h6>${file.originName}</h6>
+										</div>
+									</a>
+								</c:forEach>
 							</div>
 						</div>
 						<!-- [jeong] 첨부파일 끝 -->
@@ -309,27 +337,52 @@ table img {
 			</div>
 			<!-- [jeong] 승인 및 서명 모달 끝 -->
 			<!-- [jeong] 반려 모달 시작 -->
-			<div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel" aria-hidden="true">
+			<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModal" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="signatureModalLabel">결재 서명</h5>
+							<h5 class="modal-title" id="rejectModalLabel">반려 처리</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<canvas id="signature-pad"></canvas>
+							<textarea cols="10" wrap="hard" id="apComment">
+							</textarea>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-							<button type="button" class="btn btn-primary" onclick="clearSignature()">서명 지우기</button>
-							<button type="button" class="btn btn-primary" onclick="approval()">결재하기</button>
+							<button type="button" class="btn btn-secondary" style="margin-right: 10px;" data-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-primary" onclick="reject()">반려하기</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- [jeong] 반려 모달 끝 -->
+			<!-- [jeong] 반려 의견 모달 시작 -->
+			<div class="modal fade" id="rejectCommentModal" tabindex="-1" role="dialog" aria-labelledby="rejectCommentModal" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="rejectModalLabel">반려 의견</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<c:forEach items="${approvalSteps}" var="step">
+								<c:if test="${step.isApproval == 0}">
+									<div><pre style="background:white; font-size: 18px; font-weight: 700;">${step.apComment}</pre></div>
+								</c:if>
+							</c:forEach>
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" style="margin-right: 10px;" data-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- [jeong] 반려 의견 모달 끝 -->			
 		</div>
 	</div>
 	<!-- latest jquery-->
@@ -377,10 +430,13 @@ table img {
 	<!-- 서명 스크립트 -->
 	<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 	<!-- Plugin used-->
+	<!-- Sweetalert js -->
+	<script src='/assets/js/sweet-alert/sweetalert.min.js'></script>
 	<script>
 		new WOW().init();
 	</script>
 	<script>
+		/* [jeong] 강제로그인 임시 테스트용 */
 		function forceLogin() {
 			const empId = document.querySelector('input[name="empId"]').value;
 			console.log(empId);
@@ -390,21 +446,48 @@ table img {
 		}
 	</script>
 	<script>
-		
+		/* [jeong] 전자서명 이미지 저장, 승인, 반려 요청 처리 */
 		var signaturePad;
-		
-		$(document).ready(function () {
-            const canvas = document.getElementById('signature-pad');
-            
-            signaturePad = new SignaturePad(canvas, {
-                throttle: 16,
-                minWidth: 0.5,
-                maxWidth: 2.5
-            });		
-		});
+        const canvas = document.getElementById('signature-pad');
+        
+        signaturePad = new SignaturePad(canvas, {
+            throttle: 16,
+            minWidth: 0.5,
+            maxWidth: 2.5
+        });		
         
 		function clearSignature() {
 			signaturePad.clear();
+		}
+		
+		function retract() {
+	        fetch('/document/retract.do', {
+	            method: 'POST'
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.error('Success:', data);
+	        	window.location.href = '/document/${approvalDetails.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        })
+	        .catch(error => console.error('Error:', error));			
+		}
+		
+		function reject() {
+			const data = new FormData();
+			const apComment = document.getElementById('apComment').value;
+			data.append('apComment', apComment);
+			console.log(apComment);
+			
+	        fetch('/document/reject.do', {
+	            method: 'POST',
+	            body: data
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.error('Success:', data);
+	        	window.location.href = '/document/${approvalDetails.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        })
+	        .catch(error => console.error('Error:', error));			
 		}
 		
 		function approval() {
@@ -426,17 +509,28 @@ table img {
 			const signatureImage = dataURLToBlob(dataURL);
 			
 	        const data = new FormData();
-	        data.append('signatureImage', signatureImage, 'a.png');
-	        data.append('idxApprovalLine', '${approvalSteps[0].idxApprovalLine}');
-	        data.append('apStep', '${approvalSteps[0].apStep}');
+	        data.append('signatureImage', signatureImage, '.png');
 	        
-	        fetch('/document/${idxApproval}/approval.do', {
+	        fetch('/document/approval.do', {
 	            method: 'POST',
 	            body: data
 	        })
 	        .then(response => response.json())
-	        .then(data => console.log('Success:', data))
+	        .then(data => {
+	        	console.error('Success:', data);
+	        	window.location.href = '/document/${sessionScope.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        })
 	        .catch(error => console.error('Error:', error));	
+		}
+	</script>
+	<script>
+		const errorMsg = '${errorMsg}';
+		if (errorMsg != '' && errorMsg != null) {
+			Swal.fire({
+				title: errorMsg,
+			}).then(function () { 
+				window.location.href = '/document/list.go';	
+			});
 		}
 	</script>
 </body>

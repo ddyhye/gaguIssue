@@ -157,7 +157,18 @@
 	}
 	.do-poSubmit {
 		display: flex;
-		justify-content: flex-end;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		
+		margin: 200px 0;
+	}
+	.fa-clipboard-check {
+		font-size: 80px;
+		color: rgba(122, 112, 186, 0.8);
+		margin: 30px 0;
+	}
+	.do-h4Color {
 	}
   </style>
   </head>
@@ -220,7 +231,7 @@
                       <!-- [do] 사이드바 -->
 						<div class='col-2 sidebar-left-wrapper do-poSide' style='padding-right: 24px;'>
 							<ul class='sidebar-left-icons nav nav-pills' id='add-product-pills-tab' role='tablist'>
-								<li class='nav-item'><a class='nav-link active'>
+								<li class='nav-item'><a class='nav-link'>
 										<div class='nav-rounded'>
 											<div class='product-icons'>
 												<svg class='stroke-icon'>
@@ -233,7 +244,7 @@
 											<h5>서류 작성</h5>
 										</div>
 								</a></li>
-								<li class='nav-item'><a class='nav-link'>
+								<li class='nav-item'><a class='nav-link active'>
 										<div class='nav-rounded'>
 											<div class='product-icons'>
 												<svg class='stroke-icon'>
@@ -256,7 +267,9 @@
 								<div class='col-10'>
 									<div class='row'>
 										<div class="do-poSubmit"> 
-											발주 완료
+											<i class="fa-solid fa-clipboard-check"></i>
+											<h4 class="do-h4Color">발주 완료</h4>
+											<p class="do-p-darkgray">'재고 관리 > 입고 내역' 을 확인해 주세요.</p>
 					                    </div>
 									</div>
 								</div>
@@ -343,228 +356,7 @@
   
   
 <script>
-	// 자동 채우기 모달창
-	document.getElementById('do-warning').addEventListener('click', () => {
-		document.getElementsByClassName('do-lackList')[0].classList.add('active');
-		
-        fetch('/lackProduct.ajax', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ key: 'value' }) 
-        })
-        .then(response => response.json())
-        .then(data => {
-        	clientList(data.clientList);
-        	lackProductAjax(data.clientList[0]);
-        })
-        .catch(error => { console.error('Fetch error:', error); });
-	});
-	document.getElementById('cancelBtn').addEventListener('click', () => {
-		document.getElementsByClassName('do-lackList')[0].classList.remove('active');
-	})
 	
-	
-	// 자동 채우기 - 부족 재고 리스트 ajax 출력
-	document.getElementById('clientList').addEventListener('change', () => {
-		var client = document.getElementById('clientList').value;
-		
-		lackProductAjax(client);
-	});
-	
-	function lackProductAjax(data) {
-		console.log(data);
-		
-		fetch('/lackProductByClient.ajax', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ client: data})
-		})
-		.then(response => response.json())
-		.then(data=> {
-			drawProduct(data);
-		})
-		.catch(error => { console.error('Fetch error:', error); });
-	}
-
-
-
-	// 자동 채우기 - 발주처 리스트
-    function clientList(clientList) {
-        const selectElement = document.getElementById('clientList');
-        selectElement.innerHTML = ''; 
-
-        clientList.forEach(client => {
-            const option = document.createElement('option');
-            option.value = client;
-            option.textContent = client;
-            selectElement.appendChild(option);
-        });
-    }
- 	// drawProduct 함수 : 재고 부족 제품 그리기
-	function drawProduct(data) {
-		$('.do-inventory').empty();
-		
-		var content = '';
-
-		if (!data.list || data.list.length === 0) {
-			content += '<tr><td colspan="4">Error...</td></tr>';
-		}
-		for (item of data.list) {
-			content += '<tr>';
-			content += '<td class="do-table-td11">';
-			content += '<input type="hidden" value="'+item.idx_product+'"/>';
-			content += item.client_name;
-			content += '</td>';
-			content += '<td class="do-table-td22">';
-			content += item.product_name;
-			content += '</td>';
-			content += '<td class="do-table-td33">';
-			content += item.current_stock;
-			content += '</td>';
-			content += '<td class="do-table-td44">';
-			content += '<input type="checkbox" name="select"/>';
-			content += '</td>';
-			content += '</tr>';
-		}
-		
-		$('.do-inventory').append(content);
-	}
-    
-    
-    
-    
-    // IFRAME 자동 채우기
-    // 재고 부족 전체 선텍
-    document.getElementById('selectAll').addEventListener('click', function() {
-        var checkboxes = document.querySelectorAll('input[name="select"]');
-        for (var checkbox of checkboxes) {
-            checkbox.checked = this.checked;
-        }
-    });
-    document.getElementById('lackBtn').addEventListener('click', () => {
-		document.getElementsByClassName('do-lackList')[0].classList.remove('active');
-		
-		selectProduct();
-	})
-    // 발주할 재고 번호 배열 서버로 전송
-    function selectProduct() {
-    	// 클라이언트 명
-    	var client = document.getElementById('clientList').value;
-    	
-    	// 발주할 제품들
-        var selectedArr = [];
-        var checkboxes = document.querySelectorAll('input[name="select"]:checked');
-        
-        for (var checkbox of checkboxes) {
-        	var row = checkbox.closest('tr');
-        	var idx_product = row.querySelector('input[type="hidden"]').value;
-        	selectedArr.push(idx_product);
-        }
-
-        // AJAX
-        fetch('/autoWriteIframe.ajax', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ selectedArr: selectedArr,
-            						client: client}) 
-        })
-        .then(response => response.json())
-        .then(data => {
-        	// ifreame 다시 그리기
-        	console.log(data);
-        	frameTableWrite(data);
-        })
-        .catch(error => { console.error('Fetch error:', error); });
-    }
-    
- 	// iFrame 내의 테이블에 데이터를 삽입하는 함수
-    function frameTableWrite(data) {
-        var iframe = document.getElementById('form-document');
-        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
- 		// 발주처 정보
- 		iframeDocument.getElementById('client_name').innerHTML = data.client.client_name;
- 		iframeDocument.getElementById('ceo_name').innerHTML = data.client.ceo_name;
- 		iframeDocument.getElementById('address').innerHTML = data.client.address;
- 		iframeDocument.getElementById('client_type').innerHTML = data.client.client_type;
- 		
- 		
- 		// 발주할 제품
-        var tableBody = iframeDocument.getElementById('do-serverInput');
-        tableBody.innerHTML = '';
-
-        // 데이터를 테이블에 추가
-        data.list.forEach((item, index) => {
-            var row = document.createElement('tr');
-
-            /* input type="text"
-            var cell1 = document.createElement('td');
-            var input1 = document.createElement('input');
-            input1.type = 'text';
-            input1.value = item.idx_product; // No
-            cell1.appendChild(input1);
-            row.appendChild(cell1); */
-            
-            // 제품 번호
-            var cell1 = document.createElement('td');
-            cell1.innerHTML = item.idx_product;
-            row.appendChild(cell1);
-
-            // 제품명
-            var cell2 = document.createElement('td');
-            cell2.innerHTML = item.product_name;
-            row.appendChild(cell2);
-
-            // 수량
-            var cell3 = document.createElement('td');
-            cell3.innerHTML = item.minimum_stock;
-            row.appendChild(cell3);
-
-            // 단가
-            var cell4 = document.createElement('td');
-            cell4.innerHTML = item.unit_price;
-            row.appendChild(cell4);
-
-            // 금액
-            var cell5 = document.createElement('td');
-            cell5.innerHTML = item.minimum_stock*item.unit_price;
-            row.appendChild(cell5);
-
-            tableBody.appendChild(row);
-        });
-    }
- 	
- 	
- 	
- 	// 파일로 저장, 파일의 데이터들(발주번호, 직원번호, 거래처번호, 제품번호(들))은 디비에 저장
- 	// iFrame 내용을 HTML 파일로 저장하는 함수
-    function savePO() {
-        var iframe = document.getElementById('form-document');
-        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-        var htmlContent = iframeDocument.documentElement.outerHTML;
-
-        var blob = new Blob([htmlContent], { type: 'text/html' });
-        
-        fetch('/savePO.ajax', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ file: blob})
-		})
-		.then(response => response.json())
-		.then(data=> {
-			drawProduct(data);
-			// 저장 성공 시 페이지 이동하자. window.location.href="";
-		})
-		.catch(error => { console.error('Fetch error:', error); });
-    }
 </script>
 
 

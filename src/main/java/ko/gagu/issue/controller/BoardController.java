@@ -59,6 +59,12 @@ public class BoardController {
         
         return mav;
     }
+    
+    @GetMapping(value="/boardwrite.go")
+    public String write_go() {
+        logger.info("공지사항 작성");
+        return "common/boardWrite";
+    }
 
     @PostMapping(value = "/boardupdate.do")
     public ModelAndView update_do(
@@ -183,7 +189,7 @@ public class BoardController {
         mav.addObject("keyword", keyword); // 검색 키워드도 뷰로 전달
         mav.addObject("searchType", searchType); // 검색 타입도 뷰로 전달
         mav.addObject("page", page); // 현재 페이지 번호
-        mav.addObject("totalPages", totalPages); // 전체 페이지 수
+        mav.addObject("searchTotalPages", totalPages); // 전체 페이지 수
 
         return mav;
     }

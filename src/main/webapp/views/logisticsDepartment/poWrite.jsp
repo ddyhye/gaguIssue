@@ -394,6 +394,24 @@
   
   
 <script>
+	// 발주서 번호, 직원정보 자동 작성
+	document.addEventListener('DOMContentLoaded', function() {
+		var iframe = document.getElementById('form-document');
+        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+	    fetch('/poBasic.ajax')
+	        .then(response => response.json())
+	        .then(data => {
+	        	iframeDocument.getElementById('no').textContent = data.no;
+	        	iframeDocument.getElementById('emp_idx').value = data.emp_idx;
+	        	iframeDocument.getElementById('emp_part').textContent = data.emp_part;
+	        	iframeDocument.getElementById('emp_level').textContent = data.emp_level;
+	        	iframeDocument.getElementById('emp_name').textContent = data.emp_name;
+	        	iframeDocument.getElementById('emp_phone').textContent = data.emp_phone;
+	        });
+	});
+	
+	
 	// 자동 채우기 모달창
 	document.getElementById('do-warning').addEventListener('click', () => {
 		document.getElementsByClassName('do-lackList')[0].classList.add('active');
@@ -544,16 +562,20 @@
  		iframeDocument.getElementById('ceo_name').innerHTML = data.client.ceo_name;
  		iframeDocument.getElementById('address').innerHTML = data.client.address;
  		iframeDocument.getElementById('client_type').innerHTML = data.client.client_type;
- 		iframeDocument.getElementById('idx_business').innerHTML = data.client.idx_business;
+ 		iframeDocument.getElementById('idx_business').value = data.client.idx_business;
  		
  		
  		// 발주할 제품
         var tableBody = iframeDocument.getElementById('do-serverInput');
         tableBody.innerHTML = '';
+        
+        // 합계
+        var total = 0;
 
         // 데이터를 테이블에 추가
         data.list.forEach((item, index) => {
             var row = document.createElement('tr');
+            row.classList.add('product-row');
 
             /* input type="text"
             var cell1 = document.createElement('td');
@@ -586,10 +608,29 @@
             // 금액
             var cell5 = document.createElement('td');
             cell5.innerHTML = item.minimum_stock*item.unit_price;
+            total += item.minimum_stock*item.unit_price;
             row.appendChild(cell5);
 
             tableBody.appendChild(row);
         });
+        
+        
+        
+     	// 합계 행 추가
+        var sumRow = document.createElement('tr');
+     	
+        var sumCell1 = document.createElement('td');
+        sumCell1.setAttribute('colspan', '4');
+        sumCell1.classList.add('do-tbackColor');
+        sumCell1.innerHTML = '합계';
+        sumRow.appendChild(sumCell1);
+
+        var sumCell2 = document.createElement('td');
+        sumCell2.setAttribute('id', 'total_price');
+        sumCell2.innerHTML = total;
+        sumRow.appendChild(sumCell2);
+
+        tableBody.appendChild(sumRow);
     }
  	
  	
@@ -600,11 +641,10 @@
  	// 발주하기 버튼
  	document.getElementById('submitBtn').addEventListener('click', () => {
  		// 발주서 저장
+ 		savePOforDB();
  		savePO();
- 		
- 		// 발주서 DB 저장
- 		
- 		window.location.href="/logisticsDepartment/poWriteFinish.go";
+ 	
+ 		//window.location.href="/logisticsDepartment/poWriteFinish.go";
  	});
  	
  	
@@ -615,8 +655,12 @@
         var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
         var htmlContent = iframeDocument.documentElement.outerHTML;
 
-        var blob = new Blob([htmlContent], { type: 'text/html' });
         var formData = new FormData();
+        // 발주서 번호
+        var poNum = iframeDocument.getElementById('no').innerText;
+        formData.append('poNum', poNum);
+        // 파일 변환
+        var blob = new Blob([htmlContent], { type: 'text/html' });
         formData.append('file', blob, 'po.html'); // 'po.html'은 파일 이름입니다.
         
         fetch('/savePO.ajax', {
@@ -634,29 +678,35 @@
         var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
         
         // 발주서 정보
-        var poNum = iframeDocument.getElementById('no').innerText;
+        var poNum = iframeDocument.getElementById('no').innerText;				// 발주서 번호
+        console.log(poNum);
         var idx_employee = iframeDocument.getElementById('emp_idx').value;		// 직원정보
         var idx_business = iframeDocument.getElementById('idx_business').value;	// 발주처 정보
-        var tableBody = iframeDocument.getElementById('do-serverInput');		// 발주할 제품들
-        var rows = tableBody.getElementsByTagName('tr');
+        
+        var tableBody = iframeDocument.getElementById('do-serverInput');		
+        var rows = iframeDocument.querySelectorAll('.product-row');				// 발주할 제품들
+        //var rows = tableBody.getElementsByTagName('tr');
         var data = [];
         for (var i = 0; i < rows.length; i++) {
             var cells = rows[i].getElementsByTagName('td');
             var rowData = {
-                idx_product: cells[0].innerText,
-                product_name: cells[1].innerText,
-                minimum_stock: cells[2].innerText,
-                unit_price: cells[3].innerText,
-                total_price: cells[4].innerText
+                idx_product: cells[0].innerText || '',
+                product_name: cells[1].innerText || '',
+                minimum_stock: cells[2].innerText || '',
+                unit_price: cells[3].innerText || '',
+                total_price: cells[4].innerText || ''
             };
             data.push(rowData);
         }
+        var total_price = iframeDocument.getElementById('total_price').innerText;		// 합계
         
         // 서버로 보낼 데이터 한꺼번에 담기
         var payload = {
+        	poNum: poNum,
             idx_employee: idx_employee,
             idx_business: idx_business,
-            productArr: data
+            productArr: data,
+            total_price: total_price
         };
         
         fetch('/savePOforDB.ajax', {

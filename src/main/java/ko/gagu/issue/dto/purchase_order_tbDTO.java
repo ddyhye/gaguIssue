@@ -2,6 +2,9 @@ package ko.gagu.issue.dto;
 
 import java.time.LocalDateTime;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias(value="purchase_order")
 public class purchase_order_tbDTO {
 	
 	
@@ -12,6 +15,15 @@ public class purchase_order_tbDTO {
 	private int idx_product;
 	private LocalDateTime written_datetime;
 	private String html_filename;
+	private int total_price;
+	
+	
+	public int getTotal_price() {
+		return total_price;
+	}
+	public void setTotal_price(int total_price) {
+		this.total_price = total_price;
+	}
 	
 	
 	public int getIdx_purchase_order() {

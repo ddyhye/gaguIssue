@@ -102,7 +102,7 @@
                 <td colspan="3" id="client_name"><input type="text" class="do-inputText"/></td>
                 <td class="do-tWidth2 do-tbackColor">대표자</td>
                 <td colspan="3" id="ceo_name"><input type="text" class="do-inputText"/></td>
-                <input type="hidden" value="idx_business"/>
+                <input type="hidden" id="idx_business"/>
             </tr>
             <tr>
                 <td class="do-tWidth2 do-tbackColor">주소</td>
@@ -181,7 +181,7 @@
                 </tr>
                 <tr>
                     <td colspan="4" class="do-tbackColor">합계</td>
-                    <td></td>
+                    <td id="total_price"></td>
                 </tr>
             </tbody>
         </table>
@@ -208,18 +208,6 @@
 
 
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-	    fetch('/poBasic.ajax')
-	        .then(response => response.json())
-	        .then(data => {
-	            document.getElementById('no').textContent = data.no;
-	            document.getElementById('emp_idx').value = data.emp_idx;
-	            document.getElementById('emp_part').textContent = data.emp_part;
-	            document.getElementById('emp_level').textContent = data.emp_level;
-	            document.getElementById('emp_name').textContent = data.emp_name;
-	            document.getElementById('emp_phone').textContent = data.emp_phone;
-	        });
-	});
 </script>
 
 </html>

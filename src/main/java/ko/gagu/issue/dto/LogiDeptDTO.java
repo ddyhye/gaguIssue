@@ -224,5 +224,196 @@ public class LogiDeptDTO {
 	}
 	
 	
+	
+	// 발주
+	private int idx_purchase_order;
+	private int idx_purchasehtml;
+	private int idx_employee;
+//	private int idx_business;
+//	private int idx_product;
+	private LocalDateTime written_datetime;
+	private String html_filename;
+	private int total_price;
+	
+	
+	public int getTotal_price() {
+		return total_price;
+	}
+	public void setTotal_price(int total_price) {
+		this.total_price = total_price;
+	}
+	public int getIdx_purchase_order() {
+		return idx_purchase_order;
+	}
+	public int getIdx_employee() {
+		return idx_employee;
+	}
+	public int getIdx_purchasehtml() {
+		return idx_purchasehtml;
+	}
+	public LocalDateTime getWritten_datetime() {
+		return written_datetime;
+	}
+	public void setIdx_purchase_order(int idx_purchase_order) {
+		this.idx_purchase_order = idx_purchase_order;
+	}
+	public void setIdx_employee(int idx_employee) {
+		this.idx_employee = idx_employee;
+	}
+	public void setIdx_purchasehtml(int idx_purchasehtml) {
+		this.idx_purchasehtml = idx_purchasehtml;
+	}
+	public void setWritten_datetime(LocalDateTime written_datetime) {
+		this.written_datetime = written_datetime;
+	}
+	public String getHtml_filename() {
+		return html_filename;
+	}
+	public void setHtml_filename(String html_filename) {
+		this.html_filename = html_filename;
+	}
+	
+	
+	
+	// 입고 내역
+	private int idx;
+//	private int idx_purchase_order;
+//	private int idx_product;
+	private int order_quantity;
+	private int stock_quantity;
+	private String stock_status;
+	private LocalDateTime stock_datetime;
+	public int getIdx() {
+		return idx;
+	}
+	public int getOrder_quantity() {
+		return order_quantity;
+	}
+	public int getStock_quantity() {
+		return stock_quantity;
+	}
+	public String getStock_status() {
+		return stock_status;
+	}
+	public LocalDateTime getStock_datetime() {
+		return stock_datetime;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+	public void setOrder_quantity(int order_quantity) {
+		this.order_quantity = order_quantity;
+	}
+	public void setStock_quantity(int stock_quantity) {
+		this.stock_quantity = stock_quantity;
+	}
+	public void setStock_status(String stock_status) {
+		this.stock_status = stock_status;
+	}
+	public void setStock_datetime(LocalDateTime stock_datetime) {
+		this.stock_datetime = stock_datetime;
+	}
+	
+	
+	
+	// 주문
+	private int idx_order;
+	private int order_no;
+	private int order_row;
+	private int order_per_price;
+	private int order_total_price;
+//	private int idx_business;
+//	private int idx_product;
+	private int quantity;
+	private int sum_price;
+	private String accept;
+	private LocalDateTime order_datetime;
+
+
+	public int getOrder_per_price() {
+		return order_per_price;
+	}
+	public void setOrder_per_price(int order_per_price) {
+		this.order_per_price = order_per_price;
+	}
+	public LocalDateTime getOrder_datetime() {
+		return order_datetime;
+	}
+	public void setOrder_datetime(LocalDateTime order_datetime) {
+		this.order_datetime = order_datetime;
+	}
+	public int getIdx_order() {
+		return idx_order;
+	}
+	public int getOrder_no() {
+		return order_no;
+	}
+	public int getOrder_row() {
+		return order_row;
+	}
+	public int getOrder_total_price() {
+		return order_total_price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public int getSum_price() {
+		return sum_price;
+	}
+	public String getAccept() {
+		return accept;
+	}
+	public void setIdx_order(int idx_order) {
+		this.idx_order = idx_order;
+	}
+	public void setOrder_no(int order_no) {
+		this.order_no = order_no;
+	}
+	public void setOrder_row(int order_row) {
+		this.order_row = order_row;
+	}
+	public void setOrder_total_price(int order_total_price) {
+		this.order_total_price = order_total_price;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public void setSum_price(int sum_price) {
+		this.sum_price = sum_price;
+	}
+	public void setAccept(String accept) {
+		this.accept = accept;
+	}
+	
+	
+	
+	
+	// 출고 내역
+	private int idx_delivery;
+	//private int idx_order;
+    private String delivery_state;
+    private LocalDateTime delivery_datetime;
+
+
+	public int getIdx_delivery() {
+		return idx_delivery;
+	}
+	public String getDelivery_state() {
+		return delivery_state;
+	}
+	public LocalDateTime getDelivery_datetime() {
+		return delivery_datetime;
+	}
+	public void setIdx_delivery(int idx_delivery) {
+		this.idx_delivery = idx_delivery;
+	}
+	public void setDelivery_state(String delivery_state) {
+		this.delivery_state = delivery_state;
+	}
+	public void setDelivery_datetime(LocalDateTime delivery_datetime) {
+		this.delivery_datetime = delivery_datetime;
+	}
+    
+    
 
 }

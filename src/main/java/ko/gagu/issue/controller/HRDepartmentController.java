@@ -101,11 +101,9 @@ public class HRDepartmentController {
 	    }
 	}
 	
-	
-	
-	
-	
-	
-	
+	@GetMapping(value="/employeeManage.go")
+	public String employeeManage() {
+		return "HRDepartment/employeeManage";
+	}
 
 }

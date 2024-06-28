@@ -13,6 +13,15 @@ public class FileDTO {
     private String fileName;
     private Timestamp uploadDatetime;
     
+    // [jeong] 문서인지 이미지인지 여부
+    private int isImage;
+    
+	public int getIsImage() {
+		return isImage;
+	}
+	public void setIsImage(int isImage) {
+		this.isImage = isImage;
+	}
 	public int getIdxFile() {
 		return idxFile;
 	}

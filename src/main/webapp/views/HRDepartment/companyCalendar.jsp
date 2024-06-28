@@ -55,13 +55,68 @@
 	<!-- FullCalendar List Plugin -->
 	<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/list@6.1.13/index.global.min.js"></script>
 
-	
+	<!--[il]  부트스트랩 CSS 링크-->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 	
 	<!-- modal창 -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 	<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/calendar.css'/>"> -->	
     
     <style>
+    
+    /* 모달 창 스타일링 */
+    .modal-content {
+        background-color: #f8f9fa; /* 배경색 설정 */
+        border-radius: 0;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3); /* 그림자 설정 */
+    }
+    .modal-header {
+        background-color: #6c5ce7; /* 헤더 배경색 */
+        color: #fff; /* 헤더 글자색 */
+        border-bottom: none; /* 헤더 아래 경계선 없애기 */
+    }
+    .modal-title {
+        font-weight: bold;
+    }
+    .modal-body {
+        padding: 20px;
+    }
+    .modal-footer {
+        background-color: #f8f9fa; /* 푸터 배경색 */
+        border-top: none; /* 푸터 위 경계선 없애기 */
+    }
+    .close {
+        color: #fff; /* 닫기 버튼 글자색 */
+    }
+    .form-group label {
+        font-weight: bold;
+    }
+    .form-control {
+        border: 1px solid #ced4da; /* 입력 필드 테두리 스타일 */
+    }
+    .btn-primary {
+        background-color: #6c5ce7; /* 등록 버튼 배경색 */
+        border-color: #6c5ce7; /* 등록 버튼 테두리 색 */
+    }
+    .btn-primary:hover {
+        background-color: #563d7c; /* 등록 버튼 호버 배경색 */
+        border-color: #563d7c; /* 등록 버튼 호버 테두리 색 */
+    }
+    .btn-secondary {
+        background-color: #343a40; /* 취소 버튼 배경색 */
+        border-color: #343a40; /* 취소 버튼 테두리 색 */
+    }
+    .btn-secondary:hover {
+        background-color: #23272b; /* 취소 버튼 호버 배경색 */
+        border-color: #23272b; /* 취소 버튼 호버 테두리 색 */
+    }
+    .btn-danger {
+        background-color: #dc3545; /* 삭제 버튼 배경색 */
+        border-color: #dc3545; /* 삭제 버튼 테두리 색 */
+    }
+    .btn-danger:hover {
+        background-color: #c82333; /* 삭제 버튼 호버 배경색 */
+        border-color: #c82333; /* 삭제 버튼 호버 테두리 색 */
 	#calendar {
 	   width: 80%;
 	   margin: 5px auto;
@@ -123,6 +178,7 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <!-- [il] 캘린더 시작 -->
+          <br>
           <h2><center>Company Fullcalendar</center></h2>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
@@ -225,20 +281,7 @@
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+        
       </div>
     </div>
     <script>

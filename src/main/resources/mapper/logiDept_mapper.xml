@@ -6,7 +6,7 @@
 <mapper namespace="ko.gagu.issue.dao.LogiDepartmentDAO">
 	
 	
-	<!-- 인벤토리 리스트 그리그 -->
+	<!-- 인벤토리 리스트 그리기 -->
 	<select id="inventoryListDraw" resultType="logi">
 		SELECT it.idx_product , 
 				pct.category ,
@@ -59,7 +59,7 @@
 	
 	<!-- 발주서 작성... -->
 	<select id="getPONumber" resultType="String">
-		SELECT idx_purchase_order 
+		SELECT idx_purchasehtml 
 		FROM purchase_order_tb
 		ORDER BY idx_purchase_order DESC
 		LIMIT 1
@@ -111,12 +111,136 @@
 		INSERT INTO purchase_order_tb (idx_purchasehtml , idx_employee, idx_business, idx_product)
 		VALUES(#{param1}, #{param2}, #{param3}, #{param4})
 	</insert>
+	<insert id="insertPurchaseGetIdx"
+		useGeneratedKeys="true"
+	   	keyColumn="idx_purchase_order"
+	   	keyProperty="idx_purchase_order"
+		parameterType="purchase_order">
+		INSERT INTO purchase_order_tb (idx_purchasehtml , idx_employee, idx_business, idx_product, total_price)
+		VALUES(#{idx_purchasehtml}, #{idx_employee}, #{idx_business}, #{idx_product}, #{total_price})
+	</insert>
 	<!-- 발주서 파일명 저장 -->
 	<update id="updatePurchase">
-		update purchase_order_tb
-		set html_filename = #{param1}
-		where idx_purchasehtml = #{param2}
+		UPDATE purchase_order_tb
+		SET html_filename = #{param1}
+		WHERE idx_purchasehtml = #{param2}
 	</update>
+	<!-- 발주서 저장 시, 바로 입고내역 저장 (입고상태 default) -->
+	<insert id="insertReceiving">
+		INSERT INTO stockentries_tb (idx_purchase_order, idx_product, order_quantity)
+		VALUES(#{param1}, #{param2}, #{param3})
+	</insert>
+	
+	
+	
+	
+	<!-- 입고 내역 -->
+	<select id="getReceivingHistory" resultType="logi">
+		SELECT pot.idx_purchasehtml, st.stock_datetime, ct.client_name,
+				pt.product_name, st.order_quantity, st.stock_quantity, 
+				st.stock_status, pot.html_filename
+		FROM stockentries_tb st 
+			JOIN purchase_order_tb pot ON st.idx_purchase_order = pot.idx_purchase_order 
+			JOIN client_tb ct ON pot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON st.idx_product = pt.idx_product 
+		ORDER BY st.stock_datetime DESC
+	</select>
+	
+	
+	
+	
+	<!-- 주문 내역 리스트 -->
+	<select id="getOrderList" resultType="logi">
+		SELECT
+			ot.order_no,
+			ot.order_datetime,
+			ct.client_name,
+		    pt.product_name,
+		    COUNT(ot.order_no) AS order_row,
+		    (SELECT SUM(ot2.quantity * pt2.unit_price)
+		     FROM order_tb ot2
+		     	JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		     WHERE ot2.order_no = ot.order_no) AS order_total_price,
+			ot.accept
+		FROM
+		    order_tb ot JOIN product_tb pt ON ot.idx_product = pt.idx_product
+		    			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+		GROUP BY ot.order_no DESC
+	</select>
+	
+	<!-- 주문 상세 내역 -->
+	<select id="getOrderTime" resultType="String">
+		SELECT order_datetime 
+		FROM order_tb 
+		WHERE order_no = #{param1} 
+		GROUP BY order_no
+	</select>
+	<select id="getOrderClient" resultType="String">
+		SELECT ct.client_name 
+		FROM order_tb ot
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+		WHERE order_no = #{param1} 
+		GROUP BY order_no
+	</select>
+	<select id="getOrderTotal" resultType="Integer">
+		SELECT SUM(ot.quantity * pt.unit_price)
+		FROM order_tb ot
+		JOIN product_tb pt ON ot.idx_product = pt.idx_product
+		WHERE ot.order_no = #{param1}
+	</select>
+	<select id="getOrderProductList" resultType="logi">
+		SELECT ot.idx_order,
+			pt.idx_product,
+			pt.product_name ,
+			ot.quantity ,
+			pt.unit_price ,
+			it.current_stock,
+			(ot.quantity*unit_price) AS order_per_price
+		FROM order_tb ot 
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN inventory_tb it ON ot.idx_product = it.idx_product
+		WHERE ot.order_no = #{param1}
+		ORDER BY idx_product
+	</select>
+	<!-- 출고 상태 -->
+	<select id="getOrderAccept" resultType="String">
+		SELECT accept
+		FROM order_tb
+		WHERE order_no = #{param1}
+		LIMIT 1
+	</select>
+	
+	<!-- 주문내역 제품 각각 출고하기 -->
+	<insert id="insertDelivery">
+		INSERT into delivery_tb (idx_order)
+		VALUES(#{param1})
+	</insert>
+	<!-- 주문 수락 y로 변경 -->
+	<update id="updateOrderState">
+		UPDATE order_tb
+		SET accept = 'y'
+		WHERE idx_order = #{param1}
+	</update>
+	
+	
+	<!-- 출고 내역 -->
+	<select id="getDeliveryList" resultType="logi">
+		select ot.order_no, 
+			dt.delivery_datetime,
+			ct.client_name,
+			pt.product_name,
+			ot.quantity,
+			pt.unit_price,
+			(SELECT SUM(ot2.quantity * pt2.unit_price)
+		     FROM order_tb ot2
+		     	JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		     WHERE ot2.order_no = ot.order_no) AS order_total_price,
+			dt.delivery_state	
+		from delivery_tb dt
+			JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+		</select>
 	
 	
 
