@@ -34,10 +34,12 @@ public class interCeptorConfig implements WebMvcConfigurer{
 		excludeList.add("/message*");
 		excludeList.add("/reservation*");
 		excludeList.add("/supportDepartment*");
+		excludeList.add("/resources/**");
+		excludeList.add("/login*");
 		
 		registry.addInterceptor(checker)
 					.addPathPatterns("/**")
-					.excludePathPatterns(excludeList);    
+					.excludePathPatterns(excludeList); // 로그인 페이지와 리소스 경로는 제외;    
 	}
 	
 	

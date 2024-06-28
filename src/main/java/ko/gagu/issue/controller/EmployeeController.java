@@ -129,6 +129,7 @@ public class EmployeeController {
 	// 로그인페이지 이동 ><
 	@GetMapping(value="/login.go")
 	public String home() {
+		logger.info("로그인 페이지 요청...");
 		return "login/login";
 	}
 	// 로그인
