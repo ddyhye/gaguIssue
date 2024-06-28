@@ -77,11 +77,12 @@ public class MessageController {
 		// 연락처 요청
 		@RequestMapping(value = "/getContact.ajax", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> getContact(){
+		public Map<String, Object> getContact(@RequestParam(value="contactSearch", required = false) String contactSearch){
 			logger.info("-------------연락처 요청-------------");
 			Map<String, Object> map = new HashMap<String, Object>();
 			int emp_id = 1;
-			map = messageService.getContact(emp_id);			
+			
+		    map = messageService.getContact(emp_id, contactSearch);		
 			return map;
 		}
 		 
