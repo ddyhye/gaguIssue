@@ -22,8 +22,8 @@
 		keyColumn="idx_approval"
 		keyProperty="idx_approval"
 		parameterType="document">
-		INSERT INTO approval_tb (idx_employee, idx_dc, ap_content) 
-			VALUES (#{idx_employee}, #{idx_dc}, #{ap_content})
+		INSERT INTO approval_tb (idx_employee, idx_dc, ap_content, ap_title) 
+			VALUES (#{idx_employee}, #{idx_dc}, #{ap_content}, #{ap_title})
 	</insert>
 	
 	<!-- [jeong] 작성한 문서의 첨부파일을 파일 저장소에 저장함 -->

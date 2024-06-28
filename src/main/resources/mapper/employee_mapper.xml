@@ -13,11 +13,11 @@
 		SELECT * FROM company_calendar_tb WHERE cc_status='SHOW'
 	</select>
 	
-	<!-- [il] 임의로 idx_employee =2집어넣었음 나중에 바꿔줘야함!! -->
+	<!-- [il] 임의로 idx_employee =1 집어넣었음 나중에 바꿔줘야함!! -->
 	<insert id="employeeAddEvent" parameterType="employee">
 		INSERT INTO employee_calendar_tb
 			(idx_employee,ec_title,ec_description,ec_start_datetime,ec_end_datetime,ec_color)
-		VALUES (2,#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},#{ec_color})
+		VALUES (1,#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},'#7a70ba')
 	</insert>
 	
 	<update id="employeeDeleteEvent">

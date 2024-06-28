@@ -123,6 +123,8 @@
         #registerButton{
         	margin-right : 10px;
         }
+        
+        
        
   </style>
   
@@ -268,51 +270,21 @@
 			                        </tr>
 			                    </thead>
 			                    <tbody>
-			                        <!-- 예시 데이터 -->
-			                        <tr>
-			                            <td>1</td>
-			                            <td>200514A01</td>
-			                            <td>구일승</td>
-			                            <td>임원진</td>
-			                        </tr>
-			                        <tr>
-					                    <td>2</td>
-					                    <td>210428B01</td>
-					                    <td>김정원</td>
-					                    <td>인사관리부서</td>
-					                </tr>
-					                <tr>
-					                    <td>3</td>
-					                    <td>210823B02</td>
-					                    <td>임재민</td>
-					                    <td>경영지원부서</td>
-					                </tr>
-					                <tr>
-					                    <td>4</td>
-					                    <td>220721C01</td>
-					                    <td>이도혜</td>
-					                    <td>물류관리부서</td>
-					                </tr>
-					                <tr>
-					                    <td>5</td>
-					                    <td>240122D01</td>
-					                    <td>전태환</td>
-					                    <td>물류관리부서</td>
-					                </tr>
-					                <tr>
-					                    <td>6</td>
-					                    <td>240122D01</td>
-					                    <td>원숭이</td>
-					                    <td>인사관리부서</td>
-					                </tr>
-					                
-					                <tr>
-					                    <td>7</td>
-					                    <td>240122D01</td>
-					                    <td>고양이</td>
-					                    <td>인사관리부서</td>
-					                </tr>
-			                    </tbody>
+						            <!-- 순서 번호를 위한 초기 값 설정 -->
+						            <c:set var="rowNumber" value="1" />
+						            
+						            <c:forEach var="employee" items="${employees}">
+						                <tr>
+						                    <!-- 자동 증가하는 번호 출력 -->
+						                    <td>${rowNumber}</td>
+						                    <td>${employee.emp_id}</td>
+						                    <td>${employee.emp_name}</td>
+						                    <td>${employee.de_name}</td>
+						                </tr>
+						                
+						                <c:set var="rowNumber" value="${rowNumber + 1}" />
+						            </c:forEach>
+						        </tbody>
 			                </table>
 			            </div>
 			
@@ -354,15 +326,18 @@
       </div>
     </div>
     <script>
-    $(function() {
-        $("#startDate").datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-        $("#endDate").datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-    });
-</script>
+	    $(function() {
+	        $("#startDate").datepicker({
+	            dateFormat: "yy-mm-dd"
+	        });
+	        $("#endDate").datepicker({
+	            dateFormat: "yy-mm-dd"
+	        });
+	    });
+	</script>
+	
+
+	
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

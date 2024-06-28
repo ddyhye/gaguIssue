@@ -281,7 +281,11 @@ iframe {
 									<br />
 									<div class='row'
 										style='display: flex; flex-direction: column; align-items: center;'>
-										<div id='form' class='row'>
+										<div style="width: 80%;margin-bottom: 10px;">
+					                        <label class="form-label">문서 제목</label>
+					                        <input class="form-control" id="documentTtile" type="text" placeholder="문서의 제목을 입력해주세요." required="">								
+										</div>
+										<div id='form' class='row'>		
 											<iframe id='form-document' src='/file/${formSrc}'></iframe>
 										</div>
 									</div>
@@ -602,8 +606,12 @@ iframe {
 	<script>
 		/* [jeong] 서버에게 문서, 결재자 정보들을 묶어서 결재(문서)를 요청 */
 	    function documentWrite() {
+	    	const documentTtile = document.getElementById('documentTtile').value;
 			if (approvalStatus == false) {
 				Swal.fire('결재자 지정을 먼저 해야합니다.');
+				return;
+			} else if (documentTtile == null || documentTtile == '') {
+				Swal.fire('문서의 제목을 입력 해야합니다.');
 				return;
 			}
 			
@@ -632,6 +640,7 @@ iframe {
 	        documentData['idxDc'] = ${idxDc};
 			
 	        const htmlTag = new Blob([iframeDocument.documentElement.outerHTML], {type: 'text/html'});
+	        
 	        var data = new FormData();
 	        
 /* 	        const attachment = getBlobs(uploadFiles);
@@ -649,6 +658,7 @@ iframe {
 	        data.append('documentFile', htmlTag, 'document.html');
 	        data.append('documentData', JSON.stringify(documentData));
 	        data.append('approvalLine', JSON.stringify(confirmApprovalLine));
+	        data.append('documentTtile', documentTtile);
 	        console.log(data);
 	        
 	        fetch('/document/write.do', {

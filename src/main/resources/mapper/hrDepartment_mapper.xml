@@ -29,5 +29,11 @@
 		UPDATE company_calendar_tb SET cc_status='BLIND' WHERE idx_company_calendar=#{param1}
 	</update>
 	
+	<select id="getAllEmployees" resultType="ko.gagu.issue.dto.EmployeeDTO">
+        SELECT e.emp_id, e.emp_name, d.de_name
+        FROM employee_tb e
+        JOIN department_tb d ON e.idx_department = d.idx_department
+    </select>
+	
 	
 </mapper>
