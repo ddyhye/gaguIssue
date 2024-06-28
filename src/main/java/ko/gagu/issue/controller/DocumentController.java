@@ -86,6 +86,7 @@ public class DocumentController {
 			,@RequestParam("documentFile") MultipartFile documentFile 
 			,@RequestParam("documentData") String documentData
 			,@RequestParam("approvalLine") String approvalLine
+			,@RequestParam("documentTtile") String documentTtile
 			,HttpSession session
 			 ) {
 		logger.info("작성한 문서의 파일 객체 documentfile : {}", documentFile);
@@ -98,7 +99,7 @@ public class DocumentController {
 		} else {
 			// int idxEmployee = session.getAttribute("???");
 			int idxEmployee = 1;
-			ds.write(attachmentFiles, documentFile, documentData, approvalLine, idxEmployee, response);
+			ds.write(attachmentFiles, documentFile, documentData, approvalLine, documentTtile, idxEmployee, response);
 		}	
 		return response;
 	} 
