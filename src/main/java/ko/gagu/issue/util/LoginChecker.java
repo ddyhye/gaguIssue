@@ -26,15 +26,15 @@ public class LoginChecker implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler)
 			throws Exception {
 		boolean pass = true;
-		/*
-		 * logger.info("=== PRE HANDLER ===");
-		 * 
-		 * HttpSession session = req.getSession();
-		 * 
-		 * if (session.getAttribute("emp_id") == null) { logger.info("로그인 해야 합니다.....");
-		 * pass = false; resp.sendRedirect("/login.go"); // 외장 톰캣을 사용한다면, context 경로를
-		 * 넣어줘야,, }
-		 */
+		logger.info("=== PRE HANDLER ===");
+		
+		HttpSession session = req.getSession();
+		
+		if (session.getAttribute("emp_id") == null) {
+			logger.info("로그인 해야 합니다.....");
+			pass = false;
+			resp.sendRedirect("/login.go");		// 외장 톰캣을 사용한다면, context 경로를 넣어줘야,,
+		}
 		
 		return pass;
 	}
@@ -44,12 +44,11 @@ public class LoginChecker implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest req, HttpServletResponse resp, Object handler,
 			ModelAndView mav) throws Exception {
-		/*
-		 * logger.info("=== POST HANDLER ===");
-		 * 
-		 * HttpSession session = req.getSession(); String emp_id = (String)
-		 * session.getAttribute("emp_id"); logger.info("로그인 아이디 >> "+emp_id);
-		 */
+		logger.info("=== POST HANDLER ===");
+		
+		HttpSession session = req.getSession();
+		String emp_id = (String) session.getAttribute("emp_id");
+		logger.info("로그인 아이디 >> "+emp_id);
 		
 		// 필요없으면 빼도 됨.
 		//mav.addObject("emp_id", emp_id);

@@ -180,7 +180,7 @@ table img {
 								<c:if test="${approvalDetails.idxEmployee == approvalDetails.accessIdxEmployee}">
 									<button type="button" class="btn btn-primary documentBtn" onClick="retract()">회수하기</button>
 								</c:if>								
-								<button type="button" class="btn btn-primary documentBtn">PDF로 내려받기</button>
+								<button type="button" class="btn btn-primary documentBtn" onClick="downloadPDF()">PDF로 내려받기</button>
 							</div>
 						</div>
 						<!-- [jeong] 버튼 끝 -->
@@ -534,6 +534,22 @@ table img {
 				window.location.href = '/document/list.go';	
 			});
 		}
+	</script>
+	<script>
+	function downloadPDF() {
+	    const element = document.getElementById('form-document'); // PDF로 변환하고자 하는 HTML 요소를 선택합니다. 예: document.getElementById('your-element-id')
+
+	    html2canvas(element).then((canvas) => {
+	        const imgData = canvas.toDataURL('image/png');
+	        const pdf = new jspdf.jsPDF();
+	        const imgProps= pdf.getImageProperties(imgData);
+	        const pdfWidth = pdf.internal.pageSize.getWidth();
+	        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+	        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+	        pdf.save("download.pdf");
+	    });
+	}	
 	</script>
 </body>
 </html>
