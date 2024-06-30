@@ -7,7 +7,8 @@
 	
 	<select id="roomList" resultType="message">
 		SELECT
-	    mt.idx_messageroom, 
+	    mt.idx_messageroom,
+	    #{param1} as idx_emp, 
 	    IF (mh.receiver = #{param1}, mh.sender, mh.receiver) AS other_emp,  
 	    MAX(mh.send_datetime) AS reg_date, 
 	    (SELECT et.emp_name FROM employee_tb et WHERE et.idx_employee = other_emp) AS name,
@@ -47,7 +48,7 @@
 	 WHERE mht.idx_messageroom = mt.idx_messageroom AND mht.idx_messageroom = #{param1}
 	 	AND mt.receiver IN (#{param2},#{param3})
 	 	AND mt.sender IN (#{param2},#{param3})
-	 	AND ((mt.receiver=#{param3} AND mt.is_receiver_exit='N') OR (mt.sender=#{param3} and mt.is_sender_exit='n'))
+	 	AND ((mt.receiver=#{param3} AND mht.message_delete='N') OR (mt.sender=#{param3} and mht.message_delete='n'))
 	 	ORDER BY mht.send_datetime DESC LIMIT 1
 	</select>
 	
@@ -63,7 +64,8 @@
 		,mht.sender
 		,mt.is_sender_exit 
 		,mt.is_receiver_exit 
-		,mht.is_receiver_read 
+		,mht.is_receiver_read
+		,mht.message_delete 
 	FROM messageroom_tb mt, message_history_tb mht  
 	WHERE mt.idx_messageroom = mht.idx_messageroom 
 	AND mht.idx_messageroom = #{param1}
@@ -91,5 +93,19 @@
 		WHERE et.idx_department = dt.idx_department AND idx_employee = #{param1}
  
 	</select>
+	
+	<select id="roomExist" resultType="java.lang.Integer">
+		SELECT COALESCE(
+	    (SELECT idx_messageroom 
+	     FROM messageroom_tb mt  
+	     WHERE (mt.sender = #{param2} AND mt.receiver = #{param1}) 
+	        OR (mt.sender = #{param1} AND mt.receiver = #{param2})
+	    ), 0) AS idx_messageroom;
+	</select>
 
+	<insert id="roomCreate" useGeneratedKeys="true" 
+		keyColumn="idx_messageroom"
+		keyProperty="insert_id">
+		INSERT INTO messageroom_tb (sender, receiver) values (#{param1}, #{param2})
+	</insert>
 </mapper>

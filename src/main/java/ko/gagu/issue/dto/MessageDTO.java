@@ -23,6 +23,8 @@ public class MessageDTO {
 	private Timestamp send_datetime;
 	private int idx_message;
 	private int is_receiver_read;
+	private int idx_emp;
+	private int message_delete;
 	
 	private String de_name;
 	
@@ -127,6 +129,18 @@ public class MessageDTO {
 	}
 	public void setDe_name(String de_name) {
 		this.de_name = de_name;
+	}
+	public int getIdx_emp() {
+		return idx_emp;
+	}
+	public void setIdx_emp(int idx_emp) {
+		this.idx_emp = idx_emp;
+	}
+	public int getMessage_delete() {
+		return message_delete;
+	}
+	public void setMessage_delete(int message_delete) {
+		this.message_delete = message_delete;
 	}
 	
 	

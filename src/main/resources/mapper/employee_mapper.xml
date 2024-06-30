@@ -77,6 +77,11 @@
 	
 	</select>
 	
+	<select id="getEmpIdx" resultType="Integer">
+		SELECT et.idx_employee
+        FROM employee_tb et 
+        WHERE emp_id = #{param1};
+	</select>
 	
 	
 	<!-- [do] 로그인 인터셉터 관련 -->
