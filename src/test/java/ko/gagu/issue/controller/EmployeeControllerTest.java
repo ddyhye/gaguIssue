@@ -20,16 +20,21 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.fit.pdfdom.PDFDomTree;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import ko.gagu.issue.dao.DocumentDAO;
+import ko.gagu.issue.dto.ApprovalDTO;
+import ko.gagu.issue.util.DateUtil;
+import ko.gagu.issue.util.FileManagerUtil;
 
 class EmployeeControllerTest {
-
+	
 	@DisplayName("생년월일 표시 코드 변경 테스트")
 	void birthDateTest() {
 		String year = "1990";
@@ -50,58 +55,43 @@ class EmployeeControllerTest {
 		// before 와 after 가 같다는 것을 검증
 		assertEquals(before, after);
 	}
-
-	@Test
-    @DisplayName("html 파일을 pdf 파일로 변환")
-    void htmlToString() {
-        String filePath = "C:\\filestore\\document\\c6da0943-f2b3-41cd-ab43-5401a12ecac3.html";
-        String pdfPath = "C:\\filestore\\document\\pdf\\123.pdf";
-        try {
-            String htmlContent = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
-            System.out.println(htmlContent);
-            Document htmlDoc = Jsoup.parse(htmlContent);
-
-            // PDF 문서 생성
-            PDDocument pdfDoc = new PDDocument();
-            PDPage page = new PDPage();
-            pdfDoc.addPage(page);
-
-            // 페이지에 콘텐츠 스트림 추가
-            PDPageContentStream contentStream = new PDPageContentStream(pdfDoc, page);
-            PDType0Font font = PDType0Font.load(pdfDoc, new FileInputStream("C:\\filestore\\document\\font\\malgun.ttf"));
-            contentStream.setFont(font, 12);
-            contentStream.beginText();
-            contentStream.setLeading(14.5f);
-            contentStream.newLineAtOffset(25, 700);
-
-            // HTML 내용을 PDF로 쓰기
-            Elements paragraphs = htmlDoc.select("td");
-            for (Element paragraph : paragraphs) {
-                contentStream.showText(paragraph.text());
-                contentStream.newLine();
-            }
-
-            contentStream.endText();
-            contentStream.close();
-
-            // PDF 저장
-            pdfDoc.save(new File(pdfPath));
-            pdfDoc.close();
-
-            // PDFDomTree 사용하여 PDF 내용 HTML로 변환 및 출력
-            pdfDoc = PDDocument.load(new File(pdfPath));
-            PDFDomTree parser = new PDFDomTree();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Writer output = new PrintWriter(new OutputStreamWriter(baos, StandardCharsets.UTF_8));
-            parser.writeText(pdfDoc, output);
-            output.close();
-            pdfDoc.close();
-
-            System.out.println("PDF 변환이 완료되었습니다.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	
+	/*
+	 * @Test
+	 * 
+	 * @DisplayName("html 파일을 pdf 파일로 변환") void htmlToString() { String filePath =
+	 * "C:\\filestore\\document\\c6da0943-f2b3-41cd-ab43-5401a12ecac3.html"; String
+	 * pdfPath = "C:\\filestore\\document\\pdf\\123.pdf"; try { String htmlContent =
+	 * new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+	 * System.out.println(htmlContent); Document htmlDoc = Jsoup.parse(htmlContent);
+	 * 
+	 * // PDF 문서 생성 PDDocument pdfDoc = new PDDocument(); PDPage page = new
+	 * PDPage(); pdfDoc.addPage(page);
+	 * 
+	 * // 페이지에 콘텐츠 스트림 추가 PDPageContentStream contentStream = new
+	 * PDPageContentStream(pdfDoc, page); PDType0Font font =
+	 * PDType0Font.load(pdfDoc, new
+	 * FileInputStream("C:\\filestore\\document\\font\\malgun.ttf"));
+	 * contentStream.setFont(font, 12); contentStream.beginText();
+	 * contentStream.setLeading(14.5f); contentStream.newLineAtOffset(25, 700);
+	 * 
+	 * // HTML 내용을 PDF로 쓰기 Elements paragraphs = htmlDoc.select("td"); for (Element
+	 * paragraph : paragraphs) { contentStream.showText(paragraph.text());
+	 * contentStream.newLine(); }
+	 * 
+	 * contentStream.endText(); contentStream.close();
+	 * 
+	 * // PDF 저장 pdfDoc.save(new File(pdfPath)); pdfDoc.close();
+	 * 
+	 * // PDFDomTree 사용하여 PDF 내용 HTML로 변환 및 출력 pdfDoc = PDDocument.load(new
+	 * File(pdfPath)); PDFDomTree parser = new PDFDomTree(); ByteArrayOutputStream
+	 * baos = new ByteArrayOutputStream(); Writer output = new PrintWriter(new
+	 * OutputStreamWriter(baos, StandardCharsets.UTF_8)); parser.writeText(pdfDoc,
+	 * output); output.close(); pdfDoc.close();
+	 * 
+	 * System.out.println("PDF 변환이 완료되었습니다."); } catch (IOException e) {
+	 * e.printStackTrace(); } }
+	 */
 
 	/*
 	 * @Test

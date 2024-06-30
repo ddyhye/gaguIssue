@@ -169,7 +169,9 @@ table img {
 						<!-- [jeong] 버튼 시작 -->
 						<div class="area d-flex justify-content-between" style="padding: 20 10 20 10; border: none;">
 							<div class="d-flex justify-content-start">
-								<button type="button" class="btn btn-primary documentBtn">목록으로 이동하기</button>
+								<a href="/document/list.go">
+									<button type="button" class="btn btn-primary documentBtn">목록으로 이동하기</button>
+								</a>
 							</div>
 							<div class="d-flex justify-content-end">
 								<button type="button" class="btn btn-primary" style="background: red !important; border-color: red !important;'" onClick="forceLogin()">강제로그인하기</button>

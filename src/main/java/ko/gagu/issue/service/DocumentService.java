@@ -24,6 +24,7 @@ import ko.gagu.issue.dto.ApprovalLineDTO;
 import ko.gagu.issue.dto.DocumentDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.FileDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.util.DateUtil;
 import ko.gagu.issue.util.FileManagerUtil;
 
@@ -143,13 +144,13 @@ public class DocumentService {
 	}
 
 	/* [jeong] 결재(문서) 번호로 접근 권한을 확인하고, 문서 파일, 첨부파일, 결재라인을 뿌려준다 */
-	public ModelAndView fetchDocumentPage(int employeeId, String approvalId, HttpSession session) {
+	public ModelAndView fetchDocumentPage(int accessIdxEmployee, String approvalId, HttpSession session) {
 	    ModelAndView mav = new ModelAndView("common/documentDetail");
 	    // 1. 현재 세션이 결재자인지 작성자인지 제 3자인지 확인하기
 
 	    // 1-1. 여기서 제3자는 기안자(문서 작성자)의 같은 부서 사람들을 말한다 직원번호 1, 결재자, 작성자, 제3자도 아니라면 문서에 접근할 수 없어야한다
 	    // 1번과 1-1을 합쳐서 쿼리문을 짜자
-	    ApprovalDTO approvalDetails = dao.getApproval(employeeId, approvalId);
+	    ApprovalDTO approvalDetails = dao.getApprovalPermission(accessIdxEmployee, approvalId);
 	    if (approvalDetails == null) {
 	        mav.addObject("errorMsg", "문서를 불러오는 도중에 오류가 발생하여 목록 페이지로 이동합니다.");
 	        return mav;
@@ -187,7 +188,7 @@ public class DocumentService {
 	        	if (ext.equals(filename.substring(filename.indexOf(".") + 1))) {
 	        		documentFiles.get(idx).setIsImage(1);
 		        }
-	        	logger.info("{}", filename.substring(filename.indexOf(".") + 1));
+	        	// logger.info("{}", filename.substring(filename.indexOf(".") + 1));
 	        }	    	
 	    }
 	    session.setAttribute("idxApproval", approvalDetails.getIdxApproval());
@@ -200,6 +201,7 @@ public class DocumentService {
 	    mav.addObject("approvalSteps", approvalSteps);
 	    mav.addObject("approvalId", approvalId);
 	    mav.addObject("approvalDetails", approvalDetails);
+	    mav.addObject("employeeId", accessIdxEmployee);
 	    return mav;
 	}
 
@@ -207,12 +209,35 @@ public class DocumentService {
 	public void approval(MultipartFile signatureImage, int idxApproval, int apStep, int idxApprovalLine) {
 		String signImageName = fm.saveFile(signatureImage, "document/signature");
 		dao.saveSignImage(9, idxApprovalLine, signImageName);
-		dao.approval(idxApproval, idxApprovalLine, apStep);
+		dao.approvalLine(idxApproval, idxApprovalLine, apStep);
+		ApprovalDTO approvalDto = dao.getApproval(idxApproval);
+		List<ApprovalLineDTO> approvalLineList = dao.getApprovalLineList(idxApproval);
+		// 최종 승인시 
+		if (approvalLineList.get(approvalLineList.size() - 1).getIsApproval() == 1) {
+			dao.approval(idxApproval);
+			if(approvalDto.getIdxDc() == 1) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				Map<String, Object> documentMap = null;
+				try {
+					documentMap = objectMapper.readValue(approvalDto.getApContent(), Map.class);
+				} catch (JsonProcessingException e) {
+					return;
+				}
+				
+				dao.insertLeave(approvalDto.getIdxEmployee(), documentMap.get("days"), documentMap.get("start-date"), documentMap.get("end-date"));
+				if (dao.isLeaveAccruals(approvalDto.getIdxEmployee()) == 0) {
+					dao.insertLeaveAccruals(approvalDto.getIdxEmployee());
+				}
+				dao.updateLeaveAccruals(approvalDto.getIdxEmployee(), documentMap.get("days"));				
+			}
+			
+		}
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	public void reject(int idxApproval, int apStep, int idxApprovalLine, String apComment) {
-		dao.reject(idxApproval, idxApprovalLine, apStep, apComment);
+		dao.rejectLine(idxApproval, idxApprovalLine, apStep, apComment);
+		dao.reject(idxApproval);
 	}
 
 	public void retract(int idxApproval) {
@@ -221,19 +246,43 @@ public class DocumentService {
 
 	public ModelAndView fetchDocumentList(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("common/documentList");
-		int page = 1;
-		int pageSize = 10;
-		String keyword = "";
-		String searchOption = "";
-		String filter = "";
-		Map<String, Object> response = new HashMap<>();
-		
-		response.put("success", true);
-		// dao.getDocumentList();
+		List<DocumentDTO> documentList = dao.fetchDocumentList(idxEmployee);
+		int totalPages = dao.getAllTotalPages(idxEmployee);
+		if (documentList.size() == 0) {
+			mav.addObject("documentList", "none");
+		} else {
+			mav.addObject("documentList", documentList);
+		}
+		mav.addObject("totalPages", totalPages);
+		mav.addObject("idxEmployee", idxEmployee);
 		return mav;
 	}
+	
+	public Map<String, Object> fetchFilterDocumentList(PagingDTO pagingDTO, int idxEmployee) {
+		Map<String, Object> response = new HashMap<>();
+		int totalPages = dao.getFilterTotalPages(pagingDTO, idxEmployee);
+		if (totalPages < pagingDTO.getPage()) {
+			pagingDTO.setPage((totalPages - 1) * 13);
+		} else {			
+			pagingDTO.setPage((pagingDTO.getPage() - 1) * 13);
+		}
+		logger.info("pagingDTO : {}", pagingDTO);
+		List<DocumentDTO> documentFilterList = dao.fetchFilterDocumentList(pagingDTO, idxEmployee);
+		if (documentFilterList.size() == 0) {
+			response.put("documentFilterList", "none");
+		} else {
+			response.put("documentFilterList", documentFilterList);
+		}
+		response.put("totalPages", totalPages);
+		response.put("success", true);
+		return response;
+	}
+
+
 
 }
+
+
 
 
 

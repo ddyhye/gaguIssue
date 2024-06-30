@@ -668,7 +668,7 @@ iframe {
 	        .then(response => response.json())
 	        .then(data => {
 	        	if (data.success) {
-	        		window.location.href = '/document/'+ data.idxApproval +'/1/detail.go'; 
+	        		window.location.href = '/document/'+ data.idxApproval +'/detail.go'; 
 	        	} else {
 	        		// 오류 메시지 뜨게 하기
 	        		Swal.fire({
