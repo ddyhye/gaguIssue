@@ -34,10 +34,9 @@ public class MessageController {
 	 	// 대화방 리스트 요청 ajax
 		@RequestMapping(value = "/getChatRooms", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> roomListCallAjax(@RequestParam(value="messageSearch", required = false) String messageSearch){
+		public Map<String, Object> roomListCallAjax(@RequestParam(value="messageSearch", required = false) String messageSearch, String emp_id){
 			logger.info("--------대화방 리스트 출력---------");
 			logger.info("messageSearch :" + messageSearch);
-			int emp_id = 1;
 			
 			return messageService.roomListCallAjax(emp_id, messageSearch);
 		
@@ -48,16 +47,16 @@ public class MessageController {
 		// 대화 내용 요청 ajax
 		@RequestMapping(value = "/messageCall.ajax", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> messageCallAjax(int idx, String emp, String otherEmp){
-			logger.info("{}번 게시물, {}가 요청, other_emp: {}", idx, emp, otherEmp);
-			return messageService.messageCallAjax(idx, emp, otherEmp);
+		public Map<String, Object> messageCallAjax(int idx, String emp_id, int otherEmp){
+			logger.info("{}번 게시물, {}가 요청, other_emp: {}", idx, emp_id, otherEmp);
+			return messageService.messageCallAjax(idx, emp_id, otherEmp);
 		}
 			
 		
 		// 쪽지 보내기 ajax
 		@RequestMapping(value = "/messageSend.ajax", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> messageSendAjax(int idx, String emp_id, String other_emp, String content){
+		public Map<String, Object> messageSendAjax(int idx, String emp_id, int other_emp, String content){
 			logger.info("{}번 방, {}가 쪽지 전송", idx, emp_id);
 			return messageService.messageSend(idx, emp_id, other_emp, content);
 		}
@@ -78,16 +77,15 @@ public class MessageController {
 		// 연락처 요청
 		@RequestMapping(value = "/getContact.ajax", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> getContact(@RequestParam(value="contactSearch", required = false) String contactSearch){
+		public Map<String, Object> getContact(@RequestParam(value="contactSearch", required = false) String contactSearch, String emp_id){
 			logger.info("-------------연락처 요청-------------");
 			Map<String, Object> map = new HashMap<String, Object>();
-			int emp_id = 1;
 			
 		    map = messageService.getContact(emp_id, contactSearch);		
 			return map;
 		}
 		 
-		
+		// 채팅 직원상세 모달
 		@RequestMapping(value = "/getempDetail", method = RequestMethod.POST)
 		@ResponseBody
 		public Map<String, Object> getempDetail(int idx_emp){
@@ -98,4 +96,19 @@ public class MessageController {
 			
 			return map;
 		}
+		
+		
+		
+		// 쪽지 보내기 ajax
+		@RequestMapping(value = "/sendAndCreate.ajax", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> sendAndCreate(String emp_id, int other_emp, String content){
+			logger.info("---------- 방생성 및 쪽지 보내기 ---------");
+			logger.info("emp_id: {}, ohter_emp : {}, content: {}" , emp_id, other_emp, content);
+			return messageService.sendAndCreate(emp_id, other_emp, content);
+		}
+		
+		
+		
+		
 }

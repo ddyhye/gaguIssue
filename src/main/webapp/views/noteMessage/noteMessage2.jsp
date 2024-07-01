@@ -74,9 +74,9 @@
 		margin-left: 232px;
 	}
 	
-	.selected-chat {
-    background-color: lightgray; /* 원하는 배경색으로 변경 */
-}
+	.chats-user .common-space.selected-chat {
+	    background-color: yellow; /* 원하는 색상으로 변경 */
+	}
 	</style>
   </head>
   <body> 
@@ -350,7 +350,7 @@
 	
 	<!-- 쪽지 보내기 모달 -->
 	<div class="modal fade" id="Modal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
@@ -361,16 +361,17 @@
 	          <div class="form-group">
 	            <label for="recipient-name" class="col-form-label">받는이:</label>
 	            <input type="text" class="form-control" value="" id="recipient-name" readonly>
+	            <input type="text" id="other_idx" style="display: none;">
 	          </div>
 	          <div class="form-group">
 	            <label for="message-text" class="col-form-label">메시지:</label>
 	            <textarea class="form-control" id="message-text"></textarea>
 	          </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >취소</button>
+		        <button type="button" class="btn btn-primary" id="CreatAndsend_btn">보내기</button>
+		      </div>
 	        </form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal2()">Close</button>
-	        <button type="button" class="btn btn-primary">Send message</button>
 	      </div>
 	    </div>
 	  </div>
@@ -395,7 +396,9 @@
         if (event.key === "Enter") {
             event.preventDefault();
             messageSearch = document.getElementById('messageSearch').value;
-            loadChatRooms(messageSearch);
+            var emp_id = "${sessionScope.emp_id}";
+           //	 console.log("------",emp_id);
+            loadChatRooms(emp_id, messageSearch);
         }
     });
 	
@@ -415,13 +418,14 @@
     	 document.getElementById('myModal').style.display = 'none';
     }
     
-    function closeModal2(){
+    /* function closeModal2(){
    	 document.getElementById('Modal3').style.display = 'none';
-   }
+   } */
     
-    function secModal(emp_name){
+    function secModal(emp_name, idx_emp){
    	 console.log("메시지 보내기 모달 오픈");
    	 $('#recipient-name').val(emp_name);
+   	 $('#other_idx').val(idx_emp);
    	 document.getElementById('myModal').style.display = 'block';
     }
     
@@ -462,26 +466,21 @@
     $('#send_btn').click(function(event) {
     	event.preventDefault();
     	console.log("보내기 click");
-    	var emp_id = 1; // 나중에 세션으로 대체
+    	var emp_id = "${sessionScope.emp_id}"; // 나중에 세션으로 대체
 	    sendMessage(chat_idx, chat_user);
 	    setTimeout(function() {
 			messageCall(chat_idx, emp_id, chat_user);
-			loadChatRooms(); // '${loginInfo.email}' 나중에 세션으로 대체
+			loadChatRooms(emd_id); // '${loginInfo.email}' 나중에 세션으로 대체
 		}, 100);
 	    $('#sendText').val('');
 	});
-    
 
-    document.getElementById('send_btn').addEventListener('submit', function(event) {
-        event.preventDefault(); // 폼 제출 기본 동작 막기
-        var idx = 0; // 적절한 값으로 설정
-        var other_emp = ''; // 적절한 값으로 설정
-        sendMessage(idx, other_emp);
-    });    
     
-    
+    // 메시시 보내기
 	function sendMessage(idx, other_emp) {
 		console.log("메시지 보내기");
+		
+		var emp_id = "${sessionScope.emp_id}";
 		var content = $('#sendText').val();
 		if(content == '') return alert("빈 내용은 전송할 수 없습니다.");
 		if(idx === 0 || other_emp === '') return alert("시스템 에러");
@@ -490,7 +489,7 @@
 			url: '/messageSend.ajax',
 			data: {
 				'idx': idx,
-				'emp_id': 1, // 나중에 세션값으로 대체
+				'emp_id': emp_id,
 				'other_emp' : other_emp,
 				'content': content
 			},
@@ -521,7 +520,69 @@
 	    }
 	  });
 	  
-    
+	  
+      function selectChatRoom(element) {
+   		  console.log("클릭한 대화방 색 변경");
+   		  console.log("element",element);
+   	      // 모든 채팅방 리스트에서 선택된 클래스 제거
+   	      var chatRooms = document.querySelectorAll('.chats-user .common-space');
+   	      chatRooms.forEach(function(chatRoom) {
+   	          chatRoom.classList.remove('selected-chat');
+   	      });
+
+   	      // 클릭된 채팅방에 선택된 클래스 추가
+   	      element.classList.add('selected-chat');
+   	   	  console.log(element.classList); 
+   	  }
+      
+      // 메시지 보내기 & 방 만들기
+      $('#CreatAndsend_btn').click(function(event) {
+	      	event.preventDefault();
+	      	console.log("방 만들기 & 쪽지 보내기");
+	      	var emp_id = "${sessionScope.emp_id}"; // 나중에 세션으로 대체
+	      	var other_idx = $('#other_idx').val();
+	      	var content = $('#message-text').val();
+	      	//console.log("content :::", content);
+	      	//console.log("상대방 : ", other_idx);
+	  	    sendAndCreate(emp_id, other_idx, content);
+	  	    setTimeout(function() {
+	  			//messageCall(chat_idx, emp_id, chat_user);
+	  			loadChatRooms(emp_id); // 
+	  		}, 100);
+	  	    // $('#sendText').val('');
+	  	});
+      
+      function sendAndCreate(emp_id, other_idx, content) {
+  		console.log("메시지 보내기");
+  		var emp_idx = "${sessionScope.emp_id}";
+  		console.log("#####", emp_idx, other_idx);
+  		if(content == '') return alert("빈 내용은 전송할 수 없습니다.");
+  		//if(idx === 0 || other_emp === '') return alert("시스템 에러");
+  		$.ajax({
+  			type: 'POST',
+  			url: '/sendAndCreate.ajax',
+  			data: {
+  				//'idx': idx,
+  				'emp_id': emp_id,
+  				'other_emp' : other_idx,
+  				'content': content
+  			},
+  			dataType: 'JSON',
+  			success: function(data) {
+  				console.log(data.result);
+  				$('#Modal3').modal('hide');
+         		$('#message-text').val('');
+  				loadChatRooms(emp_id);
+  				messageCall(data.room_idx, emp_idx , other_idx);
+  				console.log("room_idx:::::",data.room_idx);
+         		subjectCall(other_idx);
+  			}, error: function(error) {
+  				console.log(error);
+  			}
+  		});
+  	}
+      
+ /*    
 	  document.addEventListener('DOMContentLoaded', function() {
 		  console.log("00000002번쨰 모달0000000");
 	    document.getElementById('openSecondModal').addEventListener('click', function(event) {
@@ -539,22 +600,14 @@
 	      secondModal.show();
 	    });
 	  });  
-	 
+	  */
 	  
 	  
 
-	  function selectChatRoom(element) {
-		  console.log("클릭한 대화방 색 변경");
-		  console.log("element",element);
-	      // 모든 채팅방 리스트에서 선택된 클래스 제거
-	      var chatRooms = document.querySelectorAll('.chats-user .common-space');
-	      chatRooms.forEach(function(chatRoom) {
-	          chatRoom.classList.remove('selected-chat');
-	      });
-
-	      // 클릭된 채팅방에 선택된 클래스 추가
-	      element.classList.add('selected-chat');
-	  }
+	  
+		
+	  
+	  
 	</script>
 	
     <!-- latest jquery-->
