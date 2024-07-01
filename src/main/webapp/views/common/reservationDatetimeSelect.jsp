@@ -297,6 +297,7 @@
 			// 일정의 시작 날짜, 종료날짜를 선택한 날짜로 설정한다
 			console.log(info);
 			timeEl.classList.remove('fc-disabled');
+			timeEl
 		}
 	});
 	calendar.render(); // 캘린더를 그려냄(렌더링)    
@@ -309,6 +310,14 @@
                 right: ''
             },
             allDaySlot: false,
+            selectable: true, // 캘린더에서 드래그하여 일정 선택 기능을 허용
+    		dateClick: function(info) { // 캘린더에서 날짜를 클릭 이벤트
+    			// 일정 추가하는 창(모달)을 보여준다
+    			// 일정의 시작 날짜, 종료날짜를 선택한 날짜로 설정한다
+    			console.log(info);
+    			timeEl.classList.remove('fc-disabled');
+    			timeEl
+    		},            
             height: 'auto',
             contentHeight: 'auto',
             locale: 'ko', // 언어를 한글로 변경
