@@ -181,19 +181,6 @@
 											</a>
 										</div>
 									</div>
-								</div>
-								<div class="col-xxl-4 col-sm-8 box-col-3 xl-4">
-									<div class="card common-hover">
-										<div class="card-body">
-											<a class="effect-card" href="/document/4/write.go" style="display: flex; align-items: center; flex-direction: column;">
-												<br/>
-												<img class="img-fluid" src="/assets/images/document/document.png" alt="" width="100px" height="100px">
-												<br/>
-												<br/>
-												<h2 class="text-truncate">보고서</h2>
-											</a>
-										</div>
-									</div>
 								</div>																														
 							</div>
 						</div>
@@ -267,22 +254,6 @@
 	<!-- Plugin used-->
 	<script>
 		new WOW().init();
-	</script>
-		<script>
-		/* [jeong] 헤더와 page-body 의 간격이 벌어져서 스크립트로 맞춤 */
-	    var pageHeader = document.querySelector('.page-header');
-	    var pageBody = document.querySelector('.page-body');
-	
-	    if (pageHeader && pageBody) {
-	        var headerHeight = pageHeader.offsetHeight;
-	        pageBody.style.marginTop = headerHeight + 'px';
-	    }  
-    </script>
-	<script>
-		var msg = '${msg}';
-		if (msg != '') {
-			alert(msg);
-		}
 	</script>
 </body>
 </html>

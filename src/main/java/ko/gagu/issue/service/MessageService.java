@@ -1,5 +1,6 @@
 package ko.gagu.issue.service;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +24,16 @@ public class MessageService {
 	@Autowired MessageDAO messageDAO;
 	@Autowired EmployeeDAO employeeDAO;
 	
-	public Map<String, Object> roomListCallAjax(int emp_id, String messageSearch) {
+	public String upload_root="C:/upload/";
+	
+	public Map<String, Object> roomListCallAjax(String emp_id, String messageSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.info("emp_id : " + emp_id);
-		List<MessageDTO> roomList = messageDAO.roomList(emp_id, messageSearch);
+		
+		int idx_emp = employeeDAO.getEmpIdx(emp_id);
+		logger.info("emp_id -> idx_emp: " + idx_emp);
+		
+		List<MessageDTO> roomList = messageDAO.roomList(idx_emp, messageSearch);
 		
 		for (int i = 0; i < roomList.size(); i++) {
 			MessageDTO messageDTO = roomList.get(i);
@@ -36,14 +43,15 @@ public class MessageService {
 			
 			// 메시지가 없으면 리스트에서 뺴기
 		  	if(messageDTO.getMsg_count() != 0) {
-		  		MessageDTO lastContent = messageDAO.lastContent(messageDTO.getIdx_messageroom(), messageDTO.getOther_emp(), emp_id);
+		  		MessageDTO lastContent = messageDAO.lastContent(messageDTO.getIdx_messageroom(), messageDTO.getOther_emp(), idx_emp);
 		  		String content = lastContent.getContent();
 		  		Timestamp send_time = lastContent.getSend_datetime();
-//		  		String new_picname = lastContent.getNew_picname();
+		  		String new_picname = lastContent.getFile_name();
+		  		logger.info("new_picname: " + new_picname);
 		  		
 		  		messageDTO.setContent(content);
 		  		messageDTO.setReg_date(send_time);
-//		  		messageDTO.setNew_picname(new_picname);		  		
+		  		messageDTO.setFile_name(new_picname); 		
 		  	} else {				
 		  		roomList.remove(i);
 		  		i = i - 1;
@@ -52,16 +60,20 @@ public class MessageService {
 		}
 		
 		map.put("roomList", roomList);
-		
+		logger.info("map : "+ map);
 		return map;
 	}
 
-	public Map<String, Object> messageCallAjax(int idx, String emp, String otherEmp) {
+	public Map<String, Object> messageCallAjax(int idx, String emp_id, int otherEmp) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		logger.info("map : " + map); 
+		
+		int idx_emp = employeeDAO.getEmpIdx(emp_id);
+		
 		
 		List<Integer> messageIdxs = new ArrayList<Integer>();
-		List<MessageDTO> messageList = messageDAO.messageList(idx, emp, otherEmp); // [min] 쪽지 내역 가져오기
-		messageDAO.messageRead(idx, emp, otherEmp);
+		List<MessageDTO> messageList = messageDAO.messageList(idx, idx_emp, otherEmp); // [min] 쪽지 내역 가져오기
+		messageDAO.messageRead(idx, idx_emp, otherEmp);
 		
 		/*
 		for (int i = 0; i < messageList.size(); i++) {
@@ -83,15 +95,21 @@ public class MessageService {
 		
 		map.put("messageList", messageList);
 		map.put("msgIdxs", messageIdxs);
+		map.put("idx_emp", idx_emp);
+		logger.info("map : " + map);
 		
 		return map;
 	}
 
-	public Map<String, Object> messageSend(int idx, String emp_id, String other_emp, String content) {
+	public Map<String, Object> messageSend(int idx, String emp_id, int other_emp, String content) {
 		boolean result = false;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		int row = messageDAO.sendMessage(content, emp_id, other_emp, idx);
+		
+		int idx_emp = employeeDAO.getEmpIdx(emp_id);
+		logger.info("emp_id -> idx_emp: " + idx_emp);
+		
+		int row = messageDAO.sendMessage(content, idx_emp, other_emp, idx);
 		if(row == 1) {
 			result = true;
 			// messageDAO.alarmSend(idx+"번 게시물 : "+content, emp_id);
@@ -111,10 +129,14 @@ public class MessageService {
 		return map;
 	}
 
-	public Map<String, Object> getContact(int emp_id, String contactSearch) {
+	public Map<String, Object> getContact(String emp_id, String contactSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.info("emp_id : " + emp_id);
-		List<EmployeeDTO> ContactList = employeeDAO.getContact(emp_id, contactSearch);
+		
+		int idx_emp = employeeDAO.getEmpIdx(emp_id);
+		logger.info("emp_id -> idx_emp: " + idx_emp);
+		
+		List<EmployeeDTO> ContactList = employeeDAO.getContact(idx_emp, contactSearch);
 		
 		map.put("ContackList", ContactList);
 		return map;
@@ -123,6 +145,51 @@ public class MessageService {
 	public Map<String, Object> getempDetail(int idx_emp) {
 		
 		return employeeDAO.getempDetail(idx_emp);
+	}
+
+	
+	
+	public Map<String, Object> sendAndCreate(String emp_id, int other_emp, String content) {
+		boolean result = false;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int idx_emp = employeeDAO.getEmpIdx(emp_id);
+		logger.info("emp_id -> idx_emp: " + idx_emp);
+		
+		int room_idx = messageDAO.roomExist(idx_emp, other_emp);
+		logger.info("room_idx : " + room_idx);
+		if(room_idx > 0) {
+			int row = messageDAO.sendMessage(content, idx_emp, other_emp, room_idx);
+			if(row == 1) {
+				result = true;
+			} 
+			
+			map.put("room_idx", room_idx);
+			map.put("result", "보낸 결과"+result);
+			logger.info("map : " + map);
+		}else{
+			map.put("param1", idx_emp);
+			map.put("param2", other_emp);
+			
+			messageDAO.roomCreate(map);
+			
+			//int new_room_idx = (Integer)map.get("insert_id");
+			int new_room_idx = ((BigInteger) map.get("insert_id")).intValue();
+			 map.put("room_idx", new_room_idx);
+			 logger.info("map : " + map);
+			 if (new_room_idx > 0) {
+		            int row = messageDAO.sendMessage(content, idx_emp, other_emp, new_room_idx);
+		            if(row == 1) {
+		                result = true;
+		            } 
+		            map.put("result", "방 생성 및 메시지 보낸 결과: " + result);
+		       } 
+		}
+		
+		
+		
+		
+		return map;
 	}
 
 	

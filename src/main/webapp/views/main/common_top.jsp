@@ -5,7 +5,6 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	<style>
-	    
     	
 	</style>
 	
@@ -171,6 +170,8 @@
              
              $(document).ready(function() {
             	    $('#messageButton').click(function(e) {
+            	    	var emp_id = "${sessionScope.emp_id}";
+            	    	console.log("세션ID: ", emp_id);
             	        e.preventDefault();
             	        $.ajax({
             	            url: '/noteMessage2',
@@ -185,8 +186,7 @@
             	               
             	                
             	                // 대화방 목록을 불러오는 함수 호출
-            	                loadChatRooms();
-            	              //  loadContact();
+            	                loadChatRooms(emp_id);
             	            },
             	            error: function() {
             	                alert('쪽지함을 불러오는데 실패했습니다.');
@@ -197,12 +197,14 @@
              
              function loadContact(search){
             	 console.log("연락처 불러오기 아작스 요청");
+            	 var emp_id = "${sessionScope.emp_id}";
             	 $.ajax({
                      url: '/getContact.ajax',
                      method: 'POST',
                      dataType:'JSON',
                      data: {
-                    	 'contactSearch': search,                    	 
+                    	 'contactSearch': search,
+                    	 'emp_id':emp_id
                      },
                      success: function(data) {
                     	 // console.log(data);
@@ -216,7 +218,7 @@
              }
              
              function drawContactList(data){
-            	 console.log(data);
+            	 // console.log(data);
             	 $('.contact-wrapper').empty();
             	 var content = '';
             	 
@@ -224,7 +226,7 @@
           			content +=	'<ul class="border-0">'; 
           			content +=		'<li class="common-space">';
           			content +=		'<div class="chat-time">';
-          			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+          			content +=			'<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">';
           			content +=		'<div>';
           			content +=		'<span>'+item.emp_name+'</span>';
           			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
@@ -235,7 +237,7 @@
           			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
           			content +=		'</svg>';
           			content +=		'<div class="dropdown-menu dropdown-menu-end">';
-          			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
+          			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\', \'' + item.idx_employee + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
           			content +=		'<button id="openSecondModal" onclick="secModal2(\'' + item.idx_employee + '\')" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button>';
           			content +=		'</div>';
           			content +=		'</li>';
@@ -244,18 +246,19 @@
             	 $('.contact-wrapper').append(content);
              }
              
-            
+     		
              
-             
-             function loadChatRooms(search) {
+             function loadChatRooms(emp_id, search) {
             	 console.log("대화방 불러오기 아작스 요청");
             	 console.log(search);
+            	 console.log(emp_id);
                  $.ajax({
                      url: '/getChatRooms',
                      method: 'POST',
                      dataType:'JSON',
                      data: {
-                    	 'messageSearch': search,                    	 
+                    	 'messageSearch': search,
+                    	 'emp_id': emp_id
                      },
                      success: function(data) {
                     	 // console.log(data);
@@ -270,12 +273,14 @@
              }
              
            
-             
+
            
               
              
              function drawRoomList(data) {
             	// console.log(data);
+            	var emp_id = "${sessionScope.emp_id}";
+            	// console.log(emp_id);
          		$('.chats-user').empty();
          		var content = '';
          		if (!data.roomList || data.roomList.length === 0) {
@@ -283,10 +288,10 @@
          		}
          		
          		for (item of data.roomList) {
-         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\'); selectChatRoom(this);">'; 
+         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
-         			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+         			content +=			'<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">';
 //         			content +=			'<div class="status bg-success"></div>';
          			content +=		'</div>';
          			content +=		'<div>';
@@ -315,19 +320,36 @@
          	  
          	}
          	
-             function viewRoomContent(idx, other_emp){
-         		var emp_id = 1;
+             var chatIntervalId; // interval ID를 저장할 전역 변수
+
+             
+             function viewRoomContent(idx, other_emp, emp_id){
+            	
+            	// 기존 interval이 있으면 취소
+           	    if (chatIntervalId) {
+           	        clearInterval(chatIntervalId);
+           	    }
+            	
+            	//console.log("방번호 : ", idx);
+            	//console.log("상대방 idx : ", other_emp);
+            	//console.log("자신 id 서버에서 idx로 바꿔야함 : ", emp_id);
          		messageCall(idx, emp_id , other_emp);
          		subjectCall(other_emp);
          		
          		chat_idx = idx;
          		chat_user = other_emp;
+         		
+         		
+         		// 5초마다 새 메시지 로드
+         	    chatIntervalId = setInterval(function() {
+         	    	messageCall(idx, emp_id , other_emp);
+         	    }, 5000);
          	}
              
              
             
              function subjectCall(other_emp) {
-            	 console.log(other_emp);
+            	 // console.log(other_emp);
          		$.ajax({
          			type: 'POST',
          			url: '/subjectCall.ajax',
@@ -348,40 +370,51 @@
              
              
             function drawSubject(data){
-            	$('.chat-time').empty();
+            	$('.right-sidebar-title').empty();
             	var content = '';
             	 
             	
             	for (item of data.subjectCall) {	
+            		content += '<div class="common-space">';
+            		content += '<div class="chat-time">';
 	    			content += '<div class="active-profile">';
-	    			content += '<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
-	    			content += '<div class="status bg-success"></div>';
+	    			content += '<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">'; // 이미지 불러오는거 해야함 (다른곳도)
 	    			content +=		'</div>';
 	    			content +=		'<div>';
 	    			content +=		'<span>'+item.other_name+'</span>';
 	    			content +=		'<p>'+item.de_name+'</p>';
 	    			content +=		'</div>';
-	    			
+	    			content +=		'</div>';
+	    			content +=		'<div class="d-flex gap-2">';
+	    			content +=		'<div class="contact-edit chat-alert"><i class="icon-info-alt"></i></div>';
+	    			content +=		'<div class="contact-edit chat-alert">';
+	    			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
+	    			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
+	    			content +=		'</svg>';
+	    			content +=		'<div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>';
+	    			content +=		'</div>';
+	    			content +=		'</div>';
+	    			content +=		'</div>';
             	}
 
-        		$('.chat-time').append(content);
+        		$('.right-sidebar-title').append(content);
             }
              
              
          	// 특정 방 message 출력
-         	function messageCall(idx, emp, otherEmp) {
+         	function messageCall(idx, emp_id, otherEmp) {
          		$.ajax({
          			type: 'POST',
          			url: '/messageCall.ajax',
          			data: {
          				'idx': idx,
-         				'emp': emp,
+         				'emp_id': emp_id,
          				'otherEmp': otherEmp
          			},
          			dataType: 'JSON',
          			success: function(data) {
          				drawMessage(data);
-         				loadChatRooms();
+         				loadChatRooms("${sessionScope.emp_id}");
          			}, error: function(error) {
          				console.log(error);
          			}
@@ -395,64 +428,66 @@
          	var checkDate;
          	/* 대화 내용 출력 */
          	function drawMessage(data) {
-        		var emp = 1;  // [jae]: 임의로 1 넣어둠 ${loginInfo.emp}
-        		var checkHours = 0;
-        		var checkMinutes = 0;
-        		
-        		$('.msger-chat').empty();
-        		
-        		var content = '';
-        		
-
-        		if (!data.messageList || data.messageList.length === 0) {
-        			content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';	/* <p class="no-message">아무것도 없따... <i class="fa-solid fa-message"></i></p> */
-        		}
-        		
-        			
-        		
-        		for (item of data.messageList) {
-        			var date = new Date(item.send_datetime);
-        			var dateStr = date.toLocaleDateString("ko-KR");
-        			var hours = date.getHours();
-        			var minutes = date.getMinutes();
-        			
-        			//console.log(item.new_picname);
-        
-        			
-        			if(emp === item.receiver) {
-        				content +=	'<div class="msg left-msg">';
-        				content +=		'<div class="msg-img"></div>';
-        				content +=		'<div class="msg-bubble">';
-        				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">'+item.other_name+'</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
-        				content +=		'</div>';
-        				content +=		'<div class="msg-text">'+item.content+'</div>';
-        				content +=		'</div>';
-        			}
-        			
-        			else if (emp === item.sender) {
-        				content +=	'<div class="msg right-msg">';
-        				content +=		'<div class="msg-img"></div>';
-        				content +=		'<div class="msg-bubble">';
-        				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">나</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
-        				content +=		'</div>';
-        				content +=		'<div class="msg-text">'+item.content+'</div>';
-	        			content +=		'</div>';
-        			
-        			}
-	    				content +=		'</div>';
-	    				content +=		'</div>';
-     
-        		}
-        		
-        		$('.msger-chat').append(content);
-         	}
+			    var idx_emp = data.idx_emp; 
+			    console.log("idx_emp : ", idx_emp);
+			    var checkHours = 0;
+			    var checkMinutes = 0;
+			    
+			    var chatContainer = $('.msger-chat');
+			    var isScrolledToBottom = chatContainer.scrollTop() + chatContainer.innerHeight() >= chatContainer[0].scrollHeight;
+			    
+			    chatContainer.empty();
+			    
+			    var content = '';
+			
+			    if (!data.messageList || data.messageList.length === 0) {
+			        content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';
+			    }
+			    
+			    for (item of data.messageList) {
+			        var date = new Date(item.send_datetime);
+			        var dateStr = date.toLocaleDateString("ko-KR");
+			        var hours = date.getHours();
+			        var minutes = date.getMinutes();
+			        
+			        if(idx_emp === item.receiver) {
+			            content += '<div class="msg left-msg">';
+			            content += '<div class="msg-img"><img class="msg-img" alt="" src="/img/ahruru.png"></div>';
+			            content += '<div class="msg-bubble">';
+			            content += '<div class="msg-info">';
+			            content += '<div class="msg-info-name">' + item.other_name + '</div>';
+			            content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+			            content += '</div>';
+			            content += '<div class="msg-text">' + item.content + '</div>';
+			            content += '</div>';
+			        }
+			        else if (idx_emp === item.sender) {
+			            if(item.message_delete == 0){
+			                content += '<div class="msg right-msg">';
+			                content += '<div class="msg-img"></div>';
+			                content += '<div class="msg-bubble">';
+			                content += '<div class="msg-info">';
+			                content += '<div class="msg-info-name">나</div>';
+			                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+			                content += '</div>';
+			                content += '<div class="msg-text">' + item.content + '</div>';
+			                content += '</div>';
+			            }
+			        }
+			        content += '</div>';
+			        content += '</div>';
+			    }
+			    
+			    chatContainer.append(content);
+			    
+			    // 새로운 메시지가 있을 때만 스크롤을 아래로 내림
+			    if (isScrolledToBottom) {
+			        chatContainer.scrollTop(chatContainer[0].scrollHeight);
+			    }
+			}
          	
          	
-         	
+         		
          	
          	
          	
