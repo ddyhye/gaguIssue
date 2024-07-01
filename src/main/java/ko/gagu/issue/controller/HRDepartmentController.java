@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.dto.EmployeeDTO;
@@ -118,21 +120,28 @@ public class HRDepartmentController {
     }
 	
 	@PostMapping(value="/employeeInsert")
-		public ResponseEntity<Map<String, Object>> createEmployee(@RequestBody EmployeeDTO employee) {
-	        Map<String, Object> response = new HashMap<>();
-	        
-	        try {
-	        	hrDepartmentService.createEmployee(employee);
-	            response.put("status", "success");
-	            response.put("message", "Employee created successfully");
-	            return ResponseEntity.ok(response);
-	        } catch (Exception e) {
-	            response.put("status", "error");
-	            response.put("message", "Failed to create employee: " + e.getMessage());
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-	        }
-	    
+	@ResponseBody
+	public Map<String, Object> createEmployee(MultipartFile profileImage,HRDepartmentDTO HRDepartment) {
+	    Map<String, Object> response = new HashMap<>();
+	    logger.info("employeeInsert");
+	    logger.info("image : {}", profileImage);
+	    logger.info("프로필 이미지 origin name >> "+profileImage.getOriginalFilename());
+	
+	    try {
+	        hrDepartmentService.createEmployee(profileImage,HRDepartment);
+	        response.put("status", "success");
+	        response.put("message", "사원 등록 성공");
+	        logger.info("성공");
+	        return response;
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 자세한 오류 메시지를 로그에 기록
+	        response.put("status", "error");
+	        response.put("message", "사원 등록 실패: " + e.getMessage());
+	        logger.info("실패");
+	        return response;
+	    }
 	}
+
 		
 
 }

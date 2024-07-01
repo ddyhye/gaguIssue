@@ -22,7 +22,11 @@ public interface HRDepartmentDAO {
 	List<HRDepartmentDTO> getAllEmployees();
 
 
-	void createEmployee(EmployeeDTO employee);
+	void createEmployee(HRDepartmentDTO hRDepartment);
+
+	void insertLeaveAccruals(HRDepartmentDTO hRDepartment);
+
+	void saveProfileImagePath(String oriFileName, String newFileName, int idx_employee);
 
 	
 

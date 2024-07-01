@@ -25,12 +25,14 @@ public class HRDepartmentDTO {
 	private String emp_email_pw;
 	private String emp_phone_number;
 	private Date emp_birth_date;
-	private Timestamp emp_hire_date;
-	private Timestamp emp_term_date;
+	private Date emp_hire_date;
+	private Date emp_term_date;
 	private String emp_address;
 	private boolean first_login;
 	private String de_char;
 	private String de_name;
+	private String title_name;
+	private int leave_days;
 	
 	
 	
@@ -143,16 +145,16 @@ public class HRDepartmentDTO {
 	public void setEmp_birth_date(Date emp_birth_date) {
 		this.emp_birth_date = emp_birth_date;
 	}
-	public Timestamp getEmp_hire_date() {
+	public Date getEmp_hire_date() {
 		return emp_hire_date;
 	}
-	public void setEmp_hire_date(Timestamp emp_hire_date) {
+	public void setEmp_hire_date(Date emp_hire_date) {
 		this.emp_hire_date = emp_hire_date;
 	}
-	public Timestamp getEmp_term_date() {
+	public Date getEmp_term_date() {
 		return emp_term_date;
 	}
-	public void setEmp_term_date(Timestamp emp_term_date) {
+	public void setEmp_term_date(Date emp_term_date) {
 		this.emp_term_date = emp_term_date;
 	}
 	public String getEmp_address() {
@@ -178,6 +180,18 @@ public class HRDepartmentDTO {
 	}
 	public void setDe_name(String de_name) {
 		this.de_name = de_name;
+	}
+	public String getTitle_name() {
+		return title_name;
+	}
+	public void setTitle_name(String title_name) {
+		this.title_name = title_name;
+	}
+	public int getLeave_days() {
+		return leave_days;
+	}
+	public void setLeave_days(int leave_days) {
+		this.leave_days = leave_days;
 	}
 
 	
