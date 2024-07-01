@@ -82,7 +82,7 @@
 	</select>
 	
 	<!-- [jeong] 해당 문서에 접근할 권한(작성자, 결재권자, 부서원)이 무엇인지 그리고 결재 순서가 몇번인지 알려줌 -->
-	<select id="getApproval" resultType="approval">
+	<select id="getApprovalPermission" resultType="approval">
 		SELECT
 			att.idx_approval AS idxApproval,
 			att.idx_employee AS idxEmployee,
@@ -119,6 +119,18 @@
 		FROM filestore_tb ft 
 		WHERE ft.idx_ref = #{idxApproval} AND (ft.idx_filetype = 4 OR ft.idx_filetype = 8)
 	</select>
+
+	<select id="getApproval" resultType="ko.gagu.issue.dto.ApprovalDTO">
+		SELECT 
+			idx_approval AS idxApproval,
+			idx_employee AS idxEmployee,
+			idx_dc AS idxDc,
+			final_ap_status AS finalApStatus,
+			written_datetime AS writtenDatetime,
+			ap_content AS apContent,
+			ap_title AS apTitle 
+		FROM approval_tb WHERE idx_approval = #{idxApproval}
+	</select>
 	
 	<!-- [jeong] 해당 문서의 결재 라인의 데이터를 가져옴 -->
 	<select id="getApprovalLineList">
@@ -143,18 +155,163 @@
 		JOIN department_tb dt ON dt.idx_department = et.idx_department
 		ORDER BY alt.ap_step
 	</select>
+
+	<select id="fetchDocumentList" resultType="document">
+		select  
+			at.ap_title,
+			at.idx_employee,
+			at.idx_approval,
+			dct.dc_name,
+			et.emp_name,
+			dt.de_name,
+			at.final_ap_status,
+			DATE_FORMAT(at.written_datetime, '%Y/%m/%d %H:%i') AS written_datetime
+		from approval_tb `at`
+		join document_category_tb dct ON dct.idx_dc = at.idx_dc
+		join employee_tb et ON et.idx_employee = at.idx_employee
+		join department_tb dt ON dt.idx_department = et.idx_department
+		where
+			at.idx_employee = #{idxEmployee}
+			or EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = 6)
+			or et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
+		order by at.written_datetime desc
+		limit 0, 13
+	</select>
 	
-	<update id="approval">
+	<select id="fetchFilterDocumentList" resultType="document">
+		select  
+			at.ap_title,
+			at.idx_employee,
+			at.idx_approval,
+			dct.dc_name,
+			et.emp_name,
+			dt.de_name,
+			at.final_ap_status,
+			DATE_FORMAT(at.written_datetime, '%Y/%m/%d %H:%i') AS written_datetime
+		from approval_tb `at`
+		join document_category_tb dct ON dct.idx_dc = at.idx_dc
+		join employee_tb et ON et.idx_employee = at.idx_employee
+		join department_tb dt ON dt.idx_department = et.idx_department
+		where
+			1 = 1 
+	    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
+	    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= at.written_datetime
+	    </if>
+	    <if test="paging.endDate != null and !paging.endDate.equals('')">
+	    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= at.written_datetime
+	    </if>			
+	    <choose>
+		    <when test="paging.filter != null and paging.filter.equals('pending')">
+		    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('rejected')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '반려'
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('approved')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '승인'
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('retracted')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '회수'
+		    </when>				        		    		    
+		    <otherwise>
+		    	AND (et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
+		    	OR at.idx_employee = #{idxEmployee}
+				OR EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = 6))
+		    </otherwise>
+	    </choose>		
+		order by at.written_datetime desc
+		limit #{paging.page}, 13
+	</select>
+	
+	<update id="approvalLine">
 		UPDATE approval_line_tb SET is_approval = 1, approval_datetime = current_timestamp()
 			WHERE idx_approval = #{idxApproval} AND idx_approval_line = #{idxApprovalLine}
 	</update>
 	
-	<update id="reject">
+	<update id="approval">
+		UPDATE approval_tb SET final_ap_status = '승인' WHERE idx_approval = #{idxApproval}
+	</update>
+	
+	<update id="rejectLine">
 		UPDATE approval_line_tb SET is_approval = 0, approval_datetime = current_timestamp(), ap_comment = #{apComment}
 			WHERE idx_approval = #{idxApproval} AND idx_approval_line = #{idxApprovalLine}
+	</update>
+	
+	<update id="reject">
+		UPDATE approval_tb SET final_ap_status = '반려' WHERE idx_approval = #{idxApproval}
 	</update>
 	
 	<update id="retract">
 		UPDATE approval_tb SET final_ap_status = '회수' WHERE idx_approval = #{idxApproval}
 	</update>
+	
+	<insert id="insertLeave">
+		INSERT INTO leave_usage_tb (idx_employee, lu_usage_days, lu_start_date, lu_end_date) 
+			VALUES (#{idxEmployee}, #{days}, #{startDate}, #{endDate})
+	</insert>
+	
+	<insert id="insertLeaveAccruals">
+		INSERT INTO leave_accruals_tb (idx_employee, leave_days, usage_days)
+			VALUES (#{idxEmployee}, 15, 0)
+	</insert>
+	
+	<select id="isLeaveAccruals" resultType="integer">
+		SELECT COUNT(*) FROM leave_accruals_tb WHERE idx_employee = #{idxEmployee}
+	</select>
+	
+	<update id="updateLeaveAccruals">
+		UPDATE leave_accruals_tb SET leave_days = leave_days - #{days}
+			,usage_days = usage_days + #{days} 
+			,accrual_date = CURRENT_TIMESTAMP() 
+		WHERE idx_employee = #{idxEmployee}
+	</update>
+	
+	<select id="getAllTotalPages" resultType="integer">
+		select  
+			ceil(count(*) / 13)
+		from approval_tb `at`
+		join document_category_tb dct ON dct.idx_dc = at.idx_dc
+		join employee_tb et ON et.idx_employee = at.idx_employee
+		join department_tb dt ON dt.idx_department = et.idx_department
+		where
+			at.idx_employee = #{idxEmployee}
+			or EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = 6)
+			or et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
+	</select>
+	
+	<select id="getFilterTotalPages" resultType="integer">
+		select  
+			ceil(count(*) / 13)
+		from approval_tb `at`
+		join document_category_tb dct ON dct.idx_dc = at.idx_dc
+		join employee_tb et ON et.idx_employee = at.idx_employee
+		join department_tb dt ON dt.idx_department = et.idx_department
+		where
+			1 = 1
+	    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
+	    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= at.written_datetime
+	    </if>
+	    <if test="paging.endDate != null and !paging.endDate.equals('')">
+	    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= at.written_datetime
+	    </if>			
+	    <choose>
+		    <when test="paging.filter != null and paging.filter.equals('pending')">
+		    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('rejected')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '반려'
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('approved')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '승인'
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('retracted')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '회수'
+		    </when>			    
+		    <otherwise>
+		    	AND (et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
+		    	OR at.idx_employee = #{idxEmployee}
+				OR EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = 6))
+		    </otherwise>
+	    </choose>
+	</select>	
 </mapper>
