@@ -43,20 +43,23 @@
 	
 	
 	<select id="lastContent" resultType="message">
-		SELECT mht.msg_content AS content, mht.send_datetime
-		FROM message_history_tb mht, messageroom_tb mt 
-	 WHERE mht.idx_messageroom = mt.idx_messageroom AND mht.idx_messageroom = #{param1}
-	 	AND mt.receiver IN (#{param2},#{param3})
-	 	AND mt.sender IN (#{param2},#{param3})
-	 	AND ((mt.receiver=#{param3} AND mht.message_delete='N') OR (mt.sender=#{param3} and mht.message_delete='n'))
+	 	
+	 	SELECT mht.msg_content as content, mht.send_datetime, p.file_name
+		FROM message_history_tb mht
+		LEFT JOIN (SELECT ft.idx_ref, ft.file_name FROM filestore_tb ft WHERE ft.idx_ref = #{param2} AND ft.idx_filetype = 1) AS p ON mht.receiver = p.idx_ref
+	 WHERE mht.idx_messageroom = #{param1}
+	 	AND mht.receiver IN (#{param2},#{param3})
+	 	AND mht.sender IN (#{param3},#{param2})
+	 	AND ((mht.receiver=#{param2} AND mht.message_delete ='N') OR (mht.sender=#{param3} and mht.message_delete ='n'))
 	 	ORDER BY mht.send_datetime DESC LIMIT 1
+	 	
 	</select>
 	
 	
 	<select id="messageList" resultType="message">
 		SELECT
 		mht.idx_message
-		,IF (mht.receiver = #{param2}, mht.sender, mht.receiver) AS other_emp
+		,IF (mht.receiver = #{idx_emp}, mht.sender, mht.receiver) AS other_emp
 		,(SELECT et.emp_name FROM employee_tb et WHERE et.idx_employee = other_emp) AS other_name
 		,mht.msg_content as content
 		,mht.send_datetime
@@ -68,9 +71,9 @@
 		,mht.message_delete 
 	FROM messageroom_tb mt, message_history_tb mht  
 	WHERE mt.idx_messageroom = mht.idx_messageroom 
-	AND mht.idx_messageroom = #{param1}
-	AND (mt.receiver IN(#{param2},#{param3}))
-	AND (mt.sender IN(#{param2},#{param3}))
+	AND mht.idx_messageroom = #{idx}
+	AND (mt.receiver IN(#{idx_emp},#{otherEmp}))
+	AND (mt.sender IN(#{idx_emp},#{otherEmp}))
 	</select>
 	
 	<update id="messageRead">
@@ -88,10 +91,11 @@
 
 
 	<select id="subjectCall" resultType="message">
-		SELECT et.emp_name as other_name, dt.de_name 
-		FROM employee_tb et, department_tb dt 
-		WHERE et.idx_department = dt.idx_department AND idx_employee = #{param1}
- 
+ 		SELECT et.idx_employee, et.emp_name as other_name, dt.de_name, p.file_name 
+		FROM employee_tb et
+		JOIN department_tb dt ON et.idx_department = dt.idx_department 
+		LEFT JOIN (SELECT ft.idx_ref, ft.file_name FROM filestore_tb ft WHERE ft.idx_ref = #{param1} AND ft.idx_filetype = 1) AS p ON et.idx_employee = p.idx_ref
+		WHERE idx_employee = #{param1}
 	</select>
 	
 	<select id="roomExist" resultType="java.lang.Integer">

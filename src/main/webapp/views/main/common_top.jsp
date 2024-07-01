@@ -226,7 +226,7 @@
           			content +=	'<ul class="border-0">'; 
           			content +=		'<li class="common-space">';
           			content +=		'<div class="chat-time">';
-          			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+          			content +=			'<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">';
           			content +=		'<div>';
           			content +=		'<span>'+item.emp_name+'</span>';
           			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
@@ -291,7 +291,7 @@
          			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
-         			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+         			content +=			'<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">';
 //         			content +=			'<div class="status bg-success"></div>';
          			content +=		'</div>';
          			content +=		'<div>';
@@ -378,7 +378,7 @@
             		content += '<div class="common-space">';
             		content += '<div class="chat-time">';
 	    			content += '<div class="active-profile">';
-	    			content += '<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+	    			content += '<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">'; // 이미지 불러오는거 해야함 (다른곳도)
 	    			content +=		'</div>';
 	    			content +=		'<div>';
 	    			content +=		'<span>'+item.other_name+'</span>';
@@ -428,74 +428,66 @@
          	var checkDate;
          	/* 대화 내용 출력 */
          	function drawMessage(data) {
-        		var idx_emp = data.idx_emp; 
-        		console.log("idx_emp : ", idx_emp);
-        		var checkHours = 0;
-        		var checkMinutes = 0;
-        		
-        		$('.msger-chat').empty();
-        		
-        		var content = '';
-        		
-
-        		if (!data.messageList || data.messageList.length === 0) {
-        			content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';	/* <p class="no-message">아무것도 없따... <i class="fa-solid fa-message"></i></p> */
-        		}
-        		
-        			
-        		
-        		for (item of data.messageList) {
-        			var date = new Date(item.send_datetime);
-        			var dateStr = date.toLocaleDateString("ko-KR");
-        			var hours = date.getHours();
-        			var minutes = date.getMinutes();
-        			
-        			//console.log(item.new_picname);
-        
-        			
-        			if(idx_emp === item.receiver) {
-        				content +=	'<div class="msg left-msg">';
-        				content +=		'<div class="msg-img"><img class="msg-img" alt="" src="/img/ahruru.png"></div>';
-        				content +=		'<div class="msg-bubble">';
-        				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">'+item.other_name+'</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
-        				content +=		'</div>';
-        				content +=		'<div class="msg-text">'+item.content+'</div>';
-        				content +=		'</div>';
-        			}
-        			
-        			else if (idx_emp === item.sender) {
-        					
-        				if(item.message_delete == 0){
-        					
-        				content +=	'<div class="msg right-msg">';
-        				content +=		'<div class="msg-img"></div>';
-        				content +=		'<div class="msg-bubble">';
-        				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">나</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
-        				content +=		'</div>';
-        				content +=		'<div class="msg-text">'+item.content+'</div>';
-	        			content +=		'</div>';
-	        			
-        				}
-        			
-        			}
-	    				content +=		'</div>';
-	    				content +=		'</div>';
-     
-        		}
-        		
-        		$('.msger-chat').append(content);
-        		
-        		// 스크롤 가장 마지막으로 내리기
-        		$('.msger-chat').scrollTop($('.msger-chat')[0].scrollHeight);
-               
-         	}
+			    var idx_emp = data.idx_emp; 
+			    console.log("idx_emp : ", idx_emp);
+			    var checkHours = 0;
+			    var checkMinutes = 0;
+			    
+			    var chatContainer = $('.msger-chat');
+			    var isScrolledToBottom = chatContainer.scrollTop() + chatContainer.innerHeight() >= chatContainer[0].scrollHeight;
+			    
+			    chatContainer.empty();
+			    
+			    var content = '';
+			
+			    if (!data.messageList || data.messageList.length === 0) {
+			        content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';
+			    }
+			    
+			    for (item of data.messageList) {
+			        var date = new Date(item.send_datetime);
+			        var dateStr = date.toLocaleDateString("ko-KR");
+			        var hours = date.getHours();
+			        var minutes = date.getMinutes();
+			        
+			        if(idx_emp === item.receiver) {
+			            content += '<div class="msg left-msg">';
+			            content += '<div class="msg-img"><img class="msg-img" alt="" src="/img/ahruru.png"></div>';
+			            content += '<div class="msg-bubble">';
+			            content += '<div class="msg-info">';
+			            content += '<div class="msg-info-name">' + item.other_name + '</div>';
+			            content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+			            content += '</div>';
+			            content += '<div class="msg-text">' + item.content + '</div>';
+			            content += '</div>';
+			        }
+			        else if (idx_emp === item.sender) {
+			            if(item.message_delete == 0){
+			                content += '<div class="msg right-msg">';
+			                content += '<div class="msg-img"></div>';
+			                content += '<div class="msg-bubble">';
+			                content += '<div class="msg-info">';
+			                content += '<div class="msg-info-name">나</div>';
+			                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+			                content += '</div>';
+			                content += '<div class="msg-text">' + item.content + '</div>';
+			                content += '</div>';
+			            }
+			        }
+			        content += '</div>';
+			        content += '</div>';
+			    }
+			    
+			    chatContainer.append(content);
+			    
+			    // 새로운 메시지가 있을 때만 스크롤을 아래로 내림
+			    if (isScrolledToBottom) {
+			        chatContainer.scrollTop(chatContainer[0].scrollHeight);
+			    }
+			}
          	
          	
-         	
+         		
          	
          	
          	

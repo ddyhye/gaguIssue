@@ -24,6 +24,8 @@ public class MessageService {
 	@Autowired MessageDAO messageDAO;
 	@Autowired EmployeeDAO employeeDAO;
 	
+	public String upload_root="C:/upload/";
+	
 	public Map<String, Object> roomListCallAjax(String emp_id, String messageSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.info("emp_id : " + emp_id);
@@ -44,11 +46,12 @@ public class MessageService {
 		  		MessageDTO lastContent = messageDAO.lastContent(messageDTO.getIdx_messageroom(), messageDTO.getOther_emp(), idx_emp);
 		  		String content = lastContent.getContent();
 		  		Timestamp send_time = lastContent.getSend_datetime();
-//		  		String new_picname = lastContent.getNew_picname();
+		  		String new_picname = lastContent.getFile_name();
+		  		logger.info("new_picname: " + new_picname);
 		  		
 		  		messageDTO.setContent(content);
 		  		messageDTO.setReg_date(send_time);
-//		  		messageDTO.setNew_picname(new_picname);		  		
+		  		messageDTO.setFile_name(new_picname); 		
 		  	} else {				
 		  		roomList.remove(i);
 		  		i = i - 1;
@@ -57,7 +60,7 @@ public class MessageService {
 		}
 		
 		map.put("roomList", roomList);
-		
+		logger.info("map : "+ map);
 		return map;
 	}
 

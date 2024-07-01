@@ -14,7 +14,7 @@ public class MessageDTO {
 	
 	private int msg_count;
 	private int no_read;
-	private String new_picname;
+	private String file_name;
 	private String name;
 	private String other_name;
 	private Timestamp reg_date;
@@ -69,12 +69,6 @@ public class MessageDTO {
 	}
 	public void setNo_read(int no_read) {
 		this.no_read = no_read;
-	}
-	public String getNew_picname() {
-		return new_picname;
-	}
-	public void setNew_picname(String new_picname) {
-		this.new_picname = new_picname;
 	}
 	public String getName() {
 		return name;
@@ -141,6 +135,12 @@ public class MessageDTO {
 	}
 	public void setMessage_delete(int message_delete) {
 		this.message_delete = message_delete;
+	}
+	public String getFile_name() {
+		return file_name;
+	}
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
 	}
 	
 	
