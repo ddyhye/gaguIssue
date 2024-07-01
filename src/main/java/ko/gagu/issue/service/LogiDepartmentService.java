@@ -300,6 +300,12 @@ public class LogiDepartmentService {
 			// 재고 인벤토리에서 감소하기
 			// 이건 바코드로 하자. --> 아니지! 출고완료를 한 순간 빠져야지. 그래야 오버오더 막으니께
 			logiDeptDao.updateInventory(dto.getIdx_order());
+			
+			// 재고 출고 후, 재고가 부족한 물품이 있다면 물류관리부서에게 알림 및 토스트 보내기.
+			int lackCnt = logiDeptDao.lackCnt();
+			if (lackCnt > 0) {
+				logger.info("재고가 부족합니다... 관련 부서 직원에게 알림 보내기 >>");
+			}
 		}
 		
 		return map;

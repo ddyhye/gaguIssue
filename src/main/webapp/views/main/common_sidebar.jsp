@@ -109,37 +109,43 @@
                   
                   
                   <!-- do: 인사 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
-                      <svg class="stroke-icon">
-                        <use href="/assets/svg/icon-sprite.svg#stroke-user"></use>
-                      </svg>
-                      <svg class="fill-icon">
-                        <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
-                      </svg><span>인사 관리</span></a>
-                    <ul class="sidebar-submenu">
-                      <li><a href="employeeManage.go">직원 관리</a></li>
-                      <li><a href="list-products.go">직원 근태 현황</a></li>
-                      <li><a href="list-products.go">회사 일정 관리</a></li>
-                    </ul>
-                  </li>
+                  <!-- 인사관리부서만 보여야 함 -->
+                  <c:if test="${de_name eq '인사관리부서' || de_name eq '임원진'}">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
+	                      <svg class="stroke-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#stroke-user"></use>
+	                      </svg>
+	                      <svg class="fill-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
+	                      </svg><span>인사 관리</span></a>
+	                    <ul class="sidebar-submenu">
+	                      <li><a href="<c:url value='employeeManage.go'/>">직원 관리</a></li>
+	                      <li><a href="list-products.go">직원 근태 현황</a></li>
+	                      <li><a href="list-products.go">회사 일정 관리</a></li>
+	                    </ul>
+	                  </li>
+                  </c:if>
                   
                   
                   <!-- do: 재고 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
-                      <svg class="stroke-icon">
-                        <use href="/assets/svg/icon-sprite.svg#stroke-board"></use>
-                      </svg>
-                      <svg class="fill-icon">
-                        <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
-                      </svg><span>재고 관리</span></a>
-                    <ul class="sidebar-submenu">
-                      <li><a href="<c:url value='/logisticsDepartment/inventoryList.go'/>">Inventory</a></li>
-                      <li><a href="<c:url value='/logisticsDepartment/poWrite.go'/>">발주 서류 작성</a></li>
-                      <li><a href="<c:url value='/logisticsDepartment/receivingHistory.go'/>">입고 내역</a></li>
-                      <li><a href="<c:url value='/logisticsDepartment/orderList.go'/>">주문</a></li>
-                      <li><a href="<c:url value='/logisticsDepartment/deliveryHistory.go'/>">출고 내역</a></li>
-                    </ul>
-                  </li>
+                  <!-- 물류관리부서만 보여야 함 -->
+                  <c:if test="${de_name eq '물류관리부서' || de_name eq '임원진'}">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="javascript:void(0)">
+	                      <svg class="stroke-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#stroke-board"></use>
+	                      </svg>
+	                      <svg class="fill-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
+	                      </svg><span>재고 관리</span></a>
+	                    <ul class="sidebar-submenu">
+	                      <li><a href="<c:url value='/logisticsDepartment/inventoryList.go'/>">Inventory</a></li>
+	                      <li><a href="<c:url value='/logisticsDepartment/poWrite.go'/>">발주 서류 작성</a></li>
+	                      <li><a href="<c:url value='/logisticsDepartment/receivingHistory.go'/>">입고 내역</a></li>
+	                      <li><a href="<c:url value='/logisticsDepartment/orderList.go'/>">주문</a></li>
+	                      <li><a href="<c:url value='/logisticsDepartment/deliveryHistory.go'/>">출고 내역</a></li>
+	                    </ul>
+	                  </li>
+                  </c:if>
                   
                   
 				  <!-- do: 매출 관리 -->
@@ -153,23 +159,29 @@
                       
                       
                   <!-- do: 거래처 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.go">
-                      <svg class="stroke-icon">
-                        <use href="/assets/svg/icon-sprite.svg#stroke-learning"></use>
-                      </svg>
-                      <svg class="fill-icon">
-                        <use href="/assets/svg/icon-sprite.svg#fill-file"></use>
-                      </svg><span>거래처 관리</span></a></li>
+                  <!-- 경영지원부서만 보여야 함 -->
+                  <c:if test="${de_name eq '경영지원부서' || de_name eq '임원진'}">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.go">
+	                      <svg class="stroke-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#stroke-learning"></use>
+	                      </svg>
+	                      <svg class="fill-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#fill-file"></use>
+	                      </svg><span>거래처 관리</span></a></li>
+                  </c:if>
                       
                       
                   <!-- do: 창고 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="storageManage.go">
-                      <svg class="stroke-icon">
-                        <use href="/assets/svg/icon-sprite.svg#stroke-animation"></use>
-                      </svg>
-                      <svg class="fill-icon">
-                        <use href="/assets/svg/icon-sprite.svg#fill-file"></use>
-                      </svg><span>창고 관리</span></a></li>
+                  <!-- 경영지원부서만 보여야 함 -->
+                  <c:if test="${de_name eq '경영지원부서' || de_name eq '임원진'}">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="storageManage.go">
+	                      <svg class="stroke-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#stroke-animation"></use>
+	                      </svg>
+	                      <svg class="fill-icon">
+	                        <use href="/assets/svg/icon-sprite.svg#fill-file"></use>
+	                      </svg><span>창고 관리</span></a></li>
+                  </c:if>
                       
                       
                   <!-- do: 기타. (필요시 참조) -->

@@ -23,7 +23,7 @@ public class interCeptorConfig implements WebMvcConfigurer{
 		// 3. 인터셉터가 예외로 둘 url 패턴 등록
 		
 		List<String> excludeList = new ArrayList<String>();
-		//excludeList.add("/");
+		excludeList.add("/");
 		excludeList.add("/main*");
 		excludeList.add("/board*");
 		excludeList.add("/document*");

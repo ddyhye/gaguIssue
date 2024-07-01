@@ -20,9 +20,18 @@ public class EmployeeDTO {
 	private String cc_start_datetime;
 	private String cc_end_datetime;
 	private String cc_color;
+	private String emp;
 	
 	
 	
+	
+	
+	public String getEmp() {
+		return emp;
+	}
+	public void setEmp(String emp) {
+		this.emp = emp;
+	}
 	public int getIdx_emp_calendar() {
 		return idx_emp_calendar;
 	}

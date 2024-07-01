@@ -85,8 +85,8 @@ public class EmployeeService {
 		
 		if(encoder.matches(emp_pw, memPw)) {
 			mav.setViewName("redirect:/main/dashboard.go");
-//			EmployeeDTO dto = dao.employeeData(emp_id);
-//			session.setAttribute("loginInfo", dto);
+			EmployeeDTO dto = dao.employeeData(emp_id);
+			session.setAttribute("loginInfo", dto);
 			session.setAttribute("emp_id", emp_id);
 			rAttr.addFlashAttribute("msg","환영합니다.");
 		}else {
