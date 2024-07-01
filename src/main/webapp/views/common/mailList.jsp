@@ -145,33 +145,24 @@
 		            </div>
 		            <div class="card-body">
 		                <div class="table-responsive">
-		                    <table class="table table-bordered email-list">
-		                        <thead>
+		                    <table class="table table-bordered">
+		                    <thead>
+		                        <tr>
+		                            <th>From</th>
+		                            <th>Title</th>
+		                            <th>Content</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                        <c:forEach var="mail" items="${mailList}">
 		                            <tr>
-		                                <th>No</th>
-		                                <th>전송일자</th>
-		                                <th>제목</th>
-		                                <th>보낸이</th>
-		                                <th>조회수</th>
+		                                <td>${mail.from}</td>
+		                                <td>${mail.title}</td>
+		                                <td>${mail.content}</td>
 		                            </tr>
-		                        </thead>
-		                        <tbody>
-		                            <c:forEach var="email" items="${emailList}">
-		                                <tr>
-		                                    <td>${email.no}</td>
-		                                    <td>${email.date}</td>
-		                                    <td><a href="${email.link}">${email.subject}</a></td>
-		                                    <td>${email.sender}</td>
-		                                    <td>${email.views}</td>
-		                                </tr>
-		                            </c:forEach>
-		                            <c:if test="${empty emailList}">
-		                                <tr>
-		                                    <td colspan="5" class="text-center">이메일이 없습니다.</td>
-		                                </tr>
-		                            </c:if>
-		                        </tbody>
-		                    </table>
+		                        </c:forEach>
+		                    </tbody>
+		                </table>
 		                </div>
 		            </div>
 		            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
