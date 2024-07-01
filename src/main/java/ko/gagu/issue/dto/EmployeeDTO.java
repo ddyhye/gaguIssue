@@ -22,6 +22,7 @@ public class EmployeeDTO {
 	private String cc_color;
 	private String emp;
 	
+	private String file_name;
 	
 	
 	
@@ -227,6 +228,12 @@ public class EmployeeDTO {
 	}
 	public void setTitle_name(String title_name) {
 		this.title_name = title_name;
+	}
+	public String getFile_name() {
+		return file_name;
+	}
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
 	}
 	
 	

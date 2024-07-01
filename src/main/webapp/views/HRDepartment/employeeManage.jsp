@@ -85,7 +85,7 @@
 		    }
 		} 	
 		.table-wrapper {
-            max-height: 300px; /* 테이블 높이를 설정 */
+            max-height: 600px; /* 테이블 높이를 설정 */
             overflow-y: auto; /* 세로 스크롤 추가 */
         }
         /* 기본 테이블 스타일 */
@@ -123,8 +123,42 @@
         #registerButton{
         	margin-right : 10px;
         }
-        
-        
+        .modal-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+	    }
+	    .form-group {
+	        margin-bottom: 1rem;
+	    }
+	    .form-table {
+	        width: 100%;
+	    }
+	    .form-label {
+	        font-weight: bold;
+	    }
+	    .form-control {
+	        margin-bottom: 0.5rem;
+	    }
+	    .img-thumbnail {
+	        border-radius: 50%;
+	        border: 2px solid #ddd;
+	    }
+	    .mb-2 {
+	        margin-bottom: 1rem;
+	    }
+	    .container {
+	        width: 100%;
+	        padding: 0 15px;
+	    }
+	    .row {
+	        display: flex;
+	        flex-wrap: wrap;
+	    }
+	    .col-6 {
+	        flex: 0 0 50%;
+	        max-width: 50%;
+	    }
        
   </style>
   
@@ -171,74 +205,106 @@
           <!-- Container-fluid starts-->
           <!-- Container-fluid 시작-->
           <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <h5 class="modal-title" id="registerModalLabel">사원 등록</h5>
-	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                        <span aria-hidden="true">&times;</span>
-	                    </button>
-	                </div>
-	                <div class="modal-body">
-	                    <!-- 사원 등록 폼 -->
-	                    <form id="employeeForm">
-	                        <div class="form-header">사원 등록</div>
-	                        <table class="form-table">
-	                            <tr>
-	                                <td class="form-label">이름</td>
-	                                <td><input type="text" class="form-control" id="employeeName" name="employeeName" required></td>
-	                                <td class="form-label">전화번호</td>
-	                                <td><input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" required></td>
-	                            </tr>
-	                            <tr>
-	                                <td class="form-label">생년월일</td>
-	                                <td><input type="date" class="form-control" id="birthDate" name="birthDate" required></td>
-	                                <td class="form-label">이메일</td>
-	                                <td><input type="email" class="form-control" id="email" name="email" required></td>
-	                            </tr>
-	                            <tr>
-	                                <td class="form-label">사원번호</td>
-	                                <td><input type="text" class="form-control" id="employeeId" name="employeeId" required></td>
-	                                <td class="form-label">임시 비밀번호</td>
-	                                <td><input type="text" class="form-control" id="tempPassword" name="tempPassword" required></td>
-	                            </tr>
-	                            <tr>
-	                                <td class="form-label">부서</td>
-	                                <td>
-	                                    <select class="form-control" id="department" name="department">
-	                                        <option value="임원진">임원진</option>
-	                                        <option value="인사관리부서">인사관리부서</option>
-	                                        <option value="물류관리부서">물류관리부서</option>
-	                                        <option value="경영지원부서">경영지원부서</option>
-	                                    </select>
-	                                </td>
-	                                <td class="form-label">직위</td>
-	                                <td>
-	                                    <select class="form-control" id="position" name="position">
-	                                        <option value="부장">부장</option>
-	                                        <option value="과장">과장</option>
-	                                        <option value="대리">대리</option>
-	                                        <option value="사원">사원</option>
-	                                    </select>
-	                                </td>
-	                            </tr>
-	                            <tr>
-	                                <td class="form-label">입사일</td>
-	                                <td><input type="date" class="form-control" id="startDate" name="startDate" required></td>
-	                                <td class="form-label">퇴사일</td>
-	                                <td><input type="date" class="form-control" id="endDate" name="endDate"></td>
-	                            </tr>
-	                        </table>
-	                        
-	                    </form>
-	                </div>
-	                <div class="modal-footer">
-	                	<button type="submit" class="btn btn-primary">등록</button>
-	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="registerModalLabel">사원 등록</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <!-- 사원 등록 폼 -->
+		                <form id="employeeForm" enctype="multipart/form-data">
+		                    <!-- 상단 중앙 이미지 -->
+		                    <div class="text-center mb-4">
+		                        <label for="profileImage">
+		                            <img id="profileImagePreview" src="/img/wow.jpg"
+		                                 alt="profile" class="img-thumbnail"
+		                                 style="width: 150px; height: 150px; cursor: pointer; object-fit: cover;">
+		                        </label>
+		                        <input type="file" id="profileImage" name="profileImage" style="display: none;"
+		                               onchange="previewImage(event)">
+		                    </div>
+		                    <!-- 폼 요소 -->
+		                    <div class="container">
+		                        <div class="row">
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_name">이름</label>
+		                                <input type="text" class="form-control" id="emp_name" name="emp_name" required>
+		                            </div>
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_phone_number">전화번호</label>
+		                                <input type="tel" class="form-control" id="emp_phone_number" name="emp_phone_number" required>
+		                            </div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_birth_date">생년월일</label>
+		                                <input type="date" class="form-control" id="emp_birth_date" name="emp_birth_date" required>
+		                            </div>
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_email">이메일</label>
+		                                <input type="email" class="form-control" id="emp_email" name="emp_email" required>
+		                            </div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_id">사원번호</label>
+		                                <input type="text" class="form-control" id="emp_id" name="emp_id" required>
+		                            </div>
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_pw">임시 비밀번호</label>
+		                                <input type="text" class="form-control" id="emp_pw" name="emp_pw" required>
+		                            </div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="col-6 mb-2">
+		                                <label for="de_name">부서</label>
+		                                <select class="form-control" id="de_name" name="de_name">
+		                                    <option value="임원진">임원진</option>
+		                                    <option value="인사관리부서">인사관리부서</option>
+		                                    <option value="물류관리부서">물류관리부서</option>
+		                                    <option value="경영지원부서">경영지원부서</option>
+		                                </select>
+		                            </div>
+		                            <div class="col-6 mb-2">
+		                                <label for="title_name">직위</label>
+		                                <select class="form-control" id="title_name" name="title_name">
+		                                    <option value="부장">부장</option>
+		                                    <option value="과장">과장</option>
+		                                    <option value="대리">대리</option>
+		                                    <option value="사원">사원</option>
+		                                </select>
+		                            </div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_hire_date">입사일</label>
+		                                <input type="date" class="form-control" id="emp_hire_date" name="emp_hire_date" required>
+		                            </div>
+		                            <div class="col-6 mb-2">
+		                                <label for="emp_term_date">퇴사일</label>
+		                                <input type="date" class="form-control" id="emp_term_date" name="emp_term_date">
+		                            </div>
+		                        </div>
+		                        <div class="row">
+		                            <div class="col-6 mb-2">
+		                                <label for="leave_days">연차</label>
+		                                <input type="number" class="form-control" id="leave_days" name="leave_days" value="15" readonly>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </form>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-primary" onclick="submitEmployeeForm()">등록</button>
+		                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
 			<!-- Container-fluid Ends-->
 
 			<div class="container-fluid default-dashboard">
@@ -259,7 +325,7 @@
 			            </div>
 			
 			            <!-- 사원리스트 테이블 -->
-			            <div class="table-container">
+			            <div class="table-container table-wrapper">
 			                <table class="table">
 			                    <thead>
 			                        <tr>
@@ -324,17 +390,76 @@
           </div>
         </footer>
       </div>
-    </div>
+    
     <script>
 	    $(function() {
-	        $("#startDate").datepicker({
+	        $("#emp_hire_date").datepicker({
 	            dateFormat: "yy-mm-dd"
 	        });
-	        $("#endDate").datepicker({
+	        $("#emp_term_date").datepicker({
 	            dateFormat: "yy-mm-dd"
 	        });
 	    });
 	</script>
+	
+	<script>
+	    function previewImage(event) {
+	        var output = document.getElementById('profileImagePreview');
+	        output.src = URL.createObjectURL(event.target.files[0]);
+	        output.onload = function() {
+	            URL.revokeObjectURL(output.src);  
+	        }
+	    }
+	
+	    function resetImage() {
+	        var defaultImageSrc = '/img/wow.jpg';
+	        var profileImage = document.getElementById('profileImagePreview');
+	        profileImage.src = defaultImageSrc;
+	
+	        var fileInput = document.getElementById('profileImage');
+	        fileInput.value = null;
+	    }
+	
+	    $(document).ready(function() {
+	        $('#registerModal').on('hidden.bs.modal', function () {
+	            resetImage();
+	        });
+	    });
+	    
+	    function submitEmployeeForm() {
+	        var formData = new FormData($('#employeeForm')[0]); // FormData 객체 생성
+			console.log(formData);
+	        $.ajax({
+	            type: 'POST',
+	            url: '/employeeInsert',
+	            data: formData,
+				dataType:'JSON',
+ 	            processData: false,
+	            contentType: false,
+	            success: function (data) {
+	            	console.log(data);
+	                alert('사원 등록 성공');
+	                $('#registerModal').modal('hide');
+	                resetForm();
+	            },
+	            error: function (error) {
+	            	console.log(error);
+	                alert('사원 등록 실패');
+	            }
+	        });
+	    }
+
+	    function resetForm() {
+	        // 폼 초기화 함수
+	        $('#employeeForm')[0].reset(); // 폼 리셋
+	        $('#profileImagePreview').attr('src', '/img/wow.jpg'); // 이미지 미리보기 초기화
+	    }
+
+
+
+	</script>
+	
+	
 	
 
 	
@@ -382,7 +507,8 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
 		
 	<!-- jQuery -->
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
 		
 	<!-- Bootstrap JS -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>

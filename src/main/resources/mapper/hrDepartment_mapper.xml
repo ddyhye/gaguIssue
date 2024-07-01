@@ -29,11 +29,49 @@
 		UPDATE company_calendar_tb SET cc_status='BLIND' WHERE idx_company_calendar=#{param1}
 	</update>
 	
-	<select id="getAllEmployees" resultType="ko.gagu.issue.dto.EmployeeDTO">
+	<select id="getAllEmployees" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
         SELECT e.emp_id, e.emp_name, d.de_name
         FROM employee_tb e
         JOIN department_tb d ON e.idx_department = d.idx_department
     </select>
+    
+   
+	
+	<insert id="createEmployee" useGeneratedKeys="true" keyColumn="idx_employee" keyProperty="idx_employee" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    INSERT INTO employee_tb (
+	        emp_name, emp_phone_number, emp_birth_date, emp_email, 
+	        emp_id, emp_pw, idx_department, idx_title, emp_hire_date, emp_term_date
+	    )
+	    VALUES (
+	        #{emp_name}, #{emp_phone_number}, #{emp_birth_date}, #{emp_email}, 
+	        #{emp_id}, #{emp_pw}, 
+	        (SELECT idx_department 
+	         FROM department_tb 
+	         WHERE de_name = #{de_name}), 
+	        (SELECT idx_title 
+	         FROM title_tb 
+	         WHERE title_name = #{title_name}), 
+	        #{emp_hire_date}, #{emp_term_date}
+	    )
+	</insert>
+
+
+	
+	<insert id="insertLeaveAccruals" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    INSERT INTO leave_accruals_tb (idx_employee, leave_days)
+	    VALUES (
+	        #{idx_employee}, 
+	        #{leave_days}
+	    )
+	</insert>
+	
+	<insert id="saveProfileImagePath">
+	    INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name, upload_datetime)
+	   		VALUES ('1',#{param3}, #{param1}, #{param2}, now())
+	</insert>
+		
+	
+
 	
 	
 </mapper>

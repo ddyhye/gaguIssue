@@ -18,8 +18,13 @@ public class DocumentDTO {
     private String ap_content;
     private String ap_comment;
     
-    private Date written_datetime;
+    private String written_datetime;
 
+    private String dc_name;
+    private String emp_name;
+    private String de_name;
+    
+    
     public String getAp_title() {
 		return ap_title;
 	}
@@ -76,12 +81,36 @@ public class DocumentDTO {
 		this.ap_comment = ap_comment;
 	}
 
-	public Date getWritten_datetime() {
+	public String getWritten_datetime() {
 		return written_datetime;
 	}
 
-	public void setWritten_datetime(Date written_datetime) {
+	public void setWritten_datetime(String written_datetime) {
 		this.written_datetime = written_datetime;
+	}
+
+	public String getDc_name() {
+		return dc_name;
+	}
+
+	public void setDc_name(String dc_name) {
+		this.dc_name = dc_name;
+	}
+
+	public String getEmp_name() {
+		return emp_name;
+	}
+
+	public void setEmp_name(String emp_name) {
+		this.emp_name = emp_name;
+	}
+
+	public String getDe_name() {
+		return de_name;
+	}
+
+	public void setDe_name(String de_name) {
+		this.de_name = de_name;
 	}
 	
 }

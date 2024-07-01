@@ -59,9 +59,13 @@
     </select>
 	
 	<select id="getContact" resultType="employee">
-		SELECT et.idx_employee ,et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title
-		FROM employee_tb et, department_tb dt 
-		WHERE et.idx_department = dt.idx_department AND idx_employee != #{param1}
+		        
+        SELECT et.idx_employee, et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title, p.file_name
+		FROM employee_tb et
+		JOIN department_tb dt
+		ON et.idx_department = dt.idx_department 
+		LEFT JOIN (SELECT ft.idx_ref, ft.file_name FROM filestore_tb ft WHERE ft.idx_filetype = 1) AS p ON et.idx_employee = p.idx_ref
+		WHERE idx_employee != #{param1}
 		<if test="param2 != null and param2 != '' and param2 != '전체'">
            	AND (et.emp_name LIKE CONCAT('%', #{param2}, '%') OR et.idx_title LIKE CONCAT('%', #{param2}, '%'))
         </if>
@@ -77,6 +81,11 @@
 	
 	</select>
 	
+	<select id="getEmpIdx" resultType="Integer">
+		SELECT et.idx_employee
+        FROM employee_tb et 
+        WHERE emp_id = #{param1};
+	</select>
 	
 	
 	<!-- [do] 로그인 인터셉터 관련 -->
