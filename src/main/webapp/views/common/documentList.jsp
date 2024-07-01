@@ -50,6 +50,7 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
 <!-- Plugins css Ends-->
+<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <!-- Bootstrap css-->
 <link rel="stylesheet" type="text/css"
 	href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
@@ -95,6 +96,14 @@
 
 .document-list-table tr:last-child td:last-child {
     border-bottom-right-radius: 5px; /* 오른쪽 하단 모서리 둥글게 */
+}
+.pagination li a {
+	color: #7a70ba; 
+}
+
+.pagination li.active a {
+	background-color: #7a70ba; 
+	border-color: #7a70ba;
 }
 </style>
 </head>
@@ -156,19 +165,29 @@
 							<div>
 								<ul class="simple-wrapper nav nav-tabs" id="myTab" role="tablist">
 									<li class="nav-item">
-										<a class="nav-link active txt-primary" data-bs-toggle="tab" href="#all" role="tab">전체</a>
+										<a class="nav-link active txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="setFilter('all')">전체</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#pending" role="tab">결재해야할 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="setFilter('pending')">결재해야할 문서</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#rejected" role="tab">반려된 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="setFilter('rejected')">반려된 문서</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#approved" role="tab">승인된 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="setFilter('approved')">승인된 문서</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link txt-primary" data-bs-toggle="tab" href="#retracted" role="tab">회수한 문서</a>
+										<a class="nav-link txt-primary" 
+										data-bs-toggle="tab" href="#list" role="tab"
+										onClick="setFilter('retracted')">회수한 문서</a>
 									</li>																											
 								</ul>
 							</div>
@@ -176,24 +195,50 @@
 								<div class="d-block">								
 									<button class="btn btn-primary btn-xs" style="width: 60px; margin-right: 10px;" onClick="dateClear()">날짜<br/>초기화</button>
 								</div>
-								<input class="form-control flatpickr-input" id="startDate" type="text" value="날짜 선택" readonly="readonly">
+								<input class="form-control flatpickr-input" id="startDate" type="text" value="날짜선택" onChange="startDateOnChanage()" readonly="readonly">
 								<h4>~</h4>
-								<input class="form-control flatpickr-input" id="endDate" type="text" readonly="readonly">
+								<input class="form-control flatpickr-input" id="endDate" type="text" onchange="endDateOnChanage()" readonly="readonly">
 							</div>
 						</div>
 						<div class="tab-content" id="myTabContent">
-							<div class="tab-pane fade show active" id="all" role="tabpanel">
+							<div class="tab-pane fade show active" id="list" role="tabpanel">
 								<table class="table table-striped document-list-table">
-									<tr>
-										<th><span class="f-light f-w-600">문서 제목</span></th>
-			                            <th><span class="f-light f-w-600">결재 양식</span></th>
-			                            <th><span class="f-light f-w-600">기안자</span></th>
-			                            <th><span class="f-light f-w-600">결재 상태</span></th>
-			                            <th><span class="f-light f-w-600">기안 일자</span></th>
-									</tr>
-									<tr class="product-removes">
+									<thead>
+										<tr>
+											<th><span class="f-light f-w-600">번호</span></th>
+											<th><span class="f-light f-w-600">문서 제목</span></th>
+				                            <th><span class="f-light f-w-600">결재 양식</span></th>
+				                            <th><span class="f-light f-w-600">부서</span></th>
+				                            <th><span class="f-light f-w-600">기안자</span></th>
+				                            <th><span class="f-light f-w-600">결재 상태</span></th>
+				                            <th><span class="f-light f-w-600">기안 일시</span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:choose>
+											<c:when test="${documentList != 'none'}">
+												<c:forEach items="${documentList}" var="document" varStatus="status">
+													<tr>
+														<td>${status.index + 1}</td>
+														<td><a href="/document/${document.idx_approval}/detail.go">${document.ap_title}</a></td>
+														<td>${document.dc_name}</td>
+														<td>${document.de_name}</td>
+														<td>${document.emp_name}</td>
+														<td>${document.final_ap_status}</td>
+														<td>${document.written_datetime}</td>
+													</tr>
+												</c:forEach>										
+											</c:when>
+											<c:otherwise>
+												<td colspan="7" style="text-align: center;">조회된 문서가 없습니다.</td>
+											</c:otherwise>
+										</c:choose>
+
+									</tbody>
+<!-- 									<tr class="product-removes">
 										<td>인사팀 김정원 휴가 올립니다.</td>
 										<td>연차 및 휴가 신청서</td>
+										<td>인사팀</td>
 										<td>김정원</td>
 										<td>진행중</td>
 										<td>2024/06/10</td>
@@ -203,10 +248,17 @@
 									</tr>
 									<tr class="product-removes">
 										<td>연차 및 휴가 신청서</td>
-									</tr>																		
+									</tr> -->																		
 								</table>
+								<br/>
+								<br/>
+								<div class="d-flex justify-content-center">								
+								    <nav aria-label="Page navigation">
+								        <ul class="pagination" id="pagination"></ul>
+								    </nav>
+								</div>
 							</div>
-							<div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="profile-tabs">
+<!-- 							<div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="profile-tabs">
 								<p class="pt-3">
 									결재해야할 문서
 								</p>							
@@ -225,7 +277,7 @@
 								<p class="pt-3">
 									회수한 문서
 								</p>							
-							</div>							
+							</div> -->							
 						</div>
 					</div>
 				</div>
@@ -298,12 +350,17 @@
 	<script src="/assets/js/script1.js"></script>
 	<script src="/assets/js/theme-customizer/customizer.js"></script>	    
 	<!-- Plugin used-->
+	<!-- flatpickr -->
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+    <!-- pagination js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+ 
 	<script>
 		new WOW().init();
 	</script>
 	<script>
+		/* [jeong] flatpickr 생성 및 초기화 함수 */
 	    function getToday() {
 	        const today = new Date();
 	        const yyyy = today.getFullYear();
@@ -311,23 +368,223 @@
 	        const dd = String(today.getDate()).padStart(2, '0');
 	        return '${yyyy}-${mm}-${dd}';
 	    }	
-		var startDate = flatpickr("#startDate", {
+		
+        function convertToKST(date) {
+            // 입력된 date를 밀리초 단위로 가져옴
+            const localTime = date.getTime();
+            // 현재 date의 타임존 오프셋을 분 단위로 가져옴
+            const localOffset = date.getTimezoneOffset() * 60000;
+            // 입력된 date와 타임존 오프셋을 더하여 UTC 시간 계산
+            const utcTime = localTime + localOffset;
+            // KST 시간대 오프셋을 적용하여 새로운 date 생성 (KST는 GMT+9)
+            const kstOffset = 9 * 60 * 60000; // 9시간을 밀리초로 변환
+            const kstTime = utcTime + kstOffset;
+            return new Date(kstTime);
+        }
+        
+        // var startDate = document.getElementById('startDate').value;
+        // var endDate = document.getElementById('endDate').value;
+        
+		var startflatpickr = flatpickr("#startDate", {
 			locale: "ko",
 			maxDate: "today"
+/* 	        onChange: function(selectedDates, dateStr, instance) {
+	        	fetchDocumentList();
+	        	console.log('startflatpickr');
+	        } */			
 		});
 		
-		var endDate = flatpickr("#endDate", {
+		var endflatpickr = flatpickr("#endDate", {
 			locale: "ko",
 			maxDate: "today",
 			defaultDate: "today"
+/* 	        onChange: function(selectedDates, dateStr, instance) {
+	        	fetchDocumentList();
+	        	console.log('endflatpickr');
+	        } */
 		});	
 		
+		var flag = false;
+		
+		function startDateOnChanage() {
+			if (!flag) {
+				fetchDocumentList();	
+			}
+			console.log('startflatpickr');
+		}
+		
+		function endDateOnChanage() {
+			if (!flag) {
+				fetchDocumentList();	
+			}	
+			console.log('endflatpickr');
+		}
+		
+        var startDate = document.getElementById('startDate').value;
+        var endDate = document.getElementById('endDate').value;
+		
 	    function dateClear() {
-	    	startDate.clear();
-	    	endDate.clear();
-	    	endDate.setDate("today", true);
+	    	flag = true;
+	    	startflatpickr.clear();
+	    	endflatpickr.clear();
+	    	document.getElementById('startDate').value = '날짜선택';
+	    	endflatpickr.setDate('today', true);
+	    	console.log('dateClear');
+	    	fetchDocumentList();
+	    	flag = false;
 	    }
-	
+	</script>
+	<script>
+		var page = 1;
+		var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+		var filter = 'all';
+		
+		$(document).ready(function () {
+			if (totalPage == 0) {
+				
+			} else {
+			    $('#pagination').twbsPagination({
+					startPage:page, //시작페이지
+					totalPages:totalPage, //총 페이지 갯수
+					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+			        first: '처음', // 첫 페이지 버튼 텍스트 변경
+			        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+			        next: '다음', // 다음 페이지 버튼 텍스트 변경
+			        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+					onPageClick:function(evt, clickPageIdx){
+						// 페이지 이동 번호 클릭시 이벤트 발동
+	                    if (page !== clickPageIdx) {
+	                        page = clickPageIdx;
+	                        fetchDocumentList();
+	                    }
+					}
+			    });			
+			}
+			// pagination();
+		});
+		
+		function pagination() {
+			if (totalPage < page) {
+				page = totalPage;
+			}
+			console.log(page, totalPage);
+			if (totalPage == 1 && page == 0) {
+				page = 1;
+			}
+			if (totalPage != 0) {				
+				$('#pagination').twbsPagination('destroy');
+			    $('#pagination').twbsPagination({
+					startPage:page, //시작페이지
+					totalPages:totalPage, //총 페이지 갯수
+					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+			        first: '처음', // 첫 페이지 버튼 텍스트 변경
+			        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+			        next: '다음', // 다음 페이지 버튼 텍스트 변경
+			        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+					onPageClick:function(evt, clickPageIdx){
+						// 페이지 이동 번호 클릭시 이벤트 발동
+	                    if (page !== clickPageIdx) {
+	                        page = clickPageIdx;
+	                        fetchDocumentList();
+	                    }
+					}
+			    });		
+			} 
+		}
+	    
+		function setFilter(category) {
+			filter = category;
+			fetchDocumentList();
+		}
+		
+		function fetchDocumentList() {
+			// 1. 날짜 필터링
+			// 시작 날짜는 undefined 로 들어오면 모든 과거 내용을 가져와야한다
+			//console.log(startDate.selectedDates[0]);
+			//console.log(endDate.selectedDates[0]);
+			
+			// 2. filter 는 문서 유형을 나눈다  
+			//console.log(filter);
+			const pagingDTO = {
+				filter : filter,
+				page : page,
+				startDate : document.getElementById('startDate').value,
+				endDate : document.getElementById('endDate').value
+			}
+			console.log(pagingDTO);
+	        fetch('/document/list.do', {
+	            method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+	            body: JSON.stringify(pagingDTO)
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.log('Success:', data);
+	        	drawDocumentList(data);
+	        	totalPage = data.totalPages;
+	        	pagination();
+	        	// 3. 현재 페이지 번호가 몇번인지 알아야한다
+	        	
+	        })
+	        .catch(error => {
+	        	console.error('Error:', error);
+	        });
+			
+			
+			
+		}	
+		
+		function drawDocumentList(data) {
+
+			const documentListTag = document.getElementsByTagName('tbody')[0];
+			let content = '';
+			let index = 1;
+			if (data.totalPages == 0) {
+				content += '<td colspan="7" style="text-align: center;">조회된 문서가 없습니다.</td>';
+			} else {				
+				for (row of data.documentFilterList) {
+					content += '<tr>';
+					content += '<td>' + index++ + '</td>';
+					content += '<td><a href="/document/' + row.idx_approval + '/detail.go">' + row.ap_title + '</a></td>';
+					content += '<td>' + row.dc_name + '</td>';
+					content += '<td>' + row.de_name + '</td>';
+					content += '<td>' + row.emp_name + '</td>';
+					content += '<td>' + row.final_ap_status + '</td>';
+					content += '<td>' + row.written_datetime + '</td>';	
+					content += '</tr>';
+				}
+			}
+			documentListTag.innerHTML = content;
+		}
+		
+/* 		function searchResultPagination(startpage) {
+			//console.log(choice);
+			$.ajax({
+				type:'post', 
+				url:'/searchResult.ajax',  
+				data:{
+				},
+				dataType:'json',
+				success:function(response){ 
+					drawSearchResultList(response);	
+		            $('#pagination').twbsPagination({
+						startPage:startpage,       //시작페이지
+						totalPages:response.totalPages,    //총 페이지 갯수
+						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+						onPageClick:function(evt, clickPageIdx){
+							// 페이지 이동 번호 클릭시 이벤트 발동
+							searchResultPageIndex = clickPageIdx;
+							searchResultPagination(clickPageIdx);
+						}
+		            });
+				}, 
+				error:function(error){ // 통신 실패 시
+					console.log(error);
+				} 
+			});
+		} */
 	</script>
 </body>
 </html>
