@@ -49,6 +49,15 @@ public class EmployeeController {
 		logger.info("response : {}",response);
 		return response;
 	}
+	
+
+	// [il] 개인 근태관리
+	@GetMapping(value="employee/attendance.go")
+	public String employeeAttendance() {
+		logger.info("attendance calendar in");
+		return "employee/attendance";
+	}
+	
 
 //	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
 //	@ResponseBody
@@ -121,7 +130,8 @@ public class EmployeeController {
 	        return errorResponse;
 	    }
 	}
-
+	
+	
 
 	
 	
