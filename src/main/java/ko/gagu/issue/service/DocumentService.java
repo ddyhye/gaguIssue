@@ -74,7 +74,7 @@ public class DocumentService {
 		// 3. 데이터베이스에 문서 정보를 등록한다.
 		// 등록한 후 결재 문서 번호를 document_dto 필드에 저장한다.
 		logger.info("문서의 내용 documentDTO : {}", documentDTO);
-		dao.saveDocument(documentDTO);
+		dao.saveDocument(documentDTO); 
 		int idxApproval = documentDTO.getIdx_approval();
 		// 지정한 결재자 라인을 approval_line_tb 테이블에 저장한다
 		for (int sequence = 0; sequence < employeeList.size(); sequence++) {
