@@ -90,8 +90,26 @@
 	
 	<!-- [do] 로그인 인터셉터 관련 -->
 	<select id="employeeData" resultType="employee">
-		SELECT *
-		FROM employee_tb
+		SELECT et.idx_employee,
+				et.emp_id ,
+				et.emp_pw ,
+				et.emp_name ,
+				et.idx_department ,
+				dt.de_name,
+				et.idx_title ,
+				tt.title_name ,
+				et.emp_address ,
+				et.emp_birth_date ,
+				et.emp_email ,
+				et.emp_email_pw ,
+				et.emp_hire_date ,
+				et.emp_phone_number ,
+				et.emp_status ,
+				et.emp_term_date ,
+				et.first_login
+		FROM employee_tb et
+			JOIN department_tb dt ON et.idx_department = dt.idx_department 
+			JOIN title_tb tt ON et.idx_title = tt.idx_title 
 		WHERE emp_id = #{param1}
 	</select>
 	

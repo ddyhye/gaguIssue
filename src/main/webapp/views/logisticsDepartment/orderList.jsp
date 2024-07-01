@@ -342,7 +342,7 @@
     	clientList = document.getElementById('clientList').value;
     	listCall(productSearch, productCategory, clientList);
 	});
-    // 재고 부족 누를 경우,
+    // 미처리 건을 누를 경우,
     document.getElementById('do-warning').addEventListener('click', () => {
     	listCall('warn', 'warn', 'warn');
 	});

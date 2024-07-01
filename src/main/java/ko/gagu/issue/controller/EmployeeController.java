@@ -223,4 +223,22 @@ public class EmployeeController {
 	}
 	
 	
+	
+	
+	
+	// [do] 로그아웃
+	@GetMapping(value="/logout.go")
+	public ModelAndView logout(HttpSession session, RedirectAttributes rAttr) {
+		ModelAndView mav = new ModelAndView();
+		
+		session.removeAttribute("loginInfo");
+		session.removeAttribute("emp_id");
+		
+		rAttr.addFlashAttribute("msg","로그아웃 성공, 로그인 페이지로 돌아갑니다...");
+		
+		mav.setViewName("redirect:/login.go");
+		
+		return mav;
+	}
+	
 }
