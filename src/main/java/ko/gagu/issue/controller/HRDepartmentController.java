@@ -84,6 +84,13 @@ public class HRDepartmentController {
 		return response;
 	}
 	
+	// [il] 근태관리 : 구일승
+	@GetMapping(value="hrdepartment/employeeAttendance.go")
+	public String attendance() {
+		logger.info("attendance in");
+		return "Hrdepartment/employeeAttendance";
+	}
+	
 	@PostMapping(value="/hrdepartment/deleteCompanyEvent.ajax")
 	@ResponseBody
 	public Map<String, String>deleteCompanyEvent(@RequestBody Map<String, Object> requestBody){
