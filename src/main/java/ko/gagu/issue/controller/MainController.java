@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.product_tbDTO;
 import ko.gagu.issue.service.MainService;
 
@@ -54,15 +55,9 @@ public class MainController {
 		//session.setAttribute("emp_id", "admin");
 		
 		//birthDateTest();
-		
-		/*
-		 * if (session.getAttribute("emp_name")!= null) { String emp_name = (String)
-		 * session.getAttribute("emp_name"); String de_name = (String)
-		 * session.getAttribute("de_name");
-		 * 
-		 * model.addAttribute("emp_name", emp_name); model.addAttribute("de_name",
-		 * de_name); }
-		 */
+		EmployeeDTO dto = (EmployeeDTO) session.getAttribute("loginInfo");
+//		model.addAttribute("emp_name", dto.getEmp_name());
+//		model.addAttribute("de_name", dto.getDe_name());
 		
 		
 		return mainService.dashboard(session, rAttr);

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.controller.DocumentController;
+import ko.gagu.issue.dto.EmployeeDTO;
 
 @Component
 public class LoginChecker implements HandlerInterceptor {
@@ -46,12 +47,28 @@ public class LoginChecker implements HandlerInterceptor {
 			ModelAndView mav) throws Exception {
 		logger.info("=== POST HANDLER ===");
 		
-		HttpSession session = req.getSession();
-		String emp_id = (String) session.getAttribute("emp_id");
-		logger.info("로그인 아이디 >> "+emp_id);
-		
-		// 필요없으면 빼도 됨.
-		//mav.addObject("emp_id", emp_id);
+	    HttpSession session = req.getSession();
+	    String emp_id = (String) session.getAttribute("emp_id");
+	    EmployeeDTO dto = (EmployeeDTO) session.getAttribute("loginInfo");
+
+	    if (dto != null) {
+	        String emp_name = dto.getEmp_name();
+	        String de_name = dto.getDe_name();
+	        String title_name = dto.getTitle_name();
+
+	        // ModelAndView 객체가 null이 아닌 경우에만 addObject 호출
+	        if (mav != null) {
+	            if (emp_name != null && de_name != null && title_name != null) {
+	                mav.addObject("emp_name", emp_name);
+	                mav.addObject("de_name", de_name);
+	                mav.addObject("title_name", title_name);
+	            } else {
+	                logger.error("EmployeeDTO의 필드 중 하나가 null입니다.");
+	            }
+	        } else {
+	            logger.error("ModelAndView 객체가 null입니다.");
+	        }
+	    }
 	}
 	
 	

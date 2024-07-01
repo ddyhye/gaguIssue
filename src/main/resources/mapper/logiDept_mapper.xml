@@ -326,6 +326,15 @@
 							FROM order_tb
 							WHERE idx_order = #{param1})
 	</update>
+	<!-- 주문 수락 시, 재고가 부족해지면 물류관리부서에게 연락할거임 -->
+	<select id="lackCnt" resultType="Integer">
+		SELECT count(*) as cnt
+		FROM product_tb pt 
+			join client_tb ct on ct.idx_business = pt.idx_business 
+			join product_category_tb pct on pct.idx_product_category = pt.idx_product_category 
+			join inventory_tb it on it.idx_product = pt.idx_product 
+		WHERE it.current_stock &lt; pt.minimum_stock and it.is_po = 'n'
+	</select>
 	
 	
 	<!-- 수주처 리스트 -->

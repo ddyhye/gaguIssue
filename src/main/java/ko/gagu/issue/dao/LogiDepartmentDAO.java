@@ -67,6 +67,8 @@ public interface LogiDepartmentDAO {
 
 	List<String> getClientList2();
 
+	int lackCnt();
+
 
 
 
