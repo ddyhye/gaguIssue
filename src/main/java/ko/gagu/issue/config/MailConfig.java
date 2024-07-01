@@ -11,28 +11,28 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class MailConfig {
 
-    @Value("${spring.mail.storeProtocol}")
+    @Value("${spring.mail.storeprotocol}")
     private String storeProtocol;
 
-    @Value("${spring.mail.host}")
+    @Value("${spring.mail.imap.host}")
     private String host;
 
-    @Value("${spring.mail.port}")
+    @Value("${spring.mail.imap.port}")
     private int port;
 
-    @Value("${spring.mail.username}")
+    @Value("${spring.mail.imap.username}")
     private String username;
 
-    @Value("${spring.mail.password}")
+    @Value("${spring.mail.imap.password}")
     private String password;
 
-    @Value("${spring.mail.auth}")
+    @Value("${spring.mail.imap.auth}")
     private boolean auth;
 
-    @Value("${spring.mail.starttlsEnable}")
+    @Value("${spring.mail.imap.starttls.enable}")
     private boolean starttlsEnable;
 
-    @Value("${spring.mail.sslEnable}")
+    @Value("${spring.mail.imap.ssl.enable}")
     private boolean sslEnable;
 
 
