@@ -204,106 +204,118 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <!-- Container-fluid 시작-->
-          <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h5 class="modal-title" id="registerModalLabel">사원 등록</h5>
-		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		                    <span aria-hidden="true">&times;</span>
-		                </button>
-		            </div>
-		            <div class="modal-body">
-		                <!-- 사원 등록 폼 -->
-		                <form id="employeeForm" enctype="multipart/form-data">
-		                    <!-- 상단 중앙 이미지 -->
-		                    <div class="text-center mb-4">
-		                        <label for="profileImage">
-		                            <img id="profileImagePreview" src="/img/wow.jpg"
-		                                 alt="profile" class="img-thumbnail"
-		                                 style="width: 150px; height: 150px; cursor: pointer; object-fit: cover;">
-		                        </label>
-		                        <input type="file" id="profileImage" name="profileImage" style="display: none;"
-		                               onchange="previewImage(event)">
-		                    </div>
-		                    <!-- 폼 요소 -->
-		                    <div class="container">
-		                        <div class="row">
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_name">이름</label>
-		                                <input type="text" class="form-control" id="emp_name" name="emp_name" required>
-		                            </div>
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_phone_number">전화번호</label>
-		                                <input type="tel" class="form-control" id="emp_phone_number" name="emp_phone_number" required>
-		                            </div>
-		                        </div>
-		                        <div class="row">
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_birth_date">생년월일</label>
-		                                <input type="date" class="form-control" id="emp_birth_date" name="emp_birth_date" required>
-		                            </div>
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_email">이메일</label>
-		                                <input type="email" class="form-control" id="emp_email" name="emp_email" required>
-		                            </div>
-		                        </div>
-		                        <div class="row">
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_id">사원번호</label>
-		                                <input type="text" class="form-control" id="emp_id" name="emp_id" required>
-		                            </div>
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_pw">임시 비밀번호</label>
-		                                <input type="text" class="form-control" id="emp_pw" name="emp_pw" required>
-		                            </div>
-		                        </div>
-		                        <div class="row">
-		                            <div class="col-6 mb-2">
-		                                <label for="de_name">부서</label>
-		                                <select class="form-control" id="de_name" name="de_name">
-		                                    <option value="임원진">임원진</option>
-		                                    <option value="인사관리부서">인사관리부서</option>
-		                                    <option value="물류관리부서">물류관리부서</option>
-		                                    <option value="경영지원부서">경영지원부서</option>
-		                                </select>
-		                            </div>
-		                            <div class="col-6 mb-2">
-		                                <label for="title_name">직위</label>
-		                                <select class="form-control" id="title_name" name="title_name">
-		                                    <option value="부장">부장</option>
-		                                    <option value="과장">과장</option>
-		                                    <option value="대리">대리</option>
-		                                    <option value="사원">사원</option>
-		                                </select>
-		                            </div>
-		                        </div>
-		                        <div class="row">
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_hire_date">입사일</label>
-		                                <input type="date" class="form-control" id="emp_hire_date" name="emp_hire_date" required>
-		                            </div>
-		                            <div class="col-6 mb-2">
-		                                <label for="emp_term_date">퇴사일</label>
-		                                <input type="date" class="form-control" id="emp_term_date" name="emp_term_date">
-		                            </div>
-		                        </div>
-		                        <div class="row">
-		                            <div class="col-6 mb-2">
-		                                <label for="leave_days">연차</label>
-		                                <input type="number" class="form-control" id="leave_days" name="leave_days" value="15" readonly>
-		                            </div>
-		                        </div>
-		                    </div>
-		                </form>
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-primary" onclick="submitEmployeeForm()">등록</button>
-		                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-		            </div>
-		        </div>
-		    </div>
-		</div>
+          <!-- 사원 등록 모달 창 -->
+			<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h5 class="modal-title" id="registerModalLabel">사원 등록</h5>
+			                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                    <span aria-hidden="true">&times;</span>
+			                </button>
+			            </div>
+			            <div class="modal-body">
+			                <!-- 사원 등록 폼 -->
+			                <form id="employeeForm" enctype="multipart/form-data">
+			                    <!-- 상단 중앙 이미지 -->
+			                    <div class="text-center mb-4">
+			                        <label for="profileImage">
+			                            <img id="profileImagePreview" src="/img/user.jpg"
+			                                 alt="profile" class="img-thumbnail"
+			                                 style="width: 150px; height: 150px; cursor: pointer; object-fit: cover;">
+			                        </label>
+			                        <input type="file" id="profileImage" name="profileImage" style="display: none;"
+			                               onchange="previewImage(event)">
+			                    </div>
+			                    <!-- 폼 요소 -->
+			                    <div class="container">
+			                        <div class="row">
+			                            <div class="col-6 mb-2">
+			                                <label for="emp_name">이름</label>
+			                                <input type="text" class="form-control" id="emp_name" name="emp_name" required>
+			                            </div>
+			                            <div class="col-6 mb-2">
+			                                <label for="emp_phone_number">전화번호</label>
+			                                <input type="tel" class="form-control" id="emp_phone_number" name="emp_phone_number" required>
+			                            </div>
+			                        </div>
+			                        <div class="row">
+			                            <div class="col-6 mb-2">
+			                                <label for="emp_birth_date">생년월일</label>
+			                                <input type="date" class="form-control" id="emp_birth_date" name="emp_birth_date" required>
+			                            </div>
+			                            <div class="col-6 mb-2">
+			                                <label for="emp_email">이메일</label>
+			                                <input type="email" class="form-control" id="emp_email" name="emp_email" required>
+			                            </div>
+			                        </div>
+			                        <div class="row">
+			                            <div class="col-6 mb-2">
+			                                <label for="emp_id">사원번호</label>
+			                                <input type="text" class="form-control" id="emp_id" name="emp_id" readonly required>
+			                            </div>
+			                            <div class="col-6 mb-2">
+			                                <label for="emp_pw">임시 비밀번호</label>
+			                                <input type="text" class="form-control" id="emp_pw" name="emp_pw" value="1111" readonly required>
+			                            </div>
+			                        </div>
+			                        <div class="row">
+			                            <div class="col-6 mb-2">
+			                                <label for="de_name">부서</label>
+			                                <select class="form-control" id="de_name" name="de_name">
+			                                    <option value="임원진">임원진</option>
+			                                    <option value="인사관리부서">인사관리부서</option>
+			                                    <option value="물류관리부서">물류관리부서</option>
+			                                    <option value="경영지원부서">경영지원부서</option>
+			                                </select>
+			                            </div>
+			                            <div class="col-6 mb-2">
+			                                <label for="title_name">직위</label>
+			                                <select class="form-control" id="title_name" name="title_name">
+			                                    <option value="부장">부장</option>
+			                                    <option value="과장">과장</option>
+			                                    <option value="대리">대리</option>
+			                                    <option value="사원">사원</option>
+			                                </select>
+			                            </div>
+			                        </div>
+			                        <div class="row">
+			                            <div class="col-6 mb-2">
+			                                <label for="leave_days">연차</label>
+			                                <input type="number" class="form-control" id="leave_days" name="leave_days" value="15" readonly>
+			                            </div>
+			                        </div>
+			                        <!-- 주소 입력 -->
+			                        <div class="row">
+			                            <div class="col-12 mb-2">
+			                                <label for="postal_code">우편번호</label>
+			                                <input type="text" class="form-control" id="postal_code" name="postal_code" readonly>
+			                                <button type="button" class="btn btn-outline-secondary mt-2" onclick="openPostalCodeSearch()">우편번호 찾기</button>
+			                            </div>
+			                        </div>
+			                        <div class="row">
+			                            <div class="col-12 mb-2">
+			                                <label for="address">주소</label>
+			                                <input type="text" class="form-control" id="address" name="address" readonly>
+			                            </div>
+			                        </div>
+			                        <div class="row">
+			                            <div class="col-12 mb-2">
+			                                <label for="detail_address">상세 주소</label>
+			                                <input type="text" class="form-control" id="detail_address" name="detail_address">
+			                            </div>
+			                        </div>
+			                    </div>
+			                </form>
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-primary" onclick="submitEmployeeForm()">등록</button>
+			                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+
 
 			<!-- Container-fluid Ends-->
 
@@ -391,59 +403,59 @@
         </footer>
       </div>
     
-    <script>
-	    $(function() {
-	        $("#emp_hire_date").datepicker({
-	            dateFormat: "yy-mm-dd"
-	        });
-	        $("#emp_term_date").datepicker({
-	            dateFormat: "yy-mm-dd"
-	        });
-	    });
-	</script>
+    
 	
 	<script>
-	    function previewImage(event) {
+	 function previewImage(event) {
 	        var output = document.getElementById('profileImagePreview');
 	        output.src = URL.createObjectURL(event.target.files[0]);
 	        output.onload = function() {
 	            URL.revokeObjectURL(output.src);  
 	        }
 	    }
-	
+
 	    function resetImage() {
-	        var defaultImageSrc = '/img/wow.jpg';
+	        var defaultImageSrc = '/img/user.jpg';
 	        var profileImage = document.getElementById('profileImagePreview');
 	        profileImage.src = defaultImageSrc;
-	
+
 	        var fileInput = document.getElementById('profileImage');
 	        fileInput.value = null;
 	    }
-	
+
 	    $(document).ready(function() {
 	        $('#registerModal').on('hidden.bs.modal', function () {
 	            resetImage();
 	        });
 	    });
-	    
+
 	    function submitEmployeeForm() {
 	        var formData = new FormData($('#employeeForm')[0]); // FormData 객체 생성
-			console.log(formData);
+
+	        // 우편번호, 주소, 상세주소를 합쳐서 하나의 문자열로 만든다.
+	        var postalCode = $('#postal_code').val();
+	        var address = $('#address').val();
+	        var detailAddress = $('#detail_address').val();
+	        var fullAddress = postalCode + ' ' + address + ' ' + detailAddress;
+
+	        // 합쳐진 주소를 emp_address 필드에 추가
+	        formData.append('emp_address', fullAddress);
+	        
+	        formData.append('emp_term_date', '9999-12-31');
+
 	        $.ajax({
 	            type: 'POST',
 	            url: '/employeeInsert',
 	            data: formData,
-				dataType:'JSON',
- 	            processData: false,
+	            dataType: 'json',
+	            processData: false,
 	            contentType: false,
 	            success: function (data) {
-	            	console.log(data);
 	                alert('사원 등록 성공');
 	                $('#registerModal').modal('hide');
 	                resetForm();
 	            },
 	            error: function (error) {
-	            	console.log(error);
 	                alert('사원 등록 실패');
 	            }
 	        });
@@ -455,13 +467,77 @@
 	        $('#profileImagePreview').attr('src', '/img/wow.jpg'); // 이미지 미리보기 초기화
 	    }
 
+	    // 주소 API 함수
+	    function openPostalCodeSearch() {
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+	                // 검색된 정보를 해당 필드에 넣음
+	                document.getElementById('postal_code').value = data.zonecode;
+	                document.getElementById('address').value = data.roadAddress; // 도로명 주소 사용
+	            }
+	        }).open();
+	    }
+	    
+	 // 등록 폼 로딩 시 실행할 함수
+	    $(document).ready(function() {
+	        // 사원 번호 초기 설정
+	        updateEmpId();
 
+	        // 부서 선택 변경 시 사원 번호 업데이트
+	        $("#de_name").change(function() {
+	            updateEmpId(); // 부서 변경 시 사원 번호 업데이트
+	        });
+	    });
+
+	    function updateEmpId() {
+	        var de_name = $("#de_name").val();
+			var de_char = '';
+	        // AJAX를 통해 de_char 값을 가져오기
+	        $.ajax({
+	            type: "GET",
+	            url: "/getnewIdx",
+	            data: {},
+	            success: function(response) {
+	                // 현재 날짜
+	                var currentDate = new Date();
+	                var yy = String(currentDate.getFullYear()).slice(-2);
+	                var mm = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+	                var dd = ('0' + currentDate.getDate()).slice(-2);
+					
+					switch (de_name) {
+						case "임원진":
+							de_char = "A";
+							break;
+						case "경영지원부서":
+							de_char = "B";
+							break;
+						case "물류관리부서":
+							 de_char = "C";
+							break;
+						case "인사관리부서":
+							de_char = "D";
+							break;
+						default:
+							de_char = "A"; // 기본 값
+							break;
+					}
+	                
+	                var empId = yy + mm + dd + de_char + response;
+					
+	                $("#emp_id").val(empId);
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("에러내용 : " + error);
+	            }
+	        });
+	    }
 
 	</script>
 	
 	
 	
 
+	<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 	
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>

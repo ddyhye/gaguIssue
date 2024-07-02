@@ -189,7 +189,11 @@
           			content +=	'<ul class="border-0">'; 
           			content +=		'<li class="common-space">';
           			content +=		'<div class="chat-time">';
-          			content +=			'<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">';
+          			if(item.file_name != null){
+		                content += '<img class="img-fluid rounded-circle" alt="user" src="/file/profile_picture/'+item.file_name+'">';			                	
+	                }else{
+	                	content += '<img class="img-fluid rounded-circle" alt="user" src="/img/user_icon.png">';    	
+	                }
           			content +=		'<div>';
           			content +=		'<span>'+item.emp_name+'</span>';
           			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
@@ -254,7 +258,11 @@
          			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
-         			content +=			'<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">';
+         			if(item.file_name != null){
+		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+	                }else{
+	                	content += '<img class="img-fluid rounded-circle" alt="" src="/img/user_icon.png">';    	
+	                }
 //         			content +=			'<div class="status bg-success"></div>';
          			content +=		'</div>';
          			content +=		'<div>';
@@ -341,7 +349,11 @@
             		content += '<div class="common-space">';
             		content += '<div class="chat-time">';
 	    			content += '<div class="active-profile">';
-	    			content += '<img class="img-fluid rounded-circle" src="/file/profile_picture/'+item.file_name+'" alt="user">'; // 이미지 불러오는거 해야함 (다른곳도)
+	    			if(item.file_name != null){
+		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+	                }else{
+	                	content += '<img class="img-fluid rounded-circle" alt="" src="/img/user_icon.png">';    	
+	                }
 	    			content +=		'</div>';
 	    			content +=		'<div>';
 	    			content +=		'<span>'+item.other_name+'</span>';
@@ -354,7 +366,7 @@
 	    			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
 	    			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
 	    			content +=		'</svg>';
-	    			content +=		'<div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>';
+	    			content +=		'<div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">나가기</a></div>';
 	    			content +=		'</div>';
 	    			content +=		'</div>';
 	    			content +=		'</div>';
@@ -377,7 +389,7 @@
          			dataType: 'JSON',
          			success: function(data) {
          				drawMessage(data);
-         				loadChatRooms("${sessionScope.emp_id}");
+         				//loadChatRooms("${sessionScope.emp_id}");
          			}, error: function(error) {
          				console.log(error);
          			}
@@ -415,7 +427,11 @@
 			        
 			        if(idx_emp === item.receiver) {
 			            content += '<div class="msg left-msg">';
-			            content += '<div class="msg-img"><img class="msg-img" alt="" src="/img/ahruru.png"></div>';
+			            if(item.file_name != null){
+			                content += '<img class="msg-img" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+		                }else{
+		                	content += '<img class="msg-img" alt="" src="/img/user_icon.png">';    	
+		                }
 			            content += '<div class="msg-bubble">';
 			            content += '<div class="msg-info">';
 			            content += '<div class="msg-info-name">' + item.other_name + '</div>';
@@ -427,12 +443,13 @@
 			        else if (idx_emp === item.sender) {
 			            if(item.message_delete == 0){
 			                content += '<div class="msg right-msg">';
-			                content += '<div class="msg-img"></div>';
+			                content += '<img class="img-20" id="delete_btn" alt="" src="/img/trash_icon.png" onclick="deleteMessage('+item.idx_message+');">';
+			                
 			                content += '<div class="msg-bubble">';
 			                content += '<div class="msg-info">';
-			                content += '<div class="msg-info-name">나</div>';
+			                content += '<div class="msg-info-name">나</div>';			                
 			                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
-			                content += '</div>';
+			                content += '</div>';			                
 			                content += '<div class="msg-text">' + item.content + '</div>';
 			                content += '</div>';
 			            }
@@ -450,7 +467,30 @@
 			}
          	
          	
-         		
+         	function deleteMessage(msg_idx){
+         		var confirmDelete = confirm("쪽지를 삭제하시겠습니까?");
+         		if(confirmDelete){
+	         		$.ajax({
+	        			type:'POST',
+	        			url:'/msgDelete.ajax',
+	        			data:{
+	                        'msg_idx':msg_idx
+	                    },
+	        			success:function(data){
+	        				if (parseInt(data)>0) {
+	        					alert("삭제 성공했습니다.");
+	        					//location.reload(true);
+	        				} else {
+	        					alert("삭제 실패했습니다.");
+	        				}
+	        				// $('#deleteForm').toggle();
+	        			}, 
+	        			error:function(error){
+	        				console.log(error);
+	        			} 
+	        		});         			
+         		}
+         	}	
          	
          	
          	

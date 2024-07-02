@@ -38,21 +38,29 @@
    
 	
 	<insert id="createEmployee" useGeneratedKeys="true" keyColumn="idx_employee" keyProperty="idx_employee" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    
 	    INSERT INTO employee_tb (
-	        emp_name, emp_phone_number, emp_birth_date, emp_email, 
-	        emp_id, emp_pw, idx_department, idx_title, emp_hire_date, emp_term_date
+	        emp_name, emp_phone_number, emp_birth_date, emp_email, emp_address, 
+	        emp_id, emp_pw, idx_department, idx_title
 	    )
 	    VALUES (
-	        #{emp_name}, #{emp_phone_number}, #{emp_birth_date}, #{emp_email}, 
-	        #{emp_id}, #{emp_pw}, 
+	        #{emp_name}, #{emp_phone_number}, #{emp_birth_date}, #{emp_email}, #{emp_address},
+	        CONCAT(
+	            SUBSTR(CURDATE(), 3, 2), 
+	            SUBSTR(CURDATE(), 6, 2), 
+	            SUBSTR(CURDATE(), 9, 2), 
+	            (SELECT de_char FROM department_tb WHERE de_name = #{de_name}), 
+	            RIGHT(CONCAT('0000', (SELECT et.idx_employee + 1 FROM employee_tb et ORDER BY et.idx_employee DESC LIMIT 1)), 5)
+	        ),
+	        #{emp_pw}, 
 	        (SELECT idx_department 
 	         FROM department_tb 
 	         WHERE de_name = #{de_name}), 
 	        (SELECT idx_title 
 	         FROM title_tb 
-	         WHERE title_name = #{title_name}), 
-	        #{emp_hire_date}, #{emp_term_date}
+	         WHERE title_name = #{title_name})
 	    )
+	    
 	</insert>
 
 
@@ -70,8 +78,11 @@
 	   		VALUES ('1',#{param3}, #{param1}, #{param2}, now())
 	</insert>
 		
+	<select id="getnewIdx" resultType="String">
+		SELECT
+			RIGHT(CONCAT('0000', (SELECT et.idx_employee + 1 FROM employee_tb et ORDER BY et.idx_employee DESC LIMIT 1)), 5)
+	</select>
 	
-
 	
 	
 </mapper>

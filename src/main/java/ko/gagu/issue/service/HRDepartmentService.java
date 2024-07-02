@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -26,10 +27,12 @@ public class HRDepartmentService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private final HRDepartmentDAO hrDepartmentDao;
+	private final PasswordEncoder passwordEncoder;
 	
-	public HRDepartmentService(HRDepartmentDAO hrDepartmentDao) {
-		this.hrDepartmentDao=hrDepartmentDao;
-	}
+	public HRDepartmentService(HRDepartmentDAO hrDepartmentDao, PasswordEncoder passwordEncoder) {
+        this.hrDepartmentDao = hrDepartmentDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 	
 	@Value("${spring.servlet.multipart.location}")
     private String uploadDir;
@@ -61,20 +64,21 @@ public class HRDepartmentService {
 
 	@Transactional
 	public void createEmployee(MultipartFile profileImage, HRDepartmentDTO hRDepartment) {
+		
+		String hashedPassword = passwordEncoder.encode(hRDepartment.getEmp_pw());
+		hRDepartment.setEmp_pw(hashedPassword);
+        
 	    hrDepartmentDao.createEmployee(hRDepartment);
-	    // if문, 기본 이미지 등록 시 파일 업로드를안 해도 됨.
-//	    if (condition) {
-//			
-//		} else {
-//			
-//		}
-	    try {
-	    	uploadProfileImage(profileImage, hRDepartment.getIdx_employee());
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    }
-	    hrDepartmentDao.insertLeaveAccruals(hRDepartment);
-	}
+	    if (profileImage != null && !profileImage.isEmpty()) {
+            try {
+				uploadProfileImage(profileImage, hRDepartment.getIdx_employee());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	        }	        
+	        // 휴가 관련 정보 저장
+	        hrDepartmentDao.insertLeaveAccruals(hRDepartment);
+	    } 
 
 
 	public String uploadProfileImage(MultipartFile profileImage, int idx_employee) throws Exception {
@@ -95,5 +99,11 @@ public class HRDepartmentService {
 
         return imageUrl;
     }
+
+	public String getnewIdx() {
+		return hrDepartmentDao.getnewIdx();
+	}
+	
+	
 }
 

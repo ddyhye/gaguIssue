@@ -29,5 +29,7 @@ public interface MessageDAO {
 
 	void roomCreate(Map<String, Object> map);
 
+	int msgDelete(int msg_idx);
+
 	
 }
