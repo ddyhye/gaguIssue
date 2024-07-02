@@ -28,6 +28,8 @@ public interface HRDepartmentDAO {
 
 	void saveProfileImagePath(String oriFileName, String newFileName, int idx_employee);
 
+	String getnewIdx();
+
 	
 
 }

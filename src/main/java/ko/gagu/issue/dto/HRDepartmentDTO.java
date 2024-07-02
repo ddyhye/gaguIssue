@@ -27,7 +27,7 @@ public class HRDepartmentDTO {
 	private String emp_phone_number;
 	private Date emp_birth_date;
 	private Date emp_hire_date;
-	private Date emp_term_date;
+	private java.sql.Date emp_term_date;
 	private String emp_address;
 	private boolean first_login;
 	private String de_char;
@@ -159,10 +159,10 @@ public class HRDepartmentDTO {
 	public void setEmp_hire_date(Date emp_hire_date) {
 		this.emp_hire_date = emp_hire_date;
 	}
-	public Date getEmp_term_date() {
-		return emp_term_date;
-	}
-	public void setEmp_term_date(Date emp_term_date) {
+	public java.sql.Date getEmp_term_date() {
+        return emp_term_date;
+    }
+	public void setEmp_term_date(java.sql.Date emp_term_date) {
 		this.emp_term_date = emp_term_date;
 	}
 	public String getEmp_address() {
