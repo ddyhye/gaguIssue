@@ -58,14 +58,14 @@
                 
                 <!-- do: 알림 -->
                 <li class="onhover-dropdown">
-                  <div class="notification-box">
+                  <div class="notification-box" id="do-alarmIcon">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#notification"></use>
                     </svg><span class="badge rounded-pill badge-primary">4 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown do-overflow">
                     <h5 class="f-18 f-w-600 mb-0 dropdown-title">Notifications</h5>
-                    <ul class="notification-box">
+                    <ul class="notification-box" id="do-alarm">
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
@@ -466,6 +466,37 @@
              
              
              
+         	
+         	
+         	
+         	
+         	
+         	
+         	
+         	
+         	
+         	// [do] 알림
+         	document.getElementById('do-alarmIcon').addEventListener('mouseover', () => {
+         		fetch('/alarmList.ajax', {
+         			method: 'POST',
+         			headers: {
+         				'Content-Type': 'application/json'
+         			},
+         			body: JSON.stringify({})
+         		})
+         		.then(response => response.json())
+         		.then(data => {
+         			console.log('통신완료,,');
+         			drawAlarmList(data);
+         		})
+         		.catch(error => {console.error('Fetch error:', error);})
+         	});
+         	
+         	function drawAlarmList(data){
+         		
+         	}
+         	
+         	
 			</script>
           </div>
           
