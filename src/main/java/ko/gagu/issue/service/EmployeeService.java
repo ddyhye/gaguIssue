@@ -44,6 +44,19 @@ public class EmployeeService {
 		response.put("companyEvents",eventss);
 	}
 	
+	public void getEmployeeAttendance(Map<String, Object> response, Integer idx_employee, Model model) {
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		model.addAttribute(employeeDTO);
+		logger.info("employeeDTO : {}",employeeDTO);
+		List<EmployeeDTO> events=dao.getEmployeeAttendance(idx_employee);
+		logger.info("events: {}",events);
+		
+		response.put("employeeAttendance", events);
+	}
+
+	
+	
+	
 //	public void getAllCompanyEvents(Map<String, Object> response, Model model) {
 //		// [il] 회사일정 보여주기
 //		HRDepartmentDTO hrDepartmentDTO = new HRDepartmentDTO();
@@ -127,6 +140,7 @@ public class EmployeeService {
 		return dao.findPW(emp_id, emp_name, birthDate);
 	}
 
+	
 	
 
 	

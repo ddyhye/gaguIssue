@@ -35,9 +35,101 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
-    <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
+    
+    <!-- [il]id color->ec_color로 바꿈 / 06.22 -->
+    <link id="ec_color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
+    
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    
+    <!-- [il] 캘린더 -->
+    <!-- [il]jquery / 원래는 3.2.1 버전이었으나, 3.7.1버전으로 바꿔둠 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<!-- modal창 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+	<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/calendar.css'/>"> -->	
+	
+	<!--[il]  부트스트랩 CSS 링크-->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+	
+	<style>
+	/* [il] 모달 창 스타일링 */
+    .modal-content {
+        background-color: #f8f9fa; /* 배경색 설정 */
+        border-radius: 0;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3); /* 그림자 설정 */
+    }
+    .modal-header {
+        background-color: #6c5ce7; /* 헤더 배경색 */
+        color: #fff; /* 헤더 글자색 */
+        border-bottom: none; /* 헤더 아래 경계선 없애기 */
+    }
+    .modal-title {
+        font-weight: bold;
+    }
+    .modal-body {
+        padding: 20px;
+    }
+    .modal-footer {
+        background-color: #f8f9fa; /* 푸터 배경색 */
+        border-top: none; /* 푸터 위 경계선 없애기 */
+    }
+    .close {
+        color: #fff; /* 닫기 버튼 글자색 */
+    }
+    .form-group label {
+        font-weight: bold;
+    }
+    .form-control {
+        border: 1px solid #ced4da; /* 입력 필드 테두리 스타일 */
+    }
+    .btn-primary {
+        background-color: #6c5ce7; /* 등록 버튼 배경색 */
+        border-color: #6c5ce7; /* 등록 버튼 테두리 색 */
+    }
+    .btn-primary:hover {
+        background-color: #563d7c; /* 등록 버튼 호버 배경색 */
+        border-color: #563d7c; /* 등록 버튼 호버 테두리 색 */
+    }
+    .btn-secondary {
+        background-color: #343a40; /* 취소 버튼 배경색 */
+        border-color: #343a40; /* 취소 버튼 테두리 색 */
+    }
+    .btn-secondary:hover {
+        background-color: #23272b; /* 취소 버튼 호버 배경색 */
+        border-color: #23272b; /* 취소 버튼 호버 테두리 색 */
+    }
+    .btn-danger {
+        background-color: #dc3545; /* 삭제 버튼 배경색 */
+        border-color: #dc3545; /* 삭제 버튼 테두리 색 */
+    }
+    .btn-danger:hover {
+        background-color: #c82333; /* 삭제 버튼 호버 배경색 */
+        border-color: #c82333; /* 삭제 버튼 호버 테두리 색 */
+	
+	#calendar {
+	   width: 80%;
+	   margin: 5px auto;
+	}
+	.datepicker-input {
+    position: relative;
+	}
+	.datepicker-input input, .timepicker-input select, .modal-body textarea {
+	    width: 100%;
+	}
+	.datepicker-input .ui-datepicker-trigger, .timepicker-input .ui-timepicker-trigger {
+	    position: absolute;
+	    right: 5px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+	</style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -80,327 +172,109 @@
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->
+          <!-- [il] 캘린더 시작 -->
           <br>
-          <h2><center>Employee Attendance</center></h2>
+          <h2><center>Employee Fullcalendar</center></h2>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
 		    <input type="hidden" id="idx_employee" value="1"> 		    
 		    <br>
+		    <!-- [il]Modal -->
+		    
           <!-- Container-fluid Ends-->
         </div>
-        <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+        
       </div>
     </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-      	  themeSystem: 'bootstrap',
-            initialView: 'dayGridMonth',
-            editable: true,
-            selectable: true,
-            droppable: true,
-            headerToolbar: {
-                left: 'prev,next today addEventButton',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,listWeek,listDay'
-            },
-            customButtons: {
-                addEventButton: {
-                    text: '일정 추가',
-                    click: function () {
-                        $('#myModal').modal('show');
-                    }
-                }
-            },
-            events: fetchEvents,
-            select: function (info) {
-                var startDateInput = document.getElementById('startDate');
-                var endDateInput = document.getElementById('endDate');
+      <script>
+      var idx_employee = document.getElementById('idx_employee').value;
+      document.addEventListener('DOMContentLoaded', function () {
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+        	  themeSystem: 'bootstrap',
+              initialView: 'dayGridMonth',/* 
+              editable: true,
+              selectable: true,
+              droppable: true, */
+              headerToolbar: {
+                  left: 'prev,next today addEventButton',
+                  center: 'title',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              },/* 
+              customButtons: {
+                  addEventButton: {
+                      text: '일정 추가',
+                      click: function () {
+                          $('#myModal').modal('show');
+                      }
+                  }
+              }, */
+              events: fetchEvents,
+              select: function (info) {
+                  var startDateInput = document.getElementById('startDate');
+                  var endDateInput = document.getElementById('endDate');
 
-                startDateInput.value = info.startStr;
-                endDateInput.value = info.endStr;
+                  startDateInput.value = info.startStr;
+                  endDateInput.value = info.endStr;
 
-                $('#myModal').modal('show');
-            },
-            eventClick: function (info) {
-                var event = info.event;
+                  $('#myModal').modal('show');
+              },
+              eventContent: function (arg) {
+                  var eventTitle = arg.event.title;
+                  return { html: '<div>' + eventTitle + '</div>' };
+              },
+              dayMaxEvents: 5
+          });
 
-                // [il] 회사 일정인지 확인
-                var isCompanyEvent = event.id.startsWith('company_');
+          calendar.render();
+          
+          
 
-                if (isCompanyEvent) {
-                    // [il] 회사 일정 모달 창 설정
-                    document.getElementById('companyDetailTitle').value = event.title;
-                    document.getElementById('companyDetailStartDate').value = event.start.toISOString().slice(0, 10);
-                    document.getElementById('companyDetailEndDate').value = event.end ? event.end.toISOString().slice(0, 10) : '';
-                    document.getElementById('companyDetailStartTime').value = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('companyDetailEndTime').value = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                    document.getElementById('companyDetailDescription').value = event.extendedProps.description;
-                    document.getElementById('companyDetailColor').value = event.backgroundColor;
+          function fetchEvents(info, successCallback, failureCallback) {
+              $.ajax({
+                  url: './getAttendance.ajax',
+                  method: 'GET',
+                  data: { idx_employee: idx_employee },
+                  dataType: 'json',
+                  success: function(response) {
+                      var events = [];
+                      
+                      // [il] 개인근태 추가
+                      for (var i = 0; i < response.employeeAttendance.length; i++) {
+                          var event = {
+                        	  id: employeeAttendance.idx_emp_calendar,
+                              title: "Attendance " + employeeAttendance.idx_attendance,
+                              start: employeeAttendance.ah_date + 'T' + employeeAttendance.ah_check_in,
+                              end: employeeAttendance.ah_date + 'T' + employeeAttendance.ah_check_out,
+                              status:employeeAttendance.ah_status
+                          };
+                          events.push(event);
+                      }
+                      successCallback(events);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error('이벤트 로딩에 실패했습니다: ' + error);
+                      if (typeof failureCallback === "function") {
+                          failureCallback(xhr, status, error);
+                      }
+                  }
+              });
+          }
+          
+         
+          
+          
+      });
 
-                    // [il] 시작 시간 select box 설정
-                    var startTimeSelect = document.getElementById('companyDetailStartTime');
-                    startTimeSelect.innerHTML = '';
-                    for (var i = 0; i < 24; i++) {
-                        var hour = (i < 10) ? '0' + i : i;
-                        var option = document.createElement('option');
-                        option.value = hour + ':00';
-                        option.textContent = hour + ':00';
-                        startTimeSelect.appendChild(option);
-                    }
+      
 
-                    // [il] 종료 시간 select box 설정
-                    var endTimeSelect = document.getElementById('companyDetailEndTime');
-                    endTimeSelect.innerHTML = '';
-                    for (var i = 0; i < 24; i++) {
-                        var hour = (i < 10) ? '0' + i : i;
-                        var option = document.createElement('option');
-                        option.value = hour + ':00';
-                        option.textContent = hour + ':00';
-                        endTimeSelect.appendChild(option);
-                    }
 
-                    $('#companyEventDetailModal').modal('show');
-                } else {
-                    // [il] 개인 일정 모달 창 설정
-                    document.getElementById('detailEventId').value = event.id;
-                    document.getElementById('detailTitle').value = event.title;
-                    document.getElementById('detailStartDate').value = event.start.toISOString().slice(0, 10);
-                    document.getElementById('detailEndDate').value = event.end ? event.end.toISOString().slice(0, 10) : '';
-                    document.getElementById('detailStartTime').value = event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('detailEndTime').value = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                    document.getElementById('detailDescription').value = event.extendedProps.description;
-                    document.getElementById('detailColor').value = event.backgroundColor;
+	</script>
 
-                    // [il] 시작 시간 select box 설정
-                    var startTimeSelect = document.getElementById('detailStartTime');
-                    startTimeSelect.innerHTML = '';
-                    for (var i = 0; i < 24; i++) {
-                        var hour = (i < 10) ? '0' + i : i;
-                        var option = document.createElement('option');
-                        option.value = hour + ':00';
-                        option.textContent = hour + ':00';
-                        startTimeSelect.appendChild(option);
-                    }
-
-                    // [il] 종료 시간 select box 설정
-                    var endTimeSelect = document.getElementById('detailEndTime');
-                    endTimeSelect.innerHTML = '';
-                    for (var i = 0; i < 24; i++) {
-                        var hour = (i < 10) ? '0' + i : i;
-                        var option = document.createElement('option');
-                        option.value = hour + ':00';
-                        option.textContent = hour + ':00';
-                        endTimeSelect.appendChild(option);
-                    }
-
-                    $('#eventDetailModal').modal('show');
-                }
-            },
-            eventContent: function (arg) {
-                var eventTitle = arg.event.title;
-                return { html: '<div>' + eventTitle + '</div>' };
-            },
-            dayMaxEvents: 5
-        });
-
-        calendar.render();
-        
-        calendarEl.querySelector('.fc-listMonth-button').addEventListener('click', function() {
-            calendar.changeView('listMonth');
-        });
-        
-        // [il] 리스트 주간 보기
-        calendarEl.querySelector('.fc-listWeek-button').addEventListener('click', function() {
-            calendar.changeView('listWeek');
-        });
-
-        // [il] 리스트 일간 보기 버튼 클릭 시 처리
-        calendarEl.querySelector('.fc-listDay-button').addEventListener('click', function() {
-            calendar.changeView('listDay');
-        });
-
-        document.querySelector('.custom-close').addEventListener('click', function() {
-            $('#myModal').modal('hide');
-        });
-
-        document.querySelector('.custom-close-detail').addEventListener('click', function() {
-            $('#eventDetailModal').modal('hide');
-        });
-
-        document.querySelector('.custom-close-company-detail').addEventListener('click', function() {
-            $('#companyEventDetailModal').modal('hide');
-        });
-
-        document.getElementById('addEventBtn').addEventListener('click', function() {
-            var startDate = document.getElementById('startDate').value;
-            var startTime = document.getElementById('startTime').value;
-            var endDate = document.getElementById('endDate').value;
-            var endTime = document.getElementById('endTime').value;
-            var title = document.getElementById('title').value;
-            var description = document.getElementById('description').value;
-            var color = document.getElementById('color').value;
-            
-         	  // [il] 유효성 검사
-            if (!title) {
-                alert("일정명을 입력하세요.");
-                return;
-            }
-            if (!startDate) {
-                alert("시작 날짜를 입력하세요.");
-                return;
-            }
-            if (!startTime) {
-                alert("시작 시간을 입력하세요.");
-                return;
-            }
-            if (!endDate) {
-                alert("종료 날짜를 입력하세요.");
-                return;
-            }
-            if (!endTime) {
-                alert("종료 시간을 입력하세요.");
-                return;
-            }
-            if (!description) {
-                alert("일정 설명을 작성해주세요.");
-                return;
-            }
-            if (new Date(startDate + 'T' + startTime) >= new Date(endDate + 'T' + endTime)) {
-                alert("종료 일시는 시작 일시보다 나중이어야 합니다.");
-                return;
-            }
-
-            var event = {
-                ec_title: title,
-                ec_description: description,
-                ec_start_datetime: startDate + 'T' + startTime,
-                ec_end_datetime: endDate + 'T' + endTime,
-                ec_color: color
-            };
-
-            $.ajax({
-                url: './addEvent.ajax',
-                method: 'POST',
-                data: { idx_employee: idx_employee },
-                contentType: 'application/json',
-                data: JSON.stringify(event),
-                success: function(response) {
-                    console.log('이벤트 추가가 완료되었습니다.');
-                    $('#myModal').modal('hide');
-                    calendar.getEventSources()[0].refetch(); 
-                },
-                error: function(xhr, status, error) {
-                    console.error('이벤트 추가에 실패했습니다: ' + error);
-                }
-            });
-        });
-
-        var selectOptions = '';
-        for (var i = 0; i < 24; i++) {
-            var hour = (i < 10) ? '0' + i : i;
-            selectOptions += '<option value="' + hour + ':00">' + hour + ':00</option>';
-        }
-        document.getElementById('startTime').innerHTML = selectOptions;
-        document.getElementById('endTime').innerHTML = selectOptions;
-		  
-        
-        function fetchEvents(info, successCallback, failureCallback) {
-            $.ajax({
-                url: './getAllEvents.ajax',
-                method: 'GET',
-                data: { idx_employee: idx_employee },
-                dataType: 'json',
-                success: function(response) {
-                    var events = [];
-                    
-                    // [il] 개인일정 추가
-                    for (var i = 0; i < response.calendarEvents.length; i++) {
-                        var event = {
-                            id: response.calendarEvents[i].idx_emp_calendar,
-                            title: response.calendarEvents[i].ec_title,
-                            description: response.calendarEvents[i].ec_description,
-                            start: response.calendarEvents[i].ec_start_datetime,
-                            end: response.calendarEvents[i].ec_end_datetime,
-                            backgroundColor: response.calendarEvents[i].ec_color
-                        };
-                        events.push(event);
-                    }
-                    
-                 	  // [il] 회사 일정 추가
-                    for (var j = 0; j < response.companyEvents.length; j++) {
-                        var event = {
-                            id: 'company_'+response.companyEvents[j].idx_company_calendar,
-                            title: response.companyEvents[j].cc_title,
-                            description: response.companyEvents[j].cc_description,
-                            start: response.companyEvents[j].cc_start_datetime,
-                            end: response.companyEvents[j].cc_end_datetime,
-                            backgroundColor: response.companyEvents[j].cc_color
-                        };
-                        events.push(event);
-                    }
-
-                    
-                    
-                    
-                    successCallback(events);
-                },
-                error: function(xhr, status, error) {
-                    console.error('이벤트 로딩에 실패했습니다: ' + error);
-                    if (typeof failureCallback === "function") {
-                        failureCallback(xhr, status, error);
-                    }
-                }
-            });
-        }
-        
-        /* // 회사 일정 불러오기
-        function fetchEvents(info, successCallback, failureCallback) {
-            $.ajax({
-                url: './getAllCompanyEvents.ajax',
-                method: 'GET',
-                success: function(response) {
-                    var eventss = [];
-                    for (var i = 0; i < response.CompanyEvents.length; i++) {
-                        var event = {
-                            id: response.CompanyEvents[i].idx_company_calendar,
-                            title: response.CompanyEvents[i].cc_title,
-                            description: response.CompanyEvents[i].cc_description,
-                            start: response.CompanyEvents[i].cc_start_datetime,
-                            end: response.CompanyEvents[i].cc_end_datetime,
-                            backgroundColor: response.CompanyEvents[i].cc_color
-                        };
-                        eventss.push(event);
-                    }
-                    successCallback(eventss);
-                },
-                error: function(xhr, status, error) {
-                    console.error('이벤트 로딩에 실패했습니다: ' + error);
-                    if (typeof failureCallback === "function") {
-                        failureCallback(xhr, status, error);
-                    }
-                }
-            });
-        } */
-    </script>
-    
     <!-- latest jquery-->
-    <script src="/assets/js/jquery.min.js"></script>
+    <!-- [il]부트스트랩 jquery 버전 : 3.7.1 -->
+    <!-- [il]<script src="/assets/js/jquery.min.js"></script>     -->
+    
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
@@ -427,8 +301,9 @@
     <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
+    <!-- [il] datepicker 겹치는 부분 있어서 주석처리했습니다. 
     <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script> -->
     <script src="/assets/js/typeahead/handlebars.js"></script>
     <script src="/assets/js/typeahead/typeahead.bundle.js"></script>
     <script src="/assets/js/typeahead/typeahead.custom.js"></script>
