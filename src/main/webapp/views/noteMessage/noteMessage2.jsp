@@ -75,8 +75,14 @@
 	}
 	
 	.chats-user .common-space.selected-chat {
-	    background-color: yellow; /* 원하는 색상으로 변경 */
+	    background-color: #9096a238; /* 원하는 색상으로 변경 */
 	}
+	.message_icon{
+	    margin-top: 50px;
+	    margin-left: 350px;
+	}
+	
+
 	</style>
   </head>
   <body> 
@@ -94,7 +100,6 @@
 		
 		      <!-- Modal body -->
 		      <div class="modal-body">
-
 				<div class="container-fluid">
 				  <div class="row g-0">
 				    <div class="col-xxl-3 col-xl-4 col-md-5 box-col-5">
@@ -122,83 +127,15 @@
 				            <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
 				              
 				              <div class="search-contacts">
-				                <input class="form-control" name="contactSearch" id="contactSearch" type="text" placeholder="이름 또는 전화번호 검색 ">
+				                <input class="form-control" name="contactSearch" id="contactSearch" type="text" placeholder="이름 또는 사원번호 검색 ">
 				                <svg>
 				                  <use href="/assets/svg/icon-sprite.svg#stroke-search"></use>
 				                </svg>
 				              </div>
 				              <div class="contact-wrapper">
-				                <p>A</p>
-				                <ul class="border-0">
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                      <div>
-				                        <span>Andres Williamson</span>
-				                        <p>191-900-5689</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                </ul>
-				                <p>B</p>
-				                <ul class="border-0">
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                      <div>
-				                        <span>Britlin Weed</span>
-				                        <p>698-781-5581</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <div class="custom-name bg-light-secondary">
-				                        <p class="txt-secondary f-w-500">BD</p>
-				                      </div>
-				                      <div>
-				                        <span>Brendra Dixit</span>
-				                        <p>589-789-2563</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                </ul>
-				                <p>C</p>
-				                <ul class="border-0">
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                      <div>
-				                        <span>Cody Fisher</span>
-				                        <p>983-333-4545</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                </ul>
+				              
+				              
+				              
 				              </div>
 				            </div>
 				          </div>
@@ -211,48 +148,24 @@
 				          <div class="common-space">
 				            <div class="chat-time">
 				              <div class="active-profile">
-				                <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                <div class="status bg-success"></div>
+				                <img class="img-fluid" src="/img/notice_icon.png" alt="user">
 				              </div>
 				              <div>
-				                <span>Darrell Steward</span>
-				                <p>Online</p>
+				                <span><h4>대화방을 선택해주세요..</h4></span>
 				              </div>
+				              	
 				            </div>
 				            <div class="d-flex gap-2">
-				              <div class="contact-edit chat-alert"><i class="icon-info-alt"></i></div>
-				              <div class="contact-edit chat-alert">
-				                <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                  <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                </svg>
-				                <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				              </div>
+				              
 				            </div>
 				          </div>
 				        </div>
 				        <div class="right-sidebar-Chats">
 				          <div class="msger">
 				            <div class="msger-chat">
-				              <div class="msg left-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Theresa Webb</div>
-				                    <div class="msg-info-time">01:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">Hey, I'm looking to redesign my website. Can you help me? &#x1F604;</div>
-				                </div>
-				              </div>
-				              <div class="msg right-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Darrell Steward</div>
-				                    <div class="msg-info-time">12:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">Absolutely! I'd be happy to assist you.</div>
-				                </div>
-				              </div>
+				              
+							<img class="img-fluid message_icon" src="/img/message_icon.png" alt="user">
+
 				            </div>
 				            <form class="msger-inputarea">
 				              <div class="dropdown-form dropdown-toggle" role="main" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-plus"></i>
@@ -313,7 +226,7 @@
                         <div class="row mb-2">
                           <div class="profile-title">
                             <div class="d-flex">                        
-                            <img class="img-70 rounded-circle" alt="" src="/img/ahruru.png">
+                            <img class="img-70 rounded-circle" alt="" src="/file/profile_picture/ahruru.png">
                               <div class="flex-grow-1">
                                 <h4 class="mb-1"></h4>
                                 <p class="title">직위</p>
@@ -350,7 +263,7 @@
 	
 	<!-- 쪽지 보내기 모달 -->
 	<div class="modal fade" id="Modal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
@@ -453,6 +366,12 @@
             	 $('p.custom-text1').text(data.de_name);
             	 $('p.custom-text2').text(data.idx_title);
             	 $('p.custom-text3').text(data.emp_email);
+            	 if(data.file_name != null){
+            	 	 $('.img-70.rounded-circle').attr('src', '/file/profile_picture/' + data.file_name);            		 
+            	 }else{
+            		 $('.img-70.rounded-circle').attr('src', '/img/user_icon.png');
+            	 }
+            	 
              },
              error: function(error) {
             	 console.log("error",error);
@@ -496,6 +415,7 @@
 			dataType: 'JSON',
 			success: function(data) {
 				console.log(data.result);
+				loadChatRooms("${sessionScope.emp_id}");
 			}, error: function(error) {
 				console.log(error);
 			}

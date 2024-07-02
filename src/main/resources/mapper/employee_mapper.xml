@@ -73,11 +73,13 @@
 	</select>
 	
 	<select id="getempDetail" parameterType="map">
-		SELECT et.idx_employee ,tt.title_name, et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title 
+	
+		SELECT et.idx_employee ,tt.title_name, et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title , p.file_name
 		FROM employee_tb et
 		JOIN department_tb dt ON et.idx_department = dt.idx_department 
 		JOIN title_tb tt ON et.idx_title = tt.idx_title
-		WHERE idx_employee = #{idx_emp};
+		LEFT JOIN (SELECT ft.idx_ref, ft.file_name FROM filestore_tb ft WHERE ft.idx_filetype = 1) AS p ON et.idx_employee = p.idx_ref
+		WHERE idx_employee = #{idx_emp}
 	
 	</select>
 	

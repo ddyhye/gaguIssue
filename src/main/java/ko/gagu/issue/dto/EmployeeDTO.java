@@ -55,6 +55,7 @@ public class EmployeeDTO {
 	private Timestamp emp_term_date;
 	private String emp_address;
 	private boolean first_login;
+	private String email;
 	
 	// [jeong] 직원의 부서명과 직급명이 필요해서 추가했습니다
 	private String de_name;
@@ -234,6 +235,12 @@ public class EmployeeDTO {
 	}
 	public void setFile_name(String file_name) {
 		this.file_name = file_name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

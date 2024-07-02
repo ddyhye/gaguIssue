@@ -57,23 +57,31 @@
 	
 	
 	<select id="messageList" resultType="message">
+	
 		SELECT
-		mht.idx_message
-		,IF (mht.receiver = #{idx_emp}, mht.sender, mht.receiver) AS other_emp
-		,(SELECT et.emp_name FROM employee_tb et WHERE et.idx_employee = other_emp) AS other_name
-		,mht.msg_content as content
-		,mht.send_datetime
-		,mht.receiver 
-		,mht.sender
-		,mt.is_sender_exit 
-		,mt.is_receiver_exit 
-		,mht.is_receiver_read
-		,mht.message_delete 
-	FROM messageroom_tb mt, message_history_tb mht  
-	WHERE mt.idx_messageroom = mht.idx_messageroom 
-	AND mht.idx_messageroom = #{idx}
-	AND (mt.receiver IN(#{idx_emp},#{otherEmp}))
-	AND (mt.sender IN(#{idx_emp},#{otherEmp}))
+	    mht.idx_message,
+	    IF(mht.receiver = mht.receiver , mht.sender, mht.receiver) AS other_emp,
+	    (SELECT et.emp_name FROM employee_tb et WHERE et.idx_employee = other_emp) AS other_name,
+	    mht.msg_content as content,
+	    mht.send_datetime,
+	    mht.receiver,
+	    mht.sender,
+	    mt.is_sender_exit,
+	    mt.is_receiver_exit,
+	    mht.is_receiver_read,
+	    mht.message_delete,
+	    p.file_name
+	FROM messageroom_tb mt
+	JOIN message_history_tb mht ON mt.idx_messageroom = mht.idx_messageroom
+	LEFT JOIN (
+	    SELECT ft.idx_ref, ft.file_name
+	    FROM filestore_tb ft
+	    WHERE ft.idx_filetype = 1 
+	) AS p ON IF(mht.receiver = mht.receiver , mht.sender, mht.receiver) = p.idx_ref
+	WHERE mht.idx_messageroom = #{idx}
+	  AND (mt.receiver IN (#{idx_emp},#{otherEmp}))
+	  AND (mt.sender IN (#{idx_emp},#{otherEmp}))
+	  
 	</select>
 	
 	<update id="messageRead">
@@ -112,4 +120,8 @@
 		keyProperty="insert_id">
 		INSERT INTO messageroom_tb (sender, receiver) values (#{param1}, #{param2})
 	</insert>
+	
+	<update id="msgDelete">
+		UPDATE message_history_tb SET message_delete = 1 WHERE idx_message = #{param1}
+	</update>
 </mapper>

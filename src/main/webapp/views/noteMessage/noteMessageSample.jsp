@@ -114,7 +114,7 @@
 		
 		      <!-- Modal body -->
 		      <div class="modal-body">
-
+				<div class="page-body">
 				<div class="container-fluid">
 				  <div class="row g-0">
 				    <div class="col-xxl-3 col-xl-4 col-md-5 box-col-5">
@@ -320,6 +320,7 @@
 				                    <div class="msg-info-name">Darrell Steward</div>
 				                    <div class="msg-info-time">12:14 PM</div>
 				                  </div>
+				                  
 				                  <div class="msg-text">Great! Do you have any specific color schemes in mind?</div>
 				                </div>
 				              </div>

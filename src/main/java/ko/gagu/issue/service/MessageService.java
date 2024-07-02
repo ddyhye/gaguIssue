@@ -192,6 +192,12 @@ public class MessageService {
 		return map;
 	}
 
+	public int msgDelete(int msg_idx) {
+		
+		int cnt = messageDAO.msgDelete(msg_idx);
+		return cnt;
+	}
+
 	
 	
 }

@@ -108,7 +108,16 @@ public class MessageController {
 			return messageService.sendAndCreate(emp_id, other_emp, content);
 		}
 		
-		
+		// 쪽지 삭제하기 ajax
+		@RequestMapping(value = "/msgDelete.ajax", method = RequestMethod.POST)
+		@ResponseBody
+		public int msgDelete(int msg_idx){
+			logger.info("---------- 쪽지 삭제 요청 ---------");
+			logger.info("삭제할 MSG_IDX: "+ msg_idx);
+			int cnt = messageService.msgDelete(msg_idx);
+			return cnt;
+		}
+				
 		
 		
 }
