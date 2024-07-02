@@ -458,7 +458,7 @@ table img {
 	        .then(response => response.json())
 	        .then(data => {
 	        	console.error('Success:', data);
-	        	window.location.href = '/document/${approvalDetails.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        	window.location.href = '/document/${approvalDetails.idxApproval}/detail.go';
 	        })
 	        .catch(error => console.error('Error:', error));			
 		}
@@ -476,7 +476,7 @@ table img {
 	        .then(response => response.json())
 	        .then(data => {
 	        	console.error('Success:', data);
-	        	window.location.href = '/document/${approvalDetails.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        	window.location.href = '/document/${approvalDetails.idxApproval}/detail.go';
 	        })
 	        .catch(error => console.error('Error:', error));			
 		}
