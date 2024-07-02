@@ -45,12 +45,13 @@
    		padding: 45px;
    		height: 85%;
    		margin: auto;
+   		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25); /* X, Y, Blur, Spread, Color */
    	} 
     
     #calendar {
-    	width: 60%;
+    	width: 50%;
     	height: 100%;
-    	margin: auto;
+    	margin: 0 30 0 30;
     }
     #timeTable {
     	width: 35%;
@@ -71,12 +72,17 @@
     td {
     	height: 50px;
     }
-    
+    #time td {
+    	border: 1px solid black;
+    }
+    #meetingRoomSelectBtn {
+    	background: gray !important;
+    	border-color: gray !important;
+    }
 	.fc-disabled {
         pointer-events: none; /* 모든 이벤트 비활성화 */
         opacity: 0.5; /* 캘린더 불투명도 낮춤 */
     }
-    
     /* 요일 표시 부분 숨기기 */
     .fc-scrollgrid-section-header {
         display: none;
@@ -89,6 +95,21 @@
     .fc-day-past {
     	background: #f7f7f7;
     	opacity: 0.9;
+    }
+    .fc-toolbar-title {
+    	content: 'My Custom Header Text';
+    }
+    .fc-day-future {
+    	cursor: pointer;
+    }
+    .fc-timegrid-slot {
+    	cursor: pointer;
+    }
+/*     td[data-time="18:00:00"].fc-timegrid-slot-lane {
+    	background: black;
+    } */
+    .selectedSlot {
+    	background: #ded9ff;
     }
     </style>
   </head>
@@ -135,61 +156,61 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
 	          <div class="d-flex" id="calendar-background">
-					<div id="calendar"></div>
+					<!-- jeong : 사이드바 시작 -->
+					<div class="sidebar-left-wrapper"
+						style="width:15%; padding-right: 12px; height: 100%;">
+						<ul class='sidebar-left-icons nav nav-pills'
+							id='add-product-pills-tab' role='tablist'>
+							<li class='nav-item'><a class='nav-link active'>
+									<div class='nav-rounded'>
+										<div class='product-icons'>
+											<svg class='stroke-icon'>
+                                   			<use
+													href='/assets/svg/icon-sprite.svg#stroke-calendar'></use>
+                                 			</svg>
+										</div>
+									</div>
+									<div class='product-tab-content'>
+										<h5>날짜 선택</h5>
+									</div>
+							</a></li>
+							<li class='nav-item'><a class='nav-link'>
+									<div class='nav-rounded'>
+										<div class='product-icons'>
+											<svg class='stroke-icon'>
+                                   			<use
+													href='/assets/svg/icon-sprite.svg#stroke-home'></use>
+                                 			</svg>
+										</div>
+									</div>
+									<div class='product-tab-content'>
+										<h5>회의실 선택</h5>
+									</div>
+							</a></li>
+							<li class='nav-item'><a class='nav-link'>
+									<div class='nav-rounded'>
+										<div class='product-icons'>
+											<svg class='stroke-icon'>
+                                   			<use
+													href='/assets/svg/icon-sprite.svg#orders'> </use>
+                                 			</svg>
+										</div>
+									</div>
+									<div class='product-tab-content'>
+										<h5>예약 완료</h5>
+									</div>
+							</a></li>
+						</ul>
+					</div>
+					<!-- jeong : 사이드바 끝 -->					          	
+					<div id="calendar" class="sidebar-left-wrapper" style="padding-right: 24px;"></div>
 					<div id="timeTable">		
 						<div class="d-flex justify-content-end" style="margin-bottom: 30px;">
-							<button class="btn btn-primary" onClick="selected()">회의실 선택</button>
+							<button class="btn btn-primary" id="meetingRoomSelectBtn" onClick="selected()">회의실 선택</button>
 						</div>
-						<div id="time" class="fc-disabled"></div>
-<!-- 						<table>
-							<thead>
-								<tr>
-									<th>번호</th>
-									<th>시간대</th>
-									<th>선택</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>09:00 ~ 10:00</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>11:00 ~ 12:00</td>
-									<td></td>
-								</tr>							
-								<tr>
-									<td>3</td>
-									<td>12:00 ~ 13:00</td>
-									<td></td>
-								</tr>							
-								<tr>
-									<td>4</td>
-									<td>13:00 ~ 14:00</td>
-									<td></td>
-								</tr>							
-								<tr>
-									<td>5</td>
-									<td>14:00 ~ 15:00</td>
-									<td></td>
-								</tr>	
-								<tr>
-									<td>6</td>
-									<td>15:00 ~ 16:00</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td>17:00 ~ 18:00</td>
-									<td></td>
-								</tr>																																						
-							</tbody>
-						</table> -->        		
+						<div id="time" class="fc-disabled"></div>  		
 					</div>
 	          </div>
-	          
           </div>
           <!-- Container-fluid Ends-->
         </div>
@@ -253,12 +274,14 @@
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
-    
+    <!-- Sweetalert js -->
+	<script src='/assets/js/sweet-alert/sweetalert.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
     <script>new WOW().init();</script>
     <script>
 	var calendarEl = document.getElementById('calendar'); // 요소 지정, JS
 	var timeEl = document.getElementById('time'); // 요소 지정, JS
+	var beforedayEl = '';
 	
 	$(document).ready(function() {
 		calendar
@@ -269,7 +292,6 @@
 			center: 'title', // 현재 년도와 월을 보여준다
 			right: 'next' // 다음달로 이동하는 버튼 추가
 		},
-		selectable: true, // 캘린더에서 드래그하여 일정 선택 기능을 허용
 		locale: 'ko', // 언어를 한글로 변경
         selectAllow: function(selectInfo) {
             // 현재 날짜 이후만 선택 가능
@@ -295,40 +317,126 @@
 		dateClick: function(info) { // 캘린더에서 날짜를 클릭 이벤트
 			// 일정 추가하는 창(모달)을 보여준다
 			// 일정의 시작 날짜, 종료날짜를 선택한 날짜로 설정한다
-			console.log(info);
+			if (info.date <= new Date()) {
+				return;
+			}
+			if (selectedTime.length != 0) {
+				selectedTime.forEach(time => {
+					let timeStr = time.toString().padStart(2, '0') + ":00:00";
+					let elements  = document.querySelectorAll('td[data-time="'+ timeStr +'"].fc-timegrid-slot-lane');
+					elements.forEach(el => {
+						el.classList.remove('selectedSlot');
+                    });
+				});
+				selectedTime.length = 0;
+			}
+			// 이전에 선택한 날짜의 배경색을 없애준다
+			if (beforedayEl != '') {
+				beforedayEl.style.backgroundColor = '#ffffff';	
+			}
+			selectedDate = info.dateStr;
+			
+			info.dayEl.style.backgroundColor = '#ded9ff';
+			// 이전 선택한 날짜 요소를 befordayEl 에 저장한다
+			beforedayEl = info.dayEl;
+			// 오른쪽의 시간 선택 캘린더의 날짜를 변경한다
+			time.gotoDate(info.date);
+			// 선택불가 상태을 해제한다
 			timeEl.classList.remove('fc-disabled');
-			timeEl
+			let btnEl = document.querySelector('#meetingRoomSelectBtn');
+			btnEl.style.removeProperty('background');
+			btnEl.style.removeProperty('border-color');
+			isDatetimeSelected = false;
 		}
 	});
-	calendar.render(); // 캘린더를 그려냄(렌더링)    
-    
+	calendar.render(); // 캘린더를 그려냄(렌더링)   
+	
+	var cnt = 0;
+	var selectedDate = '';
+	var selectedTime = [];
+	var isDatetimeSelected = false;
+	
+	function dateStrToInt(dateStr) {
+		return parseInt(dateStr.substring(11, 16));
+	}
+	
 	const time = new FullCalendar.Calendar(timeEl, {
 			initialView: 'timeGridDay',
             headerToolbar: {
                 left: '',
-                center: '',
+                center: 'title',
                 right: ''
             },
             allDaySlot: false,
-            selectable: true, // 캘린더에서 드래그하여 일정 선택 기능을 허용
-    		dateClick: function(info) { // 캘린더에서 날짜를 클릭 이벤트
-    			// 일정 추가하는 창(모달)을 보여준다
-    			// 일정의 시작 날짜, 종료날짜를 선택한 날짜로 설정한다
-    			console.log(info);
-    			timeEl.classList.remove('fc-disabled');
-    			timeEl
-    		},            
+            selectable: true,
+    		dateClick: function(info) {
+    			const time = dateStrToInt(info.dateStr);
+				let timeStr = time.toString().padStart(2, '0') + ":00:00";
+				let timeSlot = document.querySelector('td[data-time="'+ timeStr +'"].fc-timegrid-slot-lane');
+    			if (selectedTime.includes(time) == true) {
+    				const index = selectedTime.indexOf(time);
+    				selectedTime.splice(index, 1);
+
+    				timeSlot.classList.remove('selectedSlot');
+    			} else {
+    				selectedTime.push(time);
+    				timeSlot.classList.add('selectedSlot');
+    			}
+    			let btnEl = document.querySelector('#meetingRoomSelectBtn');
+    			btnEl.style.setProperty('background', '#7a70ba', 'important');
+    			btnEl.style.setProperty('border-color', '#7a70ba', 'important');
+    			isDatetimeSelected = true;
+    		},     
+    		select: function(info) {
+    			// dateClick 이랑 이벤트가 곂쳐서 리턴시킴
+    			if (info.end - info.start == (1000 * 60 * 60)) {
+    				return;
+    			}
+    			// selectedTime.push(dateToTimeStr(info.startStr));
+    			const startTime =  dateStrToInt(info.startStr);
+    			const endTime =  dateStrToInt(info.endStr);
+    			for (let time = startTime; time < endTime; time++) {
+    				if (selectedTime.includes(time) == true) {
+    					continue;
+    				}
+    				selectedTime.push(time);
+    				let timeStr = time.toString().padStart(2, '0') + ":00:00";
+    				let timeSlot = document.querySelector('td[data-time="'+ timeStr +'"].fc-timegrid-slot-lane');
+    				timeSlot.classList.add('selectedSlot');
+        			let btnEl = document.querySelector('#meetingRoomSelectBtn');
+        			btnEl.style.setProperty('background', '#7a70ba', 'important');
+        			btnEl.style.setProperty('border-color', '#7a70ba', 'important');
+    			}
+    			isDatetimeSelected = true;
+    		},
+            titleFormat: function(info) {
+            	if (cnt == 0) {
+            		cnt++;
+            		return '날짜를 선택해주세요'; // 제목을 "날짜를 선택해주세요"로 설정 	
+            	}
+            	return (info.date.month + 1) + '월 ' + info.date.day + '일';
+            },    		
             height: 'auto',
             contentHeight: 'auto',
             locale: 'ko', // 언어를 한글로 변경
             slotDuration: '01:00:00', // 타임 슬롯을 1시간 단위로 설정
             slotMinTime: '09:00:00', // 시작 시간
-            slotMaxTime: '19:00:00' // 종료 시간            
+            slotMaxTime: '19:00:00' // 종료 시간     
 	});
 	time.render();
 	
 	function selected() {
-		timeEl.classList.remove('fc-disabled');
+		if (isDatetimeSelected == false) {
+			Swal.fire('회의실 예약 날짜 및 시간을 선택해주세요');
+			return;
+		}
+		console.log(selectedTime);
+		console.log(selectedDate);
+		
+		const url = '/reservation/room.go?selectedDate='+ selectedDate +'&selectedTime=' + selectedTime;
+        window.location.href = url;
+		
+		
 	}
     </script>
   </body>
