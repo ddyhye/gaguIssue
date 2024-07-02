@@ -38,10 +38,10 @@ public class ReservationController {
 	
 	@GetMapping(value="/reservation/room.go")
 	public ModelAndView meetingRoomGo(HttpSession session
-			,@RequestParam("selectedDate") String selectDate
-			,@RequestParam("selectedTime") String selectedTime) {
+			,@RequestParam("selectedDate") String selectedDate
+			,@RequestParam("selectedTime") int[] selectedTime) {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
-		return service.getMeetingRoom(idxEmployee, selectDate, selectedTime);
+		return service.getMeetingRoom(idxEmployee, selectedDate, selectedTime);
 	}
 	
 	@GetMapping(value="/reservation/list.go")

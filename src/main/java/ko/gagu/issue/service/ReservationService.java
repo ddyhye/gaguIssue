@@ -25,9 +25,9 @@ public class ReservationService {
 		return null;
 	}
 
-	public ModelAndView getMeetingRoom(int idxEmployee, String selectDate, String selectedTime) {
-		// TODO Auto-generated method stub
-		return null;
+	public ModelAndView getMeetingRoom(int idxEmployee, String selectDate, int[] selectedTime) {
+		ModelAndView mav = new ModelAndView("/common/reservationRoomSelect");
+		return mav;
 	}
 
 	public ModelAndView getAvailableSlots(int idxEmployee) {
