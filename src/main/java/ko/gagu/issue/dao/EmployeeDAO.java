@@ -40,5 +40,7 @@ public interface EmployeeDAO {
 
 	int getEmpIdx(String emp_id);
 
+	List<EmployeeDTO> getEmployeeAttendance(Integer idx_employee);
+
 
 }

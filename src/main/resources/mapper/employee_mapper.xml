@@ -9,6 +9,10 @@
 		SELECT * FROM employee_calendar_tb WHERE idx_employee=#{param1} and ec_status='SHOW'
 	</select>
 	
+	<select id="getEmployeeAttendance" resultType="employee">
+		SELECT * FROM attendance_history_tb aht WHERE idx_employee=#{param1}
+	</select>
+	
 	<select id="getAllCompanyEvents" resultType="HRDept">
 		SELECT * FROM company_calendar_tb WHERE cc_status='SHOW'
 	</select>
