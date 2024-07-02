@@ -49,6 +49,26 @@ public class EmployeeController {
 		logger.info("response : {}",response);
 		return response;
 	}
+	
+
+	// [il] 개인 근태관리
+	@GetMapping(value="/employee/attendance.go")
+	public String employeeAttendance() {
+		logger.info("attendance calendar in");
+		return "employee/attendance";
+	}
+	
+	@GetMapping(value="/employee/getAttendance.ajax")
+	@ResponseBody
+	public Map<String, Object> getEmployeeAttendance(Integer idx_employee,Model model) {
+		logger.info("getEmployeeAttendance in");
+		logger.info("idx_employee : {}",idx_employee);
+		Map<String, Object> response = new HashMap<String, Object>();
+		employeeService.getEmployeeAttendance(response,idx_employee,model);
+		logger.info("response : {}",response);
+		return response;
+	}
+	
 
 //	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
 //	@ResponseBody
@@ -121,7 +141,8 @@ public class EmployeeController {
 	        return errorResponse;
 	    }
 	}
-
+	
+	
 
 	
 	
