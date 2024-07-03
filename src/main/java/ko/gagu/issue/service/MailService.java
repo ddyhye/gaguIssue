@@ -112,13 +112,27 @@ public class MailService {
             emailFolder.open(Folder.READ_ONLY);
 
             Message[] messages = emailFolder.getMessages();
-            for (Message message : messages) {
+            logger.info("message size1 : {}", messages.length);
+            
+            int start = Math.max(0, messages.length - 100); // [il] 최근 100개로 제한
+            for (int i = start; i < messages.length; i++) {
+                Message message = messages[i];
                 MailDTO mailDto = new MailDTO();
                 mailDto.setTitle(message.getSubject());
                 mailDto.setFrom(message.getFrom()[0].toString());
-                mailDto.setContent(mailUtil.getTextFromMimeMultipart((Multipart) message.getContent()));
+                
+                // [il] 0702 바뀐부분 
+                Object content = message.getContent();
+                if (content instanceof String) {
+                    mailDto.setContent(content.toString());
+                } else if (content instanceof Multipart) {
+                    mailDto.setContent(mailUtil.getTextFromMimeMultipart((Multipart) message.getContent()));
+                }
+                
                 mailList.add(mailDto);
             }
+            
+            logger.info("Mail Receive Complete, mailList Size : {}", mailList.size());
         } catch (MessagingException | IOException e) {
             logger.error("Error receiving emails", e);
             
