@@ -160,6 +160,14 @@
                           </tr> -->
                         </tbody>
                       </table>
+                      
+                      <!-- 페이징 -->
+                      <div class="d-flex justify-content-center">								
+						  <nav aria-label="Page navigation">
+						      <ul class="pagination" id="pagination"></ul>
+						  </nav>
+					  </div>
+					  
                     </div>
                   </div>
                 </div>
@@ -303,6 +311,134 @@
 	  	var date = new Date(timesteamp);
 	  	var dateStr = date.toLocaleDateString("ko-KR");
 	  	return dateStr;
+	}
+	
+	
+	
+	
+	// 페이징
+	var page = 1;
+	var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+	var filter = 'all';
+	
+	$(document).ready(function () {
+		if (totalPage == 0) {
+			
+		} else {
+		    $('#pagination').twbsPagination({
+				startPage:page, //시작페이지
+				totalPages:totalPage, //총 페이지 갯수
+				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+		        first: '처음', // 첫 페이지 버튼 텍스트 변경
+		        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+		        next: '다음', // 다음 페이지 버튼 텍스트 변경
+		        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+				onPageClick:function(evt, clickPageIdx){
+					// 페이지 이동 번호 클릭시 이벤트 발동
+                    if (page !== clickPageIdx) {
+                        page = clickPageIdx;
+                        //fetchDocumentList();
+                    }
+				}
+		    });			
+		}
+		// pagination();
+	});
+	
+	function pagination() {
+		if (totalPage < page) {
+			page = totalPage;
+		}
+		console.log(page, totalPage);
+		if (totalPage == 1 && page == 0) {
+			page = 1;
+		}
+		if (totalPage != 0) {				
+			$('#pagination').twbsPagination('destroy');
+		    $('#pagination').twbsPagination({
+				startPage:page, //시작페이지
+				totalPages:totalPage, //총 페이지 갯수
+				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+		        first: '처음', // 첫 페이지 버튼 텍스트 변경
+		        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+		        next: '다음', // 다음 페이지 버튼 텍스트 변경
+		        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+				onPageClick:function(evt, clickPageIdx){
+					// 페이지 이동 번호 클릭시 이벤트 발동
+                    if (page !== clickPageIdx) {
+                        page = clickPageIdx;
+                        fetchDocumentList();
+                    }
+				}
+		    });		
+		} 
+	}
+	
+	function setFilter(category) {
+		filter = category;
+		fetchDocumentList();
+	}
+	
+	function fetchDocumentList() {
+		// 1. 날짜 필터링
+		// 시작 날짜는 undefined 로 들어오면 모든 과거 내용을 가져와야한다
+		//console.log(startDate.selectedDates[0]);
+		//console.log(endDate.selectedDates[0]);
+		
+		// 2. filter 는 문서 유형을 나눈다  
+		//console.log(filter);
+		const pagingDTO = {
+			filter : filter,
+			page : page,
+			startDate : document.getElementById('startDate').value,
+			endDate : document.getElementById('endDate').value
+		}
+		console.log(pagingDTO);
+        fetch('/common/listPaging.ajax', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pagingDTO)
+        })
+        .then(response => response.json())
+        .then(data => {
+        	console.log('Success:', data);
+        	//drawDocumentList(data);
+        	totalPage = data.totalPages;
+        	pagination();
+        	// 3. 현재 페이지 번호가 몇번인지 알아야한다
+        	
+        })
+        .catch(error => {
+        	console.error('Error:', error);
+        });
+		
+		
+		
+	}	
+	
+	function drawDocumentList(data) {
+
+		const documentListTag = document.getElementsByTagName('tbody')[0];
+		let content = '';
+		let index = 1;
+		if (data.totalPages == 0) {
+			content += '<td colspan="7" style="text-align: center;">조회된 문서가 없습니다.</td>';
+		} else {				
+			for (row of data.documentFilterList) {
+				content += '<tr>';
+				content += '<td>' + index++ + '</td>';
+				content += '<td><a href="/document/' + row.idx_approval + '/detail.go">' + row.ap_title + '</a></td>';
+				content += '<td>' + row.dc_name + '</td>';
+				content += '<td>' + row.de_name + '</td>';
+				content += '<td>' + row.emp_name + '</td>';
+				content += '<td>' + row.final_ap_status + '</td>';
+				content += '<td>' + row.written_datetime + '</td>';	
+				content += '</tr>';
+			}
+		}
+		documentListTag.innerHTML = content;
 	}
 </script>
 

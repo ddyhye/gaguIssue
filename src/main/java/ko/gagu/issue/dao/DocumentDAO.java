@@ -67,4 +67,6 @@ public interface DocumentDAO {
 
 	int getFilterTotalPages(PagingDTO paging, int idxEmployee);
 
+	void insertAlarm(int idxEmployee, String alarmMsg, String alarmPath);
+
 }

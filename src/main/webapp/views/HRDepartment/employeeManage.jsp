@@ -159,6 +159,17 @@
 	        flex: 0 0 50%;
 	        max-width: 50%;
 	    }
+	    tr.selected {
+		    background-color: #e0e0e0; /* 회색 배경 */
+		}
+		#employeeDetails {
+		    display: none;
+		}
+		#employeePhoto {
+		    max-width: 50%; /* 이미지의 최대 너비 설정 */
+		    height: auto; /* 높이 자동 조정 */
+		}
+		
        
   </style>
   
@@ -352,7 +363,7 @@
 						            <c:set var="rowNumber" value="1" />
 						            
 						            <c:forEach var="employee" items="${employees}">
-						                <tr>
+						                <tr data-emp-id="${employee.emp_id}">
 						                    <!-- 자동 증가하는 번호 출력 -->
 						                    <td>${rowNumber}</td>
 						                    <td>${employee.emp_id}</td>
@@ -372,13 +383,31 @@
 			
 			        <!-- 오른쪽 반분 컨테이너 -->
 			        <div class="col-lg-6">
-			            <div class="button-container">
-			                <button id="registerButton" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">사원등록</button>
-			                <button id="modifyButton" class="btn btn-secondary">사원수정</button>
-			            </div>
-			        </div>
-			    </div>
-			</div>
+					    <div class="button-container">
+					        <button id="registerButton" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">사원등록</button>
+					        <button id="modifyButton" class="btn btn-secondary">사원수정</button>
+					    </div>
+					
+					    <!-- 사원 정보 표시 -->
+					    <div id="employeeDetails" class="mt-4">
+					        <h4>사원 상세 정보</h4>
+					        <hr>
+					        <div id="employeeInfo">
+					            <div id="employeePhotoContainer">
+						            <img id="employeePhoto" src="/img/user.jpg" alt="사원 사진">
+						        </div>
+					            <p><strong>사원번호:</strong> <span id="emp_id_detail"></span></p>
+					            <p><strong>이름:</strong> <span id="emp_name_detail"></span></p>
+					            <p><strong>전화번호:</strong> <span id="emp_phone_number_detail"></span></p>
+					            <p><strong>생년월일:</strong> <span id="emp_birth_date_detail"></span></p>
+					            <p><strong>이메일:</strong> <span id="emp_email_detail"></span></p>
+					            <p><strong>부서:</strong> <span id="de_name_detail"></span></p>
+					            <p><strong>직위:</strong> <span id="title_name_detail"></span></p>
+					            <p><strong>연차:</strong> <span id="leave_days_detail"></span></p>
+					            <p><strong>주소:</strong> <span id="address_detail"></span></p>
+					        </div>
+					    </div>
+					</div>
 			<!-- Container-fluid 종료-->
 
           
@@ -406,131 +435,198 @@
     
 	
 	<script>
-	 function previewImage(event) {
-	        var output = document.getElementById('profileImagePreview');
-	        output.src = URL.createObjectURL(event.target.files[0]);
-	        output.onload = function() {
-	            URL.revokeObjectURL(output.src);  
-	        }
-	    }
+		 function previewImage(event) {
+		        var output = document.getElementById('profileImagePreview');
+		        output.src = URL.createObjectURL(event.target.files[0]);
+		        output.onload = function() {
+		            URL.revokeObjectURL(output.src);  
+		        }
+		    }
+	
+		    function resetImage() {
+		        var defaultImageSrc = '/img/user.jpg';
+		        var profileImage = document.getElementById('profileImagePreview');
+		        profileImage.src = defaultImageSrc;
+	
+		        var fileInput = document.getElementById('profileImage');
+		        fileInput.value = null;
+		    }
+	
+		    $(document).ready(function() {
+		        $('#registerModal').on('hidden.bs.modal', function () {
+		            resetImage();
+		        });
+		    });
+	
+		    function submitEmployeeForm() {
+		        var formData = new FormData($('#employeeForm')[0]); // FormData 객체 생성
+	
+		        // 우편번호, 주소, 상세주소를 합쳐서 하나의 문자열로 만든다.
+		        var postalCode = $('#postal_code').val();
+		        var address = $('#address').val();
+		        var detailAddress = $('#detail_address').val();
+		        var fullAddress = postalCode + ' ' + address + ' ' + detailAddress;
+	
+		        // 합쳐진 주소를 emp_address 필드에 추가
+		        formData.append('emp_address', fullAddress);
+		        
+		        formData.append('emp_term_date', '9999-12-31');
+	
+		        $.ajax({
+		            type: 'POST',
+		            url: '/employeeInsert',
+		            data: formData,
+		            dataType: 'json',
+		            processData: false,
+		            contentType: false,
+		            success: function (data) {
+		                alert('사원 등록 성공');
+		                $('#registerModal').modal('hide');
+		                resetForm();
+		            },
+		            error: function (error) {
+		                alert('사원 등록 실패');
+		            }
+		        });
+		    }
+	
+		    function resetForm() {
+		        // 폼 초기화 함수
+		        $('#employeeForm')[0].reset(); // 폼 리셋
+		        $('#profileImagePreview').attr('src', '/img/wow.jpg'); // 이미지 미리보기 초기화
+		    }
+	
+		    // 주소 API 함수
+		    function openPostalCodeSearch() {
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		                // 검색된 정보를 해당 필드에 넣음
+		                document.getElementById('postal_code').value = data.zonecode;
+		                document.getElementById('address').value = data.roadAddress; // 도로명 주소 사용
+		            }
+		        }).open();
+		    }
+		    
+		 // 등록 폼 로딩 시 실행할 함수
+		    $(document).ready(function() {
+		        // 사원 번호 초기 설정
+		        updateEmpId();
+	
+		        // 부서 선택 변경 시 사원 번호 업데이트
+		        $("#de_name").change(function() {
+		            updateEmpId(); // 부서 변경 시 사원 번호 업데이트
+		        });
+		    });
+	
+		    function updateEmpId() {
+		        var de_name = $("#de_name").val();
+				var de_char = '';
+		        // AJAX를 통해 de_char 값을 가져오기
+		        $.ajax({
+		            type: "GET",
+		            url: "/getnewIdx",
+		            data: {},
+		            success: function(data) {
+		                // 현재 날짜
+		                var currentDate = new Date();
+		                var yy = String(currentDate.getFullYear()).slice(-2);
+		                var mm = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+		                var dd = ('0' + currentDate.getDate()).slice(-2);
+						
+						switch (de_name) {
+							case "임원진":
+								de_char = "A";
+								break;
+							case "경영지원부서":
+								de_char = "B";
+								break;
+							case "물류관리부서":
+								 de_char = "C";
+								break;
+							case "인사관리부서":
+								de_char = "D";
+								break;
+							default:
+								de_char = "A"; // 기본 값
+								break;
+						}
+		                console.log(data)
+		                var empId = yy + mm + dd + de_char + data;
+						
+		                $("#emp_id").val(empId);
+		            },
+		            error: function(xhr, status, error) {
+		                console.error("에러내용 : " + error);
+		            }
+		        });
+		    }
+		    
+		    
+		    // 직원 상세보기 그리기
+		    $(document).ready(function() {
+    // 초기에 상세 정보 영역 숨기기
+			    $('#employeeDetails').hide();
+			
+			    // 사원 리스트 클릭 시 선택 표시 및 상세 정보 표시
+			    $('table tbody').on('click', 'tr', function() {
+			        // 선택 상태를 토글(toggle)
+			        if (!$(this).hasClass('selected')) {
+			            // 다른 선택된 행이 있으면 선택 해제 후 현재 행만 선택
+			            $('table tbody tr').removeClass('selected');
+			            $(this).addClass('selected');
+			            
+			            // 사원 번호 가져오기
+			            const emp_id = $(this).data('emp-id');
+			            
+			            // 상세 정보 표시
+			            displayEmployeeDetails(emp_id);
+			        } else {
+			            $(this).removeClass('selected');
+			            $('#employeeDetails').hide();
+			        }
+			    });
+			
+			    function displayEmployeeDetails(emp_id) {
+			        $.ajax({
+			            type: 'POST',
+			            url: '/employeeDetail.ajax',
+			            data: { emp_id: emp_id },
+			            dataType: 'json',
+			            success: function(data) {
+			                console.log(data); // 데이터 확인용
+			                console.log(data.photo_url);
+			                // 사원 정보를 폼에 채워 넣기
+			                $('#emp_id_detail').text(data.emp_id);
+			                $('#emp_name_detail').text(data.emp_name);
+			                $('#emp_phone_number_detail').text(data.emp_phone_number);
+			                $('#emp_birth_date_detail').text(data.emp_birth_date);
+			                $('#emp_email_detail').text(data.emp_email);
+			                $('#de_name_detail').text(data.de_name);
+			                $('#title_name_detail').text(data.title_name);
+			                $('#leave_days_detail').text(data.leave_days);
+			                $('#address_detail').text(data.emp_address); 
+			                
+			                if (data.photo_url) {
+			                    $('#employeePhoto').attr('src', '/photo/'+data.photo_url);
+			                } else {
+			                    // 데이터에 사진 URL이 없는 경우 대체 처리
+			                    $('#employeePhoto').attr('src', '/img/user.jpg'); // 기본 이미지로 대체
+			                }
+			                
+			                $('#employeeDetails').show(); // 상세 정보가 있는 경우 폼 표시
+			            },
+			            
+			            
+			            error: function(error) {
+			                alert('사원 정보를 가져오는 동안 오류가 발생했습니다.');
+			                console.error('Ajax 오류:', error);
+			            }
+			        });
+			    }
+			});
 
-	    function resetImage() {
-	        var defaultImageSrc = '/img/user.jpg';
-	        var profileImage = document.getElementById('profileImagePreview');
-	        profileImage.src = defaultImageSrc;
 
-	        var fileInput = document.getElementById('profileImage');
-	        fileInput.value = null;
-	    }
 
-	    $(document).ready(function() {
-	        $('#registerModal').on('hidden.bs.modal', function () {
-	            resetImage();
-	        });
-	    });
-
-	    function submitEmployeeForm() {
-	        var formData = new FormData($('#employeeForm')[0]); // FormData 객체 생성
-
-	        // 우편번호, 주소, 상세주소를 합쳐서 하나의 문자열로 만든다.
-	        var postalCode = $('#postal_code').val();
-	        var address = $('#address').val();
-	        var detailAddress = $('#detail_address').val();
-	        var fullAddress = postalCode + ' ' + address + ' ' + detailAddress;
-
-	        // 합쳐진 주소를 emp_address 필드에 추가
-	        formData.append('emp_address', fullAddress);
-	        
-	        formData.append('emp_term_date', '9999-12-31');
-
-	        $.ajax({
-	            type: 'POST',
-	            url: '/employeeInsert',
-	            data: formData,
-	            dataType: 'json',
-	            processData: false,
-	            contentType: false,
-	            success: function (data) {
-	                alert('사원 등록 성공');
-	                $('#registerModal').modal('hide');
-	                resetForm();
-	            },
-	            error: function (error) {
-	                alert('사원 등록 실패');
-	            }
-	        });
-	    }
-
-	    function resetForm() {
-	        // 폼 초기화 함수
-	        $('#employeeForm')[0].reset(); // 폼 리셋
-	        $('#profileImagePreview').attr('src', '/img/wow.jpg'); // 이미지 미리보기 초기화
-	    }
-
-	    // 주소 API 함수
-	    function openPostalCodeSearch() {
-	        new daum.Postcode({
-	            oncomplete: function(data) {
-	                // 검색된 정보를 해당 필드에 넣음
-	                document.getElementById('postal_code').value = data.zonecode;
-	                document.getElementById('address').value = data.roadAddress; // 도로명 주소 사용
-	            }
-	        }).open();
-	    }
-	    
-	 // 등록 폼 로딩 시 실행할 함수
-	    $(document).ready(function() {
-	        // 사원 번호 초기 설정
-	        updateEmpId();
-
-	        // 부서 선택 변경 시 사원 번호 업데이트
-	        $("#de_name").change(function() {
-	            updateEmpId(); // 부서 변경 시 사원 번호 업데이트
-	        });
-	    });
-
-	    function updateEmpId() {
-	        var de_name = $("#de_name").val();
-			var de_char = '';
-	        // AJAX를 통해 de_char 값을 가져오기
-	        $.ajax({
-	            type: "GET",
-	            url: "/getnewIdx",
-	            data: {},
-	            success: function(response) {
-	                // 현재 날짜
-	                var currentDate = new Date();
-	                var yy = String(currentDate.getFullYear()).slice(-2);
-	                var mm = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-	                var dd = ('0' + currentDate.getDate()).slice(-2);
-					
-					switch (de_name) {
-						case "임원진":
-							de_char = "A";
-							break;
-						case "경영지원부서":
-							de_char = "B";
-							break;
-						case "물류관리부서":
-							 de_char = "C";
-							break;
-						case "인사관리부서":
-							de_char = "D";
-							break;
-						default:
-							de_char = "A"; // 기본 값
-							break;
-					}
-	                
-	                var empId = yy + mm + dd + de_char + response;
-					
-	                $("#emp_id").val(empId);
-	            },
-	            error: function(xhr, status, error) {
-	                console.error("에러내용 : " + error);
-	            }
-	        });
-	    }
 
 	</script>
 	

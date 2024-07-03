@@ -49,7 +49,7 @@
                   
                   
                   <!-- do: 게시판 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="boardlist.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='boardlist.go'/>">
                       <svg class="stroke-icon">
                         <use href="/assets/svg/icon-sprite.svg#stroke-bookmark"></use>
                       </svg>
@@ -102,8 +102,8 @@
                         <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
                       </svg><span>예약 관리</span></a>
                     <ul class="sidebar-submenu">
-                      <li><a href="add-products.go">회의실 예약</a></li>
-                      <li><a href="list-products.go">회의실 예약 내역</a></li>
+                      <li><a href="<c:url value='/reservation/calendar.go'/>">회의실 예약</a></li>
+                      <li><a href="<c:url value='/reservation/list.go'/>">회의실 예약 내역</a></li>
                     </ul>
                   </li>
                   

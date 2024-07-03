@@ -61,17 +61,19 @@
                   <div class="notification-box" id="do-alarmIcon">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#notification"></use>
-                    </svg><span class="badge rounded-pill badge-primary">4 </span>
+                    </svg><span class="badge rounded-pill badge-primary do-alarmCnt">4 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown do-overflow">
                     <h5 class="f-18 f-w-600 mb-0 dropdown-title">Notifications</h5>
-                    <ul class="notification-box" id="do-alarm">
+                    <ul class="notification-box do-alarm" id="do-alarm">
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
                             <!-- <div class="flex-shrink-0 bg-light-primary"><img class="w-auto" src="/assets/images/dashboard/icon/wallet.png" alt="Wallet"></div> -->
-                            <div class="flex-grow-1"> <a href="private-chat.go">
-                                <h6 class="m-0">Daily offer added</h6></a>
+                            <div class="flex-grow-1"> 
+<!--                             	<a href="private-chat.go"> -->
+                                	<h6 class="m-0">Daily offer added</h6>
+<!--                                 </a> -->
                               <p class="m-0">User-only offer added</p>
                             </div>
                           </div>
@@ -516,6 +518,7 @@
          	
          	
          	// [do] 알림
+         	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지?
          	document.getElementById('do-alarmIcon').addEventListener('mouseover', () => {
          		fetch('/alarmList.ajax', {
          			method: 'POST',
@@ -526,14 +529,89 @@
          		})
          		.then(response => response.json())
          		.then(data => {
-         			console.log('통신완료,,');
          			drawAlarmList(data);
          		})
          		.catch(error => {console.error('Fetch error:', error);})
          	});
          	
          	function drawAlarmList(data){
-         		
+         		$('.do-alarm').empty();
+        		
+        		var content = '';
+
+        		if (!data.list || data.list.length === 0) {
+        			content += '<p>새로운 알림이 없습니다...</p>';
+        		}
+        		for (item of data.list) {
+        			content += '<li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">';
+        			content += '<div class="d-flex justify-content-between">';
+        			content += '<div class="toast-body d-flex p-0 do-alarm-path">';
+        			content += '<div class="flex-grow-1">';
+        			//content += '<div class="flex-grow-1"> <a href="private-chat.go">';
+        			content += '<input type="hidden" class="do-alarm-idx" value="'+item.idx_alarm+'"/>';
+        			content += '<input type="hidden" class="do-alarm-empIdx" value="'+item.idx_employee+'"/>';
+        			content += '<input type="hidden" class="do-alarm-path" value="'+item.al_path+'"/>';
+        			content += '<h6 class="m-0">';
+        			content += item.al_content;
+        			content += '</h6>';
+        			//content += '</h6></a>';
+        			content += '<p class="m-0">';
+        			var dateOnly = item.create_datetime.split('T')[0];
+        			content += dateOnly;
+        			content += '</p>';
+        			content += '</div>';
+        			content += '</div>';
+        			content += '<button class="btn-close btn-close-white shadow-none do-alarm-delete" type="button" data-bs-dismiss="toast" aria-label="Close"></button>';
+        			content += '</div>';
+        			content += '</li>';
+        		}
+        		
+        		$('.do-alarm').append(content);
+        		
+        		
+        		// 모든 알림에 경로가 있는지 확인하고, 경로가 있다면 링크 이동
+			    document.querySelectorAll('.do-alarm-path').forEach(element => {
+			        element.addEventListener('click', function (e) {
+			            if (e.target.classList.contains('do-alarm-delete') || e.target.closest('.do-alarm-delete')) {
+			                return;
+			            }
+			
+			            const alarmPath = element.querySelector('input.do-alarm-path').value;
+			            console.log(alarmPath);
+			            if (alarmPath) {
+			                window.location.href = '<c:url value="'+alarmPath+'"/>';
+			            }
+			        });
+			        
+			        // 삭제 버튼에 이벤트 리스너 추가
+		            const deleteButton = element.closest('li').querySelector('.do-alarm-delete');
+		            if (deleteButton) {
+		                deleteButton.addEventListener('click', function (e) {
+		                    e.stopPropagation();
+		                    
+		                    const idxAlarm = this.closest('li').querySelector('.do-alarm-idx').value;
+		                    const idxEmployee = this.closest('li').querySelector('.do-alarm-empIdx').value;
+		                    readRequest(idxAlarm, idxEmployee);
+		                });
+		            }
+			    });
+         	}
+         	// 알람 삭제 (읽음) ajax
+         	function readRequest(idxAlarm, idxEmployee) {
+         	    fetch('/alarmRead.ajax', {
+         	        method: 'POST',
+         	        headers: {
+         	            'Content-Type': 'application/json',
+         	        },
+         	        body: JSON.stringify({ 
+         	        	idx_alarm: idxAlarm, 
+         	        	idx_employee: idxEmployee 
+         	        }),
+         	    })
+         	    .then(response => response.json())
+         	    .then(data => {
+         	    })
+         	    .catch((error) => { console.error('Error:', error); });
          	}
          	
          	

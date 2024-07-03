@@ -36,14 +36,6 @@ public class ReservationController {
 		return service.getAvailableSlots(idxEmployee);
 	}
 	
-	@GetMapping(value="/reservation/room.go")
-	public ModelAndView meetingRoomGo(HttpSession session
-			,@RequestParam("selectedDate") String selectedDate
-			,@RequestParam("selectedTime") int[] selectedTime) {
-		int idxEmployee = (int) session.getAttribute("idxEmployee");
-		return service.getMeetingRoom(idxEmployee, selectedDate, selectedTime);
-	}
-	
 	@GetMapping(value="/reservation/list.go")
 	public ModelAndView reservationListGo(HttpSession session) {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
@@ -64,12 +56,26 @@ public class ReservationController {
 		return service.getReservationFilterList(idxEmployee, filter);
 	}
 	
-	@PostMapping(value="/reservation/submit.do")
-	@ResponseBody
-	public Map<String, Object> reservationDo(HttpSession session) {
-		Map<String, Object> response = new HashMap<String, Object>();
-		
-		return response;
+	@PostMapping(value="/reservation/room.go")
+	public ModelAndView meetingRoomGo(HttpSession session
+			,@RequestParam("selectedDate") String selectedDate
+			,@RequestParam("selectedTime") int[] selectedTime) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		session.setAttribute("selectedDate", selectedDate);
+		session.setAttribute("selectedTime", selectedTime);
+		return service.getMeetingRoom(idxEmployee, selectedDate, selectedTime);
+	}
+	
+	@PostMapping(value="/reservation/register.do")
+	public ModelAndView reservationRegisterDo(HttpSession session
+			,@RequestParam("selectedRoomNo") int selectedRoomNo
+			,@RequestParam("selectedPeopleNumber") int selectedPeopleNumber) {
+		String selectedDate = (String) session.getAttribute("selectedDate");
+		int[] selectedTime = (int[]) session.getAttribute("selectedTime");
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		session.removeAttribute("selectedDate");
+		session.removeAttribute("selectedTime");
+		return service.registerRsv(selectedRoomNo, idxEmployee, selectedPeopleNumber, selectedDate, selectedTime);
 	}
 	
 }

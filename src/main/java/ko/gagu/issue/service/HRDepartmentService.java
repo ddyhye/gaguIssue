@@ -103,6 +103,29 @@ public class HRDepartmentService {
 	public String getnewIdx() {
 		return hrDepartmentDao.getnewIdx();
 	}
+
+	
+	
+	
+	// 직원 상세보기
+	public Map<String, Object> getEmpDetail(Map<String, Object> map, String emp_id) {
+		
+		HRDepartmentDTO employee = hrDepartmentDao.getEmployeeById(emp_id);
+		
+		// emp_id를 통해 직원의 모든 정보를 불러오자.
+		map.put("emp_id", employee.getEmp_id());
+        map.put("emp_name", employee.getEmp_name());
+        map.put("emp_phone_number", employee.getEmp_phone_number());
+        map.put("emp_birth_date", employee.getEmp_birth_date());
+        map.put("emp_email", employee.getEmp_email());
+        map.put("de_name", employee.getDe_name());
+        map.put("title_name", employee.getTitle_name());
+        map.put("leave_days", employee.getLeave_days());
+        map.put("emp_address", employee.getEmp_address());
+        map.put("photo_url", employee.getPhoto_url());
+		
+		return map;
+	}
 	
 	
 }
