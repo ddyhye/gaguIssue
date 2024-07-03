@@ -69,6 +69,21 @@ public class EmployeeController {
 		return response;
 	}
 	
+	// [il] 부장인지 아닌지를 가져오는 메서드
+	@PostMapping(value="/emoloyee/getAdminStatus.ajax")
+	@ResponseBody
+	public Map<String, Object> getAdminStatus(int idx_employee){
+		logger.info("getAdminStatus in");
+		Map<String, Object>response = new HashMap<String, Object>();
+		employeeService.getAdminStatus(response,idx_employee);
+		return response;
+	}
+	
+	@GetMapping(value="/employee/departmentAttendance.go")
+	public String departmentAttendance() {
+		return "employee/attendanceDepartment";
+	}
+	
 
 //	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
 //	@ResponseBody

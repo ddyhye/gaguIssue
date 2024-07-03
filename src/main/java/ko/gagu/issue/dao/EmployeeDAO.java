@@ -42,5 +42,7 @@ public interface EmployeeDAO {
 
 	List<EmployeeDTO> getEmployeeAttendance(Integer idx_employee);
 
+	int isAdmin(int idx_employee);
+
 
 }
