@@ -223,7 +223,9 @@ public class DocumentService {
 				} catch (JsonProcessingException e) {
 					return;
 				}
-				
+				String alarmMsg = "연가가 최종승인 되었습니다!";
+				String alarmPath = "/document/list.go";
+				dao.insertAlarm(approvalDto.getIdxEmployee(), alarmMsg, alarmPath);
 				dao.insertLeave(approvalDto.getIdxEmployee(), documentMap.get("days"), documentMap.get("start-date"), documentMap.get("end-date"));
 				if (dao.isLeaveAccruals(approvalDto.getIdxEmployee()) == 0) {
 					dao.insertLeaveAccruals(approvalDto.getIdxEmployee());

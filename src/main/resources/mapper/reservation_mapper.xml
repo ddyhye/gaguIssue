@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ko.gagu.issue.dao.ReservationDAO">
+	<!-- [jeong] 예약을 등록하기 전에 동일한 시간대에 예약이 있는지 확인한다 -->
+	<select id="isReservation">
+		SELECT 
+			COUNT(*) 
+		FROM reservation_tb rt
+		JOIN reservation_time_tb rtt 
+			ON rt.idx_reservation = rtt.idx_reservation
+				AND rt.idx_meeting_room = #{selectedRoomNo}
+				AND rtt.rsv_date = #{selectedDate}
+				AND rtt.rsv_time IN
+				<foreach collection="selectedTime" item="time" open="(" separator="," close=")">
+					#{time}
+				</foreach>
+	</select>
+	
+	<!-- [jeong] 예약 정보를 등록하고 예약 번호를 rsvDTO 객체의 필드에 저장함 -->
+	<insert id="registerRsv"
+		useGeneratedKeys="true"
+		keyColumn="idx_reservation"
+		keyProperty="idxReservation"
+		parameterType="reservation">
+		INSERT INTO reservation_tb (idx_meeting_room, reservist, re_people)
+			VALUES (#{idxMeetingRoom}, #{reservist}, #{rsvPeople})
+	</insert>
+	
+	<!-- [jeong] 유효한 예약 번호로 예약 시간을 저장함 -->
+	<insert id="insertRsvTime">
+		INSERT INTO reservation_time_tb (idx_reservation, rsv_time, rsv_date)
+			VALUES (#{idxReservation}, #{time}, #{selectedDate})
+	</insert>
+	
+	<!-- [jeong] 선택한 날짜 및 시간에 예약 가능한 회의실을 알려줌 -->
+	<select id="getRsvRoomStatus" resultType="roomStatus">
+		SELECT 
+			mt.idx_meeting_room AS idxMeetingroom,
+			mt.mr_people AS mrPeople,
+			rtt.rsv_time IS NULL AS isReservation
+		FROM meetingroom_tb mt 
+		LEFT JOIN reservation_tb rt 
+			ON rt.idx_meeting_room = mt.idx_meeting_room
+		LEFT JOIN reservation_time_tb rtt 
+			ON rt.idx_reservation = rtt.idx_reservation
+			AND rtt.rsv_date = #{selectDate}
+			AND rtt.rsv_time IN
+		<foreach collection="selectedTime" item="time" open="(" separator="," close=")">
+			#{time}
+		</foreach>
+		GROUP BY mt.idx_meeting_room
+	</select>
+</mapper>
