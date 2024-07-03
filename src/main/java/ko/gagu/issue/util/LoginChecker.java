@@ -31,7 +31,7 @@ public class LoginChecker implements HandlerInterceptor {
 		
 		HttpSession session = req.getSession();
 		
-		if (session.getAttribute("emp_id") == null) {
+		if (session.getAttribute("emp_id") == null || session.getAttribute("loginInfo") == null) {
 			logger.info("로그인 해야 합니다.....");
 			pass = false;
 			resp.sendRedirect("/login.go");		// 외장 톰캣을 사용한다면, context 경로를 넣어줘야,,
