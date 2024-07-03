@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ko.gagu.issue.dto.AlarmDTO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
@@ -46,5 +47,9 @@ public interface MainDAO {
 	List<product_tbDTO> getProducts();
 
 	void updateBarcode(int i);
+
+	List<AlarmDTO> getAlamList(int idx_employee);
+
+	void alarmRead(int idx_alarm, int idx_employee);
 
 }

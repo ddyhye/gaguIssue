@@ -335,6 +335,17 @@
 			join inventory_tb it on it.idx_product = pt.idx_product 
 		WHERE it.current_stock &lt; pt.minimum_stock and it.is_po = 'n'
 	</select>
+	<!-- 물류관리부서 직원 전체 가져오기 -->
+	<select id="getLogiEmp" resultType="Integer">
+		SELECT idx_employee 
+		FROM employee_tb 
+		WHERE idx_department = 3
+	</select>
+	<!-- 알림 넣기 -->
+	<insert id="insertAlarmLogiDept">
+		INSERT INTO alerm_tb (idx_employee, al_content, al_path)
+		VALUES (#{param1}, '재고가 부족합니다. 재고리스트를 확인해 주세요!', '&lt;c:url value=&quot;/logisticsDepartment/inventoryList.go&quot;/&gt;');
+	</insert>
 	
 	
 	<!-- 수주처 리스트 -->

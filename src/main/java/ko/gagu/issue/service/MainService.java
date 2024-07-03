@@ -23,6 +23,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 import ko.gagu.issue.dao.MainDAO;
+import ko.gagu.issue.dto.AlarmDTO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
@@ -223,6 +224,24 @@ public class MainService {
 				}
 			}
 		}
+	}
+	
+	
+	
+	// 알림
+	public Map<String, Object> alarmListAjax(HttpSession session, Map<String, Object> map) {
+		EmployeeDTO dto = (EmployeeDTO) session.getAttribute("loginInfo");
+		
+		// 알람 리스트
+		List<AlarmDTO> list = mainDao.getAlamList(dto.getIdx_employee());
+		map.put("list", list);
+		
+		return map;
+	}
+	public Map<String, Object> alarmRead(Map<String, Object> map, int idx_alarm, int idx_employee) {
+		mainDao.alarmRead(idx_alarm, idx_employee);
+		
+		return map;
 	}
 
 }
