@@ -83,6 +83,34 @@
 			RIGHT(CONCAT('0000', (SELECT et.idx_employee + 1 FROM employee_tb et ORDER BY et.idx_employee DESC LIMIT 1)), 5)
 	</select>
 	
+	 <select id="getEmployeeById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    SELECT 
+	        e.emp_id,
+	        e.emp_name,
+	        e.emp_phone_number,
+	        e.emp_birth_date,
+	        e.emp_email,
+	        e.emp_pw,
+	        d.de_name,
+	        t.title_name,
+	        la.leave_days,
+	        e.emp_address,
+	        COALESCE(ft.file_name, 'user.jpg') as photo_url
+	    FROM 
+	        employee_tb e
+	    JOIN 
+	        department_tb d ON e.idx_department = d.idx_department
+	    JOIN 
+	        title_tb t ON e.idx_title = t.idx_title
+	    LEFT JOIN 
+	        leave_accruals_tb la ON e.idx_employee = la.idx_employee
+	    LEFT JOIN
+	        filestore_tb ft ON e.idx_employee = ft.idx_ref AND ft.idx_filetype = 1
+	    WHERE 
+	        e.emp_id = #{emp_id}
+	</select>
+
+	
 	
 	
 </mapper>

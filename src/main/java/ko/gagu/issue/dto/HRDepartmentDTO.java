@@ -32,7 +32,7 @@ public class HRDepartmentDTO {
 	private boolean first_login;
 	private String de_char;
 	private String de_name;
-
+	private String photo_url;
 	
 
 	private String title_name;
@@ -196,6 +196,12 @@ public class HRDepartmentDTO {
 	}
 	public void setLeave_days(int leave_days) {
 		this.leave_days = leave_days;
+	}
+	public String getPhoto_url() {
+		return photo_url;
+	}
+	public void setPhoto_url(String photo_url) {
+		this.photo_url = photo_url;
 	}
 
 	

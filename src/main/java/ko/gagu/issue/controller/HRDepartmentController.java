@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -163,9 +164,23 @@ public class HRDepartmentController {
 	@ResponseBody
 	public String getnewIdx() {
 		String idx = hrDepartmentService.getnewIdx();
-
+		logger.info("idx :{}",idx);
 		return idx;
 	}
+	
+	
+	
+	// 직원 상세보기 
+	@PostMapping(value="/employeeDetail.ajax")
+	@ResponseBody
+	public Map<String, Object> employeeDetail(String emp_id) {
+	    Map<String, Object> map = new HashMap<>();
+	    
+		return hrDepartmentService.getEmpDetail(map, emp_id);
+	}
+	
+	
+
 			
 
 }

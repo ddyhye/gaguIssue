@@ -30,6 +30,8 @@ public interface HRDepartmentDAO {
 
 	String getnewIdx();
 
+	HRDepartmentDTO getEmployeeById(String emp_id);
+
 	
 
 }
