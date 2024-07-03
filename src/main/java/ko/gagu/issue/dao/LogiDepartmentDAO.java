@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.LogiDeptDTO;
 import ko.gagu.issue.dto.client_tbDTO;
 import ko.gagu.issue.dto.purchase_order_tbDTO;
@@ -68,6 +69,10 @@ public interface LogiDepartmentDAO {
 	List<String> getClientList2();
 
 	int lackCnt();
+
+	void insertAlarmLogiDept(int idx_order);
+
+	List<Integer> getLogiEmp();
 
 
 

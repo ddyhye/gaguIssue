@@ -95,4 +95,25 @@
 		WHERE idx_product = #{param1}
 	</update>
 	
+	
+	
+	<!-- 알람 -->
+	<select id="getAlamList" resultType="alarm">
+		SELECT al.idx_alarm ,
+				al.al_content ,
+				al.create_datetime ,
+				al.is_checked ,
+				al.al_path,
+				al.idx_employee
+		FROM alerm_tb al
+		WHERE idx_employee = #{param1} AND is_checked =0
+		ORDER BY al.idx_alarm DESC
+	</select>
+	<!-- 알림 읽기 -->
+	<update id="alarmRead">
+		UPDATE alerm_tb
+		SET is_checked = 1
+		WHERE idx_employee = #{param2} AND idx_alarm = #{param1}
+	</update>
+	
 </mapper>
