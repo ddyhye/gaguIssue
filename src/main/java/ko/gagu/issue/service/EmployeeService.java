@@ -54,6 +54,19 @@ public class EmployeeService {
 		response.put("employeeAttendance", events);
 	}
 
+	public void getAdminStatus(Map<String, Object> response, int idx_employee) {
+		// [il] 부장인지 아닌지 확인하는 로직
+		logger.info("idx_employee : {}",idx_employee);
+		int isAdmin=dao.isAdmin(idx_employee);
+		if(isAdmin==1) {
+			response.put("isAdmin", isAdmin);	
+			logger.info("isAdmin : {}",isAdmin);
+		}else if(isAdmin==0){
+			response.put("isAdmin", isAdmin);
+			logger.info("isAdmin : {}",isAdmin);
+		}
+	}
+
 	
 	
 	

@@ -29,7 +29,7 @@ public class EmployeeDTO {
 	private Date ah_date;
 	private Time ah_check_in;
 	private Time ah_check_out;
-	private Time ah_status;
+	private String ah_status;
 	
 	
 	
@@ -273,13 +273,12 @@ public class EmployeeDTO {
 	public void setAh_check_out(Time ah_check_out) {
 		this.ah_check_out = ah_check_out;
 	}
-	public Time getAh_status() {
+	public String getAh_status() {
 		return ah_status;
 	}
-	public void setAh_status(Time ah_status) {
+	public void setAh_status(String ah_status) {
 		this.ah_status = ah_status;
 	}
-	
 	
 	
 }
