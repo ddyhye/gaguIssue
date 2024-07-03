@@ -56,62 +56,13 @@
 	<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/calendar.css'/>"> -->	
 	
 	<!--[il]  부트스트랩 CSS 링크-->
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-	
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/main.min.js'></script>
 	<style>
-	/* [il] 모달 창 스타일링 */
-    .modal-content {
-        background-color: #f8f9fa; /* 배경색 설정 */
-        border-radius: 0;
-        box-shadow: 0 0 10px rgba(0,0,0,0.3); /* 그림자 설정 */
-    }
-    .modal-header {
-        background-color: #6c5ce7; /* 헤더 배경색 */
-        color: #fff; /* 헤더 글자색 */
-        border-bottom: none; /* 헤더 아래 경계선 없애기 */
-    }
-    .modal-title {
-        font-weight: bold;
-    }
-    .modal-body {
-        padding: 20px;
-    }
-    .modal-footer {
-        background-color: #f8f9fa; /* 푸터 배경색 */
-        border-top: none; /* 푸터 위 경계선 없애기 */
-    }
-    .close {
-        color: #fff; /* 닫기 버튼 글자색 */
-    }
-    .form-group label {
-        font-weight: bold;
-    }
-    .form-control {
-        border: 1px solid #ced4da; /* 입력 필드 테두리 스타일 */
-    }
-    .btn-primary {
-        background-color: #6c5ce7; /* 등록 버튼 배경색 */
-        border-color: #6c5ce7; /* 등록 버튼 테두리 색 */
-    }
-    .btn-primary:hover {
-        background-color: #563d7c; /* 등록 버튼 호버 배경색 */
-        border-color: #563d7c; /* 등록 버튼 호버 테두리 색 */
-    }
-    .btn-secondary {
-        background-color: #343a40; /* 취소 버튼 배경색 */
-        border-color: #343a40; /* 취소 버튼 테두리 색 */
-    }
-    .btn-secondary:hover {
-        background-color: #23272b; /* 취소 버튼 호버 배경색 */
-        border-color: #23272b; /* 취소 버튼 호버 테두리 색 */
-    }
-    .btn-danger {
-        background-color: #dc3545; /* 삭제 버튼 배경색 */
-        border-color: #dc3545; /* 삭제 버튼 테두리 색 */
-    }
-    .btn-danger:hover {
-        background-color: #c82333; /* 삭제 버튼 호버 배경색 */
-        border-color: #c82333; /* 삭제 버튼 호버 테두리 색 */
+	.fc-event-title {
+            font-size: 1.9em; /* 원하는 글자 크기로 변경 */
+        }
 	
 	#calendar {
 	   width: 80%;
@@ -177,7 +128,8 @@
           <h2><center>Employee Fullcalendar</center></h2>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
-		    <input type="hidden" id="idx_employee" value="1"> 		    
+		    <input type="hidden" id="idx_employee" value="${employee.idx_employee}"> 	
+		    
 		    <br>
 		    <!-- [il]Modal -->
 		    
@@ -187,89 +139,121 @@
       </div>
     </div>
       <script>
-      var idx_employee = document.getElementById('idx_employee').value;
-      document.addEventListener('DOMContentLoaded', function () {
-          var calendarEl = document.getElementById('calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-        	  themeSystem: 'bootstrap',
-              initialView: 'dayGridMonth',/* 
-              editable: true,
-              selectable: true,
-              droppable: true, */
-              headerToolbar: {
-                  left: 'prev,next today addEventButton',
-                  center: 'title',
-                  right: 'dayGridMonth,timeGridWeek,timeGridDay'
-              },/* 
-              customButtons: {
-                  addEventButton: {
-                      text: '일정 추가',
-                      click: function () {
-                          $('#myModal').modal('show');
-                      }
-                  }
-              }, */
-              events: fetchEvents,
-              select: function (info) {
-                  var startDateInput = document.getElementById('startDate');
-                  var endDateInput = document.getElementById('endDate');
+        document.addEventListener('DOMContentLoaded', function() {
+            var idx_employee = document.getElementById('idx_employee').value;
+            var isAdmin = 0;
 
-                  startDateInput.value = info.startStr;
-                  endDateInput.value = info.endStr;
+            function fetchAdminStatus() {
+                $.ajax({
+                    url: './getAdminStatus.ajax',
+                    method: 'post',
+                    data: { idx_employee: idx_employee },
+                    dataType: 'json',
+                    success: function(response) {
+                        isAdmin = response.isAdmin;
+                        console.log(isAdmin);
+                        updateDepartmentButton(); // 버튼 상태 업데이트
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('서버에서 isAdmin 값을 가져오는데 실패했습니다.');
+                        // 실패 시 처리할 내용 추가
+                    }
+                });
+            }
 
-                  $('#myModal').modal('show');
-              },
-              eventContent: function (arg) {
-                  var eventTitle = arg.event.title;
-                  return { html: '<div>' + eventTitle + '</div>' };
-              },
-              dayMaxEvents: 5
-          });
+            function updateDepartmentButton() {
+                if (isAdmin === 1) { // isAdmin이 true 또는 1일 때
+                    calendar.setOption('customButtons.departmentButton.disabled', false);
+                } else if(isAdmin === 0) {
+                    calendar.setOption('customButtons.departmentButton.disabled', true);
+                }
+            }
 
-          calendar.render();
-          
-          
+            function fetchEvents(info, successCallback, failureCallback) {
+                $.ajax({
+                    url: './getAttendance.ajax',
+                    method: 'GET',
+                    data: { idx_employee: idx_employee },
+                    dataType: 'json',
+                    success: function(response) {
+                        var events = [];
 
-          function fetchEvents(info, successCallback, failureCallback) {
-              $.ajax({
-                  url: './getAttendance.ajax',
-                  method: 'GET',
-                  data: { idx_employee: idx_employee },
-                  dataType: 'json',
-                  success: function(response) {
-                      var events = [];
-                      
-                      // [il] 개인근태 추가
-                      for (var i = 0; i < response.employeeAttendance.length; i++) {
-                          var event = {
-                        	  id: employeeAttendance.idx_emp_calendar,
-                              title: "Attendance " + employeeAttendance.idx_attendance,
-                              start: employeeAttendance.ah_date + 'T' + employeeAttendance.ah_check_in,
-                              end: employeeAttendance.ah_date + 'T' + employeeAttendance.ah_check_out,
-                              status:employeeAttendance.ah_status
-                          };
-                          events.push(event);
-                      }
-                      successCallback(events);
-                  },
-                  error: function(xhr, status, error) {
-                      console.error('이벤트 로딩에 실패했습니다: ' + error);
-                      if (typeof failureCallback === "function") {
-                          failureCallback(xhr, status, error);
-                      }
-                  }
-              });
-          }
-          
-         
-          
-          
-      });
+                        for (var i = 0; i < response.employeeAttendance.length; i++) {
+                            var checkIn = response.employeeAttendance[i].ah_check_in;
+                            var checkOut = response.employeeAttendance[i].ah_check_out;
+                            var status = response.employeeAttendance[i].ah_status;
+                            var title;
 
-      
+                            if (status === '연차') {
+                                title = '연차';
+                            } else if (!checkIn && !checkOut) {
+                                title = '결근';
+                            } else if (checkIn > '09:00:00' && checkOut < '18:00:00') {
+                                title = checkIn + ' ~ ' + checkOut + '(결근)';
+                            } else {
+                                title = checkIn + ' ~ ';
 
+                                if (checkOut) {
+                                    title += checkOut;
+                                    if (checkOut < '18:00:00') {
+                                        title = checkIn + ' ~ ' + checkOut + '(조퇴)';
+                                    }
+                                }
+                            }
 
-	</script>
+                            var event = {
+                                id: response.employeeAttendance[i].idx_attendance,
+                                title: title,
+                                start: checkIn ? response.employeeAttendance[i].ah_date + 'T' + checkIn : null,
+                                end: checkOut ? response.employeeAttendance[i].ah_date + 'T' + checkOut : null,
+                                status: status,
+                                allDay: false
+                            };
+
+                            events.push(event);
+                        }
+
+                        successCallback(events); // 이벤트 배열을 성공 콜백으로 전달
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('이벤트 로딩에 실패했습니다: ' + error);
+                        if (typeof failureCallback === "function") {
+                            failureCallback(xhr, status, error);
+                        }
+                    }
+                });
+            }
+
+            fetchAdminStatus();
+
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap',
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today departmentButton',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                customButtons: {
+                    departmentButton: {
+                        text: '부서별 근태',
+                        click: function() {
+                            alert('부서별 버튼 클릭됨');
+                        }
+                    }
+                },
+                events: fetchEvents,
+                eventContent: function(arg) {
+                    var eventTitle = arg.event.title;
+                    return { html: '<div>' + eventTitle + '</div>' };
+                },
+                dayMaxEvents: 5
+            });
+
+            calendar.render();
+        });
+    </script>
 
     <!-- latest jquery-->
     <!-- [il]부트스트랩 jquery 버전 : 3.7.1 -->

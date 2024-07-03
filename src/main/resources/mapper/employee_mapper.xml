@@ -17,11 +17,16 @@
 		SELECT * FROM company_calendar_tb WHERE cc_status='SHOW'
 	</select>
 	
+	<select id="isAdmin" resultType="int">
+		SELECT COUNT(*) FROM emloyee_tb
+		WHERE idx_employee=#{param1} AND idx_title IN (4, 3, 2, 1);
+	</select>
+	
 	<!-- [il] 임의로 idx_employee =1 집어넣었음 나중에 바꿔줘야함!! -->
 	<insert id="employeeAddEvent" parameterType="employee">
 		INSERT INTO employee_calendar_tb
 			(idx_employee,ec_title,ec_description,ec_start_datetime,ec_end_datetime,ec_color)
-		VALUES (1,#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},'#7a70ba')
+		VALUES (#{idx_employee},#{ec_title},#{ec_description},#{ec_start_datetime},#{ec_end_datetime},'#7a70ba')
 	</insert>
 	
 	<update id="employeeDeleteEvent">
