@@ -177,7 +177,7 @@
           <h2><center>Employee Fullcalendar</center></h2>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
-		    <input type="hidden" id="idx_employee" value="1"> 		    
+		    <input type="hidden" id="idx_employee" value="${employee.idx_employee}">    
 		    <br>
 		    <!-- [il]Modal -->
 		    <!-- Modal -->
