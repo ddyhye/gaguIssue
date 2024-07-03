@@ -314,4 +314,9 @@
 		    </otherwise>
 	    </choose>
 	</select>	
+	
+	<insert id="insertAlarm">
+		INSERT INTO alerm_tb (idx_employee, al_content, al_path)
+			VALUES (idxEmployee, alarmMsg, alarmPath)
+	</insert>
 </mapper>

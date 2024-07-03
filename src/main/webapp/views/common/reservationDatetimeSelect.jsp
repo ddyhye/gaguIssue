@@ -47,17 +47,21 @@
    		margin: auto;
    		box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25); /* X, Y, Blur, Spread, Color */
    	} 
-    
     #calendar {
     	width: 50%;
     	height: 100%;
     	margin: 0 30 0 30;
     }
-    #timeTable {
-    	width: 35%;
-    } 
     #time {
        	height: 100%;
+    }
+    #timetable {
+    	width: 50%;
+    	cursor: pointer;
+		-webkit-user-select:none;
+		-moz-user-select:none;
+		-ms-user-select:none;
+		user-select:none
     }
     table {
     	width: 80%;
@@ -92,10 +96,22 @@
         height: 3.5em; /* 원하는 높이로 설정 */
     }
     /* 현재 날짜 이전은 배경색 회색으로 처리 */    
-    .fc-day-past {
+    .fc-day-past  {
     	background: #f7f7f7;
     	opacity: 0.9;
     }
+     .fc-day-sun {
+     	background: #f7f7f7;
+    	opacity: 0.9;   
+    	cursor: default !important; 
+     }
+     
+     .fc-day-sat {
+    	background: #f7f7f7;
+    	opacity: 0.9;  
+    	cursor: default !important;   
+     }
+    
     .fc-toolbar-title {
     	content: 'My Custom Header Text';
     }
@@ -110,6 +126,9 @@
     } */
     .selectedSlot {
     	background: #ded9ff;
+    }
+    .closedSlot {
+    	background: #f7f7f7;
     }
     </style>
   </head>
@@ -204,11 +223,50 @@
 					</div>
 					<!-- jeong : 사이드바 끝 -->					          	
 					<div id="calendar" class="sidebar-left-wrapper" style="padding-right: 24px;"></div>
-					<div id="timeTable">		
+					<div style="width: 35%">		
 						<div class="d-flex justify-content-end" style="margin-bottom: 30px;">
-							<button class="btn btn-primary" id="meetingRoomSelectBtn" onClick="selected()">회의실 선택</button>
+							<form id="meetingRoomSelectForm" action="/reservation/room.go" method="POST">
+								<input type="hidden" name="selectedDate">
+								<input type="hidden" name="selectedTime">
+								<button class="btn btn-primary" id="meetingRoomSelectBtn" onClick="selected()" type="button">회의실 선택</button>
+							</form>
 						</div>
-						<div id="time" class="fc-disabled"></div>  		
+						<!-- <div id="time" class="fc-disabled"></div> -->
+						<table id="timeTable" class="fc-disabled">
+							<tr>
+								<td id="tableTitle">날짜를 선택해주세요.</td>
+							</tr>
+					        <tr>
+					            <td id="time_9" onClick="timeSelect(9)">오전 9시 ~ 오전 10시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_10" onClick="timeSelect(10)">오전 10시 ~ 오전 11시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_11" onClick="timeSelect(11)">오전 11시 ~ 오후 12시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_12" onClick="timeSelect(12)">오후 12시 ~ 오후 1시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_13" onClick="timeSelect(13)">오후 1시 ~ 오후 2시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_14" onClick="timeSelect(14)">오후 2시 ~ 오후 3시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_15" onClick="timeSelect(15)">오후 3시 ~ 오후 4시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_16" onClick="timeSelect(16)">오후 4시 ~ 오후 5시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_17" onClick="timeSelect(17)">오후 5시 ~ 오후 6시</td>
+					        </tr>
+					        <tr>
+					            <td id="time_18" onClick="timeSelect(18)">오후 6시 ~ 오후 7시</td>
+					        </tr>
+						</table>  		
 					</div>
 	          </div>
           </div>
@@ -280,12 +338,9 @@
     <script>new WOW().init();</script>
     <script>
 	var calendarEl = document.getElementById('calendar'); // 요소 지정, JS
-	var timeEl = document.getElementById('time'); // 요소 지정, JS
+	var timeTableEl = document.getElementById('timeTable'); // 요소 지정, JS
 	var beforedayEl = '';
 	
-	$(document).ready(function() {
-		calendar
-	});
 	var calendar = new FullCalendar.Calendar(calendarEl, { // 캘린더 생성
 		headerToolbar: { // 캘린더 헤더에 버튼, 텍스트를 추가할 수 있음
 			left: 'prev', // 이전달로 이동하는 버튼 추가
@@ -295,7 +350,7 @@
 		locale: 'ko', // 언어를 한글로 변경
         selectAllow: function(selectInfo) {
             // 현재 날짜 이후만 선택 가능
-            console.log(selectInfo);
+            // if (selectInfo.start)
             return selectInfo.start >= new Date();
         },
 		events: function(fetchInfo, successCallback, failureCallback) { 
@@ -317,13 +372,15 @@
 		dateClick: function(info) { // 캘린더에서 날짜를 클릭 이벤트
 			// 일정 추가하는 창(모달)을 보여준다
 			// 일정의 시작 날짜, 종료날짜를 선택한 날짜로 설정한다
+			console.log(info.date.getDay());
 			if (info.date <= new Date()) {
+				return;
+			} else if (info.date.getDay() == 0 || info.date.getDay() == 6) {
 				return;
 			}
 			if (selectedTime.length != 0) {
 				selectedTime.forEach(time => {
-					let timeStr = time.toString().padStart(2, '0') + ":00:00";
-					let elements  = document.querySelectorAll('td[data-time="'+ timeStr +'"].fc-timegrid-slot-lane');
+					let elements  = document.querySelectorAll('#time_' + time);
 					elements.forEach(el => {
 						el.classList.remove('selectedSlot');
                     });
@@ -340,9 +397,10 @@
 			// 이전 선택한 날짜 요소를 befordayEl 에 저장한다
 			beforedayEl = info.dayEl;
 			// 오른쪽의 시간 선택 캘린더의 날짜를 변경한다
-			time.gotoDate(info.date);
+			let tableTitleEl = document.querySelector('#tableTitle');
+			tableTitleEl.innerHTML = selectedDate;
 			// 선택불가 상태을 해제한다
-			timeEl.classList.remove('fc-disabled');
+			timeTableEl.classList.remove('fc-disabled');
 			let btnEl = document.querySelector('#meetingRoomSelectBtn');
 			btnEl.style.removeProperty('background');
 			btnEl.style.removeProperty('border-color');
@@ -360,7 +418,7 @@
 		return parseInt(dateStr.substring(11, 16));
 	}
 	
-	const time = new FullCalendar.Calendar(timeEl, {
+/* 	const time = new FullCalendar.Calendar(timeEl, {
 			initialView: 'timeGridDay',
             headerToolbar: {
                 left: '',
@@ -423,21 +481,51 @@
             slotMinTime: '09:00:00', // 시작 시간
             slotMaxTime: '19:00:00' // 종료 시간     
 	});
-	time.render();
+	time.render(); */
+	
+	function timeSelect(time) {
+		// selectedTime.push(dateToTimeStr(info.startStr));
+		const startTime =  time;
+		const endTime =  time + 1;
+		const timeSlot = document.querySelector('#time_' + time);
+		
+		if (selectedTime.includes(time) == true) {
+			timeSlot.classList.remove('selectedSlot');
+			const index = selectedTime.indexOf(time);
+			selectedTime.splice(index, 1);
+			if (selectedTime.length == 0) {
+				let btnEl = document.querySelector('#meetingRoomSelectBtn');
+				btnEl.style.setProperty('background', 'gray', 'important');
+				btnEl.style.setProperty('border-color', 'gray', 'important');
+				btnEl.style.cursor = 'default';
+			}
+			return;
+		}
+		selectedTime.push(time);
+		
+		timeSlot.classList.add('selectedSlot');
+		
+		let btnEl = document.querySelector('#meetingRoomSelectBtn');
+		btnEl.style.setProperty('background', '#7a70ba', 'important');
+		btnEl.style.setProperty('border-color', '#7a70ba', 'important');
+		isDatetimeSelected = true;
+		
+	}
 	
 	function selected() {
 		if (isDatetimeSelected == false) {
 			Swal.fire('회의실 예약 날짜 및 시간을 선택해주세요');
 			return;
+		} else if (selectedTime.length == 0) {
+			Swal.fire('시간을 선택해주세요.');
+			return;
 		}
-		console.log(selectedTime);
-		console.log(selectedDate);
 		
-		const url = '/reservation/room.go?selectedDate='+ selectedDate +'&selectedTime=' + selectedTime;
-        window.location.href = url;
+		document.querySelector('input[name="selectedTime"]').value = selectedTime;
+		document.querySelector('input[name="selectedDate"]').value = selectedDate;
 		
-		
+		document.querySelector('#meetingRoomSelectForm').submit();
 	}
-    </script>
+		</script>
   </body>
 </html>

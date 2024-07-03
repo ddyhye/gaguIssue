@@ -57,7 +57,8 @@ table {
 }
 
 td {
-	width: 20%; border : 1px solid black;
+	width: 10%;
+	border: 1px solid black;
 	cursor: pointer;
 	border: 1px solid black;
 }
@@ -70,8 +71,28 @@ td {
 }
 
 .closed {
-	background: #f7f7f7;
+	background: #f7f7f7 ;
 	cursor: default;
+	pointer-events: none;
+}
+
+.btnDisable {
+	background: gray !important;
+	border-color: gray !important;
+	cursor: default !important;
+}
+
+#peopleSelect {
+	text-align: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	margin: auto;
+}
+
+#peopleSelect p {
+	font-size: 15px;
+	font-weight: 500;
 }
 
 table p {
@@ -82,6 +103,14 @@ table p {
 
 table span {
 	font-size: 10px;
+}
+.selectorDisabled {
+	pointer-events: none; /* 모든 이벤트 비활성화 */
+	opacity: 0.5; /* 캘린더 불투명도 낮춤 */
+	cursor: default;
+}
+#peopleNumber {
+	cursor: default;
 }
 </style>
 </head>
@@ -174,47 +203,68 @@ table span {
 							</ul>
 						</div>
 						<!-- jeong : 사이드바 끝 -->
-						<div class="m-30 w-100">
+						<div class="col-7 m-15">
 							<br /> <br /> <br />
 							<table>
 								<tr>
-									<td rowspan="2" id="1" onClick="selectRoom(1)">
+									<td rowspan="2" id="room_1" onClick="selectRoom(1)">
 										<p>회의실 A</p>
 									</td>
-									<td rowspan="2" id="2" onClick="selectRoom(2)">
+									<td rowspan="2" id="room_2" onClick="selectRoom(2)">
 										<p>회의실 B</p>
 									</td>
-									<td id="3" onClick="selectRoom(3)">
+									<td id="room_3" onClick="selectRoom(3)">
 										<p>회의실 C</p>
 									</td>
-									<td id="4" onClick="selectRoom(4)">
+									<td id="room_4" onClick="selectRoom(4)">
 										<p>회의실 D</p>
 									</td>
 								</tr>
 								<tr>
-									<td id="5" onClick="selectRoom(5)">
+									<td id="room_5" onClick="selectRoom(5)">
 										<p>회의실 E</p>
 									</td>
-									<td id="6" onClick="selectRoom(6)">
+									<td id="room_6" onClick="selectRoom(6)">
 										<p>회의실 F</p>
 									</td>
 								</tr>
 								<tr>
-									<td id="7" class="closed" onClick="selectRoom(7)">
+									<td id="room_7" onClick="selectRoom(7)">
 										<p>회의실 G</p>
-										<span>예약 가능한 인원 수가 가득 찼습니다</span>
+										<!-- <span>예약 가능한 인원 수가 가득 찼습니다</span> -->
 									</td>
-									<td id="8" class="closed" onClick="selectRoom(8)">
+									<td id="room_8" onClick="selectRoom(8)">
 										<p>회의실 H</p>
-										<span>예약 가능한 인원 수가 가득 찼습니다</span>
+										<!-- <span>예약 가능한 인원 수가 가득 찼습니다</span> -->
 									</td>
-									<td colspan="2" id="9" class="selected" onClick="selectRoom(9)">
+									<td colspan="2" id="room_9" onClick="selectRoom(9)">
 										<p>회의실 I</p>
 									</td>
 								</tr>
 							</table>
 						</div>
-						<div class="m-10">
+						<div id="peopleSelect">
+							<!-- <p>회의실 예약인원을 선택해주세요</p> -->
+							<p id="selectormsg">먼저 예약하실 회의실을 선택해주세요</p>
+							<div class="card-body common-flex">
+								<div id="peopleSelector" class="touchspin-wrapper selectorDisabled">
+									<button class="decrement-touchspin btn-touchspin touchspin-primary">
+										<i class="fa fa-minus"> </i>
+									</button>
+									<input class="input-touchspin spin-outline-primary" id="peopleNumber" type="number" value="1" readonly>
+									<button class="increment-touchspin btn-touchspin touchspin-primary">
+										<i class="fa fa-plus"> </i>
+									</button>
+								</div>
+							</div>
+							<br/>
+							<br/>
+							<br/>
+							<form id="rsvForm" action="/reservation/register.do" method="POST">
+								<input type="hidden" name="selectedRoomNo">
+								<input type="hidden" name="selectedPeopleNumber">
+								<button id="rsvBtn" onClick="rsvRoom()" class="btnDisable btn btn-primary btn-lg" type="button">회의실 예약</button>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -283,14 +333,111 @@ table span {
 	<script src="/assets/js/script1.js"></script>
 	<script src="/assets/js/theme-customizer/customizer.js"></script>
 	<!-- Plugin used-->
+	<!-- Sweetalert js -->
+	<script src='/assets/js/sweet-alert/sweetalert.min.js'></script>
 	<script>
 		new WOW().init();
 	</script>
 	<script>
-		function selectRoom(roomNo) {
-			console.log(roomNo);
-			
+		var errorMsg = '${errorMsg}';
+		
+		if (errorMsg != '') {
+			Swal.fire(errorMsg);
 		}
+	</script>
+	<script>
+	var getInputByClass = document.getElementsByClassName("input-touchspin");
+	var selectedPeopleNumber = 1;
+	var isIncrement = document.querySelector(".increment-touchspin");
+	var isDecrement = document.querySelector(".decrement-touchspin");
+	var beforeSelectRoomEl = null;
+	var selectedRoomNo = 0;
+	
+	// 미리 회의실 데이터를 JSON 으로 가져와서 저장해두기 키 밸류 형태로
+	var roomData = JSON.parse('${roomData}');
+	
+	drawRoomData();
+	function drawRoomData() {
+		roomData.forEach(room => {
+			console.log(room);
+			const roomEl = document.querySelector('#room_' + room.idxMeetingroom)
+			roomEl.innerHTML += '<p>최대 ' + room.mrPeople + '명</p>';
+			if (room.isReservation == 0) {
+				roomEl.classList.add('closed');
+				roomEl.innerHTML += '<br/><p style="font-size: 13px;">이미 예약된<br/> 회의실입니다</p>';
+			}
+			
+		});		
+	}
+	
+	isIncrement.addEventListener("click", () => {
+		if (selectedPeopleNumber >= 99) {
+			return;
+		}
+		if (selectedRoomNo != 0) {
+			if (selectedPeopleNumber >=
+					roomData[selectedRoomNo - 1].mrPeople) {
+				return;
+			}
+		}
+		document.querySelector("#peopleNumber").value = ++selectedPeopleNumber;
+	});
+	
+	isDecrement.addEventListener("click", () => {
+		if (selectedPeopleNumber - 1 <= 0) {
+			return;
+		}
+		document.querySelector("#peopleNumber").value = --selectedPeopleNumber;
+	});	
+	
+	function selectRoom(roomNo) {
+		console.log(roomNo);
+		if (beforeSelectRoomEl != null) {			
+			beforeSelectRoomEl.classList.remove('selected');
+		}
+		const selectedRoomEl = document.querySelector('#room_' + roomNo);
+		console.log(selectedRoomEl);
+		selectedRoomEl.classList.add('selected');
+		
+		beforeSelectRoomEl = selectedRoomEl;
+		document.querySelector('#rsvBtn').classList.remove('btnDisable');
+		
+		
+		// 여기서 예약 인원 수를 제한해주어야한다
+		// 회의실 이용가능한 최대 인원 < 예약 인원 수 가 true 라면 최대 인원 수로 강제로 내린 후
+		// 사용자에게 알림을 주어야한다.
+/* 		if (roomData.get(roomNo + 1).isReservation == 0) {
+			
+		} */
+
+		selectedRoomNo = roomNo;
+		if (selectedPeopleNumber >=
+				roomData[selectedRoomNo - 1].mrPeople) {
+			selectedPeopleNumber = roomData[selectedRoomNo - 1].mrPeople;
+			document.querySelector("#peopleNumber").value = selectedPeopleNumber;
+		}
+		document.querySelector('#peopleSelector').classList.remove('selectorDisabled');
+		document.querySelector('#selectormsg').innerHTML = '예약 인원을 선택해주세요';
+	}
+	
+	function rsvRoom() {
+		// 선택한 회의실이 없을 경우 
+		if (selectedRoomNo == 0) {
+			Swal.fire('예약하실 회의실을 선택해주세요!');
+			return;
+		// 예약 인원 수가 
+		}
+		console.log(selectedRoomNo);
+		console.log(selectedPeopleNumber);
+		
+		document.querySelector('input[name="selectedRoomNo"]').value = selectedRoomNo;
+		document.querySelector('input[name="selectedPeopleNumber"]').value = selectedPeopleNumber;
+		document.querySelector('#rsvForm').submit();
+	}
+
+
+
+		
 	</script>
 </body>
 </html>
