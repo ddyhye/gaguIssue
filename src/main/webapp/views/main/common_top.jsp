@@ -267,7 +267,7 @@
          			content +=		'</div>';
          			content +=		'<div>';
          			content +=		'<span>'+item.name+'</span>';
-         			content +=		'<p>'+item.content+'</p>';
+         			content +=		'<p>'+item.msg_content+'</p>';
          			content +=		'</div>';
          			content +=		'</div>';
          			content +=		'<div>';
@@ -437,11 +437,11 @@
 			            content += '<div class="msg-info-name">' + item.other_name + '</div>';
 			            content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
 			            content += '</div>';
-			            content += '<div class="msg-text">' + item.content + '</div>';
+			            content += '<div class="msg-text">' + item.msg_content + '</div>';
 			            content += '</div>';
 			        }
 			        else if (idx_emp === item.sender) {
-			            if(item.message_delete == 0){
+			            if(item.sender_del == 0){
 			                content += '<div class="msg right-msg">';
 			                content += '<img class="img-20" id="delete_btn" alt="" src="/img/trash_icon.png" onclick="deleteMessage('+item.idx_message+');">';
 			                
@@ -450,7 +450,7 @@
 			                content += '<div class="msg-info-name">나</div>';			                
 			                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
 			                content += '</div>';			                
-			                content += '<div class="msg-text">' + item.content + '</div>';
+			                content += '<div class="msg-text">' + item.msg_content + '</div>';
 			                content += '</div>';
 			            }
 			        }

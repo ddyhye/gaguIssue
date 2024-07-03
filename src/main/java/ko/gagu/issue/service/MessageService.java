@@ -44,12 +44,12 @@ public class MessageService {
 			// 메시지가 없으면 리스트에서 뺴기
 		  	if(messageDTO.getMsg_count() != 0) {
 		  		MessageDTO lastContent = messageDAO.lastContent(messageDTO.getIdx_messageroom(), messageDTO.getOther_emp(), idx_emp);
-		  		String content = lastContent.getContent();
+		  		String content = lastContent.getMsg_content();
 		  		Timestamp send_time = lastContent.getSend_datetime();
 		  		String new_picname = lastContent.getFile_name();
 		  		logger.info("new_picname: " + new_picname);
 		  		
-		  		messageDTO.setContent(content);
+		  		messageDTO.setMsg_content(content);
 		  		messageDTO.setReg_date(send_time);
 		  		messageDTO.setFile_name(new_picname); 		
 		  	} else {				

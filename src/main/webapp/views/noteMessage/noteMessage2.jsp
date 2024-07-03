@@ -82,6 +82,11 @@
 	    margin-left: 350px;
 	}
 	
+    #preview-container img {
+        max-width: 100px; /* 미리보기 이미지의 최대 너비 설정 */
+        margin-top: 10px;
+    }
+	
 
 	</style>
   </head>
@@ -170,24 +175,24 @@
 				            <form class="msger-inputarea">
 				              <div class="dropdown-form dropdown-toggle" role="main" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-plus"></i>
 				                <div class="chat-icon dropdown-menu dropdown-menu-start">
-				                  <div class="dropdown-item mb-2">
+				                  <div class="dropdown-item mb-2" id="attachment-btn">
 				                  <!-- [JAE] SVG 요소의 viewBox 속성을 사용하여 SVG의 보이는 영역과 실제 클릭 가능한 영역을 조정 -->
-				                    <svg id="attachment-btn" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+				                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
 									  <use href="/assets/svg/icon-sprite.svg#attchment"></use>
 									</svg>
 				                  </div>
-				                  
 				                </div>
+				                <span id="previewContainer"></span>
 				              </div>
 				              <input class="msger-input two uk-textarea" type="text" id="sendText" placeholder="보내실 쪽지를 입력해주세요.">
 				              <div class="open-emoji">
 				                <div class="second-btn uk-button"></div>
 				              </div>
 				              <button class="msger-send-btn" id="send_btn" type="submit"><i class="fa fa-location-arrow"></i></button>
-				              
 				              <!-- 숨겨진 파일 입력 요소 -->
-  							<input type="file" id="file-upload" style="display: none;">
+  							  <input type="file" id="file-upload" style= "display: none;">
 				            </form>
+				            
 				          </div>
 				        </div>
 				      </div>
@@ -435,9 +440,22 @@
 	  fileUpload.addEventListener('change', function (event) {
 	    var files = event.target.files;
 	    if (files.length > 0) {
-	      // 파일이 선택된 경우 처리 로직 추가
-	      console.log('Selected file:', files[0]);
-	    }
+	        // 파일이 선택된 경우 처리 로직 추가
+	        console.log('Selected file:', files[0]);
+
+	        var file = files[0];
+	        var reader = new FileReader();
+
+	        reader.onload = function(e) {
+	          var img = document.createElement('img');
+	          img.src = e.target.result;
+	          img.style.maxWidth = '200px'; // 미리보기 이미지 크기 조절
+	          previewContainer.innerHTML = ''; // 이전 미리보기 제거
+	          previewContainer.appendChild(img);
+	        };
+
+	        reader.readAsDataURL(file);
+	      }
 	  });
 	  
 	  
@@ -501,6 +519,13 @@
   			}
   		});
   	}
+      
+      
+     
+      
+      
+      
+      
       
  /*    
 	  document.addEventListener('DOMContentLoaded', function() {

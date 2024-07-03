@@ -13,7 +13,7 @@ public interface MessageDAO {
 
 	List<MessageDTO> roomList(int idx_emp, String messageSearch);
 
-	MessageDTO lastContent(int idx_messageroom, int sender, int idx_emp);
+	MessageDTO lastContent(int idx_messageroom, int other_idx, int idx_emp);
 
 	List<MessageDTO> messageList(int idx, int idx_emp, int otherEmp);
 

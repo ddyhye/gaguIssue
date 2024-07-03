@@ -18,13 +18,14 @@ public class MessageDTO {
 	private String name;
 	private String other_name;
 	private Timestamp reg_date;
-	private String content;
+	private String msg_content;
 	private int other_emp;
 	private Timestamp send_datetime;
 	private int idx_message;
 	private int is_receiver_read;
 	private int idx_emp;
-	private int message_delete;
+	private int sender_del;
+	private int reciver_del;
 	
 	private String de_name;
 	
@@ -82,12 +83,6 @@ public class MessageDTO {
 	public void setReg_date(Timestamp reg_date) {
 		this.reg_date = reg_date;
 	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
 	public int getOther_emp() {
 		return other_emp;
 	}
@@ -130,17 +125,29 @@ public class MessageDTO {
 	public void setIdx_emp(int idx_emp) {
 		this.idx_emp = idx_emp;
 	}
-	public int getMessage_delete() {
-		return message_delete;
-	}
-	public void setMessage_delete(int message_delete) {
-		this.message_delete = message_delete;
-	}
 	public String getFile_name() {
 		return file_name;
 	}
 	public void setFile_name(String file_name) {
 		this.file_name = file_name;
+	}
+	public int getSender_del() {
+		return sender_del;
+	}
+	public void setSender_del(int sender_del) {
+		this.sender_del = sender_del;
+	}
+	public int getReciver_del() {
+		return reciver_del;
+	}
+	public void setReciver_del(int reciver_del) {
+		this.reciver_del = reciver_del;
+	}
+	public String getMsg_content() {
+		return msg_content;
+	}
+	public void setMsg_content(String msg_content) {
+		this.msg_content = msg_content;
 	}
 	
 	
