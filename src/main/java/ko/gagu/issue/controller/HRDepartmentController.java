@@ -1,5 +1,7 @@
 package ko.gagu.issue.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,22 +135,37 @@ public class HRDepartmentController {
 	    logger.info("employeeInsert");
 	    logger.info("image : {}", profileImage);
 	    logger.info("프로필 이미지 origin name >> "+profileImage.getOriginalFilename());
-	
+	    
 	    try {
-	        hrDepartmentService.createEmployee(profileImage,HRDepartment);
+	        // 퇴사일을 9999-12-31로 고정
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        Date fixedDate = sdf.parse("9999-12-31");
+	        HRDepartment.setEmp_term_date(new java.sql.Date(fixedDate.getTime()));
+	        
+	        // 사원 등록 서비스 호출
+	        hrDepartmentService.createEmployee(profileImage, HRDepartment);
+
+	        // 성공 응답
 	        response.put("status", "success");
 	        response.put("message", "사원 등록 성공");
-	        logger.info("성공");
-	        return response;
+	        logger.info("사원 등록 성공");
 	    } catch (Exception e) {
-	        e.printStackTrace(); // 자세한 오류 메시지를 로그에 기록
+	        e.printStackTrace();
+	        // 실패 응답
 	        response.put("status", "error");
 	        response.put("message", "사원 등록 실패: " + e.getMessage());
-	        logger.info("실패");
-	        return response;
+	        logger.error("사원 등록 실패: " + e.getMessage());
 	    }
+		return response;
 	}
+	
+	@GetMapping("/getnewIdx")
+	@ResponseBody
+	public String getnewIdx() {
+		String idx = hrDepartmentService.getnewIdx();
 
-		
+		return idx;
+	}
+			
 
 }
