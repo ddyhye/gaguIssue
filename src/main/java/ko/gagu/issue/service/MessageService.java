@@ -1,16 +1,24 @@
 package ko.gagu.issue.service;
 
+import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import ko.gagu.issue.dao.EmployeeDAO;
 import ko.gagu.issue.dao.MessageDAO;
@@ -25,6 +33,9 @@ public class MessageService {
 	@Autowired EmployeeDAO employeeDAO;
 	
 	public String upload_root="C:/upload/";
+	
+	@Value("${spring.servlet.multipart.location}")
+    private String sendFile;
 	
 	public Map<String, Object> roomListCallAjax(String emp_id, String messageSearch) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -60,6 +71,7 @@ public class MessageService {
 		}
 		
 		map.put("roomList", roomList);
+		map.put("messageSearch", messageSearch);
 		logger.info("map : "+ map);
 		return map;
 	}
@@ -101,24 +113,67 @@ public class MessageService {
 		return map;
 	}
 
-	public Map<String, Object> messageSend(int idx, String emp_id, int other_emp, String content) {
+	public Map<String, Object> messageSend(int idx, String emp_id, int other_emp, String content, MultipartFile file) {
 		boolean result = false;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		
 		int idx_emp = employeeDAO.getEmpIdx(emp_id);
 		logger.info("emp_id -> idx_emp: " + idx_emp);
+
+		if (file != null && !file.isEmpty()) {
+	        // 파일이 있는 경우 처리
+	        try {
+	        	sendMessageImage(file, idx_emp);
+	            // 파일 저장 후 메시지 전송
+	            int row2 = messageDAO.sendMessageWithFile(file.getOriginalFilename(), idx_emp, other_emp, idx);
+	            if (row2 == 1) {
+	                result = true;
+	            }
+	        } catch (Exception e) {
+	            logger.error("파일 저장 중 오류 발생: " + e.getMessage());
+	        }
+	    } else {
+	        // 파일이 없는 경우 바로 메시지 전송
+	        int row1 = messageDAO.sendMessage(content, idx_emp, other_emp, idx);
+	        if (row1 == 1) {
+	            result = true;
+	        }
+	    }
 		
-		int row = messageDAO.sendMessage(content, idx_emp, other_emp, idx);
-		if(row == 1) {
-			result = true;
-			// messageDAO.alarmSend(idx+"번 게시물 : "+content, emp_id);
-		} 
+		
 		map.put("result", "보낸 결과"+result);
 		
 		
 		return map;
 	}
+	
+	
+	public String sendMessageImage(MultipartFile file, int idx_emp) throws Exception {
+        // 파일 이름 생성
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        
+		Path filePath = Paths.get(sendFile+"/message_picture", fileName);
+		
+
+        // 파일 저장
+        Files.createDirectories(filePath.getParent());
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // 파일의 URL 생성
+        String imageUrl = "/images/profile/" + fileName;
+
+        // 데이터베이스에 파일 경로 저장 (DAO 호출)
+        messageDAO.saveProfileImagePath(file.getOriginalFilename(), fileName, idx_emp);
+
+        return imageUrl;
+    }
+	
+	
+	
+	
+	
+	
 
 	public Map<String, Object> subjectCall(int other_emp) {
 		
