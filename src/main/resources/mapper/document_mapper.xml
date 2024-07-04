@@ -275,7 +275,7 @@
 		join department_tb dt ON dt.idx_department = et.idx_department
 		where
 			at.idx_employee = #{idxEmployee}
-			or EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = 6)
+			or EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = #{idxEmployee})
 			or et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
 	</select>
 	
