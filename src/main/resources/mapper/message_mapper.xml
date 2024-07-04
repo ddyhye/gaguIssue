@@ -118,6 +118,10 @@
 			values (#{param4}, #{param2}, #{param3}, #{param1})
 	</insert>
 
+	<insert id="sendMessageWithFile">
+		INSERT INTO message_history_tb (idx_messageroom, sender, receiver , msg_content) 
+			values (#{param4}, #{param2}, #{param3}, #{param1})
+	</insert>
 
 	<select id="subjectCall" resultType="message">
  		SELECT et.idx_employee, et.emp_name as other_name, dt.de_name, p.file_name 
@@ -145,4 +149,9 @@
 	<update id="msgDelete">
 		UPDATE message_history_tb SET sender_del = 1 WHERE idx_message = #{param1}
 	</update>
+	
+	<insert id="saveProfileImagePath">
+		INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name) 
+			VALUES (6, #{param3}, #{param1},#{param2})
+	</insert>
 </mapper>

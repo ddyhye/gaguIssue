@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -132,7 +133,7 @@ public class HRDepartmentController {
 	@PostMapping(value="/employeeInsert")
 	@ResponseBody
 	public Map<String, Object> createEmployee(MultipartFile profileImage,HRDepartmentDTO HRDepartment) {
-	    Map<String, Object> response = new HashMap<>();
+	    Map<String, Object> map = new HashMap<>();
 	    logger.info("employeeInsert");
 	    logger.info("image : {}", profileImage);
 	    logger.info("프로필 이미지 origin name >> "+profileImage.getOriginalFilename());
@@ -144,20 +145,20 @@ public class HRDepartmentController {
 	        HRDepartment.setEmp_term_date(new java.sql.Date(fixedDate.getTime()));
 	        
 	        // 사원 등록 서비스 호출
-	        hrDepartmentService.createEmployee(profileImage, HRDepartment);
+	        String msg = hrDepartmentService.createEmployee(profileImage, HRDepartment);
 
 	        // 성공 응답
-	        response.put("status", "success");
-	        response.put("message", "사원 등록 성공");
-	        logger.info("사원 등록 성공");
+	        map.put("status", "success");
+	        map.put("message", msg);
+	        logger.info(msg);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        // 실패 응답
-	        response.put("status", "error");
-	        response.put("message", "사원 등록 실패: " + e.getMessage());
+	        map.put("status", "error");
+	        map.put("message", "사원 등록 실패: " + e.getMessage());
 	        logger.error("사원 등록 실패: " + e.getMessage());
 	    }
-		return response;
+		return map;
 	}
 	
 	@GetMapping("/getnewIdx")
@@ -170,6 +171,7 @@ public class HRDepartmentController {
 	
 	
 	
+	
 	// 직원 상세보기 
 	@PostMapping(value="/employeeDetail.ajax")
 	@ResponseBody
@@ -178,7 +180,20 @@ public class HRDepartmentController {
 	    
 		return hrDepartmentService.getEmpDetail(map, emp_id);
 	}
-	
+	// 직원 상세보기 - 프로필 사진 경로 
+	@RequestMapping(value="/photo/{fileName}")
+	public ResponseEntity<Resource> profileView(@PathVariable String fileName) {
+		//logger.info("fileName: "+fileName);
+		return hrDepartmentService.profileView(fileName);
+	}
+	   
+	@PostMapping(value="/annualDetail.ajax")
+	@ResponseBody
+	public Map<String, Object> annualDetail(String emp_id) {
+	    Map<String, Object> map = new HashMap<>();
+	    
+		return hrDepartmentService.getannualDetail(map, emp_id);
+	}
 	
 
 			

@@ -219,8 +219,8 @@
              
              function loadChatRooms(emp_id, search) {
             	 console.log("대화방 불러오기 아작스 요청");
-            	 console.log(search);
-            	 console.log(emp_id);
+            //	 console.log(search);
+            //	 console.log(emp_id);
                  $.ajax({
                      url: '/getChatRooms',
                      method: 'POST',
@@ -250,6 +250,7 @@
             	// console.log(data);
             	var emp_id = "${sessionScope.emp_id}";
             	// console.log(emp_id);
+            	console.log(data.messageSearch);
          		$('.chats-user').empty();
          		var content = '';
          		if (!data.roomList || data.roomList.length === 0) {
@@ -257,7 +258,7 @@
          		}
          		
          		for (item of data.roomList) {
-         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\'); selectChatRoom(this);">'; 
+         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\', \'' + data.messageSearch + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
          			if(item.file_name != null){
@@ -296,7 +297,7 @@
              var chatIntervalId; // interval ID를 저장할 전역 변수
 
              
-             function viewRoomContent(idx, other_emp, emp_id){
+             function viewRoomContent(idx, other_emp, emp_id, search){
             	
             	// 기존 interval이 있으면 취소
            	    if (chatIntervalId) {
@@ -316,6 +317,7 @@
          		// 5초마다 새 메시지 로드
          	    chatIntervalId = setInterval(function() {
          	    	messageCall(idx, emp_id , other_emp);
+         	    	loadChatRooms(emp_id, search)
          	    }, 5000);
          	}
              
@@ -363,7 +365,6 @@
 	    			content +=		'</div>';
 	    			content +=		'</div>';
 	    			content +=		'<div class="d-flex gap-2">';
-	    			content +=		'<div class="contact-edit chat-alert"><i class="icon-info-alt"></i></div>';
 	    			content +=		'<div class="contact-edit chat-alert">';
 	    			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
 	    			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';

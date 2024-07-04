@@ -31,5 +31,9 @@ public interface MessageDAO {
 
 	int msgDelete(int msg_idx);
 
+	int sendMessageWithFile(String content, int idx_emp, int other_emp, int idx);
+
+	void saveProfileImagePath(String originalFilename, String fileName, int idx_emp);
+
 	
 }

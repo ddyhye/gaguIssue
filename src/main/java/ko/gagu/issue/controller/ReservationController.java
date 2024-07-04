@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,20 +43,6 @@ public class ReservationController {
 		return service.getReservationList(idxEmployee);
 	}
 	
-	@GetMapping(value="/reservation/{idxReservation}/detail.go")
-	public ModelAndView detailGo(HttpSession session, @PathVariable int idxReservation) {
-		int idxEmployee = (int) session.getAttribute("idxEmployee");
-		return service.getReservationDetail(idxEmployee, idxReservation);
-	}	
-	
-	@GetMapping(value="/reservation/list.do")
-	@ResponseBody
-	public ModelAndView reservationListDo(HttpSession session
-			,@RequestParam("filter") String filter) {
-		int idxEmployee = (int) session.getAttribute("idxEmployee");
-		return service.getReservationFilterList(idxEmployee, filter);
-	}
-	
 	@PostMapping(value="/reservation/room.go")
 	public ModelAndView meetingRoomGo(HttpSession session
 			,@RequestParam("selectedDate") String selectedDate
@@ -76,6 +63,22 @@ public class ReservationController {
 		session.removeAttribute("selectedDate");
 		session.removeAttribute("selectedTime");
 		return service.registerRsv(selectedRoomNo, idxEmployee, selectedPeopleNumber, selectedDate, selectedTime);
+	}
+	
+	@PostMapping(value="/reservation/cancel.do")
+	@ResponseBody
+	public Map<String,Object> reservationCancelDo(HttpSession session
+			,@RequestParam("idxReservation") int idxReservation) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return service.cancelRsv(idxEmployee, idxReservation);
+	}
+	
+	@PostMapping(value="/reservation/paging.do")
+	@ResponseBody
+	public Map<String,Object> reservationPagingDo(HttpSession session
+			,@RequestParam("page") int page) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return service.getPagingRsvList(idxEmployee, page);
 	}
 	
 }

@@ -32,6 +32,10 @@ public interface HRDepartmentDAO {
 
 	HRDepartmentDTO getEmployeeById(String emp_id);
 
+	int isEmpty(String emp_id);
+
+	HRDepartmentDTO getAnnualLeaveInfoById(String emp_id);
+
 	
 
 }

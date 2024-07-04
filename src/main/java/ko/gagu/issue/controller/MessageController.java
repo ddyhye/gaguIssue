@@ -1,5 +1,6 @@
 package ko.gagu.issue.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.service.MessageService;
@@ -34,7 +36,7 @@ public class MessageController {
 	 	// 대화방 리스트 요청 ajax
 		@RequestMapping(value = "/getChatRooms", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> roomListCallAjax(@RequestParam(value="messageSearch", required = false) String messageSearch, String emp_id){
+		public Map<String, Object> roomListCallAjax(@RequestParam(value="messageSearch", required = false, defaultValue = "") String messageSearch, String emp_id){
 			logger.info("--------대화방 리스트 출력---------");
 			logger.info("messageSearch :" + messageSearch);
 			
@@ -52,7 +54,7 @@ public class MessageController {
 			return messageService.messageCallAjax(idx, emp_id, otherEmp);
 		}
 			
-		
+		/*
 		// 쪽지 보내기 ajax
 		@RequestMapping(value = "/messageSend.ajax", method = RequestMethod.POST)
 		@ResponseBody
@@ -60,7 +62,35 @@ public class MessageController {
 			logger.info("{}번 방, {}가 쪽지 전송", idx, emp_id);
 			return messageService.messageSend(idx, emp_id, other_emp, content);
 		}
+		 */
 		
+		// 쪽지 보내기 ajax
+		@RequestMapping(value = "/messageSend.ajax", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> messageSendAjax(
+				@RequestParam("idx") int idx,
+			    @RequestParam("emp_id") String emp_id,
+			    @RequestParam("other_emp") int other_emp,
+			    @RequestParam("content") String content,
+			    @RequestParam(value = "file-send", required = false) MultipartFile file){
+			
+			logger.info("{}번 방, {}가 쪽지 전송", idx, emp_id);
+			logger.info("ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ사진 보내기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ");
+			logger.info("불러온 file : "+ file);
+			/*
+			// 파일 처리 로직 추가
+		    if (file != null && !file.isEmpty()) {
+		        // 파일 저장 로직을 여기에 추가
+				String fileName = file.getOriginalFilename();
+				// 예를 들어, 파일을 특정 경로에 저장하는 로직
+				// file.transferTo(new File("/path/to/save/" + fileName));
+				logger.info("파일 이름: {}", fileName);
+		    } else {
+		        logger.info("파일 없음");
+		    }
+			  */
+			return messageService.messageSend(idx, emp_id, other_emp, content, file);
+		}
 		
 		
 		// 쪽지상대요청
@@ -77,7 +107,7 @@ public class MessageController {
 		// 연락처 요청
 		@RequestMapping(value = "/getContact.ajax", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> getContact(@RequestParam(value="contactSearch", required = false) String contactSearch, String emp_id){
+		public Map<String, Object> getContact(@RequestParam(value="contactSearch", required = false, defaultValue = "") String contactSearch, String emp_id){
 			logger.info("-------------연락처 요청-------------");
 			Map<String, Object> map = new HashMap<String, Object>();
 			
