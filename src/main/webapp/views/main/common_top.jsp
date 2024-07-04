@@ -61,7 +61,7 @@
                   <div class="notification-box" id="do-alarmIcon">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#notification"></use>
-                    </svg><span class="badge rounded-pill badge-primary do-alarmCnt">4 </span>
+                    </svg><span class="badge rounded-pill badge-primary" id="do-alarmCnt">4 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown do-overflow">
                     <h5 class="f-18 f-w-600 mb-0 dropdown-title">Notifications</h5>
@@ -518,7 +518,46 @@
          	
          	
          	// [do] 알림
-         	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지?
+         	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지? ==> 비동기
+         	// do-alarmCnt 이것의 값을 바꿔줘야함.
+         	alarmCnt();
+         	// 알람의 개수를 가져오는 함수
+         	function alarmCnt() {
+         		fetch('/alarmCnt.ajax', {
+         			method: 'POST',
+         			headers: {
+         				'Content-Type': 'application/json'
+         			},
+         			body: JSON.stringify({})
+         		})
+         		.then(response => response.json())
+         		.then(data => {
+         			console.log('알림 개수 업데이트');
+         			if (data.alarmCnt > 0) {
+						document.getElementById('do-alarmCnt').innerText = data.alarmCnt;
+					} else {
+						const alarmIcon = document.getElementById('do-alarmIcon');
+						
+					    // 모든 자식 요소 제거
+					    while (alarmIcon.firstChild) {
+					        alarmIcon.removeChild(alarmIcon.firstChild);
+					    }
+		        		
+		        		var content = '';
+		        		
+	        			content += '<svg>';
+	        			content += '<use href="/assets/svg/icon-sprite.svg#notification"></use>';
+	        			content += '</svg>';
+	        			content += '</div>';
+		        		
+	        			// 새로운 내용 추가
+	        			const fragment = document.createRange().createContextualFragment(content);
+	        		    alarmIcon.appendChild(fragment);
+					}
+         		})
+         		.catch(error => {consoleerror('Fetch error:', error);})
+         	}
+         	
          	document.getElementById('do-alarmIcon').addEventListener('mouseover', () => {
          		fetch('/alarmList.ajax', {
          			method: 'POST',
@@ -592,6 +631,9 @@
 		                    const idxAlarm = this.closest('li').querySelector('.do-alarm-idx').value;
 		                    const idxEmployee = this.closest('li').querySelector('.do-alarm-empIdx').value;
 		                    readRequest(idxAlarm, idxEmployee);
+		                    
+		                    // 알림 삭제했으면 개수도 수정하자!
+		                    alarmCnt();
 		                });
 		            }
 			    });

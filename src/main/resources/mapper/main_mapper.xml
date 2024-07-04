@@ -19,6 +19,21 @@
 	</select>
 	
 	
+	
+	<!-- 기안서 관련,, -->
+	<select id="getMyDocumentCnt" resultType="Integer">
+		SELECT COUNT(*)
+		FROM approval_tb 
+		WHERE idx_employee = 13 AND final_ap_status = '진행중'
+	</select>
+	<select id="getMyApproveCnt" resultType="Integer">
+		SELECT COUNT(*) 
+		FROM approval_line_tb 
+		WHERE is_approval = -1 AND idx_employee = 13
+	</select>
+	
+	
+	
 	<!-- 직원 오늘의 출퇴근 기록 가져오기 -->
 	<select id="getTodayCheck" resultType="attendance_history">
 		SELECT * 
@@ -97,6 +112,12 @@
 	
 	
 	
+	<!-- 알람 개수 -->
+	<select id="alarmCnt" resultType="Integer">
+		SELECT COUNT(*) 
+		FROM alerm_tb al
+		WHERE idx_employee = #{param1} AND is_checked =0
+	</select>
 	<!-- 알람 -->
 	<select id="getAlamList" resultType="alarm">
 		SELECT al.idx_alarm ,
@@ -115,5 +136,93 @@
 		SET is_checked = 1
 		WHERE idx_employee = #{param2} AND idx_alarm = #{param1}
 	</update>
+	
+	
+	
+	
+	<!-- 연차 내역 (페이지 로드시) -->
+	<select id="getempLeaveHistory2" resultType="leave_usage">
+		SELECT lut.idx_employee,
+				lut.lu_usage_days,
+				lut.lu_start_date,
+				lut.lu_end_date
+		FROM leave_usage_tb lut 
+		JOIN employee_tb et ON lut.idx_employee = et.idx_employee 
+		WHERE lut.idx_employee = #{param1}
+	    ORDER BY lu_start_date DESC
+	    LIMIT 0, 13
+	</select>
+	<!-- 연차 내역 페이지 카운트(페이지 로드시) -->
+	<select id="getFilterTotalPages2" resultType="Integer">
+		SELECT CEIL(COUNT(*) / 13)
+		FROM leave_usage_tb lut 
+		JOIN employee_tb et ON lut.idx_employee = et.idx_employee 
+		WHERE lut.idx_employee = #{idxEmployee}
+	</select>
+	<!-- 연차 페이징 -->
+	<select id="getFilterTotalPages" resultType="Integer">
+		SELECT CEIL(COUNT(*) / 13)
+		FROM leave_usage_tb lut 
+		JOIN employee_tb et ON lut.idx_employee = et.idx_employee 
+		WHERE
+	    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
+	    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= lut.lu_start_date
+	    </if>
+	    <if test="paging.endDate != null and !paging.endDate.equals('')">
+	    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= lut.lu_end_date
+	    </if>			
+	    <choose>
+		    <when test="paging.filter != null and paging.filter.equals('pending')">
+		    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('rejected')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '반려'
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('approved')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '승인'
+		    </when>
+		    <when test="paging.filter != null and paging.filter.equals('retracted')">
+		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '회수'
+		    </when>			    
+		    <otherwise>
+		    	lut.idx_employee = #{idxEmployee}
+		    </otherwise>
+	    </choose>
+	</select>
+	<!-- 연차 리스트 -->
+	<select id="fetchFilterList" resultType="leave_usage">
+		SELECT lut.idx_employee,
+				lut.lu_usage_days,
+				lut.lu_start_date,
+				lut.lu_end_date
+		FROM leave_usage_tb lut 
+		JOIN employee_tb et ON lut.idx_employee = et.idx_employee 
+		WHERE
+		    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
+		    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= at.written_datetime
+		    </if>
+		    <if test="paging.endDate != null and !paging.endDate.equals('')">
+		    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= at.written_datetime
+		    </if>			
+		    <choose>
+			    <when test="paging.filter != null and paging.filter.equals('pending')">
+			    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
+			    </when>
+			    <when test="paging.filter != null and paging.filter.equals('rejected')">
+			    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '반려'
+			    </when>
+			    <when test="paging.filter != null and paging.filter.equals('approved')">
+			    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '승인'
+			    </when>
+			    <when test="paging.filter != null and paging.filter.equals('retracted')">
+			    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '회수'
+			    </when>			    
+			    <otherwise>
+			    	lut.idx_employee = #{idxEmployee}
+			    </otherwise>
+		    </choose>
+		    ORDER BY lu_start_date DESC
+		    LIMIT #{paging.page}, 13
+	</select>
 	
 </mapper>
