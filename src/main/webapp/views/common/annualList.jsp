@@ -318,7 +318,7 @@
 	
 	// 페이징
 	var page = 1;
-	var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+	//var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
 	var filter = 'all';
 	
 	$(document).ready(function () {
