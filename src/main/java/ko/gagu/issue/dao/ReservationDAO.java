@@ -3,6 +3,7 @@ package ko.gagu.issue.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import ko.gagu.issue.dto.ReservationDTO;
 import ko.gagu.issue.dto.RoomStatusDTO;
@@ -18,6 +19,14 @@ public interface ReservationDAO {
 
 	List<RoomStatusDTO> getRsvRoomStatus(String selectDate, int[] selectedTime);
 
-	List<ReservationDTO> getReservationList(int idxEmployee);
+	List<ReservationDTO> getReservationList(int idxEmployee, @Param("page") int page);
+
+	void updateReservationList(int idxReservation);
+
+	int cancelReservation(int idxReservation, int idxEmployee);
+
+	int getRsvListTotalPages(int idxEmployee);
+
+	List<Integer> getFinshRsv();
 
 }

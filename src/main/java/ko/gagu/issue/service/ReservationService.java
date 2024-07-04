@@ -1,6 +1,8 @@
 package ko.gagu.issue.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -32,35 +34,31 @@ public class ReservationService {
 		this.dao = dao;
 	}	
 
-	public ModelAndView getReservationDetail(int idxEmployee, int idxReservation) {
-		// 1. 해당 예약자 인지 확인 후 아니라면 페이지 튕기게 하기
-		return null;
-	}
-
 	public ModelAndView getReservationList(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("/common/reservationList");
-		List<ReservationDTO> reservationList = dao.getReservationList(idxEmployee);
-		mav.addObject("reservationList", reservationList);
-		return mav;
-	}
+		// 사용 완료 상태로 변경
+		List<Integer> rsvFinshList = dao.getFinshRsv();
+		for (int idxReservation : rsvFinshList) {			
+			dao.updateReservationList(idxReservation);
+		}
+		List<ReservationDTO> reservationList = dao.getReservationList(idxEmployee, 1);
+		int totalPages = dao.getRsvListTotalPages(idxEmployee);
 
-	public ModelAndView getReservationFilterList(int idxEmployee, String filter) {
-		// TODO Auto-generated method stub
-		return null;
+		if (reservationList.isEmpty() || reservationList == null) {
+			mav.addObject("reservationList", "none");
+		} else {
+			mav.addObject("reservationList", reservationList);
+			mav.addObject("totalPages", totalPages);
+		}
+		return mav;
 	}
 
 	public ModelAndView getMeetingRoom(int idxEmployee, String selectDate, int[] selectedTime) {
 		ModelAndView mav = new ModelAndView("/common/reservationRoomSelect");
 		List<RoomStatusDTO> temp = dao.getRsvRoomStatus(selectDate, selectedTime);
-		/*
-		 * List<Map<String, Object>> roomData = new ArrayList<Map<String, Object>>();
-		 * for (var rsDTO: temp) { roomData.add(new
-		 * ObjectMapper().writeValueAsString(temp)); }
-		 */
 		try {
 			mav.addObject("roomData", new ObjectMapper().writeValueAsString(temp));
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return mav;
@@ -68,11 +66,6 @@ public class ReservationService {
 
 	public ModelAndView getAvailableSlots(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("/common/reservationDatetimeSelect");
-		// 1. 현재 달에서 (2024-07) 예약 가능한 날짜를 조회
-		// 1-1. 2024-07-01 에 모든 회의실이 예약이 차 있으면 불가능함으로 판단한다
-		
-		// 2. 
-		
 		return mav;
 	}
 
@@ -80,11 +73,38 @@ public class ReservationService {
 	public ModelAndView registerRsv(int selectedRoomNo, int idxEmployee,
 			int selectedPeopleNumber, String selectedDate,
 			int[] selectedTime) {
-		ModelAndView mav = new ModelAndView("/common/reservationList");
-		ReservationDTO rsvDTO = new ReservationDTO();
-		rsvDTO.setReservist(idxEmployee);
-		rsvDTO.setRsvPeople(selectedPeopleNumber);
-		rsvDTO.setIdxMeetingRoom(selectedRoomNo);
+		ModelAndView mav = new ModelAndView("redirect:/reservation/list.go");
+		
+		Arrays.sort(selectedTime);
+		List<Map<String, Integer>> rsvTime = new ArrayList<>();
+		
+		if (selectedTime.length > 0) {
+			int startTime = selectedTime[0];
+			int endTime = startTime;
+			
+	        for (int i = 1; i < selectedTime.length; i++) {
+	        	if (selectedTime[i] == endTime + 1) {
+	        		endTime = selectedTime[i];
+	        	} else {
+	        		Map<String, Integer> map = new HashMap<>();
+	        		map.put("startTime", startTime);
+	        		map.put("endTime", endTime);
+	        		rsvTime.add(map);
+	        		
+	        		startTime = selectedTime[i];
+	    			endTime = startTime;
+	        	}
+	        }
+	        
+    		Map<String, Integer> map = new HashMap<>();
+    		map.put("startTime", startTime);
+    		map.put("endTime", endTime);
+    		rsvTime.add(map);
+		} else {
+			mav.setViewName("/common/reservationDatetimeSelect");
+			mav.addObject("errorMsg", "시간을 선택하지 않아 날짜 및 시간 선택 페이지로 이동합니다.");
+			return mav;			
+		}
 		
 		// 모든 쓰레드들은 다른 메서드가 사용중이라면 여기서 대기한다
 		// 사용이 끝나면 큐 안에 들어있던 순서대로 호출되어 실행된다
@@ -99,22 +119,55 @@ public class ReservationService {
 			}
 			
 			// 2. 예약을 등록함
-			dao.registerRsv(rsvDTO);
-			int idxReservation = rsvDTO.getIdxReservation();
-			if (idxReservation == 0) {
-				mav.setViewName("/common/reservationDatetimeSelect");
-				mav.addObject("errorMsg", "서버에서 오류가 발생하여 날짜 선택 페이지로 이동합니다.");
-				return mav;
-			}
-			
-			// 3. 등록에 성공하면 시간도 넣어준다
-			for (int time : selectedTime) {
-				dao.insertRsvTime(idxReservation, time, selectedDate);
+			for (var time : rsvTime) {
+				ReservationDTO rsvDTO = new ReservationDTO();
+				rsvDTO.setReservist(idxEmployee);
+				rsvDTO.setRsvPeople(selectedPeopleNumber);
+				rsvDTO.setIdxMeetingRoom(selectedRoomNo);
+				rsvDTO.setStartDatetime(String.format("%s %02d:00:00", selectedDate, time.get("startTime")));
+				rsvDTO.setEndDatetime(String.format("%s %02d:00:00", selectedDate, time.get("endTime") + 1));
+				dao.registerRsv(rsvDTO);
+				if(rsvDTO.getIdxReservation() == 0) {
+					mav.setViewName("/common/reservationDatetimeSelect");
+					mav.addObject("errorMsg", "예약 등록 중에 오류가 발생하여 날짜 및 시간 페이지로 이동합니다.");
+					return mav;
+				}
+				int idxReservation = rsvDTO.getIdxReservation();
+				for (int t = time.get("startTime"); t <= time.get("endTime"); t++) {
+					dao.insertRsvTime(idxReservation, t, selectedDate);
+				}
+				
 			}
 		} finally {
 			lock.unlock();
 		}
 		return mav;
+	}
+	
+	public Map<String,Object> cancelRsv(int idxEmployee, int idxReservation) {
+		var response = new HashMap<String,Object>();
+		
+		int row = dao.cancelReservation(idxReservation, idxEmployee);
+		response.put("success", row == 1 ? true : false);
+		
+		return response;
+	}
+
+	public Map<String, Object> getPagingRsvList(int idxEmployee, int page) {
+		var response = new HashMap<String,Object>();
+		List<Integer> rsvFinshList = dao.getFinshRsv();
+		for (int idxReservation : rsvFinshList) {			
+			dao.updateReservationList(idxReservation);
+		}
+		
+		var reservationList = dao.getReservationList(idxEmployee, page);
+		int totalPages = dao.getRsvListTotalPages(idxEmployee);
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page;
+		
+		response.put("reservationList", reservationList);
+		response.put("totalPages", totalPages);
+		response.put("page", page);
+		return response;
 	}
 
 }
