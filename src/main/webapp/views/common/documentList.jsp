@@ -19,54 +19,38 @@
 <!-- Google font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link
-	href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-	rel="stylesheet">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/font-awesome.css'/>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/font-awesome.css'/>">
 <!-- ico-font-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/icofont.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/icofont.css'/>">
 <!-- Themify icon-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/themify.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/themify.css'/>">
 <!-- Flag icon-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/flag-icon.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/flag-icon.css'/>">
 <!-- Feather icon-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/feather-icon.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/feather-icon.css'/>">
 <!-- Plugins css start-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/slick.css'/>">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/slick-theme.css'/>">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/scrollbar.css'/>">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/animate.css'/>">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/datatables.css'/>">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/slick-theme.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/scrollbar.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/animate.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/datatables.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
 <!-- Plugins css Ends-->
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <!-- Bootstrap css-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">	
 <!-- App css-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/style.css'/>">
-<link id="color" rel="stylesheet"
-	href="<c:url value='/assets/css/color-1.css'/>" media="screen">
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+<link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
 <!-- Responsive css-->
-<link rel="stylesheet" type="text/css"
-	href="<c:url value='/assets/css/responsive.css'/>">	
+<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">	
 <style>
 .document-list {
 	background: white;
 	padding: 30px;
+	height: 90%;
 }
 
 #filter {
@@ -77,6 +61,10 @@
 	color: #7a70ba;
 	width: 30px;
 	height: 30px;
+}
+
+#list {
+	height: 80%;
 }
 
 .document-list-table {
@@ -158,7 +146,13 @@
 				<div class="container-fluid default-dashboard">
 					<div class="document-list">
 						<div class="document-list-header">
-							<h2>기안서 리스트</h2>
+							<div class="d-flex justify-content-between">
+								<h2>기안서 리스트</h2>
+								<div class="d-flex justify-content-center align-items-center">
+									<button class="btn btn-primary btn-sm" style="flex-shrink: 0; margin-right: 10px;" onClick="search()">검색</button>
+									<input id="searchInput" style="flex-shrink: 0; margin-right: 100px;" class="form-control"  type="text" placeholder="제목 또는 기안자를 검색해주세요.">	
+								</div>
+							</div>
 							<hr/>
 						</div>
 						<div class="d-flex justify-content-between m-5">
@@ -195,7 +189,7 @@
 								<div class="d-block">								
 									<button class="btn btn-primary btn-xs" style="width: 60px; margin-right: 10px;" onClick="dateClear()">날짜<br/>초기화</button>
 								</div>
-								<input class="form-control flatpickr-input" id="startDate" type="text" value="날짜선택" onChange="startDateOnChanage()" readonly="readonly">
+								<input class="form-control flatpickr-input" id="startDate" type="text" placeholder="날짜 선택" onChange="startDateOnChanage()" readonly="readonly">
 								<h4>~</h4>
 								<input class="form-control flatpickr-input" id="endDate" type="text" onchange="endDateOnChanage()" readonly="readonly">
 							</div>
@@ -206,7 +200,7 @@
 									<thead>
 										<tr>
 											<th><span class="f-light f-w-600">번호</span></th>
-											<th><span class="f-light f-w-600">문서 제목</span></th>
+											<th style="width: 30%;"><span class="f-light f-w-600">문서 제목</span></th>
 				                            <th><span class="f-light f-w-600">결재 양식</span></th>
 				                            <th><span class="f-light f-w-600">부서</span></th>
 				                            <th><span class="f-light f-w-600">기안자</span></th>
@@ -252,11 +246,6 @@
 								</table>
 								<br/>
 								<br/>
-								<div class="d-flex justify-content-center">								
-								    <nav aria-label="Page navigation">
-								        <ul class="pagination" id="pagination"></ul>
-								    </nav>
-								</div>
 							</div>
 <!-- 							<div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="profile-tabs">
 								<p class="pt-3">
@@ -278,6 +267,11 @@
 									회수한 문서
 								</p>							
 							</div> -->							
+						</div>
+						<div class="d-flex justify-content-center">								
+						    <nav aria-label="Page navigation">
+						        <ul class="pagination" id="pagination"></ul>
+						    </nav>
 						</div>
 					</div>
 				</div>
@@ -335,8 +329,7 @@
 	<script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
 	<script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
 	<script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
-	<script
-		src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+	<script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
 	<script src="/assets/js/typeahead/handlebars.js"></script>
 	<script src="/assets/js/typeahead/typeahead.bundle.js"></script>
 	<script src="/assets/js/typeahead/typeahead.custom.js"></script>
@@ -387,21 +380,19 @@
         
 		var startflatpickr = flatpickr("#startDate", {
 			locale: "ko",
-			maxDate: "today"
-/* 	        onChange: function(selectedDates, dateStr, instance) {
-	        	fetchDocumentList();
-	        	console.log('startflatpickr');
-	        } */			
+			maxDate: "today",
+			onChange: function(selectedDates, dateStr, instance) {
+				endflatpickr.set('minDate', dateStr);
+			}			
 		});
 		
 		var endflatpickr = flatpickr("#endDate", {
 			locale: "ko",
 			maxDate: "today",
-			defaultDate: "today"
-/* 	        onChange: function(selectedDates, dateStr, instance) {
-	        	fetchDocumentList();
-	        	console.log('endflatpickr');
-	        } */
+			defaultDate: "today",
+			onChange: function(selectedDates, dateStr, instance) {
+				startflatpickr.set('maxDate', dateStr);
+			}
 		});	
 		
 		var flag = false;
@@ -410,14 +401,12 @@
 			if (!flag) {
 				fetchDocumentList();	
 			}
-			console.log('startflatpickr');
 		}
 		
 		function endDateOnChanage() {
 			if (!flag) {
 				fetchDocumentList();	
 			}	
-			console.log('endflatpickr');
 		}
 		
         var startDate = document.getElementById('startDate').value;
@@ -427,9 +416,8 @@
 	    	flag = true;
 	    	startflatpickr.clear();
 	    	endflatpickr.clear();
-	    	document.getElementById('startDate').value = '날짜선택';
+	    	document.getElementById('startDate').placeholder = '날짜 선택';
 	    	endflatpickr.setDate('today', true);
-	    	console.log('dateClear');
 	    	fetchDocumentList();
 	    	flag = false;
 	    }
@@ -438,6 +426,7 @@
 		var page = 1;
 		var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
 		var filter = 'all';
+		var searchKeyword = '';
 		
 		$(document).ready(function () {
 			if (totalPage == 0) {
@@ -463,37 +452,33 @@
 			// pagination();
 		});
 		
-		function pagination() {
-			if (totalPage < page) {
-				page = totalPage;
-			}
-			console.log(page, totalPage);
-			if (totalPage == 1 && page == 0) {
-				page = 1;
-			}
-			if (totalPage != 0) {				
-				$('#pagination').twbsPagination('destroy');
-			    $('#pagination').twbsPagination({
-					startPage:page, //시작페이지
-					totalPages:totalPage, //총 페이지 갯수
-					visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
-			        first: '처음', // 첫 페이지 버튼 텍스트 변경
-			        prev: '이전', // 이전 페이지 버튼 텍스트 변경
-			        next: '다음', // 다음 페이지 버튼 텍스트 변경
-			        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
-					onPageClick:function(evt, clickPageIdx){
-						// 페이지 이동 번호 클릭시 이벤트 발동
-	                    if (page !== clickPageIdx) {
-	                        page = clickPageIdx;
-	                        fetchDocumentList();
-	                    }
-					}
-			    });		
-			} 
+		function pagination() {			
+			$('#pagination').twbsPagination('destroy');
+		    $('#pagination').twbsPagination({
+				startPage:page, //시작페이지
+				totalPages:totalPage, //총 페이지 갯수
+				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+		        first: '처음', // 첫 페이지 버튼 텍스트 변경
+		        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+		        next: '다음', // 다음 페이지 버튼 텍스트 변경
+		        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+				onPageClick:function(evt, clickPageIdx){
+					// 페이지 이동 번호 클릭시 이벤트 발동
+                    if (page !== clickPageIdx) {
+                        page = clickPageIdx;
+                        fetchDocumentList();
+                    }
+				}
+		    });		
 		}
 	    
 		function setFilter(category) {
 			filter = category;
+			fetchDocumentList();
+		}
+		
+		function search() {
+			searchKeyword = document.getElementById('searchInput').value;
 			fetchDocumentList();
 		}
 		
@@ -507,11 +492,12 @@
 			//console.log(filter);
 			const pagingDTO = {
 				filter : filter,
+				searchKeyword : searchKeyword,
 				page : page,
 				startDate : document.getElementById('startDate').value,
 				endDate : document.getElementById('endDate').value
 			}
-			console.log(pagingDTO);
+			// console.log(pagingDTO);
 	        fetch('/document/list.do', {
 	            method: 'POST',
                 headers: {
@@ -524,16 +510,16 @@
 	        	console.log('Success:', data);
 	        	drawDocumentList(data);
 	        	totalPage = data.totalPages;
+	        	page = data.page;
 	        	pagination();
 	        	// 3. 현재 페이지 번호가 몇번인지 알아야한다
 	        	
 	        })
 	        .catch(error => {
-	        	console.error('Error:', error);
+	        	// console.error('Error:', error);
 	        });
-			
-			
-			
+	        document.getElementById('searchInput').value = '';
+	        searchKeyword = '';
 		}	
 		
 		function drawDocumentList(data) {

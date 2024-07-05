@@ -31,18 +31,21 @@ public class ReservationController {
 		this.service = service;
 	}
 	
+	/* [jeong] 예약 날짜 및 시간 선택 페이지로 이동 */
 	@GetMapping(value="/reservation/calendar.go")
 	public ModelAndView calendarGo(HttpSession session) {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		return service.getAvailableSlots(idxEmployee);
 	}
 	
+	/* [jeong] 예약 내역 페이지로 이동 */ 
 	@GetMapping(value="/reservation/list.go")
 	public ModelAndView reservationListGo(HttpSession session) {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		return service.getReservationList(idxEmployee);
 	}
 	
+	/* [jeong] 예약 가능한 회의실들을 선택하는 페이지로 이동 */
 	@PostMapping(value="/reservation/room.go")
 	public ModelAndView meetingRoomGo(HttpSession session
 			,@RequestParam("selectedDate") String selectedDate
@@ -53,6 +56,7 @@ public class ReservationController {
 		return service.getMeetingRoom(idxEmployee, selectedDate, selectedTime);
 	}
 	
+	/* [jeong] 예약 시간과 회의실 번호를 입력 받아 예약 등록 처리 */
 	@PostMapping(value="/reservation/register.do")
 	public ModelAndView reservationRegisterDo(HttpSession session
 			,@RequestParam("selectedRoomNo") int selectedRoomNo
@@ -65,6 +69,7 @@ public class ReservationController {
 		return service.registerRsv(selectedRoomNo, idxEmployee, selectedPeopleNumber, selectedDate, selectedTime);
 	}
 	
+	/* [jeong] 취소할 예약 번호를 입력받고 취소처리 */
 	@PostMapping(value="/reservation/cancel.do")
 	@ResponseBody
 	public Map<String,Object> reservationCancelDo(HttpSession session
@@ -73,6 +78,7 @@ public class ReservationController {
 		return service.cancelRsv(idxEmployee, idxReservation);
 	}
 	
+	/* [jeong] 페이징처리된 예약 내역 데이터를 응답 */
 	@PostMapping(value="/reservation/paging.do")
 	@ResponseBody
 	public Map<String,Object> reservationPagingDo(HttpSession session

@@ -205,9 +205,11 @@ public class DocumentService {
 	    return mav;
 	}
 
+	/* [jeong] 서명이미지와 결재를 저장하고 연가 및 휴가 신청이 최종승인되면 연차 차감 및 히스토리에 저장된다 */
 	@Transactional(rollbackFor = Exception.class)
 	public void approval(MultipartFile signatureImage, int idxApproval, int apStep, int idxApprovalLine) {
 		String signImageName = fm.saveFile(signatureImage, "document/signature");
+		// 서명 이미지를 예약번호로 묶어서 저장
 		dao.saveSignImage(9, idxApprovalLine, signImageName);
 		dao.approvalLine(idxApproval, idxApprovalLine, apStep);
 		ApprovalDTO approvalDto = dao.getApproval(idxApproval);
@@ -215,6 +217,8 @@ public class DocumentService {
 		// 최종 승인시 
 		if (approvalLineList.get(approvalLineList.size() - 1).getIsApproval() == 1) {
 			dao.approval(idxApproval);
+			
+			// 연가인지
 			if(approvalDto.getIdxDc() == 1) {
 				ObjectMapper objectMapper = new ObjectMapper();
 				Map<String, Object> documentMap = null;
@@ -236,16 +240,19 @@ public class DocumentService {
 		}
 	}
 
+	/* [jeong] 반려처리 */
 	@Transactional(rollbackFor = Exception.class)
 	public void reject(int idxApproval, int apStep, int idxApprovalLine, String apComment) {
 		dao.rejectLine(idxApproval, idxApprovalLine, apStep, apComment);
 		dao.reject(idxApproval);
 	}
 
+	/* [jeong] 문서의 상태를 회수로 변경 */
 	public void retract(int idxApproval) {
 		dao.retract(idxApproval);
 	}
 
+	/* [jeong] 페이징만 처리된 문서 리스트를 응답 */
 	public ModelAndView fetchDocumentList(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("common/documentList");
 		List<DocumentDTO> documentList = dao.fetchDocumentList(idxEmployee);
@@ -260,26 +267,28 @@ public class DocumentService {
 		return mav;
 	}
 	
+	/* [jeong] 필터링 및 페이징 처리된 문서 리스트를 응답 */
 	public Map<String, Object> fetchFilterDocumentList(PagingDTO pagingDTO, int idxEmployee) {
 		Map<String, Object> response = new HashMap<>();
 		int totalPages = dao.getFilterTotalPages(pagingDTO, idxEmployee);
-		if (totalPages == 0) {
-			pagingDTO.setPage(0);
-		} else if (totalPages <= pagingDTO.getPage()) {
-			pagingDTO.setPage((totalPages - 1) * 13);
-			
-		} else {			
-			pagingDTO.setPage(0);
-		}
+		/*
+		 * if (totalPages == 0) { pagingDTO.setPage(0); } else if (totalPages <=
+		 * pagingDTO.getPage()) { pagingDTO.setPage((totalPages - 1) * 13);
+		 * 
+		 * } else { pagingDTO.setPage(0); }
+		 */
+		int page = pagingDTO.getPage();
 		logger.info("totalPages : {}", totalPages);
 		logger.info("pagingDTO : {}", pagingDTO);
 		List<DocumentDTO> documentFilterList = dao.fetchFilterDocumentList(pagingDTO, idxEmployee);
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page;
 		if (documentFilterList.size() == 0) {
 			response.put("documentFilterList", "none");
 		} else {
 			response.put("documentFilterList", documentFilterList);
 		}
 		response.put("totalPages", totalPages);
+		response.put("page", page);
 		response.put("success", true);
 		return response;
 	}
