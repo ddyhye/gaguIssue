@@ -14,6 +14,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,6 +50,94 @@ class EmployeeControllerTest {
 
 		// before 와 after 가 같다는 것을 검증
 		assertEquals(before, after);
+	}
+	
+	@DisplayName("연속된 숫자 묶어주기")
+	void testGroupConsecutiveNumbers() {
+		int[] selectedTime = {9, 10};
+		int startTime = 0;
+		int endTime = 0;
+		Arrays.sort(selectedTime);
+		var rsvTime = new ArrayList<Map<String, Integer>>();
+		
+		for (int idx = 0; idx < selectedTime.length; idx++) {
+			if (selectedTime.length == 1) {
+				var timeMap = new HashMap<String, Integer>();
+				timeMap.put("startTime", selectedTime[0]);
+				timeMap.put("endTime", selectedTime[0]);
+				rsvTime.add(timeMap);
+			}
+			if (startTime == 0) {
+				startTime = selectedTime[idx];
+			} else if (selectedTime[idx - 1] == selectedTime[idx] - 1) {
+				System.out.printf("continue : %d\n", selectedTime[idx]);
+				if (idx == selectedTime.length - 1) {
+					var timeMap = new HashMap<String, Integer>();
+					timeMap.put("startTime", startTime);
+					timeMap.put("endTime", selectedTime[idx]);
+					rsvTime.add(timeMap);
+				} else {					
+					continue;
+				}
+			} else {
+				var timeMap = new HashMap<String, Integer>();
+				if (idx == selectedTime.length - 1) {
+					endTime = selectedTime[idx - 1];
+					timeMap.put("startTime", startTime);
+					timeMap.put("endTime", endTime);
+					rsvTime.add(timeMap);
+					timeMap = new HashMap<String, Integer>();
+					timeMap.put("startTime", selectedTime[idx]);
+					timeMap.put("endTime", selectedTime[idx]);
+					rsvTime.add(timeMap);
+				} else {				
+					endTime = selectedTime[idx - 1];
+					timeMap.put("startTime", startTime);
+					timeMap.put("endTime", endTime);
+					rsvTime.add(timeMap);
+					startTime = 0;
+					endTime = 0;
+				}
+			}	
+		}
+		System.out.println(rsvTime);
+	}
+	
+	@Test
+	void test() {
+        int[] selectedTime = {9, 13, 14, 16, 17, 18};
+        Arrays.sort(selectedTime); // 배열 정렬
+
+        List<Map<String, Integer>> result = new ArrayList<>(); // 결과를 담을 리스트<맵> 생성
+
+        int start = selectedTime[0]; // 시작 숫자 설정
+        int end = start; // 끝 숫자 초기화
+
+        for (int i = 1; i < selectedTime.length; i++) {
+        	System.out.printf("%d %d\n", start, end);
+            if (selectedTime[i] == end + 1) {
+                end = selectedTime[i]; // 연속된 숫자일 경우 끝 숫자 갱신
+            } else {
+                Map<String, Integer> map = new HashMap<>(); // 맵 생성
+                map.put("start", start); // 시작 숫자 저장
+                map.put("end", end); // 끝 숫자 저장
+                result.add(map); // 리스트에 맵 추가
+
+                start = selectedTime[i]; // 다음 시작 숫자 설정
+                end = start; // 다음 끝 숫자 초기화
+            }
+        }
+
+        // 마지막 구간 추가
+        Map<String, Integer> map = new HashMap<>();
+        map.put("start", start);
+        map.put("end", end);
+        result.add(map);
+
+        // 결과 출력
+        for (Map<String, Integer> interval : result) {
+            System.out.printf("start: %d, end: %d\n", interval.get("start"), interval.get("end"));
+        }		
 	}
 	
 	/*

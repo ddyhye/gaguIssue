@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-
 <mapper namespace="ko.gagu.issue.dao.ReservationDAO">
 	<!-- [jeong] 예약을 등록하기 전에 동일한 시간대에 예약이 있는지 확인한다 -->
 	<select id="isReservation">
@@ -21,12 +19,12 @@
 	
 	<!-- [jeong] 예약 정보를 등록하고 예약 번호를 rsvDTO 객체의 필드에 저장함 -->
 	<insert id="registerRsv"
-		useGeneratedKeys="true"
+		useGeneratedKeys="true" 
 		keyColumn="idx_reservation"
 		keyProperty="idxReservation"
 		parameterType="reservation">
-		INSERT INTO reservation_tb (idx_meeting_room, reservist, re_people)
-			VALUES (#{idxMeetingRoom}, #{reservist}, #{rsvPeople})
+		INSERT INTO reservation_tb (idx_meeting_room, reservist, re_people, start_datetime, end_datetime)
+		VALUES (#{idxMeetingRoom}, #{reservist}, #{rsvPeople}, #{startDatetime}, #{endDatetime})
 	</insert>
 	
 	<!-- [jeong] 유효한 예약 번호로 예약 시간을 저장함 -->
@@ -53,4 +51,41 @@
 		</foreach>
 		GROUP BY mt.idx_meeting_room
 	</select>
+	
+	<select id="getReservationList" resultType="reservation">
+		SELECT
+			REPLACE((SELECT rtt.rsv_date 
+			FROM reservation_time_tb rtt 
+			WHERE rtt.idx_reservation = rt.idx_reservation LIMIT 1), '-', '/') AS reservationDate,
+			CONCAT(DATE_FORMAT(rt.start_datetime, '%H:%i'), ' ~ ', DATE_FORMAT(rt.end_datetime, '%H:%i')) AS reservationTime,
+			mt.mr_name AS roomName,
+			rt.re_status AS rsvStatus,
+			et.emp_name AS resEmpName,
+			rt.idx_reservation AS idxReservation
+		FROM reservation_tb rt
+			JOIN employee_tb et ON et.idx_employee = #{idxEmployee}
+			JOIN meetingroom_tb mt ON mt.idx_meeting_room = rt.idx_meeting_room
+		ORDER BY rt.rsv_datetime DESC
+		LIMIT ${(page - 1) * 12}, 12		
+	</select>
+	
+	<select id="getRsvListTotalPages">
+		SELECT 
+			CEIL(COUNT(*) / 12)
+		FROM reservation_tb rt
+			JOIN employee_tb et ON et.idx_employee = #{idxEmployee}
+			JOIN meetingroom_tb mt ON mt.idx_meeting_room = rt.idx_meeting_room
+	</select>
+	
+	<select id="getFinshRsv">
+		SELECT idx_reservation FROM reservation_tb WHERE end_datetime &lt; NOW()
+	</select>
+	
+	<update id="updateReservationList">
+		UPDATE reservation_tb SET re_status = '사용완료' WHERE idx_reservation = #{idxReservation}
+	</update>
+	
+	<update id="cancelReservation">
+		UPDATE reservation_tb SET re_status = '예약취소' WHERE idx_reservation = #{idxReservation} AND reservist = #{idxEmployee}
+	</update>
 </mapper>

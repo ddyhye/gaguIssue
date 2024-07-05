@@ -49,7 +49,7 @@
                   
                   
                   <!-- do: 게시판 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='boardlist.go'/>">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/boardlist.go'/>">
                       <svg class="stroke-icon">
                         <use href="/assets/svg/icon-sprite.svg#stroke-bookmark"></use>
                       </svg>
@@ -119,7 +119,7 @@
 	                        <use href="/assets/svg/icon-sprite.svg#fill-ecommerce"></use>
 	                      </svg><span>인사 관리</span></a>
 	                    <ul class="sidebar-submenu">
-	                      <li><a href="<c:url value='employeeManage.go'/>">직원 관리</a></li>
+	                      <li><a href="<c:url value='/employeeManage.go'/>">직원 관리</a></li>
 	                      <li><a href="list-products.go">직원 근태 현황</a></li>
 	                      <li><a href="list-products.go">회사 일정 관리</a></li>
 	                    </ul>

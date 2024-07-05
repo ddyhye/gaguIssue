@@ -80,13 +80,41 @@
 	.message_icon{
 	    margin-top: 50px;
 	    margin-left: 350px;
+	    opacity: 0.5;
+	    height: 500px;
+	    width: 500px;
 	}
 	
-    #preview-container img {
-        max-width: 100px; /* 미리보기 이미지의 최대 너비 설정 */
-        margin-top: 10px;
+    #previewContainer img{
+        position: absolute; /* 절대 위치 */
+	    top: -133px;
+    	right: -176px;
+	    max-width: 200px; /* 크기 조정 */
+	    pointer-events: none; /* 클릭 이벤트를 차단 */
+	    radius: 10px;
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
-	
+	#previewContainer {
+	    position: relative;
+	    display: inline-block;
+    }
+    
+    #cancel-btn {
+        position: absolute;
+	    top: -132px;
+	    right: -175px;
+	    background-color: rgb(255 0 0);
+	    color: white;
+	    border: none;
+	    border-radius: 50%;
+	    width: 20px;
+	    height: 20px;
+	    font-size: 19px;
+	    cursor: pointer;
+	    text-align: center;
+	    line-height: 0px;
+	    padding: 0;
+  }
 
 	</style>
   </head>
@@ -190,7 +218,7 @@
 				              </div>
 				              <button class="msger-send-btn" id="send_btn" type="submit"><i class="fa fa-location-arrow"></i></button>
 				              <!-- 숨겨진 파일 입력 요소 -->
-  							  <input type="file" id="file-upload" style= "display: none;">
+  							  <input type="file" id="file-upload" name="file-send" style= "display: none;">
 				            </form>
 				            
 				          </div>
@@ -316,7 +344,18 @@
             messageSearch = document.getElementById('messageSearch').value;
             var emp_id = "${sessionScope.emp_id}";
            //	 console.log("------",emp_id);
-            loadChatRooms(emp_id, messageSearch);
+           
+           // Interval 중지
+	       if (chatIntervalId) {
+	           clearInterval(chatIntervalId);
+	       }
+           
+           loadChatRooms(emp_id, messageSearch);
+           
+           // Interval 다시 시작 (필요하다면)
+           chatIntervalId = setInterval(function() {
+               loadChatRooms(emp_id, messageSearch);
+           }, 5000);
         }
     });
 	
@@ -406,25 +445,37 @@
 		
 		var emp_id = "${sessionScope.emp_id}";
 		var content = $('#sendText').val();
-		if(content == '') return alert("빈 내용은 전송할 수 없습니다.");
+		var send_pic = document.getElementById('file-upload').files[0];
+		if(content == '' && !send_pic) {
+	        return alert("빈 내용은 전송할 수 없습니다.");
+	    }
 		if(idx === 0 || other_emp === '') return alert("시스템 에러");
-		$.ajax({
-			type: 'POST',
-			url: '/messageSend.ajax',
-			data: {
-				'idx': idx,
-				'emp_id': emp_id,
-				'other_emp' : other_emp,
-				'content': content
-			},
-			dataType: 'JSON',
-			success: function(data) {
-				console.log(data.result);
-				loadChatRooms("${sessionScope.emp_id}");
-			}, error: function(error) {
-				console.log(error);
-			}
-		});
+		
+		var formData = new FormData();
+	    formData.append('idx', idx);
+	    formData.append('emp_id', emp_id);
+	    formData.append('other_emp', other_emp);
+	    formData.append('content', content);
+
+	    if(send_pic) {
+	        formData.append('file-send', send_pic);
+	    }
+		
+	    $.ajax({
+	        type: 'POST',
+	        url: '/messageSend.ajax',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        dataType: 'JSON',
+	        success: function(data) {
+	            console.log(data.result);
+	            loadChatRooms("${sessionScope.emp_id}");
+	        },
+	        error: function(error) {
+	            console.log(error);
+	        }
+	    });
 	}
 
 
@@ -444,6 +495,18 @@
 	        console.log('Selected file:', files[0]);
 
 	        var file = files[0];
+	        var fileType = file.type;
+	        var validExtensions = ['image/png', 'image/jpeg'];
+
+	        if (!validExtensions.includes(fileType)) {
+	            alert("png, jpg 이외의 파일은 선택이 불가합니다.");
+	            fileUpload.value = ''; // 파일 입력 요소 초기화
+	            return;
+	        }
+	        
+	        
+	        
+	        
 	        var reader = new FileReader();
 
 	        reader.onload = function(e) {
@@ -452,6 +515,21 @@
 	          img.style.maxWidth = '200px'; // 미리보기 이미지 크기 조절
 	          previewContainer.innerHTML = ''; // 이전 미리보기 제거
 	          previewContainer.appendChild(img);
+	          
+	       	  // 취소 버튼 생성 및 추가
+	          var cancelBtn = document.createElement('button');
+	          cancelBtn.id = 'cancel-btn';
+	          cancelBtn.innerHTML = '&times;';
+	          previewContainer.appendChild(cancelBtn);
+
+	          // 취소 버튼 표시
+	          cancelBtn.style.display = 'block';
+	
+	          cancelBtn.addEventListener('click', function() {
+	  		    fileUpload.value = ''; // 파일 입력 요소 초기화
+	  		    previewContainer.innerHTML = ''; // 미리보기 이미지 제거
+	  	  		});
+	  	  
 	        };
 
 	        reader.readAsDataURL(file);

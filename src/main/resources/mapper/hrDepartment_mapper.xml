@@ -92,6 +92,9 @@
 	        e.emp_email,
 	        e.emp_pw,
 	        d.de_name,
+	        e.emp_status,
+	        e.emp_hire_date,
+	        e.emp_term_date,
 	        t.title_name,
 	        la.leave_days,
 	        e.emp_address,
@@ -108,6 +111,14 @@
 	        filestore_tb ft ON e.idx_employee = ft.idx_ref AND ft.idx_filetype = 1
 	    WHERE 
 	        e.emp_id = #{emp_id}
+	</select>
+	
+	<select id="isEmpty" resultType="Integer">
+		select count(*) from employee_tb where emp_id = #{param1}
+	</select>
+	
+	<select id="getAnnualLeaveInfoById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
+	
 	</select>
 
 	

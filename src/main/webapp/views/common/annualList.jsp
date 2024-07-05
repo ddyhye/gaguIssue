@@ -112,12 +112,12 @@
                       	<div class="datatable-top">
                       		<div class="datatable-dropdown">
                       			<label>
-                      				<select class="datatable-selector">
-                      					<option value="2024">2024</option>
-                      				</select>
+                      				<select id="yearSelector" class="datatable-selector">
+							        </select>
                       			</label>
                       		</div>
                       	</div>
+                      	<!--
                       	<div class="datatable-top">
                       		<div class="datatable-dropdown">
                       			<label>
@@ -137,6 +137,7 @@
                       			</label>
                       		</div>
                       	</div>
+                      	-->
                       </div>
                     </div>
                     
@@ -158,6 +159,25 @@
                           	<td class="do-table-td3">2</td>
                           	<td class="do-table-td4"><button>상세보기</button></td>
                           </tr> -->
+                          <tr>
+                          	<c:choose>
+								<c:when test="${empLhistory != 'none'}">
+									<c:set var="counter" value="1" />
+									<c:forEach items="${empLhistory}" var="item">
+										<tr>
+											<td class="do-table-td1">${counter}</td>
+											<td class="do-table-td2">${item.lu_start_date} ~ ${item.lu_end_date}</td>
+											<td class="do-table-td3">${item.lu_usage_days}</td>
+											<td class="do-table-td4"><button>상세보기</button></td>
+										</tr>
+										<c:set var="counter" value="${counter + 1}" />
+									</c:forEach>										
+								</c:when>
+								<c:otherwise>
+									<td colspan="4">연차 사용 내역이 없습니다...</td>
+								</c:otherwise>
+							</c:choose>
+						  </tr>
                         </tbody>
                       </table>
                       
@@ -242,10 +262,14 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    <!-- pagination js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+ 
   </body>
   
   
 <script>
+/*
 	listCall();
 
 	// 물품 리스트 출력
@@ -270,14 +294,6 @@
 		var content = '';
 		var no = 1;
 		
-		/*
-		<tr>
-        	<td class="do-table-td1">1</td>
-        	<td class="do-table-td2">2024-06-13 ~ 2024-06-14</td>
-        	<td class="do-table-td3">2</td>
-        	<td class="do-table-td4"><button>상세보기</button></td>
-        </tr>
-		*/
 		//lu_start_date lu_end_date
 		if (!data.empLhistory || data.empLhistory.length === 0) {
 			content += '<tr><td colspan="4">연차 사용 내역이 없습니다...</td></tr>';
@@ -298,10 +314,6 @@
 			content += '</td>';
 			content += '<td class="do-table-td4"><button>상세보기</button></td>';
 			content += '</tr>';
-			
-			/* dateStr = DateToString(item.reg_date);
-			content += '<span id="dateStr">'+dateStr+'&nbsp;</span>';
-			content += '</div></div></div>'; */
 		}
 		
 		$('.do-annual-history').append(content);
@@ -312,13 +324,27 @@
 	  	var dateStr = date.toLocaleDateString("ko-KR");
 	  	return dateStr;
 	}
+*/
+	
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	    const yearSelector = document.getElementById('yearSelector');
+	    const currentYear = new Date().getFullYear();
+	    
+	    for (let year = 1990; year <= currentYear; year++) {
+	        let option = document.createElement('option');
+	        option.value = year;
+	        option.textContent = year;
+	        yearSelector.appendChild(option);
+	    }
+	});
 	
 	
 	
 	
 	// 페이징
 	var page = 1;
-	var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+	//var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
 	var filter = 'all';
 	
 	$(document).ready(function () {
@@ -337,13 +363,85 @@
 					// 페이지 이동 번호 클릭시 이벤트 발동
                     if (page !== clickPageIdx) {
                         page = clickPageIdx;
-                        //fetchDocumentList();
+                        fetchDocumentList();
                     }
 				}
 		    });			
 		}
 		// pagination();
-	});
+	});	
+	
+	function fetchDocumentList() {
+		// 1. 날짜 필터링
+		// 시작 날짜는 undefined 로 들어오면 모든 과거 내용을 가져와야한다
+		//console.log(startDate.selectedDates[0]);
+		//console.log(endDate.selectedDates[0]);
+		
+		// 2. filter 는 문서 유형을 나눈다  
+		//console.log(filter);
+		const pagingDTO = {
+			filter : filter,
+			page : page,
+			startDate : document.getElementById('startDate').value,
+			endDate : document.getElementById('endDate').value
+		}
+		console.log(pagingDTO);
+        fetch('/common/listPaging.ajax', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pagingDTO)
+        })
+        .then(response => response.json())
+        .then(data => {
+        	console.log('Success:', data);
+        	drawList(data);
+        	totalPage = data.totalPages;
+        	pagination();
+        	// 3. 현재 페이지 번호가 몇번인지 알아야한다
+        	
+        })
+        .catch(error => {
+        	console.error('Error:', error);
+        });
+		
+		
+		
+	}	
+	
+	function drawList(data) {
+
+		$('.do-annual-history').empty();
+		
+		var content = '';
+		var no = 1;
+		
+		//lu_start_date lu_end_date
+		if (!data.empLhistory || data.empLhistory.length === 0) {
+			content += '<tr><td colspan="4">연차 사용 내역이 없습니다...</td></tr>';
+		}
+		for (item of data.empLhistory) {
+			content += '<tr>';
+			content += '<td class="do-table-td1">';
+			content += no;
+			no++;
+			content += '</td>';
+			content += '<td class="do-table-td2">';
+			content += item.lu_start_date;
+			content += ' ~ ';
+			content += item.lu_end_date;
+			content += '</td>';
+			content += '<td class="do-table-td3">';
+			content += item.lu_usage_days;
+			content += '</td>';
+			content += '<td class="do-table-td4"><button>상세보기</button></td>';
+			content += '</tr>';
+		}
+		
+		$('.do-annual-history').append(content);
+	}
+	
 	
 	function pagination() {
 		if (totalPage < page) {
@@ -377,68 +475,6 @@
 	function setFilter(category) {
 		filter = category;
 		fetchDocumentList();
-	}
-	
-	function fetchDocumentList() {
-		// 1. 날짜 필터링
-		// 시작 날짜는 undefined 로 들어오면 모든 과거 내용을 가져와야한다
-		//console.log(startDate.selectedDates[0]);
-		//console.log(endDate.selectedDates[0]);
-		
-		// 2. filter 는 문서 유형을 나눈다  
-		//console.log(filter);
-		const pagingDTO = {
-			filter : filter,
-			page : page,
-			startDate : document.getElementById('startDate').value,
-			endDate : document.getElementById('endDate').value
-		}
-		console.log(pagingDTO);
-        fetch('/common/listPaging.ajax', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(pagingDTO)
-        })
-        .then(response => response.json())
-        .then(data => {
-        	console.log('Success:', data);
-        	//drawDocumentList(data);
-        	totalPage = data.totalPages;
-        	pagination();
-        	// 3. 현재 페이지 번호가 몇번인지 알아야한다
-        	
-        })
-        .catch(error => {
-        	console.error('Error:', error);
-        });
-		
-		
-		
-	}	
-	
-	function drawDocumentList(data) {
-
-		const documentListTag = document.getElementsByTagName('tbody')[0];
-		let content = '';
-		let index = 1;
-		if (data.totalPages == 0) {
-			content += '<td colspan="7" style="text-align: center;">조회된 문서가 없습니다.</td>';
-		} else {				
-			for (row of data.documentFilterList) {
-				content += '<tr>';
-				content += '<td>' + index++ + '</td>';
-				content += '<td><a href="/document/' + row.idx_approval + '/detail.go">' + row.ap_title + '</a></td>';
-				content += '<td>' + row.dc_name + '</td>';
-				content += '<td>' + row.de_name + '</td>';
-				content += '<td>' + row.emp_name + '</td>';
-				content += '<td>' + row.final_ap_status + '</td>';
-				content += '<td>' + row.written_datetime + '</td>';	
-				content += '</tr>';
-			}
-		}
-		documentListTag.innerHTML = content;
 	}
 </script>
 

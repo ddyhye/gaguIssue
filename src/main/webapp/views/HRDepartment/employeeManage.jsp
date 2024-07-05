@@ -170,6 +170,143 @@
 		    height: auto; /* 높이 자동 조정 */
 		}
 		
+		body {
+			margin-top : 20px;
+		    font-family: Arial, sans-serif;
+		    margin: 20px;
+		    background-color: #ffffff;
+		}
+		.info-section h5 {
+		    background-color: #f5f5f5;
+		    padding: 10px;
+		    border-radius: 5px;
+		    font-size: 1.2em;
+		    margin-bottom: 10px;
+		}
+		.employee-details {
+		    width: 600px;
+		    margin: 0 auto;
+		    padding: 20px;
+		    border: 1px solid #ddd;
+		    border-radius: 8px;
+		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		    background-color : white;
+		}
+		
+		.annual-details{
+			width: 600px;
+		    margin: 0 auto;
+		    padding: 20px;
+		    border: 1px solid #ddd;
+		    border-radius: 8px;
+		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		    background-color : white;
+		}
+		
+		/* 인적 정보 섹션 스타일링 */
+		#personalInfo {
+		    border-bottom: 1px solid #ddd;
+		    margin-bottom: 20px;
+		    padding-bottom: 20px;
+		}
+		
+		#personalInfo h5 {
+		    background-color: #f5f5f5;
+		    padding: 10px;
+		    border-radius: 5px;
+		    font-size: 1.2em;
+		    margin-bottom: 10px;
+		}
+		
+		/* 인적 정보의 각 항목을 flex로 배치 */
+		#personalInfo .infoItem {
+		    display: flex;
+		    align-items: center;
+		    margin-bottom: 10px;
+		}
+		
+		/* 이름과 전화번호를 같은 줄에 배치 */
+		#personalInfo .namePhoneContainer {
+		    display: flex;
+		    justify-content: space-between;
+		    width: 100%;
+		}
+		
+		/* 텍스트 요소 스타일 */
+		#personalInfo .infoItem p {
+		    margin: 0;
+		    flex: 1;
+		    padding: 0 10px;
+		}
+		
+		/* 재직 정보 섹션 스타일링 */
+		#employmentInfo h5 {	
+		    background-color: #f5f5f5;
+		    padding: 10px;
+		    border-radius: 5px;
+		    font-size: 1.2em;
+		    margin-bottom: 10px;
+		}
+		
+		#employmentInfo .infoItem {
+		    margin-bottom: 10px;
+		}
+		
+		#employmentInfo .infoItem p {
+		    margin: 5px 0;
+		}
+		
+		/* 사원 사진 스타일링 */
+		#employeePhotoContainer {
+		    text-align: center;
+		    margin-bottom: 20px;
+		}
+		
+		#employeePhoto {
+		    width: 150px;
+		    height: 150px;
+		    object-fit: cover;
+		    border-radius: 50%;
+		    border: 2px solid #ddd;
+		    margin-bottom: 10px;
+		}
+		
+		/* 재직 기간 정보 스타일링 */
+		#employmentInfo .periodItem {
+		    display: flex;
+		    justify-content: space-between;
+		}
+		
+		#employmentInfo .periodItem input {
+		    flex: 1;
+		    margin: 0 5px;
+		}
+		
+		/* 컨테이너에 대한 스타일 설정 */
+	    .button-detail-container {
+	        display: flex;
+	        gap: 0px;
+	        margin-bottom: 0px;
+	    }
+	    
+	    
+	    .custom-btn {
+	        background-color: #ffffff; /* 버튼의 배경색을 흰색으로 설정 */
+	        color: #000000; /* 텍스트 색상은 검은색 */
+	        border: 1px solid #cccccc; /* 버튼 테두리 색상 */
+	        padding: 5px 10px; /* 버튼의 내부 여백 조정 */
+	        font-size: 12px; /* 버튼 텍스트 크기 조정 */
+	        cursor: pointer; /* 커서를 포인터로 변경 */
+	    }
+	    .custom-btn.selected {
+	        background-color: #cccccc; /* 버튼 클릭 시 회색으로 변경 */
+	        color: #000000; /* 클릭 시 텍스트 색상 유지 */
+	    }
+	    .custom-btn:focus {
+	        outline: none; /* 포커스 시 외곽선을 제거 */
+	        background-color: #cccccc; /* 포커스된 버튼의 배경색을 회색으로 변경 */
+	        color: #000000; /* 포커스된 버튼의 텍스트 색상 유지 */
+	    }
        
   </style>
   
@@ -244,6 +381,7 @@
 			                            <div class="col-6 mb-2">
 			                                <label for="emp_name">이름</label>
 			                                <input type="text" class="form-control" id="emp_name" name="emp_name" required>
+			                                
 			                            </div>
 			                            <div class="col-6 mb-2">
 			                                <label for="emp_phone_number">전화번호</label>
@@ -326,6 +464,7 @@
 			        </div>
 			    </div>
 			</div>
+			
 
 
 			<!-- Container-fluid Ends-->
@@ -387,27 +526,83 @@
 					        <button id="registerButton" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">사원등록</button>
 					        <button id="modifyButton" class="btn btn-secondary">사원수정</button>
 					    </div>
-					
+						<div class="button-detail-container">
+						    <button id="viewDetailsButton" class="btn custom-btn" style="display: none;">상세보기</button>
+						    <button id="annualLeaveButton" class="btn custom-btn" style="display: none;">연차정보</button>
+						</div>
 					    <!-- 사원 정보 표시 -->
-					    <div id="employeeDetails" class="mt-4">
+					    <div id="employeeDetails" class="employee-details">
 					        <h4>사원 상세 정보</h4>
 					        <hr>
-					        <div id="employeeInfo">
-					            <div id="employeePhotoContainer">
-						            <img id="employeePhoto" src="/img/user.jpg" alt="사원 사진">
-						        </div>
-					            <p><strong>사원번호:</strong> <span id="emp_id_detail"></span></p>
-					            <p><strong>이름:</strong> <span id="emp_name_detail"></span></p>
-					            <p><strong>전화번호:</strong> <span id="emp_phone_number_detail"></span></p>
-					            <p><strong>생년월일:</strong> <span id="emp_birth_date_detail"></span></p>
-					            <p><strong>이메일:</strong> <span id="emp_email_detail"></span></p>
-					            <p><strong>부서:</strong> <span id="de_name_detail"></span></p>
-					            <p><strong>직위:</strong> <span id="title_name_detail"></span></p>
-					            <p><strong>연차:</strong> <span id="leave_days_detail"></span></p>
-					            <p><strong>주소:</strong> <span id="address_detail"></span></p>
+					        
+					        <!-- 인적정보 섹션 -->
+					        <div class="info-section">
+					            <h5>인적정보</h5>
+					            <div class="info-content">
+					                <div class="photo-container">
+					                    <img id="employeePhoto" src="/img/user.jpg" alt="사원 사진">
+					                </div>
+					                <div class="info-details">
+					                    <div class="namePhoneContainer">
+					                        <p><strong>이름:</strong> <span id="emp_name_detail"></span></p>
+					                        <p><strong>전화번호:</strong> <span id="emp_phone_number_detail"></span></p>
+					                    </div>
+					                    <div class="info-row">
+					                        <p><strong>생년월일:</strong> <span id="emp_birth_date_detail"></span></p>
+					                        <p><strong>이메일:</strong> <span id="emp_email_detail"></span></p>
+					                    </div>
+					                    <div class="info-row">
+					                        <p><strong>거주지:</strong> <span id="address_detail"></span></p>
+					                    </div>
+					                </div>
+					            </div>
+					        </div>
+					
+					        <hr>
+					
+					        <!-- 재직정보 섹션 -->
+					        <div class="info-section">
+					            <h5>재직정보</h5>
+					            <div class="info-details">
+					                <p><strong>사원번호:</strong> <span id="emp_id_detail"></span></p>
+					                <p><strong>부서:</strong> <span id="de_name_detail"></span></p>
+					                <p><strong>직위:</strong> <span id="title_name_detail"></span></p>
+					                <p><strong>입사일자:</strong> <span id="emp_hire_date_detail"></span></p>
+					                <p><strong>퇴직일자:</strong> <span id="emp_term_date_detail"></span></p>
+					                <p><strong>재직유무:</strong> <span id="emp_status_detail"></span></p>
+					            </div>
 					        </div>
 					    </div>
+					    <div id="annualDetails" class="annual-details">
+					        <h4>사원 연차정보</h4>
+					        <hr>
+					        
+					        <!-- 인적정보 섹션 -->
+					        <div class="info-section">
+					            <h5>인적정보</h5>
+					            <div class="info-content">
+					                <div class="photo-container">
+					                    <img id="employeePhoto" src="/img/user.jpg" alt="사원 사진">
+					                </div>
+					                <div class="info-details">
+					                    <div class="namePhoneContainer">
+					                        <p><strong>이름:</strong> <span id="emp_name_detail"></span></p>
+					                        <p><strong>전화번호:</strong> <span id="emp_phone_number_detail"></span></p>
+					                    </div>
+					                    <div class="info-row">
+					                        <p><strong>생년월일:</strong> <span id="emp_birth_date_detail"></span></p>
+					                        <p><strong>이메일:</strong> <span id="emp_email_detail"></span></p>
+					                    </div>
+					                    <div class="info-row">
+					                        <p><strong>거주지:</strong> <span id="address_detail"></span></p>
+					                    </div>
+					                </div>
+					            </div>
+					        </div>
+					
+					        <hr>
 					</div>
+				</div>
 			<!-- Container-fluid 종료-->
 
           
@@ -566,6 +761,7 @@
 		    $(document).ready(function() {
     // 초기에 상세 정보 영역 숨기기
 			    $('#employeeDetails').hide();
+			    $('#annualDetails').hide();
 			
 			    // 사원 리스트 클릭 시 선택 표시 및 상세 정보 표시
 			    $('table tbody').on('click', 'tr', function() {
@@ -580,11 +776,32 @@
 			            
 			            // 상세 정보 표시
 			            displayEmployeeDetails(emp_id);
+			            
+			            $('#viewDetailsButton').show();
+			            $('#annualLeaveButton').show();
 			        } else {
 			            $(this).removeClass('selected');
 			            $('#employeeDetails').hide();
+			            $('#viewDetailsButton').hide();
+			            $('#annualLeaveButton').hide();
 			        }
 			    });
+			    $('#viewDetailsButton').click(function() {
+			    	$(this).addClass('selected');
+		            $('#annualLeaveButton').removeClass('selected');
+
+		            $('#employeeDetails').show();
+		            $('#annualDetails').hide();
+			    });
+			    
+			    $('#annualLeaveButton').click(function() {
+		            // 버튼 스타일 변경
+		            $(this).addClass('selected');
+		            $('#viewDetailsButton').removeClass('selected');
+
+		            $('#employeeDetails').hide();
+		            $('#annualDetails').show();
+		        });
 			
 			    function displayEmployeeDetails(emp_id) {
 			        $.ajax({
@@ -605,6 +822,9 @@
 			                $('#title_name_detail').text(data.title_name);
 			                $('#leave_days_detail').text(data.leave_days);
 			                $('#address_detail').text(data.emp_address); 
+			                $('#emp_hire_date_detail').text(data.emp_hire_date);
+			                $('#emp_term_date_detail').text(data.emp_term_date); 
+			                $('#emp_status_detail').text(data.emp_status); 
 			                
 			                if (data.photo_url) {
 			                    $('#employeePhoto').attr('src', '/photo/'+data.photo_url);

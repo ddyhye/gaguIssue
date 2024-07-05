@@ -65,6 +65,8 @@ public class MainController {
 		return mainService.dashboard(session, rAttr);
 	}
 	
+	
+	
 	// [do] 대시보드 - 오늘의 출근 히스토리
 	@PostMapping(value="/gotoWorkTimeCheck.ajax")
 	@ResponseBody
@@ -119,18 +121,24 @@ public class MainController {
 	// 연차 리스트 필터링
 	@PostMapping(value = "/common/listPaging.ajax")
 	@ResponseBody	
-	public Map<String, Object> documentListDo(@RequestBody PagingDTO pagingDTO
+	public Map<String, Object> listPaging(@RequestBody PagingDTO pagingDTO
 			,HttpSession session) {
 		logger.info("pagingDTO : {}", pagingDTO);
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		
-		return null;		
-		//return ds.fetchFilterDocumentList(pagingDTO, idxEmployee);		
+		return mainService.paging(pagingDTO, idxEmployee);			
 	}
 	
 	
 	
 	// [do] 알람
+	@PostMapping(value="/alarmCnt.ajax")
+	@ResponseBody
+	public Map<String, Object> alarmCntAjax(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return mainService.alarmCntAjax(session, map);
+	}
 	@PostMapping(value="/alarmList.ajax")
 	@ResponseBody
 	public Map<String, Object> alarmListAjax(HttpSession session){

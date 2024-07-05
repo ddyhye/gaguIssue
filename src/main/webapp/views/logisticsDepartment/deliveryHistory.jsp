@@ -175,6 +175,14 @@
                           </tr>
                         </tbody>
                       </table>
+                      
+                      <!-- 페이징 -->
+                      <div class="d-flex justify-content-center">								
+						  <nav aria-label="Page navigation">
+						      <ul class="pagination" id="pagination"></ul>
+						  </nav>
+					  </div>
+					  
                     </div>
                   </div>
                 </div>
@@ -249,6 +257,10 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    
+    <!-- pagination js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+ 
   </body>
   
   

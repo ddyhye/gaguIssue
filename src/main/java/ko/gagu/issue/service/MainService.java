@@ -2,6 +2,7 @@ package ko.gagu.issue.service;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +26,11 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.AlarmDTO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
+import ko.gagu.issue.dto.DocumentDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
 import ko.gagu.issue.dto.Leave_usage_tbDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.dto.product_tbDTO;
 
 @Service
@@ -51,6 +54,18 @@ public class MainService {
 		// 로그인한 직원 정보 불러오기
 		String empID = (String) session.getAttribute("emp_id");
 		EmployeeDTO emp = mainDao.getEmpData(empID);
+		
+		
+		
+		
+		// 기안서
+		// 내가 올린 것(승인대기중)
+		int myDocument = mainDao.getMyDocumentCnt(emp.getIdx_employee());
+		mav.addObject("myDocument", myDocument);
+		// 내가 승인해야 하는 것(승인대기중)
+		int myApprove = mainDao.getMyApproveCnt(emp.getIdx_employee());
+		mav.addObject("myApprove", myApprove);
+		
 		
 		
 		
@@ -154,6 +169,13 @@ public class MainService {
 		mav.addObject("leave_days", empLdto.getLeave_days());
 		mav.addObject("usage_days", empLdto.getUsage_days());
 		
+		// 리스트
+		List<Leave_usage_tbDTO> empLhistory = mainDao.getempLeaveHistory2(emp.getIdx_employee());
+		int totalPages = mainDao.getFilterTotalPages2(emp.getIdx_employee());
+		
+		mav.addObject("empLhistory", empLhistory);
+		mav.addObject("totalPages", totalPages);
+		
 		mav.setViewName("common/annualList");
 		
 		return mav;
@@ -164,6 +186,29 @@ public class MainService {
 		
 		List<Leave_usage_tbDTO> empLhistory = mainDao.getempLeaveHistory(emp.getIdx_employee());
 		map.put("empLhistory", empLhistory);
+		
+		return map;
+	}
+	// 연차 페이징
+	public Map<String, Object> paging(PagingDTO paging, int idxEmployee) {
+		Map<String, Object> map = new HashMap<>();
+		
+		int totalPages = mainDao.getFilterTotalPages(paging, idxEmployee);
+		
+		// 전체 페이지 수와 현재 페이지 수 지정
+		if (totalPages == 0) {
+			paging.setPage(0);
+		} else if (totalPages <= paging.getPage()) {
+			paging.setPage((totalPages - 1) * 13);
+		} else {			
+			paging.setPage(paging.getPage());
+		}
+		
+		List<Leave_usage_tbDTO> empLhistory = mainDao.fetchFilterList(paging, idxEmployee);
+		map.put("empLhistory", empLhistory);
+		
+		map.put("totalPages", totalPages);
+		map.put("success", true);
 		
 		return map;
 	}
@@ -229,6 +274,14 @@ public class MainService {
 	
 	
 	// 알림
+	public Map<String, Object> alarmCntAjax(HttpSession session, Map<String, Object> map) {
+		EmployeeDTO dto = (EmployeeDTO) session.getAttribute("loginInfo");
+		
+		int cnt = mainDao.alarmCnt(dto.getIdx_employee());
+		map.put("alarmCnt", cnt);
+		
+		return map;
+	}
 	public Map<String, Object> alarmListAjax(HttpSession session, Map<String, Object> map) {
 		EmployeeDTO dto = (EmployeeDTO) session.getAttribute("loginInfo");
 		
@@ -243,5 +296,6 @@ public class MainService {
 		
 		return map;
 	}
+	
 
 }

@@ -61,7 +61,7 @@
                   <div class="notification-box" id="do-alarmIcon">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#notification"></use>
-                    </svg><span class="badge rounded-pill badge-primary do-alarmCnt">4 </span>
+                    </svg><span class="badge rounded-pill badge-primary" id="do-alarmCnt">4 </span>
                   </div>
                   <div class="onhover-show-div notification-dropdown do-overflow">
                     <h5 class="f-18 f-w-600 mb-0 dropdown-title">Notifications</h5>
@@ -219,8 +219,8 @@
              
              function loadChatRooms(emp_id, search) {
             	 console.log("대화방 불러오기 아작스 요청");
-            	 console.log(search);
-            	 console.log(emp_id);
+            //	 console.log(search);
+            //	 console.log(emp_id);
                  $.ajax({
                      url: '/getChatRooms',
                      method: 'POST',
@@ -250,6 +250,7 @@
             	// console.log(data);
             	var emp_id = "${sessionScope.emp_id}";
             	// console.log(emp_id);
+            	console.log(data.messageSearch);
          		$('.chats-user').empty();
          		var content = '';
          		if (!data.roomList || data.roomList.length === 0) {
@@ -257,7 +258,7 @@
          		}
          		
          		for (item of data.roomList) {
-         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\'); selectChatRoom(this);">'; 
+         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\', \'' + data.messageSearch + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
          			if(item.file_name != null){
@@ -296,7 +297,7 @@
              var chatIntervalId; // interval ID를 저장할 전역 변수
 
              
-             function viewRoomContent(idx, other_emp, emp_id){
+             function viewRoomContent(idx, other_emp, emp_id, search){
             	
             	// 기존 interval이 있으면 취소
            	    if (chatIntervalId) {
@@ -316,6 +317,7 @@
          		// 5초마다 새 메시지 로드
          	    chatIntervalId = setInterval(function() {
          	    	messageCall(idx, emp_id , other_emp);
+         	    	loadChatRooms(emp_id, search)
          	    }, 5000);
          	}
              
@@ -363,7 +365,6 @@
 	    			content +=		'</div>';
 	    			content +=		'</div>';
 	    			content +=		'<div class="d-flex gap-2">';
-	    			content +=		'<div class="contact-edit chat-alert"><i class="icon-info-alt"></i></div>';
 	    			content +=		'<div class="contact-edit chat-alert">';
 	    			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
 	    			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
@@ -518,7 +519,46 @@
          	
          	
          	// [do] 알림
-         	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지?
+         	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지? ==> 비동기
+         	// do-alarmCnt 이것의 값을 바꿔줘야함.
+         	alarmCnt();
+         	// 알람의 개수를 가져오는 함수
+         	function alarmCnt() {
+         		fetch('/alarmCnt.ajax', {
+         			method: 'POST',
+         			headers: {
+         				'Content-Type': 'application/json'
+         			},
+         			body: JSON.stringify({})
+         		})
+         		.then(response => response.json())
+         		.then(data => {
+         			console.log('알림 개수 업데이트');
+         			if (data.alarmCnt > 0) {
+						document.getElementById('do-alarmCnt').innerText = data.alarmCnt;
+					} else {
+						const alarmIcon = document.getElementById('do-alarmIcon');
+						
+					    // 모든 자식 요소 제거
+					    while (alarmIcon.firstChild) {
+					        alarmIcon.removeChild(alarmIcon.firstChild);
+					    }
+		        		
+		        		var content = '';
+		        		
+	        			content += '<svg>';
+	        			content += '<use href="/assets/svg/icon-sprite.svg#notification"></use>';
+	        			content += '</svg>';
+	        			content += '</div>';
+		        		
+	        			// 새로운 내용 추가
+	        			const fragment = document.createRange().createContextualFragment(content);
+	        		    alarmIcon.appendChild(fragment);
+					}
+         		})
+         		.catch(error => {consoleerror('Fetch error:', error);})
+         	}
+         	
          	document.getElementById('do-alarmIcon').addEventListener('mouseover', () => {
          		fetch('/alarmList.ajax', {
          			method: 'POST',
@@ -592,6 +632,9 @@
 		                    const idxAlarm = this.closest('li').querySelector('.do-alarm-idx').value;
 		                    const idxEmployee = this.closest('li').querySelector('.do-alarm-empIdx').value;
 		                    readRequest(idxAlarm, idxEmployee);
+		                    
+		                    // 알림 삭제했으면 개수도 수정하자!
+		                    alarmCnt();
 		                });
 		            }
 			    });

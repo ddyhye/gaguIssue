@@ -154,6 +154,7 @@
               
               <div class="col-xl-4 col-md-5 proorder-xl-3 proorder-md-3"> 
                 <div class="card shifts-char-box">
+                  <a href="<c:url value='/document/list.go'/>">
                   <div class="card-header card-no-border pb-0">
                     <div class="header-top"> 
                       <div class="do-flexdirection-row">
@@ -164,13 +165,14 @@
                   <div class="card-body do-docBody">
                   	<div class="do-docBody-left">
                   		<h4>결재 대기</h4>
-                  		<div>0</div>
+                  		<div>${myDocument}</div>
                   	</div>
                   	<div class="do-docBody-right">
-                  		<h4>수신함</h4>
-                  		<div>1</div>
+                  		<h4>승인 대기</h4>
+                  		<div>${myApprove}</div>
                   	</div>
                   </div>
+                  </a>
                 </div>
               </div>
               
@@ -232,6 +234,7 @@
               </div>
               
               
+              <!-- 달력 api -->
               <div class="col-xxl-7 col-xl-12 box-col-12 proorder-xl-8 proorder-md-9"> 
                 <div class="card">
                   <div class="card-header card-no-border pb-0">
@@ -249,6 +252,9 @@
                   </div>
                 </div>
               </div>
+              
+              
+              <!-- 회의실 예약 -->
               <div class="col-xxl-5 col-xl-7 box-col-7 proorder-xl-9 proorder-md-10"> 
                 <div class="card">
                   <div class="card-header card-no-border pb-0">
@@ -262,6 +268,27 @@
                   </div>
                 </div>
               </div>
+              
+              
+              <!-- 매출 그래프 -->
+              <div class="col-xl-5 col-md-7 proorder-xl-4 box-col-5 proorder-md-6"> 
+                <div class="card">
+                  <div class="card-header card-no-border pb-0">
+                    <div class="header-top">
+                      <h4>Customer Transaction</h4>
+                      <div class="dropdown icon-dropdown">
+                        <button class="btn dropdown-toggle" id="userdropdown11" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-more-alt"></i></button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown11"><a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body pb-0">
+                    <div id="customer-transaction"></div>
+                  </div>
+                </div>
+              </div>
+              
+              
             </div>
           </div>
           <!-- Container-fluid Ends-->
