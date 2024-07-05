@@ -1,5 +1,6 @@
 package ko.gagu.issue.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,42 +46,32 @@ public class EmployeeService {
 	}
 	
 	public void getEmployeeAttendance(Map<String, Object> response, Integer idx_employee, Model model) {
-		EmployeeDTO employeeDTO = new EmployeeDTO();
-		model.addAttribute(employeeDTO);
-		logger.info("employeeDTO : {}",employeeDTO);
+//		logger.info("idx_employee : {}",idx_employee);;
+//		int idx_title=dao.getEmployeeTitle(idx_employee);
+//		model.addAttribute("title",idx_title);
+//		logger.info("title : {}",idx_title);
+		
 		List<EmployeeDTO> events=dao.getEmployeeAttendance(idx_employee);
 		logger.info("events: {}",events);
 		
 		response.put("employeeAttendance", events);
 	}
-
-	public void getAdminStatus(Map<String, Object> response, int idx_employee) {
-		// [il] 부장인지 아닌지 확인하는 로직
-		logger.info("idx_employee : {}",idx_employee);
-		int isAdmin=dao.isAdmin(idx_employee);
-		if(isAdmin==1) {
-			response.put("isAdmin", isAdmin);	
-			logger.info("isAdmin : {}",isAdmin);
-		}else if(isAdmin==0){
-			response.put("isAdmin", isAdmin);
-			logger.info("isAdmin : {}",isAdmin);
-		}
-	}
-
-	
-	
-	
-//	public void getAllCompanyEvents(Map<String, Object> response, Model model) {
-//		// [il] 회사일정 보여주기
-//		HRDepartmentDTO hrDepartmentDTO = new HRDepartmentDTO();
-//		model.addAttribute("company",hrDepartmentDTO);
-//		logger.info("hrDepartmentDTO : {}",hrDepartmentDTO);
-//		
-//		List<HRDepartmentDTO>eventss=dao.getAllCompanyEvents();
-//		response.put("companyEvents", eventss);
 //
-//		
+//	public void getAdminStatus(Map<String, Object> response, int idx_employee) {
+//		// [il] 부장인지 아닌지 확인하는 로직
+//		logger.info("idx_employee : {}",idx_employee);
+//		int isAdmin=dao.isAdmin(idx_employee);
+//		if(isAdmin==1) {
+//			response.put("isAdmin", isAdmin);	
+//			logger.info("isAdmin : {}",isAdmin);
+//		}else if(isAdmin==0){
+//			response.put("isAdmin", isAdmin);
+//			logger.info("isAdmin : {}",isAdmin);
+//		}
 //	}
+
+	
+
 	
 
 	public void employeeAddEvent(EmployeeDTO employee) {
@@ -116,6 +107,7 @@ public class EmployeeService {
 			session.setAttribute("emp_id", emp_id);
 			session.setAttribute("idxEmployee", dto.getIdx_employee());
 			session.setAttribute("employeeDTO", dto);
+			session.setAttribute("idxTitle", dto.getIdx_title());
 			rAttr.addFlashAttribute("msg","환영합니다.");
 		}else {
 			mav.setViewName("redirect:/login.go");
@@ -152,6 +144,24 @@ public class EmployeeService {
 	public String findpw(String emp_id, String emp_name, String birthDate) {
 		return dao.findPW(emp_id, emp_name, birthDate);
 	}
+
+	public Map<String, Object> employeeGetIdxTitle(Integer idx_employee) {
+		Map<String, Object> response = new HashMap<>();
+	    
+	    int idx_title = dao.getEmployeeTitle(idx_employee);
+	    response.put("title", idx_title);
+	    logger.info("title : {}", idx_title);
+	    
+	    return response; // 데이터를 담은 Map을 반환
+	}
+
+
+	public List<EmployeeDTO> departmentAttendanceList(int idx_employee, int year, int month) {
+		// [il] 부서번호 가져오기
+		int idx_department = dao.getDepartmentIdxByEmployee(idx_employee);
+		return dao.getAttendanceByDepartment(idx_department,year,month);
+	}
+
 
 	
 	

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
@@ -44,5 +45,12 @@ public interface EmployeeDAO {
 
 	int isAdmin(int idx_employee);
 
+	int getEmployeeTitle(Integer idx_employee);
+
+	int getDepartmentIdxByEmployee(int idx_employee);
+
+	 List<EmployeeDTO> getAttendanceByDepartment(@Param("idx_department") int idx_department,
+             @Param("year") int year,
+             @Param("month") int month);
 
 }

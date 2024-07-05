@@ -38,6 +38,39 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    <!-- [il] 페이징 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+    
+    
+    <style>
+        .scrollable-table {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            text-align: center;
+            padding: 5px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .filter {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+    
+    
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -82,26 +115,97 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
           <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
+		  <h2 style="text-align: center;">근태 관리</h2>
+		    <div class="filter">
+		        <form id="filterForm">
+		            <label for="year">연도:</label>
+		            <select id="year" name="year">
+		                <c:forEach var="i" begin="2020" end="2024">
+		                    <option value="${i}" <c:if test="${param.year == i}">selected</c:if>>${i}</option>
+		                </c:forEach>
+		            </select>
+		
+		            <label for="month">월:</label>
+		            <select id="month" name="month">
+		                <c:forEach var="i" begin="1" end="12">
+		                    <option value="${i}" <c:if test="${param.month == i}">selected</c:if>>${i}</option>
+		                </c:forEach>
+		            </select>
+		
+		            <button type="button">필터 적용</button>
+		        </form>
+		    </div>
+		
+		    <div class="scrollable-table">
+		        <table id="attendanceTable">
+		            <thead>
+		                <tr>
+		                    <th>No</th>
+		                    <th>사원코드</th>
+		                    <th>사원명</th>
+		                    <th>부서명</th>
+		                    <c:forEach var="i" begin="1" end="31">
+		                        <th>${i}</th>
+		                    </c:forEach>
+		                </tr>
+		            </thead>
+		            <tbody id="attendanceBody">
+		                <!-- AJAX로 데이터가 불러와집니다 -->
+		            </tbody>
+		        </table>
+		    </div>
+
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+        
       </div>
     </div>
+    <script>
+        function fetchAttendance() {
+            var year = $('#year').val();
+            var month = $('#month').val();
+            $.ajax({
+                type: 'POST',
+                url: './departmentAttendanceList.ajax',
+                data: {
+                    'year': year,
+                    'month': month
+                },
+                dataType: 'json',
+                success: function(data) {
+                    drawTable(data.attendanceList);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function drawTable(list) {
+            var content = '';
+            for (var i = 0; i < list.length; i++) {
+                content += '<tr>';
+                content += '<td>' + (i + 1) + '</td>';
+                content += '<td>' + list[i].employeeCode + '</td>';
+                content += '<td>' + list[i].employeeName + '</td>';
+                content += '<td>' + list[i].departmentName + '</td>';
+                for (var j = 1; j <= 31; j++) {
+                    var dayStatus = list[i]['day' + j] || '';
+                    content += '<td>' + dayStatus + '</td>';
+                }
+                content += '</tr>';
+            }
+            $('#attendanceBody').html(content);
+        }
+
+        $(document).ready(function() {
+            $('#filterForm button').click(function() {
+                fetchAttendance();
+            });
+        });
+    </script>
+    
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
