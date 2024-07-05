@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
+import ko.gagu.issue.dto.PagingDTO;
+import ko.gagu.issue.dto.SalesDataDTO;
 
 @Mapper
 public interface EmployeeDAO {
@@ -44,5 +46,8 @@ public interface EmployeeDAO {
 
 	int isAdmin(int idx_employee);
 
+	List<SalesDataDTO> getSalesHistory(PagingDTO pagingDTO);
+
+	int getSalesHistoryTotalPages(PagingDTO pagingDTO);
 
 }

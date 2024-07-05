@@ -34,6 +34,8 @@
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <!-- Bootstrap css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
+<link href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css' rel='stylesheet'>
+<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'></script>
 <!-- App css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
 <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">

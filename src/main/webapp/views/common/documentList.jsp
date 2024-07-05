@@ -189,7 +189,7 @@
 								<div class="d-block">								
 									<button class="btn btn-primary btn-xs" style="width: 60px; margin-right: 10px;" onClick="dateClear()">날짜<br/>초기화</button>
 								</div>
-								<input class="form-control flatpickr-input" id="startDate" type="text" value="날짜선택" onChange="startDateOnChanage()" readonly="readonly">
+								<input class="form-control flatpickr-input" id="startDate" type="text" placeholder="날짜 선택" onChange="startDateOnChanage()" readonly="readonly">
 								<h4>~</h4>
 								<input class="form-control flatpickr-input" id="endDate" type="text" onchange="endDateOnChanage()" readonly="readonly">
 							</div>
@@ -380,21 +380,19 @@
         
 		var startflatpickr = flatpickr("#startDate", {
 			locale: "ko",
-			maxDate: "today"
-/* 	        onChange: function(selectedDates, dateStr, instance) {
-	        	fetchDocumentList();
-	        	console.log('startflatpickr');
-	        } */			
+			maxDate: "today",
+			onChange: function(selectedDates, dateStr, instance) {
+				endflatpickr.set('minDate', dateStr);
+			}			
 		});
 		
 		var endflatpickr = flatpickr("#endDate", {
 			locale: "ko",
 			maxDate: "today",
-			defaultDate: "today"
-/* 	        onChange: function(selectedDates, dateStr, instance) {
-	        	fetchDocumentList();
-	        	console.log('endflatpickr');
-	        } */
+			defaultDate: "today",
+			onChange: function(selectedDates, dateStr, instance) {
+				startflatpickr.set('maxDate', dateStr);
+			}
 		});	
 		
 		var flag = false;
@@ -418,7 +416,7 @@
 	    	flag = true;
 	    	startflatpickr.clear();
 	    	endflatpickr.clear();
-	    	document.getElementById('startDate').value = '날짜선택';
+	    	document.getElementById('startDate').placeholder = '날짜 선택';
 	    	endflatpickr.setDate('today', true);
 	    	fetchDocumentList();
 	    	flag = false;

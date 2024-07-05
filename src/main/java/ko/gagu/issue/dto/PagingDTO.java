@@ -10,8 +10,21 @@ public class PagingDTO {
 	private String startDate;
 	private String endDate;
 	private String searchKeyword;
+	private String searchOption;
+	private String sortOption;
 	
-	
+	public String getSearchOption() {
+		return searchOption;
+	}
+	public void setSearchOption(String searchOption) {
+		this.searchOption = searchOption;
+	}
+	public String getSortOption() {
+		return sortOption;
+	}
+	public void setSortOption(String sortOption) {
+		this.sortOption = sortOption;
+	}
 	public String getFilter() {
 		return filter;
 	}

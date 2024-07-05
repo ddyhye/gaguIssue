@@ -1,5 +1,8 @@
 package ko.gagu.issue.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ko.gagu.issue.dao.EmployeeDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
+import ko.gagu.issue.dto.PagingDTO;
 
 @Service
 public class EmployeeService {
@@ -153,7 +157,45 @@ public class EmployeeService {
 		return dao.findPW(emp_id, emp_name, birthDate);
 	}
 
-	
+	/* [jeong] 매출 관리 페이지로 이동 */
+	public ModelAndView getSalesHistory(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("common/salesHistory");
+        // 현재 날짜 가져오기
+        LocalDate currentDate = LocalDate.now();
+        
+        // 원하는 날짜 형식 지정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        // 현재 날짜를 지정한 형식으로 포맷팅
+        String now = currentDate.format(formatter);
+		PagingDTO pagingDTO = new PagingDTO();
+		pagingDTO.setPage(1);
+		pagingDTO.setEndDate(now);
+		var salesDataList = dao.getSalesHistory(pagingDTO);
+		int totalPages = dao.getSalesHistoryTotalPages(pagingDTO);
+		
+		mav.addObject("salesDataList", salesDataList);
+		mav.addObject("success", totalPages > 0 ? true : false);
+		mav.addObject("totalPages", totalPages);
+		return mav;
+	}
+
+	/* [jeong] 매출 관리 페이징 처리후 매출 데이터를 응답 */
+	public Map<String, Object> getPaingSalesHistory(int idxEmployee, PagingDTO pagingDTO) {
+		var response = new HashMap<String, Object>();
+		int totalPages = dao.getSalesHistoryTotalPages(pagingDTO);
+		int page = pagingDTO.getPage();
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page;
+		pagingDTO.setPage(page);
+		
+		var salesDataList = dao.getSalesHistory(pagingDTO);
+		
+		response.put("salesDataList", salesDataList);
+		response.put("success", totalPages > 0 ? true : false);
+		response.put("totalPages", totalPages);
+		response.put("page", page);
+		return response;
+	}	
 	
 
 	
