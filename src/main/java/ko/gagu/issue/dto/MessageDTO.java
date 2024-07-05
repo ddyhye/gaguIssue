@@ -26,6 +26,8 @@ public class MessageDTO {
 	private int idx_emp;
 	private int sender_del;
 	private int reciver_del;
+	private String new_picname;
+	private String origin_name;
 	
 	private String de_name;
 	
@@ -148,6 +150,18 @@ public class MessageDTO {
 	}
 	public void setMsg_content(String msg_content) {
 		this.msg_content = msg_content;
+	}
+	public String getNew_picname() {
+		return new_picname;
+	}
+	public void setNew_picname(String new_picname) {
+		this.new_picname = new_picname;
+	}
+	public String getOrigin_name() {
+		return origin_name;
+	}
+	public void setOrigin_name(String origin_name) {
+		this.origin_name = origin_name;
 	}
 	
 	

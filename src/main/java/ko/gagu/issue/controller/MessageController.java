@@ -71,7 +71,7 @@ public class MessageController {
 				@RequestParam("idx") int idx,
 			    @RequestParam("emp_id") String emp_id,
 			    @RequestParam("other_emp") int other_emp,
-			    @RequestParam("content") String content,
+			    @RequestParam(value= "content", required = false, defaultValue = "") String content,
 			    @RequestParam(value = "file-send", required = false) MultipartFile file){
 			
 			logger.info("{}번 방, {}가 쪽지 전송", idx, emp_id);

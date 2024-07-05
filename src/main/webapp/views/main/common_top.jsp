@@ -251,6 +251,7 @@
             	var emp_id = "${sessionScope.emp_id}";
             	// console.log(emp_id);
             	console.log(data.messageSearch);
+            	console.log("원래 사진 이름: ",data.roomList.origin_name);
          		$('.chats-user').empty();
          		var content = '';
          		if (!data.roomList || data.roomList.length === 0) {
@@ -270,7 +271,11 @@
          			content +=		'</div>';
          			content +=		'<div>';
          			content +=		'<span>'+item.name+'</span>';
-         			content +=		'<p>'+item.msg_content+'</p>';
+         			if(item.origin_name){
+         			content +=		'<p>(사진)</p>';
+         			}else{
+         			content +=		'<p>'+item.msg_content+'</p>';         				
+         			}
          			content +=		'</div>';
          			content +=		'</div>';
          			content +=		'<div>';
@@ -414,6 +419,8 @@
 			    var chatContainer = $('.msger-chat');
 			    var isScrolledToBottom = chatContainer.scrollTop() + chatContainer.innerHeight() >= chatContainer[0].scrollHeight;
 			    
+			    
+			    
 			    chatContainer.empty();
 			    
 			    var content = '';
@@ -440,7 +447,12 @@
 			            content += '<div class="msg-info-name">' + item.other_name + '</div>';
 			            content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
 			            content += '</div>';
+			            if (item.new_picname != null){
+			            content += '<img class="photo" src="/file/message_picture/'+item.new_picname+'" alt="'+item.new_picname+'번 쪽지 사진">';
+			            content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
+			            }else{			            	
 			            content += '<div class="msg-text">' + item.msg_content + '</div>';
+			            }
 			            content += '</div>';
 			        }
 			        else if (idx_emp === item.sender) {
@@ -452,8 +464,13 @@
 			                content += '<div class="msg-info">';
 			                content += '<div class="msg-info-name">나</div>';			                
 			                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
-			                content += '</div>';			                
-			                content += '<div class="msg-text">' + item.msg_content + '</div>';
+			                content += '</div>';
+			                if (item.new_picname != null){
+				            content += '<img class="photo" src="/file/message_picture/'+item.new_picname+'" alt="'+item.new_picname+'번 쪽지 사진">';
+				            content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
+				            }else{			            	
+				            content += '<div class="msg-text">' + item.msg_content + '</div>';
+				            }
 			                content += '</div>';
 			            }
 			        }
@@ -461,7 +478,9 @@
 			        content += '</div>';
 			    }
 			    
+			    console.log('Before appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
 			    chatContainer.append(content);
+			    console.log('After appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
 			    
 			    // 새로운 메시지가 있을 때만 스크롤을 아래로 내림
 			    if (isScrolledToBottom) {
