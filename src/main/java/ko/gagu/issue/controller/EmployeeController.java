@@ -1,8 +1,14 @@
 package ko.gagu.issue.controller;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -51,50 +57,6 @@ public class EmployeeController {
 		return response;
 	}
 	
-
-	// [il] 개인 근태관리
-	@GetMapping(value="/employee/attendance.go")
-	public String employeeAttendance() {
-		logger.info("attendance calendar in");
-		return "employee/attendance";
-	}
-	
-	@GetMapping(value="/employee/getAttendance.ajax")
-	@ResponseBody
-	public Map<String, Object> getEmployeeAttendance(Integer idx_employee,Model model) {
-		logger.info("getEmployeeAttendance in");
-		logger.info("idx_employee : {}",idx_employee);
-		Map<String, Object> response = new HashMap<String, Object>();
-		employeeService.getEmployeeAttendance(response,idx_employee,model);
-		logger.info("response : {}",response);
-		return response;
-	}
-	
-	// [il] 부장인지 아닌지를 가져오는 메서드
-	@PostMapping(value="/emoloyee/getAdminStatus.ajax")
-	@ResponseBody
-	public Map<String, Object> getAdminStatus(int idx_employee){
-		logger.info("getAdminStatus in");
-		Map<String, Object>response = new HashMap<String, Object>();
-		employeeService.getAdminStatus(response,idx_employee);
-		return response;
-	}
-	
-	@GetMapping(value="/employee/departmentAttendance.go")
-	public String departmentAttendance() {
-		return "employee/attendanceDepartment";
-	}
-	
-
-//	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
-//	@ResponseBody
-//	public Map<String, Object> getAllCompanyEvents(Model model){
-//		logger.info("getAllCompanyEvents 진입");
-//		Map<String, Object>response=new HashMap<String, Object>();
-//		employeeService.getAllCompanyEvents(response,model);
-//		logger.info("response : {}",response);
-//		return response;
-//	}
 	
 	@PostMapping(value="/employee/addEvent.ajax")
 	@ResponseBody
@@ -158,6 +120,68 @@ public class EmployeeController {
 	    }
 	}
 	
+		// [il] 개인 근태관리
+		@GetMapping(value="/employee/attendance.go")
+		public String employeeAttendance() {
+			logger.info("attendance calendar in");
+			return "employee/attendance";
+		}
+		
+		@GetMapping(value="/employee/getAttendance.ajax")
+		@ResponseBody
+		public Map<String, Object> getEmployeeAttendance(Integer idx_employee,Model model) {
+			logger.info("getEmployeeAttendance in");
+			logger.info("idx_employee : {}",idx_employee);
+			Map<String, Object> response = new HashMap<String, Object>();
+			employeeService.getEmployeeAttendance(response,idx_employee,model);
+			logger.info("response : {}",response);
+			return response;
+		}
+		
+		@GetMapping(value="/employee/getIdxTitle.ajax")
+		@ResponseBody
+		public Map<String, Object>employeeGetIdxTitle(Integer idx_employee){
+			logger.info("idx_employee: {}", idx_employee);
+		    
+		    Map<String, Object> response = employeeService.employeeGetIdxTitle(idx_employee);
+		    logger.info("response : {}", response);
+		    
+		    return response; 
+		}
+		
+		
+		@GetMapping(value="/employee/departmentAttendance.go")
+		public String departmentAttendance() {
+			return "employee/attendanceDepartment";
+		}
+		
+		@PostMapping(value="/employee/departmentAttendanceList.ajax")
+		@ResponseBody
+		public Map<String, Object>attendanceDepartment(HttpSession session,String date,String page, String cnt){
+			
+		    logger.info("페이지 당 보여줄 갯수 : "+cnt);
+			logger.info("요청 페이지 : " +page);
+			int idx_employee= (int) session.getAttribute("idxEmployee");
+			logger.info("idxEmployee : {}",idx_employee);
+			
+			java.util.Date selectedDate=null;
+			
+			try {
+				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+				selectedDate=dateFormat.parse(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			
+			int currentPage = Integer.parseInt(page);
+			int pagePerCnt = Integer.parseInt(cnt);
+			
+			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,selectedDate,currentPage,pagePerCnt);
+			logger.info("map : {}",map);
+			
+			return map;
+		}
 	
 
 	

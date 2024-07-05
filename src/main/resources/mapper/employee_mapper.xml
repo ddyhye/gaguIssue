@@ -10,17 +10,65 @@
 	</select>
 	
 	<select id="getEmployeeAttendance" resultType="employee">
-		SELECT * FROM attendance_history_tb aht WHERE idx_employee=#{param1}
+		SELECT 
+	        ah.idx_attendance,
+	        ah.idx_employee,
+	        ah.ah_date,
+	        ah.ah_check_in,
+	        ah.ah_check_out,
+	        ah.ah_status,
+	        et.idx_title
+	    FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    WHERE ah.idx_employee = #{param1}
+	</select>
+	
+	<select id="getEmployeeTitle" resultType="int">
+		SELECT et.idx_title FROM employee_tb et 
+		WHERE et.idx_employee =#{param1}
 	</select>
 	
 	<select id="getAllCompanyEvents" resultType="HRDept">
 		SELECT * FROM company_calendar_tb WHERE cc_status='SHOW'
 	</select>
 	
-	<select id="isAdmin" resultType="int">
-		SELECT COUNT(*) FROM emloyee_tb
-		WHERE idx_employee=#{param1} AND idx_title IN (4, 3, 2, 1);
+	<select id="getDepartmentIdxByEmployee" resultType="int">
+		SELECT idx_department FROM employee_tb WHERE idx_employee=#{param1}
 	</select>
+	
+	<select id="getAttendanceByDepartment" resultType="employee">
+		SELECT
+			ah.idx_attendance,
+	        ah.idx_employee,
+	        ah.ah_date,
+	        ah.ah_check_in,
+	        ah.ah_check_out,
+	        ah.ah_status,
+	        et.idx_department,
+	        et.idx_employee
+	    FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    WHERE idx_department = #{param1}
+	</select>
+	
+	<select id="departmentAttendanceList" resultType="employee">
+		SELECT
+			ah.idx_attendance,
+	        ah.idx_employee,
+	        ah.ah_date,
+	        ah.ah_check_in,
+	        ah.ah_check_out,
+	        ah.ah_status,
+	        et.idx_department,
+	        et.idx_employee,
+	        et.emp_name,
+	        et.emp_status
+		FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    WHERE et.idx_department = #{param1} AND ah.ah_date=#{param2} AND emp_status='재직'
+	</select>
+	
+	
 	
 	<!-- [il] 임의로 idx_employee =1 집어넣었음 나중에 바꿔줘야함!! -->
 	<insert id="employeeAddEvent" parameterType="employee">

@@ -1,9 +1,11 @@
 package ko.gagu.issue.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
@@ -46,8 +48,20 @@ public interface EmployeeDAO {
 
 	int isAdmin(int idx_employee);
 
+
+	int getEmployeeTitle(Integer idx_employee);
+
+	int getDepartmentIdxByEmployee(int idx_employee);
+
+	List<EmployeeDTO> departmentAttendanceList(int idx_employee, int idx_department, Date selectedDate, int start,
+			int pagePerCnt);
+
+	Object allCountPage(int idx_department, Date selectedDate, int pagePerCnt);
+
 	List<SalesDataDTO> getSalesHistory(PagingDTO pagingDTO);
 
 	int getSalesHistoryTotalPages(PagingDTO pagingDTO);
 
+
 }
+
