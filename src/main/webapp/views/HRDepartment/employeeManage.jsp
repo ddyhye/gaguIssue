@@ -40,6 +40,9 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+  	<!-- [tae] css 추가 -->
+    <!--  <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/tae1.css'/>">-->
+  
   </head>
   <style>
   	.modal-dialog {
@@ -166,7 +169,7 @@
 		    display: none;
 		}
 		#employeePhoto {
-		    max-width: 50%; /* 이미지의 최대 너비 설정 */
+		    /*max-width: 50%; 이미지의 최대 너비 설정 */
 		    height: auto; /* 높이 자동 조정 */
 		}
 		
@@ -307,6 +310,100 @@
 	        background-color: #cccccc; /* 포커스된 버튼의 배경색을 회색으로 변경 */
 	        color: #000000; /* 포커스된 버튼의 텍스트 색상 유지 */
 	    }
+	    
+	   
+		
+		.info-section {
+		    margin-bottom: 20px;
+		}
+		
+		.info-content {
+		    display: flex;
+		}
+		
+		.photo-container {
+		    flex: 0 0 100px;
+		}
+		
+		.photo-container img {
+		    width: 100px;
+		    height: 100px;
+		    border-radius: 50%;
+		}
+		
+		.info-details {
+		    flex: 1;
+		    padding-left: 10px;
+		}
+		
+		.info-details p {
+		    margin: 5px 0;
+		}
+		
+		.namePhoneContainer {
+		    display: flex;
+		    justify-content: space-between;
+		}
+		
+		.info-row {
+		    display: flex;
+		    justify-content: space-between;
+		}
+		
+		.leave-info {
+		    margin-top: 10px;
+		}
+		
+		.leave-summary {
+		    margin-top: 10px;
+		}
+		
+		.leave-summary-table,
+		.leave-details-table {
+		    width: 100%;
+		    border-collapse: collapse;
+		    margin-top: 10px;
+		}
+		
+		.leave-summary-table th,
+		.leave-details-table th,
+		.leave-summary-table td,
+		.leave-details-table td {
+		    border: 1px solid #ddd;
+		    padding: 8px;
+		    text-align: center;
+		}
+		
+		.leave-summary-table th,
+		.leave-details-table th {
+		    background-color: #f2f2f2;
+		}
+		
+		.leave-summary-table tbody tr,
+		.leave-details-table tbody tr {
+		    transition: background-color 0.3s;
+		}
+		
+		.leave-summary-table tbody tr:hover,
+		.leave-details-table tbody tr:hover {
+		    background-color: #f5f5f5;
+		}
+		
+		.detail-button {
+		    background-color: #f2f2f2;
+		    border: none;
+		    padding: 5px 10px;
+		    cursor: pointer;
+		    transition: background-color 0.3s;
+		}
+		
+		.detail-button:hover {
+		    background-color: #ddd;
+		}
+		.no-click {
+		    pointer-events: none; /* 클릭 이벤트 비활성화 */
+		}
+	    
        
   </style>
   
@@ -543,13 +640,15 @@
 					                    <img id="employeePhoto" src="/img/user.jpg" alt="사원 사진">
 					                </div>
 					                <div class="info-details">
-					                    <div class="namePhoneContainer">
-					                        <p><strong>이름:</strong> <span id="emp_name_detail"></span></p>
-					                        <p><strong>전화번호:</strong> <span id="emp_phone_number_detail"></span></p>
-					                    </div>
-					                    <div class="info-row">
-					                        <p><strong>생년월일:</strong> <span id="emp_birth_date_detail"></span></p>
-					                        <p><strong>이메일:</strong> <span id="emp_email_detail"></span></p>
+					                	<div class="tae-test">
+						                    <div class="namePhoneContainer">
+						                        <p><strong>이름:</strong> <span id="emp_name_detail"></span></p>
+						                        <p><strong>전화번호:</strong> <span id="emp_phone_number_detail"></span></p>
+						                    </div>
+						                    <div class="info-row">
+						                        <p><strong>생년월일:</strong> <span id="emp_birth_date_detail"></span></p>
+						                        <p><strong>이메일:</strong> <span id="emp_email_detail"></span></p>
+						                    </div>
 					                    </div>
 					                    <div class="info-row">
 					                        <p><strong>거주지:</strong> <span id="address_detail"></span></p>
@@ -601,7 +700,56 @@
 					        </div>
 					
 					        <hr>
-					</div>
+					        
+					    <div class="leave-summary">
+				            <label for="yearSelect">연차정보:</label>
+				            <select id="yearSelect">
+				                <option value="2024">2024</option>
+				                <option value="2023">2023</option>
+				                <option value="2022">2022</option>
+				            </select>
+				            <table class="leave-summary-table">
+				                <thead>
+				                    <tr>
+				                        <th>이번년도 연차</th>
+				                        <th>사용 연차</th>
+				                        <th>남은 연차</th>
+				                    </tr>
+				                </thead>
+				                <tbody>
+				                    <tr>
+				                        <td id ="year_days_detail" class="no-click">15</td>
+				                        <td id="usage_days_detail" class="no-click"></td>
+				                        <td id="leave_days_detail" class="no-click"></td>
+				                    </tr>
+				                </tbody>
+				            </table>
+				            <table class="leave-details-table">
+				                <thead>
+				                    <tr>
+				                        <th>No</th>
+				                        <th>연차 사용 기간</th>
+				                        <th>사용 연차</th>
+				                        <th>연차 내용</th>
+				                    </tr>
+				                </thead>
+				                <tbody>
+				                    <tr>
+				                        <td class="no-click"></td>
+				                        <td id ="anuual-time" class="no-click"></td>
+				                        <td id ="lu_usage_days"class="no-click"></td>
+				                        <td><button class="detail-button"></button></td>
+				                    </tr>
+				                    <tr>
+				                        <td class="no-click"></td>
+				                        <td class="no-click"></td>
+				                        <td class="no-click"></td>
+				                        <td><button class="detail-button">상세내역</button></td>
+				                    </tr>
+				                </tbody>
+				            </table>
+				        </div>
+				    </div>
 				</div>
 			<!-- Container-fluid 종료-->
 
@@ -765,6 +913,10 @@
 			
 			    // 사원 리스트 클릭 시 선택 표시 및 상세 정보 표시
 			    $('table tbody').on('click', 'tr', function() {
+			    	if ($(event.target).is('#year_days_detail','#usage_days_detail','#leave_days_detail')) {
+			            // 클릭 이벤트 무시
+			            return;
+			        }
 			        // 선택 상태를 토글(toggle)
 			        if (!$(this).hasClass('selected')) {
 			            // 다른 선택된 행이 있으면 선택 해제 후 현재 행만 선택
@@ -779,9 +931,17 @@
 			            
 			            $('#viewDetailsButton').show();
 			            $('#annualLeaveButton').show();
+			            
+			            $('#viewDetailsButton').removeClass('selected');
+			            $('#annualLeaveButton').removeClass('selected');
+
+			            // 모든 상세 정보 숨기기
+			            $('#employeeDetails').hide();
+			            $('#annualDetails').hide();
 			        } else {
 			            $(this).removeClass('selected');
 			            $('#employeeDetails').hide();
+			            $('#annualDetails').hide();
 			            $('#viewDetailsButton').hide();
 			            $('#annualLeaveButton').hide();
 			        }
@@ -839,6 +999,55 @@
 			            
 			            error: function(error) {
 			                alert('사원 정보를 가져오는 동안 오류가 발생했습니다.');
+			                console.error('Ajax 오류:', error);
+			            }
+			        });
+			    }
+			    
+			    function displayAnnualDetails(emp_id) {
+			        $.ajax({
+			            type: 'POST',
+			            url: '/annualDetail.ajax',
+			            data: { emp_id: emp_id },
+			            dataType: 'json',
+			            success: function(data) {
+			                console.log(data); // 데이터 확인용
+
+			                // 연차 정보를 폼에 채워 넣기
+			                $('#emp_name_detail').text(data.emp_name);
+			                $('#emp_phone_number_detail').text(data.emp_phone_number);
+			                $('#emp_birth_date_detail').text(data.emp_birth_date);
+			                $('#emp_email_detail').text(data.emp_email);			                
+			                $('#address_detail').text(data.emp_address);
+
+			                $('#leave_days_detail').text(data.leave_days);
+			                $('#usage_days_detail').text(data.usage_days);
+			                $('#remaining_days_detail').text(data.leave_days - data.usage_days);
+			               
+
+			                // 연차 사용 내역 테이블 초기화
+			                $('#leaveUsageTable tbody').empty();
+
+			                // 연차 사용 내역을 테이블에 추가
+			                if (data.leave_usage_history && data.leave_usage_history.length > 0) {
+							    let tableBody = $('#leaveUsageTable tbody');
+							
+							    data.leave_usage_history.forEach(item => {
+							        let row = $('<tr>');
+							        row.append($('<td>').text(item.lu_start_date + ' - ' + item.lu_end_date));
+							        row.append($('<td>').text(item.lu_usage_days));
+							        tableBody.append(row);
+							    });
+							} else {
+							    // 연차 사용 내역 데이터가 없는 경우 대체 처리 (예: 메시지 표시 등)
+							    let row = $('<tr>').append($('<td colspan="2">').text('연차 사용 내역이 없습니다.'));
+							    tableBody.append(row);
+							}
+
+			                $('#annualDetails').show(); // 연차 상세 정보가 있는 경우 폼 표시
+			            },
+			            error: function(error) {
+			                alert('연차 정보를 가져오는 동안 오류가 발생했습니다.');
 			                console.error('Ajax 오류:', error);
 			            }
 			        });
