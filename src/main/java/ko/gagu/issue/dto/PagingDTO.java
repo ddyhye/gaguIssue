@@ -9,6 +9,8 @@ public class PagingDTO {
 	private int totalPage;
 	private String startDate;
 	private String endDate;
+	private String searchKeyword;
+	
 	
 	public String getFilter() {
 		return filter;
@@ -39,6 +41,12 @@ public class PagingDTO {
 	}
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
 	}
 	@Override
 	public String toString() {

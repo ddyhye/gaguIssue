@@ -52,6 +52,7 @@
 		GROUP BY mt.idx_meeting_room
 	</select>
 	
+	<!-- [jeong] 페이징 처리된 예약 내역을 반환 -->
 	<select id="getReservationList" resultType="reservation">
 		SELECT
 			REPLACE((SELECT rtt.rsv_date 
@@ -69,6 +70,7 @@
 		LIMIT ${(page - 1) * 12}, 12		
 	</select>
 	
+	<!-- [jeong] 예약 내역의 총 페이지 수를 반환 -->
 	<select id="getRsvListTotalPages">
 		SELECT 
 			CEIL(COUNT(*) / 12)
@@ -77,14 +79,17 @@
 			JOIN meetingroom_tb mt ON mt.idx_meeting_room = rt.idx_meeting_room
 	</select>
 	
+	<!-- [jeong] 예약한 종료 시간이 지난 예약들을 조회 --> 
 	<select id="getFinshRsv">
 		SELECT idx_reservation FROM reservation_tb WHERE end_datetime &lt; NOW()
 	</select>
 	
+	<!-- [jeong] 종료 시간이 지난 예약들을 사용완료 상태로 변경 -->
 	<update id="updateReservationList">
 		UPDATE reservation_tb SET re_status = '사용완료' WHERE idx_reservation = #{idxReservation}
 	</update>
 	
+	<!-- [jeong] 예약한 직원인지 확인 후 예약을 취소 상태로 변경 --> 
 	<update id="cancelReservation">
 		UPDATE reservation_tb SET re_status = '예약취소' WHERE idx_reservation = #{idxReservation} AND reservist = #{idxEmployee}
 	</update>

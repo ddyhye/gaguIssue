@@ -34,8 +34,6 @@
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <!-- Bootstrap css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
-<link href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css' rel='stylesheet'>
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'></script>
 <!-- App css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
 <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
@@ -44,14 +42,14 @@
 <style>
 #document {
 	width: 70%;
-	height: 1000px;
+	height: 1250px;
 	border: 1px solid;
 	background: white;
 }
 
 #form-document {
 	width: 100%;
-	height: 1000px;
+	height: 1250px;
 	border: none;
 }
 
@@ -425,7 +423,6 @@ table img {
 	<!-- Theme js-->
 	<script src="/assets/js/script.js"></script>
 	<script src="/assets/js/script1.js"></script>
-	<script src="/assets/js/theme-customizer/customizer.js"></script>
 	<!-- 서명 스크립트 -->
 	<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 	<!-- Plugin used-->
@@ -446,6 +443,13 @@ table img {
             minWidth: 0.5,
             maxWidth: 2.5
         });		
+        
+        var idxDc = ${approvalDetails.idxDc};
+        
+        if (idxDc == 1) {
+        	document.getElementById('document').style.height = 1000;
+        	document.getElementById('form-document').style.height = 1000;
+        }
         
 		function clearSignature() {
 			signaturePad.clear();

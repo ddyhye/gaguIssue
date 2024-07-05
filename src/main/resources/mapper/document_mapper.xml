@@ -175,7 +175,7 @@
 			or EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = #{idxEmployee})
 			or et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
 		order by at.written_datetime desc
-		limit 0, 13
+		limit 0, 12
 	</select>
 	
 	<select id="fetchFilterDocumentList" resultType="document">
@@ -199,7 +199,11 @@
 	    </if>
 	    <if test="paging.endDate != null and !paging.endDate.equals('')">
 	    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= at.written_datetime
-	    </if>			
+	    </if>		
+	    <if test="paging.searchKeyword != null and !paging.searchKeyword.equals('')">
+	    	AND (at.ap_title LIKE CONCAT('%', #{paging.searchKeyword}, '%') 
+	    		OR et.emp_name LIKE CONCAT('%', #{paging.searchKeyword}, '%'))
+	    </if>
 	    <choose>
 		    <when test="paging.filter != null and paging.filter.equals('pending')">
 		    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
@@ -220,7 +224,7 @@
 		    </otherwise>
 	    </choose>		
 		order by at.written_datetime desc
-		limit #{paging.page}, 13
+		limit ${(paging.page - 1) * 12}, 12
 	</select>
 	
 	<update id="approvalLine">
@@ -268,7 +272,7 @@
 	
 	<select id="getAllTotalPages" resultType="integer">
 		select  
-			ceil(count(*) / 13)
+			ceil(count(*) / 12)
 		from approval_tb `at`
 		join document_category_tb dct ON dct.idx_dc = at.idx_dc
 		join employee_tb et ON et.idx_employee = at.idx_employee
@@ -281,7 +285,7 @@
 	
 	<select id="getFilterTotalPages" resultType="integer">
 		select  
-			ceil(count(*) / 13)
+			ceil(count(*) / 12)
 		from approval_tb `at`
 		join document_category_tb dct ON dct.idx_dc = at.idx_dc
 		join employee_tb et ON et.idx_employee = at.idx_employee
@@ -293,7 +297,11 @@
 	    </if>
 	    <if test="paging.endDate != null and !paging.endDate.equals('')">
 	    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= at.written_datetime
-	    </if>			
+	    </if>		
+	    <if test="paging.searchKeyword != null and !paging.searchKeyword.equals('')">
+	    	AND (at.ap_title LIKE CONCAT('%', #{paging.searchKeyword}, '%') 
+	    		OR et.emp_name LIKE CONCAT('%', #{paging.searchKeyword}, '%'))
+	    </if>	    	
 	    <choose>
 		    <when test="paging.filter != null and paging.filter.equals('pending')">
 		    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
@@ -310,7 +318,7 @@
 		    <otherwise>
 		    	AND (et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
 		    	OR at.idx_employee = #{idxEmployee}
-				OR EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = 6))
+				OR EXISTS (SELECT 1 FROM approval_line_tb alt WHERE at.idx_approval = alt.idx_approval AND alt.idx_employee = #{idxEmployee}))
 		    </otherwise>
 	    </choose>
 	</select>	
