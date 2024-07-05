@@ -1,5 +1,6 @@
 package ko.gagu.issue.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,8 +50,10 @@ public interface EmployeeDAO {
 
 	int getDepartmentIdxByEmployee(int idx_employee);
 
-	 List<EmployeeDTO> getAttendanceByDepartment(@Param("idx_department") int idx_department,
-             @Param("year") int year,
-             @Param("month") int month);
+	List<EmployeeDTO> departmentAttendanceList(int idx_employee, int idx_department, Date selectedDate, int start,
+			int pagePerCnt);
+
+	Object allCountPage(int idx_department, Date selectedDate, int pagePerCnt);
 
 }
+

@@ -1,5 +1,8 @@
 package ko.gagu.issue.controller;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,28 +154,32 @@ public class EmployeeController {
 			return "employee/attendanceDepartment";
 		}
 		
-		@PostMapping(value="employee/departmentAttendanceList.ajax")
+		@PostMapping(value="/employee/departmentAttendanceList.ajax")
 		@ResponseBody
-		public Map<String, Object>attendanceDepartment(HttpSession session,HttpServletRequest request, HttpServletResponse response,String page, String cnt){
+		public Map<String, Object>attendanceDepartment(HttpSession session,String date,String page, String cnt){
 			
 		    logger.info("페이지 당 보여줄 갯수 : "+cnt);
 			logger.info("요청 페이지 : " +page);
 			int idx_employee= (int) session.getAttribute("idxEmployee");
 			logger.info("idxEmployee : {}",idx_employee);
-			int year = Integer.parseInt(request.getParameter("year"));
-			int month = Integer.parseInt(request.getParameter("month"));
 			
-			List<EmployeeDTO> departmentAttendanceList = employeeService.departmentAttendanceList(idx_employee,year,month);
+			java.util.Date selectedDate=null;
+			
+			try {
+				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+				selectedDate=dateFormat.parse(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			
 			
-//			int currentPage = Integer.parseInt(page);
-//			int pagePerCnt = Integer.parseInt(cnt);
-//			
-//			Map<String, Object>map = employeeService.departmentAttendanceList(cnt,page);
-			Map<String, Object>resultMap = new HashMap<String, Object>();
-			resultMap.put("attendanceList", departmentAttendanceList);
+			int currentPage = Integer.parseInt(page);
+			int pagePerCnt = Integer.parseInt(cnt);
 			
-			return resultMap;
+			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,selectedDate,currentPage,pagePerCnt);
+			logger.info("map : {}",map);
+			
+			return map;
 		}
 	
 

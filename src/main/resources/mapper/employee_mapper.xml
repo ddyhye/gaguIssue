@@ -49,8 +49,23 @@
 	    FROM attendance_history_tb ah
 	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
 	    WHERE idx_department = #{param1}
-      	AND YEAR(ah_date) = #{param2}
-      	AND MONTH(ah_date) = #{param3}
+	</select>
+	
+	<select id="departmentAttendanceList" resultType="employee">
+		SELECT
+			ah.idx_attendance,
+	        ah.idx_employee,
+	        ah.ah_date,
+	        ah.ah_check_in,
+	        ah.ah_check_out,
+	        ah.ah_status,
+	        et.idx_department,
+	        et.idx_employee,
+	        et.emp_name,
+	        et.emp_status
+		FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    WHERE et.idx_department = #{param1} AND ah.ah_date=#{param2} AND emp_status='재직'
 	</select>
 	
 	

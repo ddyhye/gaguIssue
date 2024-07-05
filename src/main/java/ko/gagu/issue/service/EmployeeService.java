@@ -1,5 +1,6 @@
 package ko.gagu.issue.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,29 +47,14 @@ public class EmployeeService {
 	}
 	
 	public void getEmployeeAttendance(Map<String, Object> response, Integer idx_employee, Model model) {
-//		logger.info("idx_employee : {}",idx_employee);;
-//		int idx_title=dao.getEmployeeTitle(idx_employee);
-//		model.addAttribute("title",idx_title);
-//		logger.info("title : {}",idx_title);
+
 		
 		List<EmployeeDTO> events=dao.getEmployeeAttendance(idx_employee);
 		logger.info("events: {}",events);
 		
 		response.put("employeeAttendance", events);
 	}
-//
-//	public void getAdminStatus(Map<String, Object> response, int idx_employee) {
-//		// [il] 부장인지 아닌지 확인하는 로직
-//		logger.info("idx_employee : {}",idx_employee);
-//		int isAdmin=dao.isAdmin(idx_employee);
-//		if(isAdmin==1) {
-//			response.put("isAdmin", isAdmin);	
-//			logger.info("isAdmin : {}",isAdmin);
-//		}else if(isAdmin==0){
-//			response.put("isAdmin", isAdmin);
-//			logger.info("isAdmin : {}",isAdmin);
-//		}
-//	}
+
 
 	
 
@@ -155,12 +141,23 @@ public class EmployeeService {
 	    return response; // 데이터를 담은 Map을 반환
 	}
 
-
-	public List<EmployeeDTO> departmentAttendanceList(int idx_employee, int year, int month) {
+	public Map<String, Object> departmentAttendanceList(int idx_employee, Date selectedDate, int currentPage,
+			int pagePerCnt) {
 		// [il] 부서번호 가져오기
+		// [il] 현재 보여지는 페이지 : 페이지당 보여줄 개수
+		// [il] 페이지당 보여줄 개수 : pagePerCnt
 		int idx_department = dao.getDepartmentIdxByEmployee(idx_employee);
-		return dao.getAttendanceByDepartment(idx_department,year,month);
+		int start = (currentPage - 1) * pagePerCnt;
+		Map<String, Object>map=new HashMap<String, Object>();
+		List<EmployeeDTO>attendanceList=dao.departmentAttendanceList(idx_employee,idx_department,selectedDate,start,pagePerCnt);
+		
+		map.put("attendanceList", attendanceList);
+		map.put("currentPage", currentPage);
+		map.put("totalPages",dao.allCountPage(idx_department,selectedDate,pagePerCnt));
+		
+		return map;
 	}
+
 
 
 	
