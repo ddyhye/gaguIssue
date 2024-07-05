@@ -9,7 +9,22 @@ public class PagingDTO {
 	private int totalPage;
 	private String startDate;
 	private String endDate;
+	private String searchKeyword;
+	private String searchOption;
+	private String sortOption;
 	
+	public String getSearchOption() {
+		return searchOption;
+	}
+	public void setSearchOption(String searchOption) {
+		this.searchOption = searchOption;
+	}
+	public String getSortOption() {
+		return sortOption;
+	}
+	public void setSortOption(String sortOption) {
+		this.sortOption = sortOption;
+	}
 	public String getFilter() {
 		return filter;
 	}
@@ -39,6 +54,12 @@ public class PagingDTO {
 	}
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
 	}
 	@Override
 	public String toString() {
