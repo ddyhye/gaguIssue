@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Param;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
+import ko.gagu.issue.dto.PagingDTO;
+import ko.gagu.issue.dto.SalesDataDTO;
 
 @Mapper
 public interface EmployeeDAO {
@@ -46,6 +48,7 @@ public interface EmployeeDAO {
 
 	int isAdmin(int idx_employee);
 
+
 	int getEmployeeTitle(Integer idx_employee);
 
 	int getDepartmentIdxByEmployee(int idx_employee);
@@ -54,6 +57,11 @@ public interface EmployeeDAO {
 			int pagePerCnt);
 
 	Object allCountPage(int idx_department, Date selectedDate, int pagePerCnt);
+
+	List<SalesDataDTO> getSalesHistory(PagingDTO pagingDTO);
+
+	int getSalesHistoryTotalPages(PagingDTO pagingDTO);
+
 
 }
 

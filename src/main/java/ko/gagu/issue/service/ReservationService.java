@@ -33,7 +33,8 @@ public class ReservationService {
 	public ReservationService (ReservationDAO dao) {
 		this.dao = dao;
 	}	
-
+	
+	/* [jeong] 예약 내역과 총 페이지 수를 전달 */
 	public ModelAndView getReservationList(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("/common/reservationList");
 		// 사용 완료 상태로 변경
@@ -53,6 +54,7 @@ public class ReservationService {
 		return mav;
 	}
 
+	/* [jeong] 선택한 날짜와 시간에 회의실이 예약 가능한지 여부와 회의실의 정보를 가져옴 */
 	public ModelAndView getMeetingRoom(int idxEmployee, String selectDate, int[] selectedTime) {
 		ModelAndView mav = new ModelAndView("/common/reservationRoomSelect");
 		List<RoomStatusDTO> temp = dao.getRsvRoomStatus(selectDate, selectedTime);
@@ -64,20 +66,25 @@ public class ReservationService {
 		return mav;
 	}
 
+	/* [jeong] 날짜 및 시간 선택 페이지로 이동 */
 	public ModelAndView getAvailableSlots(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("/common/reservationDatetimeSelect");
 		return mav;
 	}
 
+	/* [jeong] 연속된 시간은 하나의 예약으로 묶고 예약 등록 처리 */
 	@Transactional(rollbackFor = Exception.class)
 	public ModelAndView registerRsv(int selectedRoomNo, int idxEmployee,
 			int selectedPeopleNumber, String selectedDate,
 			int[] selectedTime) {
 		ModelAndView mav = new ModelAndView("redirect:/reservation/list.go");
 		
+		// 시간 순서대로 연속된 시간을 묶어야하므로 정렬을 해준다
 		Arrays.sort(selectedTime);
+		// 묶인 예약 시간들은 [{startTime:9, endTime:9}, ..] 이런식으로 rsvTime 에 저장된다
 		List<Map<String, Integer>> rsvTime = new ArrayList<>();
 		
+		// 예약들을 묶어준다
 		if (selectedTime.length > 0) {
 			int startTime = selectedTime[0];
 			int endTime = startTime;
@@ -144,6 +151,7 @@ public class ReservationService {
 		return mav;
 	}
 	
+	/* [jeong] 선택한 예약을 취소한다 */
 	public Map<String,Object> cancelRsv(int idxEmployee, int idxReservation) {
 		var response = new HashMap<String,Object>();
 		
@@ -153,6 +161,7 @@ public class ReservationService {
 		return response;
 	}
 
+	/* [jeong] 페이징 처리된 예약 내역과 총 페이지 수를 반환 */
 	public Map<String, Object> getPagingRsvList(int idxEmployee, int page) {
 		var response = new HashMap<String,Object>();
 		List<Integer> rsvFinshList = dao.getFinshRsv();

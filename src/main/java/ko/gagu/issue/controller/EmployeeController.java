@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.service.EmployeeService;
 
 @Controller
@@ -299,6 +300,21 @@ public class EmployeeController {
 		mav.setViewName("redirect:/login.go");
 		
 		return mav;
+	}
+	
+	/* [jeong] 매출 관리 페이지로 이동 */
+	@GetMapping(value = "/common/salesHistory.go")
+	public ModelAndView salesHistoryGo(HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getSalesHistory(idxEmployee);	
+	}
+	
+	/* [jeong] 필터링, 검색, 정렬, 페이지 번호를 입력 받고 페이징 처리된 매출 내역을 응답 */
+	@PostMapping(value = "/common/salesHistoryPaging.do")
+	@ResponseBody
+	public Map<String, Object> papingDo(HttpSession session, @RequestBody PagingDTO pagingDTO) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getPaingSalesHistory(idxEmployee, pagingDTO);
 	}
 	
 }

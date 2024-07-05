@@ -44,14 +44,14 @@
 <style>
 #document {
 	width: 70%;
-	height: 1000px;
+	height: 1250px;
 	border: 1px solid;
 	background: white;
 }
 
 #form-document {
 	width: 100%;
-	height: 1000px;
+	height: 1250px;
 	border: none;
 }
 
@@ -425,7 +425,6 @@ table img {
 	<!-- Theme js-->
 	<script src="/assets/js/script.js"></script>
 	<script src="/assets/js/script1.js"></script>
-	<script src="/assets/js/theme-customizer/customizer.js"></script>
 	<!-- 서명 스크립트 -->
 	<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 	<!-- Plugin used-->
@@ -446,6 +445,13 @@ table img {
             minWidth: 0.5,
             maxWidth: 2.5
         });		
+        
+        var idxDc = ${approvalDetails.idxDc};
+        
+        if (idxDc == 1) {
+        	document.getElementById('document').style.height = 1000;
+        	document.getElementById('form-document').style.height = 1000;
+        }
         
 		function clearSignature() {
 			signaturePad.clear();

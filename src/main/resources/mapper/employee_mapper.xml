@@ -173,6 +173,83 @@
 	</select>
 	
 	
-
+	<select id="getSalesHistoryTotalPages" resultType="integer">
+		SELECT
+			CEIL(count(*) / 13)
+		FROM sales_history_tb sht
+		WHERE 1 = 1
+		<if test="startDate != null and !startDate.equals('')">
+			AND STR_TO_DATE(CONCAT(#{startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= sht.transaction_datetime
+		</if>
+		<if test="endDate != null and !endDate.equals('')">
+			AND STR_TO_DATE(CONCAT(#{endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= sht.transaction_datetime
+		</if>
+		<if test="searchKeyword != null and !searchKeyword.equals('')">
+			<choose>
+				<when test="searchOption != null and searchOption.equals('product')">
+					AND sht.product_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+				</when>
+				<when test="searchOption != null and searchOption.equals('businessPartner')">
+					AND sht.customer_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+				</when>
+			</choose>
+		</if>
+	    <choose>
+		    <when test="filter != null and filter.equals('purchaseOrder')">
+		    	AND transaction_type = '발주'
+		    </when>
+		    <when test="filter != null and filter.equals('order')">
+		    	AND transaction_type = '주문'
+		    </when>		    
+		</choose>	
+	</select>
+	
+	<select id="getSalesHistory" resultType="salesData">
+		SELECT
+			sht.product_name AS productName,
+			sht.transaction_id AS transactionId,
+			sht.transaction_type AS transactionType,
+			sht.customer_name AS customerName,
+		    CONCAT(FORMAT(sht.transaction_amount, 0), '원') AS transactionAmount,
+		    CONCAT(FORMAT(sht.cost, 0), '원') AS cost,
+		    sht.remarks AS remarks,
+		    DATE_FORMAT(sht.transaction_datetime, '%Y/%m/%d') AS transactionDatetime
+		FROM sales_history_tb sht
+		WHERE 1 = 1
+		<if test="startDate != null and !startDate.equals('')">
+			AND STR_TO_DATE(CONCAT(#{startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= sht.transaction_datetime
+		</if>
+		<if test="endDate != null and !endDate.equals('')">
+			AND STR_TO_DATE(CONCAT(#{endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= sht.transaction_datetime
+		</if>
+		<choose>
+			<when test="searchOption != null and searchOption.equals('product')">
+				AND sht.product_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+			</when>
+			<when test="searchOption != null and searchOption.equals('businessPartner')">
+				AND sht.customer_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+			</when>
+		</choose>
+	    <choose>
+		    <when test="filter != null and filter.equals('purchaseOrder')">
+		    	AND transaction_type = '발주'
+		    </when>
+		    <when test="filter != null and filter.equals('order')">
+		    	AND transaction_type = '주문'
+		    </when>		    
+		</choose>
+		<choose>
+			<when test="sortOption != null and sortOption.equals('new')">
+				ORDER BY transaction_datetime DESC
+			</when>
+			<when test="sortOption != null and sortOption.equals('name')">
+				ORDER BY product_name
+			</when>
+			<otherwise>
+				ORDER BY transaction_datetime DESC
+			</otherwise>
+		</choose>	
+		LIMIT ${(page - 1) * 13}, 13			
+	</select>
 
 </mapper>
