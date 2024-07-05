@@ -118,7 +118,26 @@
 	</select>
 	
 	<select id="getAnnualLeaveInfoById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
-	
+			SELECT 
+            e.emp_id,
+            e.emp_name,
+            e.emp_phone_number,
+            e.emp_birth_date,
+            e.emp_email,
+            e.emp_address,
+            la.leave_days,
+            la.usage_days,
+            lu.lu_start_date,
+            lu.lu_end_date,
+            lu.lu_usage_days
+        FROM 
+            employee_tb e
+        LEFT JOIN 
+            leave_accruals_tb la ON e.idx_employee = la.idx_employee
+        LEFT JOIN 
+            leave_usage_tb lu ON e.idx_employee = lu.idx_employee
+        WHERE 
+            e.emp_id = #{emp_id}
 	</select>
 
 	
