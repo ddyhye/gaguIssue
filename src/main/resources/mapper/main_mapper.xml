@@ -164,9 +164,9 @@
 		SELECT CEIL(COUNT(*) / 13)
 		FROM leave_usage_tb lut 
 		JOIN employee_tb et ON lut.idx_employee = et.idx_employee 
-		WHERE
-	    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
-	    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= lut.lu_start_date
+		WHERE 1=1
+	    <if test="paging.year != null">
+	    	AND YEAR(lut.lu_start_date) = #{paging.year}
 	    </if>
 	    <if test="paging.endDate != null and !paging.endDate.equals('')">
 	    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= lut.lu_end_date

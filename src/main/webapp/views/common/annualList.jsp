@@ -182,7 +182,7 @@
                       </table>
                       
                       <!-- 페이징 -->
-                      <div class="d-flex justify-content-center">								
+                      <div class="d-flex justify-content-center" style="margin-top: 20px">								
 						  <nav aria-label="Page navigation">
 						      <ul class="pagination" id="pagination"></ul>
 						  </nav>
@@ -344,7 +344,7 @@
 	
 	// 페이징
 	var page = 1;
-	//var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+	var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
 	var filter = 'all';
 	
 	$(document).ready(function () {
@@ -382,6 +382,7 @@
 		const pagingDTO = {
 			filter : filter,
 			page : page,
+			year : document.getElementById('yearSelector').value,
 			startDate : document.getElementById('startDate').value,
 			endDate : document.getElementById('endDate').value
 		}

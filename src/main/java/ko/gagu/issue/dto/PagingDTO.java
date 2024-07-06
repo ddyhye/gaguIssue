@@ -9,7 +9,15 @@ public class PagingDTO {
 	private int totalPage;
 	private String startDate;
 	private String endDate;
+	private int year;
 	
+	
+	public int getYear() {
+		return year;
+	}
+	public void setYear(int year) {
+		this.year = year;
+	}
 	public String getFilter() {
 		return filter;
 	}
