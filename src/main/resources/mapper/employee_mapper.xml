@@ -60,14 +60,20 @@
 	        ah.ah_check_out,
 	        ah.ah_status,
 	        et.idx_department,
-	        et.idx_employee,
 	        et.emp_name,
 	        et.emp_status
 		FROM attendance_history_tb ah
 	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
-	    WHERE et.idx_department = #{param1} AND ah.ah_date=#{param2} AND emp_status='재직'
+	    WHERE et.idx_department = #{param2} AND ah.ah_date=#{param3} AND et.emp_status='재직'
+	    LIMIT 15 OFFSET #{param4}
 	</select>
 	
+	<select id="allCountPage" resultType="Object">
+		SELECT CEIL(COUNT(ah.idx_attendance) / #{param3}) AS pages
+		FROM attendance_history_tb ah
+		WHERE ah.ah_date=#{param2}
+		ORDER BY ah.idx_employee DESC
+	</select>
 	
 	
 	<!-- [il] 임의로 idx_employee =1 집어넣었음 나중에 바꿔줘야함!! -->
