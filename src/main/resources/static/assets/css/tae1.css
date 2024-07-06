@@ -1,0 +1,16 @@
+/* [tae] */
+
+
+.info-content {
+	display: flex;
+	flex-direction:row;
+}
+.info-details {
+	display: flex;
+	flex-direction:column;
+}
+
+.tae-test {
+	display: flex;
+	flex-direction:row;
+}

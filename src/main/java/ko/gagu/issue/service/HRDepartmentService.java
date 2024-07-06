@@ -175,11 +175,13 @@ public class HRDepartmentService {
 		
 		map.put("emp_id", annual.getEmp_id());
 		map.put("emp_name", annual.getEmp_name());
+		map.put("emp_phone_number", annual.getEmp_phone_number());
 		map.put("emp_birth_date", annual.getEmp_birth_date());
 		map.put("emp_email", annual.getEmp_email());
 		map.put("emp_address", annual.getEmp_address());
 		map.put("leave_days", annual.getLeave_days());
-		map.put("used_days", annual.getUsed_days());
+		map.put("usage_days", annual.getUsage_days());
+		map.put("lu_usage_days", annual.getLu_usage_days());
 		map.put("lu_start_date", annual.getLu_start_date());
 		map.put("lu_end_date", annual.getLu_end_date());
 		

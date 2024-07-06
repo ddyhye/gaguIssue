@@ -35,7 +35,7 @@ public class HRDepartmentDTO {
 	private String photo_url;	
 	private String title_name;
 	private int leave_days;
-	private int used_days;
+	private int usage_days;
 	private int lu_usage_days;
 	private Date lu_start_date;
 	private Date lu_end_date;
@@ -205,12 +205,6 @@ public class HRDepartmentDTO {
 	public void setPhoto_url(String photo_url) {
 		this.photo_url = photo_url;
 	}
-	public int getUsed_days() {
-		return used_days;
-	}
-	public void setUsed_days(int used_days) {
-		this.used_days = used_days;
-	}
 	public int getLu_usage_days() {
 		return lu_usage_days;
 	}
@@ -228,6 +222,12 @@ public class HRDepartmentDTO {
 	}
 	public void setLu_end_date(Date lu_end_date) {
 		this.lu_end_date = lu_end_date;
+	}
+	public int getUsage_days() {
+		return usage_days;
+	}
+	public void setUsage_days(int usage_days) {
+		this.usage_days = usage_days;
 	}
 
 	

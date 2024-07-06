@@ -114,7 +114,16 @@
 	    text-align: center;
 	    line-height: 0px;
 	    padding: 0;
-  }
+  	}
+	 .msger-chat {
+	    overflow-y: auto;
+	    max-height: 570px; /* 필요한 경우 높이 조정 */
+	    padding-bottom: 10px; /* 충분한 여유 공간 */
+	}
+  
+  	.hide-text {
+    	display: none;
+	}
 
 	</style>
   </head>
@@ -433,7 +442,7 @@
 	    sendMessage(chat_idx, chat_user);
 	    setTimeout(function() {
 			messageCall(chat_idx, emp_id, chat_user);
-			loadChatRooms(emd_id); // '${loginInfo.email}' 나중에 세션으로 대체
+			loadChatRooms(emp_id); // '${loginInfo.email}' 나중에 세션으로 대체
 		}, 100);
 	    $('#sendText').val('');
 	});

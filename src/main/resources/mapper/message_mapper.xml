@@ -44,23 +44,10 @@
 	
 	<select id="lastContent" resultType="message">
 	 
-	 	
-	<!--  	SELECT
-		   mht.*,
-		   ft.file_name
-		FROM message_history_tb mht
-		LEFT JOIN filestore_tb ft 
-		ON idx_ref = #{param2} 
-		AND ft.idx_filetype = 1
-		AND mht.idx_messageroom = #{param1}
-		AND mht.receiver IN (#{param2},#{param3})
-		AND mht.sender IN (#{param2},#{param3})
-		AND NOT (mht.sender = #{param3} AND mht.sender_del = 1)
-		ORDER BY mht.send_datetime DESC LIMIT 1; -->
-		
 		SELECT 
 		    mht.*,
-		    ft.file_name
+		    ft.file_name,
+		    (SELECT ft.origin_name FROM filestore_tb ft WHERE ft.idx_ref = mht.idx_message AND ft.idx_filetype = 6) as origin_name
 		FROM 
 		    message_history_tb mht
 		LEFT JOIN 
@@ -91,7 +78,9 @@
 	    mt.is_receiver_exit,
 	    mht.is_receiver_read,
 	    mht.sender_del,
-	    p.file_name
+	    p.file_name,
+    	(SELECT ft.file_name FROM filestore_tb ft WHERE ft.idx_ref = mht.idx_message AND ft.idx_filetype = 6) as new_picname,
+    	(SELECT ft.origin_name FROM filestore_tb ft WHERE ft.idx_ref = mht.idx_message AND ft.idx_filetype = 6) as origin_name
 	FROM messageroom_tb mt
 	JOIN message_history_tb mht ON mt.idx_messageroom = mht.idx_messageroom
 	LEFT JOIN (
@@ -118,10 +107,14 @@
 			values (#{param4}, #{param2}, #{param3}, #{param1})
 	</insert>
 
-	<insert id="sendMessageWithFile">
+	 <insert id="sendMessageWithFile"
+	 	parameterType="message"
+	 	useGeneratedKeys="true" 
+		keyProperty="idx_message" 
+		keyColumn="idx_message">
 		INSERT INTO message_history_tb (idx_messageroom, sender, receiver , msg_content) 
-			values (#{param4}, #{param2}, #{param3}, #{param1})
-	</insert>
+			values (#{idx_messageroom}, #{idx_emp}, #{other_emp}, #{msg_content})
+	</insert> 
 
 	<select id="subjectCall" resultType="message">
  		SELECT et.idx_employee, et.emp_name as other_name, dt.de_name, p.file_name 

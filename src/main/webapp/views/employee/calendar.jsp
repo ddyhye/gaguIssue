@@ -177,7 +177,7 @@
           <h2><center>Employee Fullcalendar</center></h2>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
-		    <input type="hidden" id="idx_employee" value="${employee.idx_employee}">    
+		    <input type="hidden" id="idx_employee" value="${sessionScope.idxEmployee}"> 		    
 		    <br>
 		    <!-- [il]Modal -->
 		    <!-- Modal -->
@@ -236,7 +236,7 @@
 			                <div class="form-group">
 			                    <label for="detailTitle">일정명:</label>
 			                    <input type="text" class="form-control" id="detailTitle">
-			                    <input type="hidden" id="detailEventId" value="${employee.idx_emp_calendar}"> 	
+			                    <input type="hidden" id="detailEventId" value="${sessionScope.idx_emp_calendar}"> 	
 			                </div>
 			                <div class="form-group">
 			                    <label for="detailStartDate">시작 날짜:</label>

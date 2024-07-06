@@ -58,11 +58,13 @@ public class MessageService {
 		  		String content = lastContent.getMsg_content();
 		  		Timestamp send_time = lastContent.getSend_datetime();
 		  		String new_picname = lastContent.getFile_name();
+		  		String origin_name = lastContent.getOrigin_name();
 		  		logger.info("new_picname: " + new_picname);
 		  		
 		  		messageDTO.setMsg_content(content);
 		  		messageDTO.setReg_date(send_time);
 		  		messageDTO.setFile_name(new_picname); 		
+		  		messageDTO.setOrigin_name(origin_name);
 		  	} else {				
 		  		roomList.remove(i);
 		  		i = i - 1;
@@ -117,16 +119,25 @@ public class MessageService {
 		boolean result = false;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		
 		int idx_emp = employeeDAO.getEmpIdx(emp_id);
 		logger.info("emp_id -> idx_emp: " + idx_emp);
+		
+		MessageDTO dto = new MessageDTO();
+		dto.setIdx_messageroom(idx);
+		dto.setIdx_emp(idx_emp);
+		dto.setOther_emp(other_emp);
+		dto.setMsg_content(content);
+		
 
+		
 		if (file != null && !file.isEmpty()) {
 	        // 파일이 있는 경우 처리
 	        try {
-	        	sendMessageImage(file, idx_emp);
 	            // 파일 저장 후 메시지 전송
-	            int row2 = messageDAO.sendMessageWithFile(file.getOriginalFilename(), idx_emp, other_emp, idx);
+	            int row2 = messageDAO.sendMessageWithFile(dto);
+	            logger.info("message_idx : " + dto.getIdx_message());
+	            
+	            sendMessageImage(file, dto.getIdx_message());
 	            if (row2 == 1) {
 	                result = true;
 	            }
@@ -149,7 +160,7 @@ public class MessageService {
 	}
 	
 	
-	public String sendMessageImage(MultipartFile file, int idx_emp) throws Exception {
+	public String sendMessageImage(MultipartFile file, int idx_message) throws Exception {
         // 파일 이름 생성
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         
@@ -164,7 +175,7 @@ public class MessageService {
         String imageUrl = "/images/profile/" + fileName;
 
         // 데이터베이스에 파일 경로 저장 (DAO 호출)
-        messageDAO.saveProfileImagePath(file.getOriginalFilename(), fileName, idx_emp);
+        messageDAO.saveProfileImagePath(file.getOriginalFilename(), fileName, idx_message);
 
         return imageUrl;
     }
