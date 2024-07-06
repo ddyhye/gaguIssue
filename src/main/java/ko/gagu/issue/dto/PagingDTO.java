@@ -9,17 +9,11 @@ public class PagingDTO {
 	private int totalPage;
 	private String startDate;
 	private String endDate;
-	private int year;
 	private String searchKeyword;
 	private String searchOption;
 	private String sortOption;
 	
 	
-	public int getYear() {
-		return year;
-	}
-	public void setYear(int year) {
-		this.year = year;
 	
 	public String getSearchOption() {
 		return searchOption;
@@ -74,5 +68,50 @@ public class PagingDTO {
 		return "PagingDTO [filter=" + filter + ", page=" + page + ", totalPage=" + totalPage + ", startDate="
 				+ startDate + ", endDate=" + endDate + "]";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// [do] 페이징 처리 ,,, 사용할게요 ㅎㅎ
+	private int year;
+	private String doProductSearch;
+	private String doProductCategory;
+	private String doClientList;
+	// warn의 경우, 위의 3가지 값 중, 아무 곳에나 warn인지 확인하면 됨.
+	
+	public int getYear() {
+		return year;
+	}
+	public void setYear(int year) {
+		this.year = year;
+	}
+	public String getDoProductSearch() {
+		return doProductSearch;
+	}
+	public String getDoProductCategory() {
+		return doProductCategory;
+	}
+	public String getDoClientList() {
+		return doClientList;
+	}
+	public void setDoProductSearch(String doProductSearch) {
+		this.doProductSearch = doProductSearch;
+	}
+	public void setDoProductCategory(String doProductCategory) {
+		this.doProductCategory = doProductCategory;
+	}
+	public void setDoClientList(String doClientList) {
+		this.doClientList = doClientList;
+	}
+	
 	
 }

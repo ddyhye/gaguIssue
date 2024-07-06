@@ -64,6 +64,12 @@ public class MainController {
 		
 		return mainService.dashboard(session, rAttr);
 	}
+	// 대시보드 - 매출 현황 그래프
+	@PostMapping(value = "/main/salesGraph.ajax")
+	@ResponseBody	
+	public Map<String, Object> salesGraph() {
+		return mainService.salesGraph();			
+	}
 	
 	
 	
@@ -118,7 +124,7 @@ public class MainController {
 		
 		return mainService.annualHistoryAjax(session, map);
 	}
-	// 연차 리스트 필터링
+	// 연차 리스트 페이징
 	@PostMapping(value = "/common/listPaging.ajax")
 	@ResponseBody	
 	public Map<String, Object> listPaging(@RequestBody PagingDTO pagingDTO

@@ -552,7 +552,6 @@
          		})
          		.then(response => response.json())
          		.then(data => {
-         			console.log('알림 개수 업데이트');
          			if (data.alarmCnt > 0) {
 						document.getElementById('do-alarmCnt').innerText = data.alarmCnt;
 					} else {
