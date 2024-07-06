@@ -230,6 +230,13 @@
 		                          </tr>
 		                        </tbody>
 		                      </table>
+		                      
+		                      <!-- 페이징 -->
+		                      <div class="d-flex justify-content-center">								
+								  <nav aria-label="Page navigation">
+								      <ul class="pagination" id="pagination"></ul>
+								  </nav>
+							  </div>
 						</div>
 						<div class="do-lackList-ok">
 							<button id="lackBtn">출고하기</button>
@@ -310,6 +317,10 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    
+    <!-- pagination js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+ 
   </body>
   
   
@@ -342,7 +353,7 @@
     	clientList = document.getElementById('clientList').value;
     	listCall(productSearch, productCategory, clientList);
 	});
-    // 재고 부족 누를 경우,
+    // 미처리 건을 누를 경우,
     document.getElementById('do-warning').addEventListener('click', () => {
     	listCall('warn', 'warn', 'warn');
 	});

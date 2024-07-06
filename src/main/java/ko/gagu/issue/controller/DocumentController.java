@@ -25,7 +25,7 @@ import ko.gagu.issue.service.DocumentService;
 @Controller
 public class DocumentController {
 
-	Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(DocumentController.class);
 	
 	private final DocumentService ds;
 	
@@ -41,11 +41,9 @@ public class DocumentController {
 		return mav;
 	}
 
+	/* [jeong] 기안서 리스트 페이지로 이동 */
 	@GetMapping(value = "/document/list.go")
 	public ModelAndView documentListGo(HttpSession session) {
-		
-		// 1. 부서번호 가져와야함
-		// 2. 
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		return ds.fetchDocumentList(idxEmployee);
 	}	
@@ -93,6 +91,7 @@ public class DocumentController {
 		return response;
 	} 
 	
+	/* [jeong] 문서 승인 처리 */
 	@PostMapping(value = "/document/approval.do")
 	@ResponseBody
 	public Map<String, Object> documentApprovalDo(@RequestParam("signatureImage") MultipartFile signatureImage
@@ -107,6 +106,7 @@ public class DocumentController {
 		return response;
 	}
 	
+	/* [jeong] 문서 반려처리 */
 	@PostMapping(value = "/document/reject.do")
 	@ResponseBody
 	public Map<String, Object> documentRejectDo(HttpSession session
@@ -121,6 +121,7 @@ public class DocumentController {
 		return response;
 	}	
 
+	/* [jeong] 문서 회수 처리 */
 	@PostMapping(value = "/document/retract.do")
 	@ResponseBody
 	public Map<String, Object> documentRetractDo(HttpSession session) {
@@ -132,7 +133,7 @@ public class DocumentController {
 		return response;
 	}
 	
-	
+	/* [jeong] 필터링, 페이지 번호를 입력받고 페이징처리된 문서 리스트를 응답 */
 	@PostMapping(value = "/document/list.do")
 	@ResponseBody	
 	public Map<String, Object> documentListDo(@RequestBody PagingDTO pagingDTO

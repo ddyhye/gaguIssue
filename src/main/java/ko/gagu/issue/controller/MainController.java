@@ -17,11 +17,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.dto.product_tbDTO;
 import ko.gagu.issue.service.MainService;
 
@@ -54,19 +57,15 @@ public class MainController {
 		//session.setAttribute("emp_id", "admin");
 		
 		//birthDateTest();
-		
-		/*
-		 * if (session.getAttribute("emp_name")!= null) { String emp_name = (String)
-		 * session.getAttribute("emp_name"); String de_name = (String)
-		 * session.getAttribute("de_name");
-		 * 
-		 * model.addAttribute("emp_name", emp_name); model.addAttribute("de_name",
-		 * de_name); }
-		 */
+		EmployeeDTO dto = (EmployeeDTO) session.getAttribute("loginInfo");
+//		model.addAttribute("emp_name", dto.getEmp_name());
+//		model.addAttribute("de_name", dto.getDe_name());
 		
 		
 		return mainService.dashboard(session, rAttr);
 	}
+	
+	
 	
 	// [do] 대시보드 - 오늘의 출근 히스토리
 	@PostMapping(value="/gotoWorkTimeCheck.ajax")
@@ -118,6 +117,47 @@ public class MainController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		return mainService.annualHistoryAjax(session, map);
+	}
+	// 연차 리스트 필터링
+	@PostMapping(value = "/common/listPaging.ajax")
+	@ResponseBody	
+	public Map<String, Object> listPaging(@RequestBody PagingDTO pagingDTO
+			,HttpSession session) {
+		logger.info("pagingDTO : {}", pagingDTO);
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		
+		return mainService.paging(pagingDTO, idxEmployee);			
+	}
+	
+	
+	
+	// [do] 알람
+	@PostMapping(value="/alarmCnt.ajax")
+	@ResponseBody
+	public Map<String, Object> alarmCntAjax(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return mainService.alarmCntAjax(session, map);
+	}
+	@PostMapping(value="/alarmList.ajax")
+	@ResponseBody
+	public Map<String, Object> alarmListAjax(HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return mainService.alarmListAjax(session, map);
+	}
+	// 알림 읽음 처리
+	@PostMapping(value="/alarmRead.ajax")
+	@ResponseBody
+	public Map<String, Object> alarmRead(@RequestBody Map<String, Object> payload){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String idx_employeeStr = (String) payload.get("idx_employee");
+		int idx_employee = Integer.parseInt(idx_employeeStr);
+		String idx_alarmStr = (String) payload.get("idx_alarm");
+		int idx_alarm = Integer.parseInt(idx_alarmStr);
+		
+		return mainService.alarmRead(map, idx_alarm, idx_employee);
 	}
 	
 	

@@ -1,8 +1,14 @@
 package ko.gagu.issue.controller;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -23,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ko.gagu.issue.dto.EmployeeDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.service.EmployeeService;
 
 @Controller
@@ -49,16 +56,7 @@ public class EmployeeController {
 		logger.info("response : {}",response);
 		return response;
 	}
-
-//	@GetMapping(value="/employee/getAllCompanyEvents.ajax")
-//	@ResponseBody
-//	public Map<String, Object> getAllCompanyEvents(Model model){
-//		logger.info("getAllCompanyEvents 진입");
-//		Map<String, Object>response=new HashMap<String, Object>();
-//		employeeService.getAllCompanyEvents(response,model);
-//		logger.info("response : {}",response);
-//		return response;
-//	}
+	
 	
 	@PostMapping(value="/employee/addEvent.ajax")
 	@ResponseBody
@@ -121,7 +119,70 @@ public class EmployeeController {
 	        return errorResponse;
 	    }
 	}
-
+	
+		// [il] 개인 근태관리
+		@GetMapping(value="/employee/attendance.go")
+		public String employeeAttendance() {
+			logger.info("attendance calendar in");
+			return "employee/attendance";
+		}
+		
+		@GetMapping(value="/employee/getAttendance.ajax")
+		@ResponseBody
+		public Map<String, Object> getEmployeeAttendance(Integer idx_employee,Model model) {
+			logger.info("getEmployeeAttendance in");
+			logger.info("idx_employee : {}",idx_employee);
+			Map<String, Object> response = new HashMap<String, Object>();
+			employeeService.getEmployeeAttendance(response,idx_employee,model);
+			logger.info("response : {}",response);
+			return response;
+		}
+		
+		@GetMapping(value="/employee/getIdxTitle.ajax")
+		@ResponseBody
+		public Map<String, Object>employeeGetIdxTitle(Integer idx_employee){
+			logger.info("idx_employee: {}", idx_employee);
+		    
+		    Map<String, Object> response = employeeService.employeeGetIdxTitle(idx_employee);
+		    logger.info("response : {}", response);
+		    
+		    return response; 
+		}
+		
+		
+		@GetMapping(value="/employee/departmentAttendance.go")
+		public String departmentAttendance() {
+			return "employee/attendanceDepartment";
+		}
+		
+		@PostMapping(value="/employee/departmentAttendanceList.ajax")
+		@ResponseBody
+		public Map<String, Object>attendanceDepartment(HttpSession session,String date,String page, String cnt){
+			
+		    logger.info("페이지 당 보여줄 갯수 : "+cnt);
+			logger.info("요청 페이지 : " +page);
+			int idx_employee= (int) session.getAttribute("idxEmployee");
+			logger.info("idxEmployee : {}",idx_employee);
+			
+			java.util.Date selectedDate=null;
+			
+			try {
+				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+				selectedDate=dateFormat.parse(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			
+			int currentPage = Integer.parseInt(page);
+			int pagePerCnt = Integer.parseInt(cnt);
+			
+			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,selectedDate,currentPage,pagePerCnt);
+			logger.info("map : {}",map);
+			
+			return map;
+		}
+	
 
 	
 	
@@ -222,5 +283,38 @@ public class EmployeeController {
 		return "employee/ToDo";
 	}
 	
+	
+	
+	
+	
+	// [do] 로그아웃
+	@GetMapping(value="/logout.go")
+	public ModelAndView logout(HttpSession session, RedirectAttributes rAttr) {
+		ModelAndView mav = new ModelAndView();
+		
+		session.removeAttribute("loginInfo");
+		session.removeAttribute("emp_id");
+		
+		rAttr.addFlashAttribute("msg","로그아웃 성공, 로그인 페이지로 돌아갑니다...");
+		
+		mav.setViewName("redirect:/login.go");
+		
+		return mav;
+	}
+	
+	/* [jeong] 매출 관리 페이지로 이동 */
+	@GetMapping(value = "/common/salesHistory.go")
+	public ModelAndView salesHistoryGo(HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getSalesHistory(idxEmployee);	
+	}
+	
+	/* [jeong] 필터링, 검색, 정렬, 페이지 번호를 입력 받고 페이징 처리된 매출 내역을 응답 */
+	@PostMapping(value = "/common/salesHistoryPaging.do")
+	@ResponseBody
+	public Map<String, Object> papingDo(HttpSession session, @RequestBody PagingDTO pagingDTO) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getPaingSalesHistory(idxEmployee, pagingDTO);
+	}
 	
 }

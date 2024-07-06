@@ -74,9 +74,57 @@
 		margin-left: 232px;
 	}
 	
-	.selected-chat {
-    background-color: lightgray; /* 원하는 배경색으로 변경 */
-}
+	.chats-user .common-space.selected-chat {
+	    background-color: #9096a238; /* 원하는 색상으로 변경 */
+	}
+	.message_icon{
+	    margin-top: 50px;
+	    margin-left: 350px;
+	    opacity: 0.5;
+	    height: 500px;
+	    width: 500px;
+	}
+	
+    #previewContainer img{
+        position: absolute; /* 절대 위치 */
+	    top: -133px;
+    	right: -176px;
+	    max-width: 200px; /* 크기 조정 */
+	    pointer-events: none; /* 클릭 이벤트를 차단 */
+	    radius: 10px;
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+	#previewContainer {
+	    position: relative;
+	    display: inline-block;
+    }
+    
+    #cancel-btn {
+        position: absolute;
+	    top: -132px;
+	    right: -175px;
+	    background-color: rgb(255 0 0);
+	    color: white;
+	    border: none;
+	    border-radius: 50%;
+	    width: 20px;
+	    height: 20px;
+	    font-size: 19px;
+	    cursor: pointer;
+	    text-align: center;
+	    line-height: 0px;
+	    padding: 0;
+  	}
+	 .msger-chat {
+	    overflow-y: auto;
+	    max-height: 570px; /* 필요한 경우 높이 조정 */
+	    padding-bottom: 10px; /* 충분한 여유 공간 */
+	}
+  
+  	.hide-text {
+    	display: none;
+	}
+
 	</style>
   </head>
   <body> 
@@ -94,7 +142,6 @@
 		
 		      <!-- Modal body -->
 		      <div class="modal-body">
-
 				<div class="container-fluid">
 				  <div class="row g-0">
 				    <div class="col-xxl-3 col-xl-4 col-md-5 box-col-5">
@@ -122,83 +169,15 @@
 				            <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
 				              
 				              <div class="search-contacts">
-				                <input class="form-control" name="contactSearch" id="contactSearch" type="text" placeholder="이름 또는 전화번호 검색 ">
+				                <input class="form-control" name="contactSearch" id="contactSearch" type="text" placeholder="이름 또는 사원번호 검색 ">
 				                <svg>
 				                  <use href="/assets/svg/icon-sprite.svg#stroke-search"></use>
 				                </svg>
 				              </div>
 				              <div class="contact-wrapper">
-				                <p>A</p>
-				                <ul class="border-0">
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                      <div>
-				                        <span>Andres Williamson</span>
-				                        <p>191-900-5689</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                </ul>
-				                <p>B</p>
-				                <ul class="border-0">
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                      <div>
-				                        <span>Britlin Weed</span>
-				                        <p>698-781-5581</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <div class="custom-name bg-light-secondary">
-				                        <p class="txt-secondary f-w-500">BD</p>
-				                      </div>
-				                      <div>
-				                        <span>Brendra Dixit</span>
-				                        <p>589-789-2563</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                </ul>
-				                <p>C</p>
-				                <ul class="border-0">
-				                  <li class="common-space">
-				                    <div class="chat-time">
-				                      <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                      <div>
-				                        <span>Cody Fisher</span>
-				                        <p>983-333-4545</p>
-				                      </div>
-				                    </div>
-				                    <div class="contact-edit">
-				                      <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                        <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                      </svg>
-				                      <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				                    </div>
-				                  </li>
-				                </ul>
+				              
+				              
+				              
 				              </div>
 				            </div>
 				          </div>
@@ -211,70 +190,46 @@
 				          <div class="common-space">
 				            <div class="chat-time">
 				              <div class="active-profile">
-				                <img class="img-fluid rounded-circle" src="/img/ahruru.png" alt="user">
-				                <div class="status bg-success"></div>
+				                <img class="img-fluid" src="/img/notice_icon.png" alt="user">
 				              </div>
 				              <div>
-				                <span>Darrell Steward</span>
-				                <p>Online</p>
+				                <span><h4>대화방을 선택해주세요..</h4></span>
 				              </div>
+				              	
 				            </div>
 				            <div class="d-flex gap-2">
-				              <div class="contact-edit chat-alert"><i class="icon-info-alt"></i></div>
-				              <div class="contact-edit chat-alert">
-				                <svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">
-				                  <use href="/assets/svg/icon-sprite.svg#menubar"></use>
-				                </svg>
-				                <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">View details</a><a class="dropdown-item" href="#!">Send messages</a><a class="dropdown-item" href="#!">Add to favorites</a></div>
-				              </div>
+				              
 				            </div>
 				          </div>
 				        </div>
 				        <div class="right-sidebar-Chats">
 				          <div class="msger">
 				            <div class="msger-chat">
-				              <div class="msg left-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Theresa Webb</div>
-				                    <div class="msg-info-time">01:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">Hey, I'm looking to redesign my website. Can you help me? &#x1F604;</div>
-				                </div>
-				              </div>
-				              <div class="msg right-msg">
-				                <div class="msg-img"></div>
-				                <div class="msg-bubble">
-				                  <div class="msg-info">
-				                    <div class="msg-info-name">Darrell Steward</div>
-				                    <div class="msg-info-time">12:14 PM</div>
-				                  </div>
-				                  <div class="msg-text">Absolutely! I'd be happy to assist you.</div>
-				                </div>
-				              </div>
+				              
+							<img class="img-fluid message_icon" src="/img/message_icon.png" alt="user">
+
 				            </div>
 				            <form class="msger-inputarea">
 				              <div class="dropdown-form dropdown-toggle" role="main" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-plus"></i>
 				                <div class="chat-icon dropdown-menu dropdown-menu-start">
-				                  <div class="dropdown-item mb-2">
+				                  <div class="dropdown-item mb-2" id="attachment-btn">
 				                  <!-- [JAE] SVG 요소의 viewBox 속성을 사용하여 SVG의 보이는 영역과 실제 클릭 가능한 영역을 조정 -->
-				                    <svg id="attachment-btn" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+				                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
 									  <use href="/assets/svg/icon-sprite.svg#attchment"></use>
 									</svg>
 				                  </div>
-				                  
 				                </div>
+				                <span id="previewContainer"></span>
 				              </div>
 				              <input class="msger-input two uk-textarea" type="text" id="sendText" placeholder="보내실 쪽지를 입력해주세요.">
 				              <div class="open-emoji">
 				                <div class="second-btn uk-button"></div>
 				              </div>
 				              <button class="msger-send-btn" id="send_btn" type="submit"><i class="fa fa-location-arrow"></i></button>
-				              
 				              <!-- 숨겨진 파일 입력 요소 -->
-  							<input type="file" id="file-upload" style="display: none;">
+  							  <input type="file" id="file-upload" name="file-send" style= "display: none;">
 				            </form>
+				            
 				          </div>
 				        </div>
 				      </div>
@@ -313,7 +268,7 @@
                         <div class="row mb-2">
                           <div class="profile-title">
                             <div class="d-flex">                        
-                            <img class="img-70 rounded-circle" alt="" src="/img/ahruru.png">
+                            <img class="img-70 rounded-circle" alt="" src="/file/profile_picture/ahruru.png">
                               <div class="flex-grow-1">
                                 <h4 class="mb-1"></h4>
                                 <p class="title">직위</p>
@@ -350,7 +305,7 @@
 	
 	<!-- 쪽지 보내기 모달 -->
 	<div class="modal fade" id="Modal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
+	  <div class="modal-dialog modal-dialog-centered custom-modal" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
@@ -361,16 +316,17 @@
 	          <div class="form-group">
 	            <label for="recipient-name" class="col-form-label">받는이:</label>
 	            <input type="text" class="form-control" value="" id="recipient-name" readonly>
+	            <input type="text" id="other_idx" style="display: none;">
 	          </div>
 	          <div class="form-group">
 	            <label for="message-text" class="col-form-label">메시지:</label>
 	            <textarea class="form-control" id="message-text"></textarea>
 	          </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >취소</button>
+		        <button type="button" class="btn btn-primary" id="CreatAndsend_btn">보내기</button>
+		      </div>
 	        </form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal2()">Close</button>
-	        <button type="button" class="btn btn-primary">Send message</button>
 	      </div>
 	    </div>
 	  </div>
@@ -395,7 +351,20 @@
         if (event.key === "Enter") {
             event.preventDefault();
             messageSearch = document.getElementById('messageSearch').value;
-            loadChatRooms(messageSearch);
+            var emp_id = "${sessionScope.emp_id}";
+           //	 console.log("------",emp_id);
+           
+           // Interval 중지
+	       if (chatIntervalId) {
+	           clearInterval(chatIntervalId);
+	       }
+           
+           loadChatRooms(emp_id, messageSearch);
+           
+           // Interval 다시 시작 (필요하다면)
+           chatIntervalId = setInterval(function() {
+               loadChatRooms(emp_id, messageSearch);
+           }, 5000);
         }
     });
 	
@@ -415,13 +384,14 @@
     	 document.getElementById('myModal').style.display = 'none';
     }
     
-    function closeModal2(){
+    /* function closeModal2(){
    	 document.getElementById('Modal3').style.display = 'none';
-   }
+   } */
     
-    function secModal(emp_name){
+    function secModal(emp_name, idx_emp){
    	 console.log("메시지 보내기 모달 오픈");
    	 $('#recipient-name').val(emp_name);
+   	 $('#other_idx').val(idx_emp);
    	 document.getElementById('myModal').style.display = 'block';
     }
     
@@ -449,6 +419,12 @@
             	 $('p.custom-text1').text(data.de_name);
             	 $('p.custom-text2').text(data.idx_title);
             	 $('p.custom-text3').text(data.emp_email);
+            	 if(data.file_name != null){
+            	 	 $('.img-70.rounded-circle').attr('src', '/file/profile_picture/' + data.file_name);            		 
+            	 }else{
+            		 $('.img-70.rounded-circle').attr('src', '/img/user_icon.png');
+            	 }
+            	 
              },
              error: function(error) {
             	 console.log("error",error);
@@ -462,45 +438,53 @@
     $('#send_btn').click(function(event) {
     	event.preventDefault();
     	console.log("보내기 click");
-    	var emp_id = 1; // 나중에 세션으로 대체
+    	var emp_id = "${sessionScope.emp_id}"; // 나중에 세션으로 대체
 	    sendMessage(chat_idx, chat_user);
 	    setTimeout(function() {
 			messageCall(chat_idx, emp_id, chat_user);
-			loadChatRooms(); // '${loginInfo.email}' 나중에 세션으로 대체
+			loadChatRooms(emp_id); // '${loginInfo.email}' 나중에 세션으로 대체
 		}, 100);
 	    $('#sendText').val('');
 	});
-    
 
-    document.getElementById('send_btn').addEventListener('submit', function(event) {
-        event.preventDefault(); // 폼 제출 기본 동작 막기
-        var idx = 0; // 적절한 값으로 설정
-        var other_emp = ''; // 적절한 값으로 설정
-        sendMessage(idx, other_emp);
-    });    
     
-    
+    // 메시시 보내기
 	function sendMessage(idx, other_emp) {
 		console.log("메시지 보내기");
+		
+		var emp_id = "${sessionScope.emp_id}";
 		var content = $('#sendText').val();
-		if(content == '') return alert("빈 내용은 전송할 수 없습니다.");
+		var send_pic = document.getElementById('file-upload').files[0];
+		if(content == '' && !send_pic) {
+	        return alert("빈 내용은 전송할 수 없습니다.");
+	    }
 		if(idx === 0 || other_emp === '') return alert("시스템 에러");
-		$.ajax({
-			type: 'POST',
-			url: '/messageSend.ajax',
-			data: {
-				'idx': idx,
-				'emp_id': 1, // 나중에 세션값으로 대체
-				'other_emp' : other_emp,
-				'content': content
-			},
-			dataType: 'JSON',
-			success: function(data) {
-				console.log(data.result);
-			}, error: function(error) {
-				console.log(error);
-			}
-		});
+		
+		var formData = new FormData();
+	    formData.append('idx', idx);
+	    formData.append('emp_id', emp_id);
+	    formData.append('other_emp', other_emp);
+	    formData.append('content', content);
+
+	    if(send_pic) {
+	        formData.append('file-send', send_pic);
+	    }
+		
+	    $.ajax({
+	        type: 'POST',
+	        url: '/messageSend.ajax',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        dataType: 'JSON',
+	        success: function(data) {
+	            console.log(data.result);
+	            loadChatRooms("${sessionScope.emp_id}");
+	        },
+	        error: function(error) {
+	            console.log(error);
+	        }
+	    });
 	}
 
 
@@ -516,12 +500,121 @@
 	  fileUpload.addEventListener('change', function (event) {
 	    var files = event.target.files;
 	    if (files.length > 0) {
-	      // 파일이 선택된 경우 처리 로직 추가
-	      console.log('Selected file:', files[0]);
-	    }
+	        // 파일이 선택된 경우 처리 로직 추가
+	        console.log('Selected file:', files[0]);
+
+	        var file = files[0];
+	        var fileType = file.type;
+	        var validExtensions = ['image/png', 'image/jpeg'];
+
+	        if (!validExtensions.includes(fileType)) {
+	            alert("png, jpg 이외의 파일은 선택이 불가합니다.");
+	            fileUpload.value = ''; // 파일 입력 요소 초기화
+	            return;
+	        }
+	        
+	        
+	        
+	        
+	        var reader = new FileReader();
+
+	        reader.onload = function(e) {
+	          var img = document.createElement('img');
+	          img.src = e.target.result;
+	          img.style.maxWidth = '200px'; // 미리보기 이미지 크기 조절
+	          previewContainer.innerHTML = ''; // 이전 미리보기 제거
+	          previewContainer.appendChild(img);
+	          
+	       	  // 취소 버튼 생성 및 추가
+	          var cancelBtn = document.createElement('button');
+	          cancelBtn.id = 'cancel-btn';
+	          cancelBtn.innerHTML = '&times;';
+	          previewContainer.appendChild(cancelBtn);
+
+	          // 취소 버튼 표시
+	          cancelBtn.style.display = 'block';
+	
+	          cancelBtn.addEventListener('click', function() {
+	  		    fileUpload.value = ''; // 파일 입력 요소 초기화
+	  		    previewContainer.innerHTML = ''; // 미리보기 이미지 제거
+	  	  		});
+	  	  
+	        };
+
+	        reader.readAsDataURL(file);
+	      }
 	  });
 	  
-    
+	  
+      function selectChatRoom(element) {
+   		  console.log("클릭한 대화방 색 변경");
+   		  console.log("element",element);
+   	      // 모든 채팅방 리스트에서 선택된 클래스 제거
+   	      var chatRooms = document.querySelectorAll('.chats-user .common-space');
+   	      chatRooms.forEach(function(chatRoom) {
+   	          chatRoom.classList.remove('selected-chat');
+   	      });
+
+   	      // 클릭된 채팅방에 선택된 클래스 추가
+   	      element.classList.add('selected-chat');
+   	   	  console.log(element.classList); 
+   	  }
+      
+      // 메시지 보내기 & 방 만들기
+      $('#CreatAndsend_btn').click(function(event) {
+	      	event.preventDefault();
+	      	console.log("방 만들기 & 쪽지 보내기");
+	      	var emp_id = "${sessionScope.emp_id}"; // 나중에 세션으로 대체
+	      	var other_idx = $('#other_idx').val();
+	      	var content = $('#message-text').val();
+	      	//console.log("content :::", content);
+	      	//console.log("상대방 : ", other_idx);
+	  	    sendAndCreate(emp_id, other_idx, content);
+	  	    setTimeout(function() {
+	  			//messageCall(chat_idx, emp_id, chat_user);
+	  			loadChatRooms(emp_id); // 
+	  		}, 100);
+	  	    // $('#sendText').val('');
+	  	});
+      
+      function sendAndCreate(emp_id, other_idx, content) {
+  		console.log("메시지 보내기");
+  		var emp_idx = "${sessionScope.emp_id}";
+  		console.log("#####", emp_idx, other_idx);
+  		if(content == '') return alert("빈 내용은 전송할 수 없습니다.");
+  		//if(idx === 0 || other_emp === '') return alert("시스템 에러");
+  		$.ajax({
+  			type: 'POST',
+  			url: '/sendAndCreate.ajax',
+  			data: {
+  				//'idx': idx,
+  				'emp_id': emp_id,
+  				'other_emp' : other_idx,
+  				'content': content
+  			},
+  			dataType: 'JSON',
+  			success: function(data) {
+  				console.log(data.result);
+  				$('#Modal3').modal('hide');
+         		$('#message-text').val('');
+  				loadChatRooms(emp_id);
+  				messageCall(data.room_idx, emp_idx , other_idx);
+  				console.log("room_idx:::::",data.room_idx);
+         		subjectCall(other_idx);
+  			}, error: function(error) {
+  				console.log(error);
+  			}
+  		});
+  	}
+      
+      
+     
+      
+      
+      
+      
+      
+ /*    
 	  document.addEventListener('DOMContentLoaded', function() {
 		  console.log("00000002번쨰 모달0000000");
 	    document.getElementById('openSecondModal').addEventListener('click', function(event) {
@@ -539,22 +632,14 @@
 	      secondModal.show();
 	    });
 	  });  
-	 
+	  */
 	  
 	  
 
-	  function selectChatRoom(element) {
-		  console.log("클릭한 대화방 색 변경");
-		  console.log("element",element);
-	      // 모든 채팅방 리스트에서 선택된 클래스 제거
-	      var chatRooms = document.querySelectorAll('.chats-user .common-space');
-	      chatRooms.forEach(function(chatRoom) {
-	          chatRoom.classList.remove('selected-chat');
-	      });
-
-	      // 클릭된 채팅방에 선택된 클래스 추가
-	      element.classList.add('selected-chat');
-	  }
+	  
+		
+	  
+	  
 	</script>
 	
     <!-- latest jquery-->

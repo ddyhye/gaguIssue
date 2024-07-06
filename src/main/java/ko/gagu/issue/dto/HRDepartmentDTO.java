@@ -1,6 +1,7 @@
 package ko.gagu.issue.dto;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.apache.ibatis.type.Alias;
@@ -25,12 +26,19 @@ public class HRDepartmentDTO {
 	private String emp_email_pw;
 	private String emp_phone_number;
 	private Date emp_birth_date;
-	private Timestamp emp_hire_date;
-	private Timestamp emp_term_date;
+	private Date emp_hire_date;
+	private java.sql.Date emp_term_date;
 	private String emp_address;
 	private boolean first_login;
 	private String de_char;
 	private String de_name;
+	private String photo_url;	
+	private String title_name;
+	private int leave_days;
+	private int usage_days;
+	private int lu_usage_days;
+	private Date lu_start_date;
+	private Date lu_end_date;
 	
 	
 	
@@ -143,16 +151,16 @@ public class HRDepartmentDTO {
 	public void setEmp_birth_date(Date emp_birth_date) {
 		this.emp_birth_date = emp_birth_date;
 	}
-	public Timestamp getEmp_hire_date() {
+	public Date getEmp_hire_date() {
 		return emp_hire_date;
 	}
-	public void setEmp_hire_date(Timestamp emp_hire_date) {
+	public void setEmp_hire_date(Date emp_hire_date) {
 		this.emp_hire_date = emp_hire_date;
 	}
-	public Timestamp getEmp_term_date() {
-		return emp_term_date;
-	}
-	public void setEmp_term_date(Timestamp emp_term_date) {
+	public java.sql.Date getEmp_term_date() {
+        return emp_term_date;
+    }
+	public void setEmp_term_date(java.sql.Date emp_term_date) {
 		this.emp_term_date = emp_term_date;
 	}
 	public String getEmp_address() {
@@ -178,6 +186,48 @@ public class HRDepartmentDTO {
 	}
 	public void setDe_name(String de_name) {
 		this.de_name = de_name;
+	}
+	public String getTitle_name() {
+		return title_name;
+	}
+	public void setTitle_name(String title_name) {
+		this.title_name = title_name;
+	}
+	public int getLeave_days() {
+		return leave_days;
+	}
+	public void setLeave_days(int leave_days) {
+		this.leave_days = leave_days;
+	}
+	public String getPhoto_url() {
+		return photo_url;
+	}
+	public void setPhoto_url(String photo_url) {
+		this.photo_url = photo_url;
+	}
+	public int getLu_usage_days() {
+		return lu_usage_days;
+	}
+	public void setLu_usage_days(int lu_usage_days) {
+		this.lu_usage_days = lu_usage_days;
+	}
+	public Date getLu_start_date() {
+		return lu_start_date;
+	}
+	public void setLu_start_date(Date lu_start_date) {
+		this.lu_start_date = lu_start_date;
+	}
+	public Date getLu_end_date() {
+		return lu_end_date;
+	}
+	public void setLu_end_date(Date lu_end_date) {
+		this.lu_end_date = lu_end_date;
+	}
+	public int getUsage_days() {
+		return usage_days;
+	}
+	public void setUsage_days(int usage_days) {
+		this.usage_days = usage_days;
 	}
 
 	

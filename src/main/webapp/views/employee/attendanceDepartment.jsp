@@ -38,6 +38,45 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    <!-- [il] datepicker -->    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- [il] 페이징 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+    
+   
+    
+    
+    <style>
+        .scrollable-table {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            text-align: center;
+            padding: 5px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .filter {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+    
+    
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -82,28 +121,123 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
           <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
+		  <h1>부서원 근태 내역</h1>
+		  <div class="form-group">
+		  	<label for="date">근무일</label>
+		  	<input type="date" class="form-control" id="date" style="width: 200px;">
+		  </div>
+		  
+		  <!-- 부서원 목록 테이블 -->
+		  <div id="employeeTableContainer" style="display: none;">
+		      <h2>부서원 목록</h2>
+		      <table id="employeeTable" border="1">
+		          <thead>
+		              <tr>
+		                  <th>직원 ID</th>
+		                  <th>이름</th>
+		                  <th>상태</th>
+		              </tr>
+		          </thead>
+		          <tbody>
+		              <!-- 데이터가 여기에 추가됩니다. -->
+		          </tbody>
+		      </table>
+		  </div>
+		  <div class="container">
+			<nav aria-label="Page navigation" style="text-align: center">
+				<ul class="pagination" id="pagination"></ul>
+			</nav>
+		  </div>
+
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+        
       </div>
     </div>
+    <script>
+    	var selectedDate = document.getElementById("date").value;
+    	var showPage = 1;
+    	$(document).ready(function() {
+            // 오늘 날짜를 yyyy-mm-dd 형식으로 반환하는 함수
+            function getTodayDate() {
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+                var yyyy = today.getFullYear();
+
+                return yyyy + '-' + mm + '-' + dd;
+            }
+
+            // 날짜 입력 필드에 기본값으로 오늘 날짜 설정
+            $("#date").val(getTodayDate());
+
+            var selectedDate = $("#date").val();
+            var showPage = 1;
+
+            // 날짜 선택기가 변경될 때마다 fetchDepartmentAttendance 호출
+            $("#date").change(function() {
+                selectedDate = $(this).val();
+                fetchDepartmentAttendance(selectedDate, showPage);
+            });
+
+            // 페이지 로드 시 fetchDepartmentAttendance 호출
+            fetchDepartmentAttendance(selectedDate, showPage);
+
+            function fetchDepartmentAttendance(selectedDate, showPage) {
+                $.ajax({
+                    type: "get",
+                    url: "./getDepartmentAttendance.ajax",
+                    data: {
+                        date: selectedDate,
+                        page: showPage,
+                        cnt: 15
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // 테이블 초기화
+                        $("#employeeTable tbody").empty();
+                        
+                        drawList(data.attendanceList);
+                        $('#pagination').twbsPagination({
+                            startPage: 1, // 시작페이지
+                            totalPages: data.totalPages, // 총 페이지 수
+                            visiblePages: 5, // 보여줄 페이지 수 1,2,3,4,5
+                            onPageClick: function(evt, pg) { // 페이지 클릭시 실행 함수
+                                console.log(pg); // 클릭한 페이지 번호
+                                num = pg;
+                                listCall(pg);
+                            }
+                        });
+
+                        // 테이블을 보이도록 설정
+                        $("#employeeTableContainer").show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX request failed: " + error);
+                    }
+                });
+            }
+        });
+    	function drawList(list){
+    	    
+    		var content = '';
+
+    		for(item of list){
+    		   /* content += '<div class="crew-item">'; */
+    		   content +=  item.idx_employee;
+    		   content +=  item.emp_name;
+    		   content +=  item.ah_check_in;
+    		   content +=  item.ah_check_out;
+    		   content +=  item.ah_status;
+    		   /* content += '</div>'; */
+    		}
+
+    
+    </script>
+    
     <!-- latest jquery-->
-    <script src="/assets/js/jquery.min.js"></script>
+    <!-- <script src="/assets/js/jquery.min.js"></script> -->
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
@@ -130,8 +264,8 @@
     <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
-    <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+<!--     <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script> -->
     <script src="/assets/js/typeahead/handlebars.js"></script>
     <script src="/assets/js/typeahead/typeahead.bundle.js"></script>
     <script src="/assets/js/typeahead/typeahead.custom.js"></script>

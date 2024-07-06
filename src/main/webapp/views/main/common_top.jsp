@@ -5,7 +5,6 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	<style>
-	    
     	
 	</style>
 	
@@ -59,63 +58,28 @@
                 
                 <!-- do: 알림 -->
                 <li class="onhover-dropdown">
-                  <div class="notification-box">
+                  <div class="notification-box" id="do-alarmIcon">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#notification"></use>
-                    </svg><span class="badge rounded-pill badge-primary">4 </span>
+                    </svg><span class="badge rounded-pill badge-primary" id="do-alarmCnt">4 </span>
                   </div>
-                  <div class="onhover-show-div notification-dropdown">
+                  <div class="onhover-show-div notification-dropdown do-overflow">
                     <h5 class="f-18 f-w-600 mb-0 dropdown-title">Notifications</h5>
-                    <ul class="notification-box">
+                    <ul class="notification-box do-alarm" id="do-alarm">
                       <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
                         <div class="d-flex justify-content-between">
                           <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-primary"><img class="w-auto" src="/assets/images/dashboard/icon/wallet.png" alt="Wallet"></div>
-                            <div class="flex-grow-1"> <a href="private-chat.go">
-                                <h6 class="m-0">Daily offer added</h6></a>
+                            <!-- <div class="flex-shrink-0 bg-light-primary"><img class="w-auto" src="/assets/images/dashboard/icon/wallet.png" alt="Wallet"></div> -->
+                            <div class="flex-grow-1"> 
+<!--                             	<a href="private-chat.go"> -->
+                                	<h6 class="m-0">Daily offer added</h6>
+<!--                                 </a> -->
                               <p class="m-0">User-only offer added</p>
                             </div>
                           </div>
                           <button class="btn-close btn-close-white shadow-none" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
                       </li>
-                      <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"> 
-                        <div class="d-flex justify-content-between">
-                          <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-info"><img class="w-auto" src="/assets/images/dashboard/icon/shield-dne.png" alt="Shield-dne"></div>
-                            <div class="flex-grow-1"> <a href="private-chat.go">
-                                <h6 class="m-0">Product Review</h6></a>
-                              <p class="m-0">Changed to a workflow</p>
-                            </div>
-                          </div>
-                          <button class="btn-close btn-close-white shadow-none" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                      </li>
-                      <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">  
-                        <div class="d-flex justify-content-between">
-                          <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-warning"><img class="w-auto" src="/assets/images/dashboard/icon/graph.png" alt="Graph"></div>
-                            <div class="flex-grow-1"> <a href="private-chat.go">
-                                <h6 class="m-0">Return Products</h6></a>
-                              <p class="m-0">52 items were returned</p>
-                            </div>
-                          </div>
-                          <button class="btn-close btn-close-white shadow-none" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                      </li>
-                      <li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"> 
-                        <div class="d-flex justify-content-between"> 
-                          <div class="toast-body d-flex p-0">
-                            <div class="flex-shrink-0 bg-light-tertiary"><img class="w-auto" src="/assets/images/dashboard/icon/ticket-star.png" alt="Ticket-star"></div>
-                            <div class="flex-grow-1"> <a href="private-chat.go">
-                                <h6 class="m-0">Recently Paid</h6></a>
-                              <p class="m-0">Card payment of $343   </p>
-                            </div>
-                          </div>
-                          <button class="btn-close btn-close-white shadow-none" type="button" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                      </li>
-                    </ul>
                   </div>
                 </li>
                 
@@ -146,7 +110,7 @@
                     <li><a href="task.go"><i data-feather="check-circle"></i><span>나의 근태</span></a></li>
                     <li><a href="<c:url value='/employee/calendar.go'/>"><i data-feather="calendar"></i><span>Calendar</span></a></li>
                     <li><a href="todo.go"><i data-feather="edit-3"> </i><span>To Do !</span></a></li>
-                    <li><a href="login.go"><i data-feather="log-in"> </i><span>Log out</span></a></li>
+                    <li><a href="<c:url value='/logout.go'/>"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                   </ul>
                 </li>
                 
@@ -171,6 +135,8 @@
              
              $(document).ready(function() {
             	    $('#messageButton').click(function(e) {
+            	    	var emp_id = "${sessionScope.emp_id}";
+            	    	console.log("세션ID: ", emp_id);
             	        e.preventDefault();
             	        $.ajax({
             	            url: '/noteMessage2',
@@ -185,8 +151,7 @@
             	               
             	                
             	                // 대화방 목록을 불러오는 함수 호출
-            	                loadChatRooms();
-            	              //  loadContact();
+            	                loadChatRooms(emp_id);
             	            },
             	            error: function() {
             	                alert('쪽지함을 불러오는데 실패했습니다.');
@@ -197,12 +162,14 @@
              
              function loadContact(search){
             	 console.log("연락처 불러오기 아작스 요청");
+            	 var emp_id = "${sessionScope.emp_id}";
             	 $.ajax({
                      url: '/getContact.ajax',
                      method: 'POST',
                      dataType:'JSON',
                      data: {
-                    	 'contactSearch': search,                    	 
+                    	 'contactSearch': search,
+                    	 'emp_id':emp_id
                      },
                      success: function(data) {
                     	 // console.log(data);
@@ -216,7 +183,7 @@
              }
              
              function drawContactList(data){
-            	 console.log(data);
+            	 // console.log(data);
             	 $('.contact-wrapper').empty();
             	 var content = '';
             	 
@@ -224,7 +191,11 @@
           			content +=	'<ul class="border-0">'; 
           			content +=		'<li class="common-space">';
           			content +=		'<div class="chat-time">';
-          			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+          			if(item.file_name != null){
+		                content += '<img class="img-fluid rounded-circle" alt="user" src="/file/profile_picture/'+item.file_name+'">';			                	
+	                }else{
+	                	content += '<img class="img-fluid rounded-circle" alt="user" src="/img/user_icon.png">';    	
+	                }
           			content +=		'<div>';
           			content +=		'<span>'+item.emp_name+'</span>';
           			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
@@ -235,7 +206,7 @@
           			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
           			content +=		'</svg>';
           			content +=		'<div class="dropdown-menu dropdown-menu-end">';
-          			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
+          			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\', \'' + item.idx_employee + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
           			content +=		'<button id="openSecondModal" onclick="secModal2(\'' + item.idx_employee + '\')" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button>';
           			content +=		'</div>';
           			content +=		'</li>';
@@ -244,18 +215,19 @@
             	 $('.contact-wrapper').append(content);
              }
              
-            
+     		
              
-             
-             function loadChatRooms(search) {
+             function loadChatRooms(emp_id, search) {
             	 console.log("대화방 불러오기 아작스 요청");
-            	 console.log(search);
+            //	 console.log(search);
+            //	 console.log(emp_id);
                  $.ajax({
                      url: '/getChatRooms',
                      method: 'POST',
                      dataType:'JSON',
                      data: {
-                    	 'messageSearch': search,                    	 
+                    	 'messageSearch': search,
+                    	 'emp_id': emp_id
                      },
                      success: function(data) {
                     	 // console.log(data);
@@ -270,12 +242,16 @@
              }
              
            
-             
+
            
               
              
              function drawRoomList(data) {
             	// console.log(data);
+            	var emp_id = "${sessionScope.emp_id}";
+            	// console.log(emp_id);
+            	console.log(data.messageSearch);
+            	console.log("원래 사진 이름: ",data.roomList.origin_name);
          		$('.chats-user').empty();
          		var content = '';
          		if (!data.roomList || data.roomList.length === 0) {
@@ -283,15 +259,23 @@
          		}
          		
          		for (item of data.roomList) {
-         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\'); selectChatRoom(this);">'; 
+         			content +=	'<li class="common-space" onclick="viewRoomContent(\'' + item.idx_messageroom + '\', \'' + item.other_emp + '\',\'' + "${sessionScope.emp_id}" + '\', \'' + data.messageSearch + '\'); selectChatRoom(this);">'; 
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
-         			content +=			'<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
+         			if(item.file_name != null){
+		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+	                }else{
+	                	content += '<img class="img-fluid rounded-circle" alt="" src="/img/user_icon.png">';    	
+	                }
 //         			content +=			'<div class="status bg-success"></div>';
          			content +=		'</div>';
          			content +=		'<div>';
          			content +=		'<span>'+item.name+'</span>';
-         			content +=		'<p>'+item.content+'</p>';
+         			if(item.origin_name){
+         			content +=		'<p>(사진)</p>';
+         			}else{
+         			content +=		'<p>'+item.msg_content+'</p>';         				
+         			}
          			content +=		'</div>';
          			content +=		'</div>';
          			content +=		'<div>';
@@ -315,19 +299,37 @@
          	  
          	}
          	
-             function viewRoomContent(idx, other_emp){
-         		var emp_id = 1;
+             var chatIntervalId; // interval ID를 저장할 전역 변수
+
+             
+             function viewRoomContent(idx, other_emp, emp_id, search){
+            	
+            	// 기존 interval이 있으면 취소
+           	    if (chatIntervalId) {
+           	        clearInterval(chatIntervalId);
+           	    }
+            	
+            	//console.log("방번호 : ", idx);
+            	//console.log("상대방 idx : ", other_emp);
+            	//console.log("자신 id 서버에서 idx로 바꿔야함 : ", emp_id);
          		messageCall(idx, emp_id , other_emp);
          		subjectCall(other_emp);
          		
          		chat_idx = idx;
          		chat_user = other_emp;
+         		
+         		
+         		// 5초마다 새 메시지 로드
+         	    chatIntervalId = setInterval(function() {
+         	    	messageCall(idx, emp_id , other_emp);
+         	    	loadChatRooms(emp_id, search)
+         	    }, 5000);
          	}
              
              
             
              function subjectCall(other_emp) {
-            	 console.log(other_emp);
+            	 // console.log(other_emp);
          		$.ajax({
          			type: 'POST',
          			url: '/subjectCall.ajax',
@@ -348,40 +350,54 @@
              
              
             function drawSubject(data){
-            	$('.chat-time').empty();
+            	$('.right-sidebar-title').empty();
             	var content = '';
             	 
             	
             	for (item of data.subjectCall) {	
+            		content += '<div class="common-space">';
+            		content += '<div class="chat-time">';
 	    			content += '<div class="active-profile">';
-	    			content += '<img class="img-fluid rounded-circle" src="/img/'+item.new_picname+'" alt="user">';
-	    			content += '<div class="status bg-success"></div>';
+	    			if(item.file_name != null){
+		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+	                }else{
+	                	content += '<img class="img-fluid rounded-circle" alt="" src="/img/user_icon.png">';    	
+	                }
 	    			content +=		'</div>';
 	    			content +=		'<div>';
 	    			content +=		'<span>'+item.other_name+'</span>';
 	    			content +=		'<p>'+item.de_name+'</p>';
 	    			content +=		'</div>';
-	    			
+	    			content +=		'</div>';
+	    			content +=		'<div class="d-flex gap-2">';
+	    			content +=		'<div class="contact-edit chat-alert">';
+	    			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
+	    			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
+	    			content +=		'</svg>';
+	    			content +=		'<div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#!">나가기</a></div>';
+	    			content +=		'</div>';
+	    			content +=		'</div>';
+	    			content +=		'</div>';
             	}
 
-        		$('.chat-time').append(content);
+        		$('.right-sidebar-title').append(content);
             }
              
              
          	// 특정 방 message 출력
-         	function messageCall(idx, emp, otherEmp) {
+         	function messageCall(idx, emp_id, otherEmp) {
          		$.ajax({
          			type: 'POST',
          			url: '/messageCall.ajax',
          			data: {
          				'idx': idx,
-         				'emp': emp,
+         				'emp_id': emp_id,
          				'otherEmp': otherEmp
          			},
          			dataType: 'JSON',
          			success: function(data) {
          				drawMessage(data);
-         				loadChatRooms();
+         				//loadChatRooms("${sessionScope.emp_id}");
          			}, error: function(error) {
          				console.log(error);
          			}
@@ -395,64 +411,108 @@
          	var checkDate;
          	/* 대화 내용 출력 */
          	function drawMessage(data) {
-        		var emp = 1;  // [jae]: 임의로 1 넣어둠 ${loginInfo.emp}
-        		var checkHours = 0;
-        		var checkMinutes = 0;
-        		
-        		$('.msger-chat').empty();
-        		
-        		var content = '';
-        		
-
-        		if (!data.messageList || data.messageList.length === 0) {
-        			content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';	/* <p class="no-message">아무것도 없따... <i class="fa-solid fa-message"></i></p> */
-        		}
-        		
-        			
-        		
-        		for (item of data.messageList) {
-        			var date = new Date(item.send_datetime);
-        			var dateStr = date.toLocaleDateString("ko-KR");
-        			var hours = date.getHours();
-        			var minutes = date.getMinutes();
-        			
-        			//console.log(item.new_picname);
-        
-        			
-        			if(emp === item.receiver) {
-        				content +=	'<div class="msg left-msg">';
-        				content +=		'<div class="msg-img"></div>';
-        				content +=		'<div class="msg-bubble">';
-        				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">'+item.other_name+'</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
-        				content +=		'</div>';
-        				content +=		'<div class="msg-text">'+item.content+'</div>';
-        				content +=		'</div>';
-        			}
-        			
-        			else if (emp === item.sender) {
-        				content +=	'<div class="msg right-msg">';
-        				content +=		'<div class="msg-img"></div>';
-        				content +=		'<div class="msg-bubble">';
-        				content +=		'<div class="msg-info">';
-        				content +=		'<div class="msg-info-name">나</div>'; // 이름은 나중에 세션으로 가져오기
-        				content +=		'<div class="msg-info-time">'+hours + ':' + (minutes < 10 ? '0' : '') + minutes+'</div>';
-        				content +=		'</div>';
-        				content +=		'<div class="msg-text">'+item.content+'</div>';
-	        			content +=		'</div>';
-        			
-        			}
-	    				content +=		'</div>';
-	    				content +=		'</div>';
-     
-        		}
-        		
-        		$('.msger-chat').append(content);
-         	}
+			    var idx_emp = data.idx_emp; 
+			    console.log("idx_emp : ", idx_emp);
+			    var checkHours = 0;
+			    var checkMinutes = 0;
+			    
+			    var chatContainer = $('.msger-chat');
+			    var isScrolledToBottom = chatContainer.scrollTop() + chatContainer.innerHeight() >= chatContainer[0].scrollHeight;
+			    
+			    
+			    
+			    chatContainer.empty();
+			    
+			    var content = '';
+			
+			    if (!data.messageList || data.messageList.length === 0) {
+			        content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';
+			    }
+			    
+			    for (item of data.messageList) {
+			        var date = new Date(item.send_datetime);
+			        var dateStr = date.toLocaleDateString("ko-KR");
+			        var hours = date.getHours();
+			        var minutes = date.getMinutes();
+			        
+			        if(idx_emp === item.receiver) {
+			            content += '<div class="msg left-msg">';
+			            if(item.file_name != null){
+			                content += '<img class="msg-img" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+		                }else{
+		                	content += '<img class="msg-img" alt="" src="/img/user_icon.png">';    	
+		                }
+			            content += '<div class="msg-bubble">';
+			            content += '<div class="msg-info">';
+			            content += '<div class="msg-info-name">' + item.other_name + '</div>';
+			            content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+			            content += '</div>';
+			            if (item.new_picname != null){
+			            content += '<img class="photo" src="/file/message_picture/'+item.new_picname+'" alt="'+item.new_picname+'번 쪽지 사진">';
+			            content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
+			            }else{			            	
+			            content += '<div class="msg-text">' + item.msg_content + '</div>';
+			            }
+			            content += '</div>';
+			        }
+			        else if (idx_emp === item.sender) {
+			            if(item.sender_del == 0){
+			                content += '<div class="msg right-msg">';
+			                content += '<img class="img-20" id="delete_btn" alt="" src="/img/trash_icon.png" onclick="deleteMessage('+item.idx_message+');">';
+			                
+			                content += '<div class="msg-bubble">';
+			                content += '<div class="msg-info">';
+			                content += '<div class="msg-info-name">나</div>';			                
+			                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+			                content += '</div>';
+			                if (item.new_picname != null){
+				            content += '<img class="photo" src="/file/message_picture/'+item.new_picname+'" alt="'+item.new_picname+'번 쪽지 사진">';
+				            content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
+				            }else{			            	
+				            content += '<div class="msg-text">' + item.msg_content + '</div>';
+				            }
+			                content += '</div>';
+			            }
+			        }
+			        content += '</div>';
+			        content += '</div>';
+			    }
+			    
+			    console.log('Before appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
+			    chatContainer.append(content);
+			    console.log('After appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
+			    
+			    // 새로운 메시지가 있을 때만 스크롤을 아래로 내림
+			    if (isScrolledToBottom) {
+			        chatContainer.scrollTop(chatContainer[0].scrollHeight);
+			    }
+			}
          	
          	
-         	
+         	function deleteMessage(msg_idx){
+         		var confirmDelete = confirm("쪽지를 삭제하시겠습니까?");
+         		if(confirmDelete){
+	         		$.ajax({
+	        			type:'POST',
+	        			url:'/msgDelete.ajax',
+	        			data:{
+	                        'msg_idx':msg_idx
+	                    },
+	        			success:function(data){
+	        				if (parseInt(data)>0) {
+	        					alert("삭제 성공했습니다.");
+	        					//location.reload(true);
+	        				} else {
+	        					alert("삭제 실패했습니다.");
+	        				}
+	        				// $('#deleteForm').toggle();
+	        			}, 
+	        			error:function(error){
+	        				console.log(error);
+	        			} 
+	        		});         			
+         		}
+         	}	
          	
          	
          	
@@ -468,6 +528,155 @@
              
              
              
+         	
+         	
+         	
+         	
+         	
+         	
+         	
+         	
+         	
+         	// [do] 알림
+         	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지? ==> 비동기
+         	// do-alarmCnt 이것의 값을 바꿔줘야함.
+         	alarmCnt();
+         	// 알람의 개수를 가져오는 함수
+         	function alarmCnt() {
+         		fetch('/alarmCnt.ajax', {
+         			method: 'POST',
+         			headers: {
+         				'Content-Type': 'application/json'
+         			},
+         			body: JSON.stringify({})
+         		})
+         		.then(response => response.json())
+         		.then(data => {
+         			console.log('알림 개수 업데이트');
+         			if (data.alarmCnt > 0) {
+						document.getElementById('do-alarmCnt').innerText = data.alarmCnt;
+					} else {
+						const alarmIcon = document.getElementById('do-alarmIcon');
+						
+					    // 모든 자식 요소 제거
+					    while (alarmIcon.firstChild) {
+					        alarmIcon.removeChild(alarmIcon.firstChild);
+					    }
+		        		
+		        		var content = '';
+		        		
+	        			content += '<svg>';
+	        			content += '<use href="/assets/svg/icon-sprite.svg#notification"></use>';
+	        			content += '</svg>';
+	        			content += '</div>';
+		        		
+	        			// 새로운 내용 추가
+	        			const fragment = document.createRange().createContextualFragment(content);
+	        		    alarmIcon.appendChild(fragment);
+					}
+         		})
+         		.catch(error => {consoleerror('Fetch error:', error);})
+         	}
+         	
+         	document.getElementById('do-alarmIcon').addEventListener('mouseover', () => {
+         		fetch('/alarmList.ajax', {
+         			method: 'POST',
+         			headers: {
+         				'Content-Type': 'application/json'
+         			},
+         			body: JSON.stringify({})
+         		})
+         		.then(response => response.json())
+         		.then(data => {
+         			drawAlarmList(data);
+         		})
+         		.catch(error => {console.error('Fetch error:', error);})
+         	});
+         	
+         	function drawAlarmList(data){
+         		$('.do-alarm').empty();
+        		
+        		var content = '';
+
+        		if (!data.list || data.list.length === 0) {
+        			content += '<p>새로운 알림이 없습니다...</p>';
+        		}
+        		for (item of data.list) {
+        			content += '<li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">';
+        			content += '<div class="d-flex justify-content-between">';
+        			content += '<div class="toast-body d-flex p-0 do-alarm-path">';
+        			content += '<div class="flex-grow-1">';
+        			//content += '<div class="flex-grow-1"> <a href="private-chat.go">';
+        			content += '<input type="hidden" class="do-alarm-idx" value="'+item.idx_alarm+'"/>';
+        			content += '<input type="hidden" class="do-alarm-empIdx" value="'+item.idx_employee+'"/>';
+        			content += '<input type="hidden" class="do-alarm-path" value="'+item.al_path+'"/>';
+        			content += '<h6 class="m-0">';
+        			content += item.al_content;
+        			content += '</h6>';
+        			//content += '</h6></a>';
+        			content += '<p class="m-0">';
+        			var dateOnly = item.create_datetime.split('T')[0];
+        			content += dateOnly;
+        			content += '</p>';
+        			content += '</div>';
+        			content += '</div>';
+        			content += '<button class="btn-close btn-close-white shadow-none do-alarm-delete" type="button" data-bs-dismiss="toast" aria-label="Close"></button>';
+        			content += '</div>';
+        			content += '</li>';
+        		}
+        		
+        		$('.do-alarm').append(content);
+        		
+        		
+        		// 모든 알림에 경로가 있는지 확인하고, 경로가 있다면 링크 이동
+			    document.querySelectorAll('.do-alarm-path').forEach(element => {
+			        element.addEventListener('click', function (e) {
+			            if (e.target.classList.contains('do-alarm-delete') || e.target.closest('.do-alarm-delete')) {
+			                return;
+			            }
+			
+			            const alarmPath = element.querySelector('input.do-alarm-path').value;
+			            console.log(alarmPath);
+			            if (alarmPath) {
+			                window.location.href = '<c:url value="'+alarmPath+'"/>';
+			            }
+			        });
+			        
+			        // 삭제 버튼에 이벤트 리스너 추가
+		            const deleteButton = element.closest('li').querySelector('.do-alarm-delete');
+		            if (deleteButton) {
+		                deleteButton.addEventListener('click', function (e) {
+		                    e.stopPropagation();
+		                    
+		                    const idxAlarm = this.closest('li').querySelector('.do-alarm-idx').value;
+		                    const idxEmployee = this.closest('li').querySelector('.do-alarm-empIdx').value;
+		                    readRequest(idxAlarm, idxEmployee);
+		                    
+		                    // 알림 삭제했으면 개수도 수정하자!
+		                    alarmCnt();
+		                });
+		            }
+			    });
+         	}
+         	// 알람 삭제 (읽음) ajax
+         	function readRequest(idxAlarm, idxEmployee) {
+         	    fetch('/alarmRead.ajax', {
+         	        method: 'POST',
+         	        headers: {
+         	            'Content-Type': 'application/json',
+         	        },
+         	        body: JSON.stringify({ 
+         	        	idx_alarm: idxAlarm, 
+         	        	idx_employee: idxEmployee 
+         	        }),
+         	    })
+         	    .then(response => response.json())
+         	    .then(data => {
+         	    })
+         	    .catch((error) => { console.error('Error:', error); });
+         	}
+         	
+         	
 			</script>
           </div>
           

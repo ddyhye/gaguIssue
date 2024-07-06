@@ -29,11 +29,118 @@
 		UPDATE company_calendar_tb SET cc_status='BLIND' WHERE idx_company_calendar=#{param1}
 	</update>
 	
-	<select id="getAllEmployees" resultType="ko.gagu.issue.dto.EmployeeDTO">
+	<select id="getAllEmployees" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
         SELECT e.emp_id, e.emp_name, d.de_name
         FROM employee_tb e
         JOIN department_tb d ON e.idx_department = d.idx_department
     </select>
+    
+   
+	
+	<insert id="createEmployee" useGeneratedKeys="true" keyColumn="idx_employee" keyProperty="idx_employee" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    
+	    INSERT INTO employee_tb (
+	        emp_name, emp_phone_number, emp_birth_date, emp_email, emp_address, 
+	        emp_id, emp_pw, idx_department, idx_title
+	    )
+	    VALUES (
+	        #{emp_name}, #{emp_phone_number}, #{emp_birth_date}, #{emp_email}, #{emp_address},
+	        CONCAT(
+	            SUBSTR(CURDATE(), 3, 2), 
+	            SUBSTR(CURDATE(), 6, 2), 
+	            SUBSTR(CURDATE(), 9, 2), 
+	            (SELECT de_char FROM department_tb WHERE de_name = #{de_name}), 
+	            RIGHT(CONCAT('0000', (SELECT et.idx_employee + 1 FROM employee_tb et ORDER BY et.idx_employee DESC LIMIT 1)), 5)
+	        ),
+	        #{emp_pw}, 
+	        (SELECT idx_department 
+	         FROM department_tb 
+	         WHERE de_name = #{de_name}), 
+	        (SELECT idx_title 
+	         FROM title_tb 
+	         WHERE title_name = #{title_name})
+	    )
+	    
+	</insert>
+
+
+	
+	<insert id="insertLeaveAccruals" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    INSERT INTO leave_accruals_tb (idx_employee, leave_days)
+	    VALUES (
+	        #{idx_employee}, 
+	        #{leave_days}
+	    )
+	</insert>
+	
+	<insert id="saveProfileImagePath">
+	    INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name, upload_datetime)
+	   		VALUES ('1',#{param3}, #{param1}, #{param2}, now())
+	</insert>
+		
+	<select id="getnewIdx" resultType="String">
+		SELECT
+			RIGHT(CONCAT('0000', (SELECT et.idx_employee + 1 FROM employee_tb et ORDER BY et.idx_employee DESC LIMIT 1)), 5)
+	</select>
+	
+	 <select id="getEmployeeById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    SELECT 
+	        e.emp_id,
+	        e.emp_name,
+	        e.emp_phone_number,
+	        e.emp_birth_date,
+	        e.emp_email,
+	        e.emp_pw,
+	        d.de_name,
+	        e.emp_status,
+	        e.emp_hire_date,
+	        e.emp_term_date,
+	        t.title_name,
+	        la.leave_days,
+	        e.emp_address,
+	        COALESCE(ft.file_name, 'user.jpg') as photo_url
+	    FROM 
+	        employee_tb e
+	    JOIN 
+	        department_tb d ON e.idx_department = d.idx_department
+	    JOIN 
+	        title_tb t ON e.idx_title = t.idx_title
+	    LEFT JOIN 
+	        leave_accruals_tb la ON e.idx_employee = la.idx_employee
+	    LEFT JOIN
+	        filestore_tb ft ON e.idx_employee = ft.idx_ref AND ft.idx_filetype = 1
+	    WHERE 
+	        e.emp_id = #{emp_id}
+	</select>
+	
+	<select id="isEmpty" resultType="Integer">
+		select count(*) from employee_tb where emp_id = #{param1}
+	</select>
+	
+	<select id="getAnnualLeaveInfoById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
+			SELECT 
+            e.emp_id,
+            e.emp_name,
+            e.emp_phone_number,
+            e.emp_birth_date,
+            e.emp_email,
+            e.emp_address,
+            la.leave_days,
+            la.usage_days,
+            lu.lu_start_date,
+            lu.lu_end_date,
+            lu.lu_usage_days
+        FROM 
+            employee_tb e
+        LEFT JOIN 
+            leave_accruals_tb la ON e.idx_employee = la.idx_employee
+        LEFT JOIN 
+            leave_usage_tb lu ON e.idx_employee = lu.idx_employee
+        WHERE 
+            e.emp_id = #{emp_id}
+	</select>
+
+	
 	
 	
 </mapper>

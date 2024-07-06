@@ -74,7 +74,7 @@ public class DocumentService {
 		// 3. 데이터베이스에 문서 정보를 등록한다.
 		// 등록한 후 결재 문서 번호를 document_dto 필드에 저장한다.
 		logger.info("문서의 내용 documentDTO : {}", documentDTO);
-		dao.saveDocument(documentDTO);
+		dao.saveDocument(documentDTO); 
 		int idxApproval = documentDTO.getIdx_approval();
 		// 지정한 결재자 라인을 approval_line_tb 테이블에 저장한다
 		for (int sequence = 0; sequence < employeeList.size(); sequence++) {
@@ -168,7 +168,7 @@ public class DocumentService {
 	        }
 	    }
 	    List<ApprovalLineDTO> approvalSteps = dao.getApprovalLineList(approvalDetails.getIdxApproval());
-
+	    
 	    // 3. 첨부 파일과 파일을 FileDTO 형태로 리스트 형태로 가져오기 0번 인덱스는 문서 파일로~
 	    List<FileDTO> documentFiles = dao.getDocumentFiles(approvalDetails.getIdxApproval());
 	    String documentFilePath = "";
@@ -205,9 +205,11 @@ public class DocumentService {
 	    return mav;
 	}
 
+	/* [jeong] 서명이미지와 결재를 저장하고 연가 및 휴가 신청이 최종승인되면 연차 차감 및 히스토리에 저장된다 */
 	@Transactional(rollbackFor = Exception.class)
 	public void approval(MultipartFile signatureImage, int idxApproval, int apStep, int idxApprovalLine) {
 		String signImageName = fm.saveFile(signatureImage, "document/signature");
+		// 서명 이미지를 예약번호로 묶어서 저장
 		dao.saveSignImage(9, idxApprovalLine, signImageName);
 		dao.approvalLine(idxApproval, idxApprovalLine, apStep);
 		ApprovalDTO approvalDto = dao.getApproval(idxApproval);
@@ -215,6 +217,8 @@ public class DocumentService {
 		// 최종 승인시 
 		if (approvalLineList.get(approvalLineList.size() - 1).getIsApproval() == 1) {
 			dao.approval(idxApproval);
+			
+			// 연가인지
 			if(approvalDto.getIdxDc() == 1) {
 				ObjectMapper objectMapper = new ObjectMapper();
 				Map<String, Object> documentMap = null;
@@ -223,7 +227,9 @@ public class DocumentService {
 				} catch (JsonProcessingException e) {
 					return;
 				}
-				
+				String alarmMsg = "연가가 최종승인 되었습니다!";
+				String alarmPath = "/document/list.go";
+				dao.insertAlarm(approvalDto.getIdxEmployee(), alarmMsg, alarmPath);
 				dao.insertLeave(approvalDto.getIdxEmployee(), documentMap.get("days"), documentMap.get("start-date"), documentMap.get("end-date"));
 				if (dao.isLeaveAccruals(approvalDto.getIdxEmployee()) == 0) {
 					dao.insertLeaveAccruals(approvalDto.getIdxEmployee());
@@ -234,16 +240,19 @@ public class DocumentService {
 		}
 	}
 
+	/* [jeong] 반려처리 */
 	@Transactional(rollbackFor = Exception.class)
 	public void reject(int idxApproval, int apStep, int idxApprovalLine, String apComment) {
 		dao.rejectLine(idxApproval, idxApprovalLine, apStep, apComment);
 		dao.reject(idxApproval);
 	}
 
+	/* [jeong] 문서의 상태를 회수로 변경 */
 	public void retract(int idxApproval) {
 		dao.retract(idxApproval);
 	}
 
+	/* [jeong] 페이징만 처리된 문서 리스트를 응답 */
 	public ModelAndView fetchDocumentList(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("common/documentList");
 		List<DocumentDTO> documentList = dao.fetchDocumentList(idxEmployee);
@@ -258,22 +267,28 @@ public class DocumentService {
 		return mav;
 	}
 	
+	/* [jeong] 필터링 및 페이징 처리된 문서 리스트를 응답 */
 	public Map<String, Object> fetchFilterDocumentList(PagingDTO pagingDTO, int idxEmployee) {
 		Map<String, Object> response = new HashMap<>();
 		int totalPages = dao.getFilterTotalPages(pagingDTO, idxEmployee);
-		if (totalPages < pagingDTO.getPage()) {
-			pagingDTO.setPage((totalPages - 1) * 13);
-		} else {			
-			pagingDTO.setPage((pagingDTO.getPage() - 1) * 13);
-		}
+		/*
+		 * if (totalPages == 0) { pagingDTO.setPage(0); } else if (totalPages <=
+		 * pagingDTO.getPage()) { pagingDTO.setPage((totalPages - 1) * 13);
+		 * 
+		 * } else { pagingDTO.setPage(0); }
+		 */
+		int page = pagingDTO.getPage();
+		logger.info("totalPages : {}", totalPages);
 		logger.info("pagingDTO : {}", pagingDTO);
 		List<DocumentDTO> documentFilterList = dao.fetchFilterDocumentList(pagingDTO, idxEmployee);
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page;
 		if (documentFilterList.size() == 0) {
 			response.put("documentFilterList", "none");
 		} else {
 			response.put("documentFilterList", documentFilterList);
 		}
 		response.put("totalPages", totalPages);
+		response.put("page", page);
 		response.put("success", true);
 		return response;
 	}

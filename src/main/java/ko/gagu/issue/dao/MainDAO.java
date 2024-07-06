@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ko.gagu.issue.dto.AlarmDTO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
+import ko.gagu.issue.dto.DocumentDTO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
 import ko.gagu.issue.dto.Leave_usage_tbDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.dto.product_tbDTO;
 
 @Mapper
@@ -47,4 +50,21 @@ public interface MainDAO {
 
 	void updateBarcode(int i);
 
+	List<AlarmDTO> getAlamList(int idx_employee);
+
+	void alarmRead(int idx_alarm, int idx_employee);
+
+	int getMyDocumentCnt(int idx_employee);
+
+	int getMyApproveCnt(int idx_employee);
+
+	int alarmCnt(int idx_employee);
+
+	int getFilterTotalPages(PagingDTO paging, int idxEmployee);
+
+	List<Leave_usage_tbDTO> fetchFilterList(PagingDTO paging, int idxEmployee);
+
+	List<Leave_usage_tbDTO> getempLeaveHistory2(int idx_employee);
+	
+	int getFilterTotalPages2(int idxEmployee);
 }

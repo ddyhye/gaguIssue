@@ -1,5 +1,12 @@
 package ko.gagu.issue.service;
 
+
+import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ko.gagu.issue.dao.EmployeeDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
+import ko.gagu.issue.dto.PagingDTO;
 
 @Service
 public class EmployeeService {
@@ -44,17 +52,18 @@ public class EmployeeService {
 		response.put("companyEvents",eventss);
 	}
 	
-//	public void getAllCompanyEvents(Map<String, Object> response, Model model) {
-//		// [il] 회사일정 보여주기
-//		HRDepartmentDTO hrDepartmentDTO = new HRDepartmentDTO();
-//		model.addAttribute("company",hrDepartmentDTO);
-//		logger.info("hrDepartmentDTO : {}",hrDepartmentDTO);
-//		
-//		List<HRDepartmentDTO>eventss=dao.getAllCompanyEvents();
-//		response.put("companyEvents", eventss);
-//
-//		
-//	}
+	public void getEmployeeAttendance(Map<String, Object> response, Integer idx_employee, Model model) {
+
+		
+		List<EmployeeDTO> events=dao.getEmployeeAttendance(idx_employee);
+		logger.info("events: {}",events);
+		
+		response.put("employeeAttendance", events);
+	}
+
+
+	
+
 	
 
 	public void employeeAddEvent(EmployeeDTO employee) {
@@ -86,10 +95,11 @@ public class EmployeeService {
 		if(encoder.matches(emp_pw, memPw)) {
 			mav.setViewName("redirect:/main/dashboard.go");
 			EmployeeDTO dto = dao.employeeData(emp_id);
-//			session.setAttribute("loginInfo", dto);
+			session.setAttribute("loginInfo", dto);
 			session.setAttribute("emp_id", emp_id);
 			session.setAttribute("idxEmployee", dto.getIdx_employee());
 			session.setAttribute("employeeDTO", dto);
+			session.setAttribute("idxTitle", dto.getIdx_title());
 			rAttr.addFlashAttribute("msg","환영합니다.");
 		}else {
 			mav.setViewName("redirect:/login.go");
@@ -126,6 +136,77 @@ public class EmployeeService {
 	public String findpw(String emp_id, String emp_name, String birthDate) {
 		return dao.findPW(emp_id, emp_name, birthDate);
 	}
+
+
+	public Map<String, Object> employeeGetIdxTitle(Integer idx_employee) {
+		Map<String, Object> response = new HashMap<>();
+	    
+	    int idx_title = dao.getEmployeeTitle(idx_employee);
+	    response.put("title", idx_title);
+	    logger.info("title : {}", idx_title);
+	    
+	    return response; // 데이터를 담은 Map을 반환
+	}
+
+	public Map<String, Object> departmentAttendanceList(int idx_employee, Date selectedDate, int currentPage,
+			int pagePerCnt) {
+		// [il] 부서번호 가져오기
+		// [il] 현재 보여지는 페이지 : 페이지당 보여줄 개수
+		// [il] 페이지당 보여줄 개수 : pagePerCnt
+		int idx_department = dao.getDepartmentIdxByEmployee(idx_employee);
+		int start = (currentPage - 1) * pagePerCnt;
+		Map<String, Object>map=new HashMap<String, Object>();
+		List<EmployeeDTO>attendanceList=dao.departmentAttendanceList(idx_employee,idx_department,selectedDate,start,pagePerCnt);
+		
+		map.put("attendanceList", attendanceList);
+		map.put("currentPage", currentPage);
+		map.put("totalPages",dao.allCountPage(idx_department,selectedDate,pagePerCnt));
+		
+		return map;
+	}
+
+
+
+	
+	/* [jeong] 매출 관리 페이지로 이동 */
+	public ModelAndView getSalesHistory(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("common/salesHistory");
+        // 현재 날짜 가져오기
+        LocalDate currentDate = LocalDate.now();
+        
+        // 원하는 날짜 형식 지정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        // 현재 날짜를 지정한 형식으로 포맷팅
+        String now = currentDate.format(formatter);
+		PagingDTO pagingDTO = new PagingDTO();
+		pagingDTO.setPage(1);
+		pagingDTO.setEndDate(now);
+		var salesDataList = dao.getSalesHistory(pagingDTO);
+		int totalPages = dao.getSalesHistoryTotalPages(pagingDTO);
+		
+		mav.addObject("salesDataList", salesDataList);
+		mav.addObject("success", totalPages > 0 ? true : false);
+		mav.addObject("totalPages", totalPages);
+		return mav;
+	}
+
+	/* [jeong] 매출 관리 페이징 처리후 매출 데이터를 응답 */
+	public Map<String, Object> getPaingSalesHistory(int idxEmployee, PagingDTO pagingDTO) {
+		var response = new HashMap<String, Object>();
+		int totalPages = dao.getSalesHistoryTotalPages(pagingDTO);
+		int page = pagingDTO.getPage();
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page;
+		pagingDTO.setPage(page);
+		
+		var salesDataList = dao.getSalesHistory(pagingDTO);
+		
+		response.put("salesDataList", salesDataList);
+		response.put("success", totalPages > 0 ? true : false);
+		response.put("totalPages", totalPages);
+		response.put("page", page);
+		return response;
+	}	
 
 	
 

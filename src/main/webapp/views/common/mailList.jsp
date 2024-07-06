@@ -7,6 +7,10 @@
     <meta name="description" content="Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="이메일 대시보드">
     <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
     <title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
@@ -38,6 +42,14 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* 스타일링 추가 */
+        .email-list .table th, .email-list .table td {
+            text-align: center;
+        }
+    </style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -58,12 +70,10 @@
           <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt=""/></a></div>
         </div>
         <div class="col-4 col-xl-4 page-title">
-          <!-- do: 페이지명 변경 -->
           <h4 class="f-w-700">Default dashboard</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-              <!-- do: 경로명 변경 -->
               <li class="breadcrumb-item f-w-400">Dashboard</li>
               <li class="breadcrumb-item f-w-400 active">Default</li>
             </ol>
@@ -82,6 +92,82 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
           <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+		    <!-- 상단 네비게이션 바 -->
+		    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		        <div class="container-fluid">
+		            <a class="navbar-brand" href="#">나의 이메일</a>
+		            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		                    <li class="nav-item">
+		                        <a class="nav-link active" aria-current="page" href="#">받은 메일</a>
+		                    </li>
+		                    <li class="nav-item">
+		                        <a class="nav-link" href="#">안 읽은 메일</a>
+		                    </li>
+		                    <li class="nav-item">
+		                        <a class="nav-link" href="#">보낸 메일</a>
+		                    </li>
+		                </ul>
+		                <!-- 연도 및 월 선택 옵션 -->
+		                <form class="d-flex">
+		                    <select class="form-select" aria-label="연도 선택">
+		                        <option selected>연도 선택</option>
+		                        <option value="2023">2024</option>
+		                        <option value="2023">2023</option>
+		                        <option value="2022">2022</option>
+		                        <option value="2021">2021</option>
+		                    </select>
+		                    <select class="form-select" aria-label="월 선택">
+		                        <option selected>월 선택</option>
+		                        <option value="1">1월</option>
+		                        <option value="2">2월</option>
+		                        <option value="3">3월</option>
+		                        <option value="3">4월</option>
+		                        <option value="3">5월</option>
+		                        <option value="3">6월</option>
+		                        <option value="3">7월</option>
+		                        <option value="3">8월</option>
+		                        <option value="3">9월</option>
+		                        <option value="3">10월</option>
+		                        <option value="3">11월</option>
+		                        <option value="3">12월</option>
+		                    </select>
+		                </form>
+		            </div>
+		        </div>
+		    </nav>
+		
+		    <!-- 이메일 리스트 테이블 -->
+		    <div class="container mt-4">
+		        <div class="card">
+		            <div class="card-header">
+		                이메일 목록
+		            </div>
+		            <div class="card-body">
+		                <div class="table-responsive">
+		                    <table class="table table-bordered">
+		                    <thead>
+		                        <tr>
+		                            <th>From</th>
+		                            <th>Title</th>
+		                            <th>Content</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                        <c:forEach var="mail" items="${mailList}">
+		                            <tr>
+		                                <td>${mail.from}</td>
+		                                <td>${mail.title}</td>
+		                                <td>${mail.content}</td>
+		                            </tr>
+		                        </c:forEach>
+		                    </tbody>
+		                </table>
+		                </div>
+		            </div>
+		            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        </div>
+    </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>

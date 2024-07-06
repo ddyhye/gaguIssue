@@ -85,46 +85,55 @@
           <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
           	<div class="container">
 				<div style="float: left; width: 50%;">
-				    <h1>메일 보내기</h1>
-				 
-				    <form th:action="@{/mail/send}" method="post" enctype="multipart/form-data">
-				        <table>
-				            <tr class="form-group">
-				                <td>보내는 사람</td>
-				                <td>
-				                    <input type="text" class="form-control" name="from" placeholder="이메일 주소를 입력하세요">
-				                </td>
-				            </tr>
-				            <tr id="box" class="form-group">
-				                <td>받는 사람</td>
-				                <td>
-				                    <input type="text" class="form-control" name="address" placeholder="이메일 주소를 입력하세요">
-				                </td>
-				                <td>
-									<input type="button" class="form-control" value="추가" onclick="add_textbox(this)">
-								</td>
-				            </tr>
-				            <tr class="form-group">
-				            	<td>첨부 파일 </td>
-				            	<td>
-				            		<input type="file" name="file" class="file-input" />
-				            	</td>
-				            </tr>
-				            <tr class="form-group">
-				                <td>제목</td>
-				                <td>
-				                    <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
-				                </td>
-				            </tr>
-				            <tr class="form-group">
-				                <td>내용</td>
-				                <td>
-				                    <textarea class="form-control" name="content" placeholder="보낼 내용을 입력하세요"> </textarea>
-				                </td>
-				            </tr>				            
-				        </table>
-				        <button class="btn btn-default">발송</button>
-				    </form>
+				    <h1>메일 보내기</h1>				 
+				    <form action="./mailWrite.do" method="post" enctype="multipart/form-data">
+				    <table>
+				        <tr class="form-group">
+				            <td>보내는 사람</td>
+				            <td>
+				                <input type="text" class="form-control" name="from" placeholder="이메일 주소를 입력하세요">
+				            </td>
+				        </tr>
+				        <tr id="box" class="form-group">
+				            <td>받는 사람</td>
+				            <td>
+				                <input type="text" class="form-control" name="address" placeholder="이메일 주소를 입력하세요">
+				            </td>
+				            <td>
+				                <input type="button" class="form-control" value="추가" onclick="add_textbox(this)">
+				            </td>
+				        </tr>
+				        <tr id="box2" class="form-group">
+				            <td>참조 메일 주소</td>
+				            <td>
+				                <input type="text" class="form-control" name="ccAddress" placeholder="참조 수신인을 입력하세요">
+				            </td>
+				            <td>
+				                <input type="button" class="form-control" value="추가" onclick="add_textbox2(this)">
+				            </td>
+				        </tr>
+				        <tr class="form-group">
+				            <td>제목</td>
+				            <td>
+				                <input type="text" class="form-control" name="title" placeholder="제목을 입력하세요">
+				            </td>
+				        </tr>
+				        <tr class="form-group">
+				            <td>내용</td>
+				            <td>
+				                <textarea class="form-control" name="content" placeholder="보낼 내용을 입력하세요"></textarea>
+				            </td>
+				        </tr>
+				        <tr class="form-group">
+				            <td>첨부 파일</td>
+				            <td>
+				                <input type="file" name="files" multiple>
+				            </td>
+				        </tr>
+				    </table>
+				    <button type="submit" class="btn btn-default">발송</button>
+				</form>
+
 				 
 				 </div>
 			 </div>

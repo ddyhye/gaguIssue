@@ -1,6 +1,7 @@
 package ko.gagu.issue.dto;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.apache.ibatis.type.Alias;
@@ -20,9 +21,25 @@ public class EmployeeDTO {
 	private String cc_start_datetime;
 	private String cc_end_datetime;
 	private String cc_color;
+	private String emp;
+	
+	private String file_name;
+	
+	private int idx_attendance;
+	private Date ah_date;
+	private Time ah_check_in;
+	private Time ah_check_out;
+	private String ah_status;
 	
 	
 	
+	
+	public String getEmp() {
+		return emp;
+	}
+	public void setEmp(String emp) {
+		this.emp = emp;
+	}
 	public int getIdx_emp_calendar() {
 		return idx_emp_calendar;
 	}
@@ -45,6 +62,7 @@ public class EmployeeDTO {
 	private Timestamp emp_term_date;
 	private String emp_address;
 	private boolean first_login;
+	private String email;
 	
 	// [jeong] 직원의 부서명과 직급명이 필요해서 추가했습니다
 	private String de_name;
@@ -219,7 +237,48 @@ public class EmployeeDTO {
 	public void setTitle_name(String title_name) {
 		this.title_name = title_name;
 	}
-	
+	public String getFile_name() {
+		return file_name;
+	}
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public int getIdx_attendance() {
+		return idx_attendance;
+	}
+	public void setIdx_attendance(int idx_attendance) {
+		this.idx_attendance = idx_attendance;
+	}
+	public Date getAh_date() {
+		return ah_date;
+	}
+	public void setAh_date(Date ah_date) {
+		this.ah_date = ah_date;
+	}
+	public Time getAh_check_in() {
+		return ah_check_in;
+	}
+	public void setAh_check_in(Time ah_check_in) {
+		this.ah_check_in = ah_check_in;
+	}
+	public Time getAh_check_out() {
+		return ah_check_out;
+	}
+	public void setAh_check_out(Time ah_check_out) {
+		this.ah_check_out = ah_check_out;
+	}
+	public String getAh_status() {
+		return ah_status;
+	}
+	public void setAh_status(String ah_status) {
+		this.ah_status = ah_status;
+	}
 	
 	
 }

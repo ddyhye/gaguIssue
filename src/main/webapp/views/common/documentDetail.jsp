@@ -44,14 +44,14 @@
 <style>
 #document {
 	width: 70%;
-	height: 1000px;
+	height: 1250px;
 	border: 1px solid;
 	background: white;
 }
 
 #form-document {
 	width: 100%;
-	height: 1000px;
+	height: 1250px;
 	border: none;
 }
 
@@ -173,10 +173,7 @@ table img {
 									<button type="button" class="btn btn-primary documentBtn">목록으로 이동하기</button>
 								</a>
 							</div>
-							<div class="d-flex justify-content-end">
-								<button type="button" class="btn btn-primary" style="background: red !important; border-color: red !important;'" onClick="forceLogin()">강제로그인하기</button>
-								<input type="text" name="empId" style="margin: 4 0 0 5;" />
-								
+							<div class="d-flex justify-content-end">								
 								<c:if test="${approvalDetails.idxEmployee == approvalDetails.accessIdxEmployee}">
 									<button type="button" class="btn btn-primary documentBtn" onClick="retract()">회수하기</button>
 								</c:if>								
@@ -428,24 +425,15 @@ table img {
 	<!-- Theme js-->
 	<script src="/assets/js/script.js"></script>
 	<script src="/assets/js/script1.js"></script>
-	<script src="/assets/js/theme-customizer/customizer.js"></script>
 	<!-- 서명 스크립트 -->
 	<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 	<!-- Plugin used-->
 	<!-- Sweetalert js -->
 	<script src='/assets/js/sweet-alert/sweetalert.min.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 	<script>
 		new WOW().init();
-	</script>
-	<script>
-		/* [jeong] 강제로그인 임시 테스트용 */
-		function forceLogin() {
-			const empId = document.querySelector('input[name="empId"]').value;
-			console.log(empId);
-			if (empId != null && empId != '') {				
-				window.location.href = '/document/' + '${approvalDetails.idxApproval}' + '/' + empId +'/detail.go';	
-			}
-		}
 	</script>
 	<script>
 		/* [jeong] 전자서명 이미지 저장, 승인, 반려 요청 처리 */
@@ -458,6 +446,13 @@ table img {
             maxWidth: 2.5
         });		
         
+        var idxDc = ${approvalDetails.idxDc};
+        
+        if (idxDc == 1) {
+        	document.getElementById('document').style.height = 1000;
+        	document.getElementById('form-document').style.height = 1000;
+        }
+        
 		function clearSignature() {
 			signaturePad.clear();
 		}
@@ -469,7 +464,7 @@ table img {
 	        .then(response => response.json())
 	        .then(data => {
 	        	console.error('Success:', data);
-	        	window.location.href = '/document/${approvalDetails.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        	window.location.href = '/document/${approvalDetails.idxApproval}/detail.go';
 	        })
 	        .catch(error => console.error('Error:', error));			
 		}
@@ -487,7 +482,7 @@ table img {
 	        .then(response => response.json())
 	        .then(data => {
 	        	console.error('Success:', data);
-	        	window.location.href = '/document/${approvalDetails.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        	window.location.href = '/document/${approvalDetails.idxApproval}/detail.go';
 	        })
 	        .catch(error => console.error('Error:', error));			
 		}
@@ -520,7 +515,7 @@ table img {
 	        .then(response => response.json())
 	        .then(data => {
 	        	console.error('Success:', data);
-	        	window.location.href = '/document/${sessionScope.idxApproval}/${approvalDetails.accessIdxEmployee}/detail.go';
+	        	window.location.href = '/document/${sessionScope.idxApproval}/detail.go';
 	        })
 	        .catch(error => console.error('Error:', error));	
 		}
@@ -538,17 +533,24 @@ table img {
 	<script>
 	function downloadPDF() {
 	    const element = document.getElementById('form-document'); // PDF로 변환하고자 하는 HTML 요소를 선택합니다. 예: document.getElementById('your-element-id')
+		console.log(element);
+	    
+		const iframeDocument = element.contentDocument || element.contentWindow.document;
+	    
+		const content = iframeDocument.body; 
+		
+        html2canvas(content, { scale: 2 }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
 
-	    html2canvas(element).then((canvas) => {
-	        const imgData = canvas.toDataURL('image/png');
-	        const pdf = new jspdf.jsPDF();
-	        const imgProps= pdf.getImageProperties(imgData);
-	        const pdfWidth = pdf.internal.pageSize.getWidth();
-	        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-	        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-	        pdf.save("download.pdf");
-	    });
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('document.pdf');
+        });
 	}	
 	</script>
 </body>

@@ -1,21 +1,27 @@
 package ko.gagu.issue.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.dto.EmployeeDTO;
@@ -82,6 +88,13 @@ public class HRDepartmentController {
 		return response;
 	}
 	
+	// [il] 근태관리 : 구일승
+	@GetMapping(value="hrdepartment/employeeAttendance.go")
+	public String attendance() {
+		logger.info("attendance in");
+		return "Hrdepartment/employeeAttendance";
+	}
+	
 	@PostMapping(value="/hrdepartment/deleteCompanyEvent.ajax")
 	@ResponseBody
 	public Map<String, String>deleteCompanyEvent(@RequestBody Map<String, Object> requestBody){
@@ -118,21 +131,71 @@ public class HRDepartmentController {
     }
 	
 	@PostMapping(value="/employeeInsert")
-		public ResponseEntity<Map<String, Object>> createEmployee(@RequestBody EmployeeDTO employee) {
-	        Map<String, Object> response = new HashMap<>();
-	        
-	        try {
-	        	hrDepartmentService.createEmployee(employee);
-	            response.put("status", "success");
-	            response.put("message", "Employee created successfully");
-	            return ResponseEntity.ok(response);
-	        } catch (Exception e) {
-	            response.put("status", "error");
-	            response.put("message", "Failed to create employee: " + e.getMessage());
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-	        }
+	@ResponseBody
+	public Map<String, Object> createEmployee(MultipartFile profileImage,HRDepartmentDTO HRDepartment) {
+	    Map<String, Object> map = new HashMap<>();
+	    logger.info("employeeInsert");
+	    logger.info("image : {}", profileImage);
+	    logger.info("프로필 이미지 origin name >> "+profileImage.getOriginalFilename());
 	    
+	    try {
+	        // 퇴사일을 9999-12-31로 고정
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        Date fixedDate = sdf.parse("9999-12-31");
+	        HRDepartment.setEmp_term_date(new java.sql.Date(fixedDate.getTime()));
+	        
+	        // 사원 등록 서비스 호출
+	        String msg = hrDepartmentService.createEmployee(profileImage, HRDepartment);
+
+	        // 성공 응답
+	        map.put("status", "success");
+	        map.put("message", msg);
+	        logger.info(msg);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 실패 응답
+	        map.put("status", "error");
+	        map.put("message", "사원 등록 실패: " + e.getMessage());
+	        logger.error("사원 등록 실패: " + e.getMessage());
+	    }
+		return map;
 	}
-		
+	
+	@GetMapping("/getnewIdx")
+	@ResponseBody
+	public String getnewIdx() {
+		String idx = hrDepartmentService.getnewIdx();
+		logger.info("idx :{}",idx);
+		return idx;
+	}
+	
+	
+	
+	
+	// 직원 상세보기 
+	@PostMapping(value="/employeeDetail.ajax")
+	@ResponseBody
+	public Map<String, Object> employeeDetail(String emp_id) {
+	    Map<String, Object> map = new HashMap<>();
+	    
+		return hrDepartmentService.getEmpDetail(map, emp_id);
+	}
+	// 직원 상세보기 - 프로필 사진 경로 
+	@RequestMapping(value="/photo/{fileName}")
+	public ResponseEntity<Resource> profileView(@PathVariable String fileName) {
+		//logger.info("fileName: "+fileName);
+		return hrDepartmentService.profileView(fileName);
+	}
+	   
+	@PostMapping(value="/annualDetail.ajax")
+	@ResponseBody
+	public Map<String, Object> annualDetail(String emp_id) {
+	    Map<String, Object> map = new HashMap<>();
+	    
+		return hrDepartmentService.getannualDetail(map, emp_id);
+	}
+	
+
+			
 
 }

@@ -38,6 +38,23 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+  	
+  	<!-- [il] 캘린더 -->
+    <!-- [il]jquery / 원래는 3.2.1 버전이었으나, 3.7.1버전으로 바꿔둠 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<!-- modal창 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+	<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/calendar.css'/>"> -->	
+	
+	<!--[il]  부트스트랩 CSS 링크-->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  	
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -79,10 +96,6 @@
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
         <div class="page-body">
-          <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
@@ -102,6 +115,14 @@
         </footer>
       </div>
     </div>
+    <script>
+    
+        
+        
+    });
+    </script>
+    
+    
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

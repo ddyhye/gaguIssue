@@ -14,15 +14,20 @@ public class MessageDTO {
 	
 	private int msg_count;
 	private int no_read;
-	private String new_picname;
+	private String file_name;
 	private String name;
 	private String other_name;
 	private Timestamp reg_date;
-	private String content;
+	private String msg_content;
 	private int other_emp;
 	private Timestamp send_datetime;
 	private int idx_message;
 	private int is_receiver_read;
+	private int idx_emp;
+	private int sender_del;
+	private int reciver_del;
+	private String new_picname;
+	private String origin_name;
 	
 	private String de_name;
 	
@@ -68,12 +73,6 @@ public class MessageDTO {
 	public void setNo_read(int no_read) {
 		this.no_read = no_read;
 	}
-	public String getNew_picname() {
-		return new_picname;
-	}
-	public void setNew_picname(String new_picname) {
-		this.new_picname = new_picname;
-	}
 	public String getName() {
 		return name;
 	}
@@ -85,12 +84,6 @@ public class MessageDTO {
 	}
 	public void setReg_date(Timestamp reg_date) {
 		this.reg_date = reg_date;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
 	}
 	public int getOther_emp() {
 		return other_emp;
@@ -127,6 +120,48 @@ public class MessageDTO {
 	}
 	public void setDe_name(String de_name) {
 		this.de_name = de_name;
+	}
+	public int getIdx_emp() {
+		return idx_emp;
+	}
+	public void setIdx_emp(int idx_emp) {
+		this.idx_emp = idx_emp;
+	}
+	public String getFile_name() {
+		return file_name;
+	}
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
+	}
+	public int getSender_del() {
+		return sender_del;
+	}
+	public void setSender_del(int sender_del) {
+		this.sender_del = sender_del;
+	}
+	public int getReciver_del() {
+		return reciver_del;
+	}
+	public void setReciver_del(int reciver_del) {
+		this.reciver_del = reciver_del;
+	}
+	public String getMsg_content() {
+		return msg_content;
+	}
+	public void setMsg_content(String msg_content) {
+		this.msg_content = msg_content;
+	}
+	public String getNew_picname() {
+		return new_picname;
+	}
+	public void setNew_picname(String new_picname) {
+		this.new_picname = new_picname;
+	}
+	public String getOrigin_name() {
+		return origin_name;
+	}
+	public void setOrigin_name(String origin_name) {
+		this.origin_name = origin_name;
 	}
 	
 	

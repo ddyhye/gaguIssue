@@ -38,6 +38,19 @@
 
 
 
+
+.do-overflow {
+	max-height: 450px;
+	overflow-y: auto;
+}
+
+
+
+
+
+
+
+
 /* 테이블 */
 .do-table {
 	text-align: center; 
