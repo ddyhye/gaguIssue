@@ -36,6 +36,10 @@ public interface HRDepartmentDAO {
 
 	HRDepartmentDTO getAnnualLeaveInfoById(String emp_id);
 
+	List<EmployeeDTO> departmentAttendanceList(String formattedDate, int start, int pagePerCnt, String department);
+
+	Object allCountPage(String department, String formattedDate, int pagePerCnt);
+
 	
 
 }

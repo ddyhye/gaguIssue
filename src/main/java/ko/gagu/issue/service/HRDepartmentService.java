@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -184,6 +185,21 @@ public class HRDepartmentService {
 		map.put("lu_usage_days", annual.getLu_usage_days());
 		map.put("lu_start_date", annual.getLu_start_date());
 		map.put("lu_end_date", annual.getLu_end_date());
+		
+		return map;
+	}
+
+	public Map<String, Object> departmentAttendanceList(String formattedDate, int currentPage, int pagePerCnt,String department) {
+		
+		// [il] 현재 보여지는 페이지 : currentPage
+		// [il] 페이지당 보여줄 개수 : pagePerCnt
+		int start = (currentPage - 1) * pagePerCnt;
+		Map<String, Object>map=new HashMap<String, Object>();
+		List<EmployeeDTO>attendanceList=hrDepartmentDao.departmentAttendanceList(formattedDate,start,pagePerCnt,department);
+		logger.info("attendanceList : {}",attendanceList);
+		map.put("attendanceList", attendanceList);
+		map.put("currentPage", currentPage);
+		map.put("totalPages",hrDepartmentDao.allCountPage(department,formattedDate,pagePerCnt));
 		
 		return map;
 	}

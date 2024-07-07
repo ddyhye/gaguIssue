@@ -1,5 +1,6 @@
 package ko.gagu.issue.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,13 +88,13 @@ public class HRDepartmentController {
 		
 		return response;
 	}
-	
-	// [il] 근태관리 : 구일승
-	@GetMapping(value="hrdepartment/employeeAttendance.go")
-	public String attendance() {
-		logger.info("attendance in");
-		return "Hrdepartment/employeeAttendance";
-	}
+//	
+//	// [il] 근태관리 : 구일승
+//	@GetMapping(value="hrdepartment/employeeAttendance.go")
+//	public String attendance() {
+//		logger.info("attendance in");
+//		return "Hrdepartment/employeeAttendance";
+//	}
 	
 	@PostMapping(value="/hrdepartment/deleteCompanyEvent.ajax")
 	@ResponseBody
@@ -118,6 +119,42 @@ public class HRDepartmentController {
 	        return errorResponse;
 	    }
 	}
+	
+	// [il] 근태 내역확인
+	@GetMapping(value="/hrdepartment/attendanceOfAllEmployees.go")
+	public String attendanceOfAllEmployees() {
+		return "HRDepartment/employeeAttendance";
+	}
+	
+	@PostMapping(value="/hrdepartment/attendanceOfAllEmployees.ajax")
+	@ResponseBody
+	public Map<String, Object>getAttendanceOfAllEmployees(String department,String date,String page, String cnt){
+		logger.info("페이지 당 보여줄 갯수 : "+cnt);
+		logger.info("요청 페이지 : " +page);
+		logger.info("선택된 부서 : {}",department);
+		String formattedDate =null;
+		
+		java.util.Date selectedDate=null;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			selectedDate=dateFormat.parse(date);
+			formattedDate = dateFormat.format(selectedDate);
+			logger.info("formattedDate : {}",formattedDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		int currentPage = Integer.parseInt(page);
+		int pagePerCnt = Integer.parseInt(cnt);
+		
+		Map<String, Object>map = hrDepartmentService.departmentAttendanceList(formattedDate,currentPage,pagePerCnt,department);
+		logger.info("map : {}",map);
+		
+		return map;
+	}
+	
+	
 	
 	@GetMapping(value="/employeeManage.go")
 	public ModelAndView employeeManage() {

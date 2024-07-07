@@ -140,7 +140,32 @@
             e.emp_id = #{emp_id}
 	</select>
 
+	<select id="departmentAttendanceList" resultType="employee">
+		SELECT
+			ah.idx_attendance,
+	        ah.idx_employee,
+	        ah.ah_date,
+	        ah.ah_check_in,
+	        ah.ah_check_out,
+	        ah.ah_status,
+	        et.idx_department,
+	        et.emp_name,
+	        et.emp_status
+		FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    JOIN department_tb dt ON et.idx_department = dt.idx_department
+	    WHERE dt.de_name = #{param4} AND ah.ah_date=#{param1} AND et.emp_status='재직'
+	    LIMIT 15 OFFSET #{param2}
+	</select>
 	
+	<select id="allCountPage" resultType="Object">
+		SELECT CEIL(COUNT(ah.idx_attendance) / #{param3}) AS pages
+		FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    JOIN department_tb dt ON et.idx_department = dt.idx_department
+		WHERE ah.ah_date=#{param2} AND dt.de_name=#{param1}
+		ORDER BY ah.idx_employee DESC
+	</select>
 	
 	
 </mapper>
