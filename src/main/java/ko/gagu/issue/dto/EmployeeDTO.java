@@ -71,11 +71,19 @@ public class EmployeeDTO {
 	private String titleName;
 	private String empName;
 	private String employeeId;
-	private String birthDate;
+	private String empBirthDate;
 	private String phoneNumber;
 	private String empColor;
 	private String profileFilePath;
 	
+	private int idxDepartment;
+	
+	public int getIdxDepartment() {
+		return idxDepartment;
+	}
+	public void setIdxDepartment(int idxDepartment) {
+		this.idxDepartment = idxDepartment;
+	}
 	public String getProfileFilePath() {
 		return profileFilePath;
 	}
@@ -311,11 +319,11 @@ public class EmployeeDTO {
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
-	public String getBirthDate() {
-		return birthDate;
+	public String getEmpBirthDate() {
+		return empBirthDate;
 	}
-	public void setBirthDate(String birthDate) {
-		this.birthDate = birthDate;
+	public void setEmpBirthDate(String empBirthDate) {
+		this.empBirthDate = empBirthDate;
 	}
 	public String getPhoneNumber() {
 		return phoneNumber;
