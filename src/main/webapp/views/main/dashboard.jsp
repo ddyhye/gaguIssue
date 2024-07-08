@@ -42,6 +42,7 @@
     <!-- [do] css 추가 -->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/dashboard.css'/>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -118,36 +119,38 @@
               </div>
               
               
+              <!-- 회의실 예약 -->
               <div class="col-xl-3 col-md-6 proorder-xl-2 proorder-md-2">
                 <div class="card">
+                  <a href="<c:url value='/reservation/list.go'/>">
                   <div class="card-header card-no-border pb-0">
                     <div class="header-top">
                       <div class="do-flexdirection-row">
-                        <h4>메일</h4><i class="greater-than" data-feather="chevron-right"></i>
+                        <h4>Meeting</h4><i class="greater-than" data-feather="chevron-right"></i>
                       </div>
-                      <div class="dropdown icon-dropdown">
+                      <!-- <div class="dropdown icon-dropdown">
                         <button class="btn dropdown-toggle" id="userdropdown17" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-more-alt"></i></button>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown17"><a class="dropdown-item" href="#">전체</a><a class="dropdown-item" href="#">받은 메일</a><a class="dropdown-item" href="#">안 읽음</a></div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="card-body pb-0 opening-box">
-                  	<div class="do-mail-list">
-                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
-                  	</div>
-                  	<div class="do-mail-list">
-                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
-                  	</div>
-                  	<div class="do-mail-list">
-                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
-                  	</div>
-                  	<div class="do-mail-list">
-                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
-                  	</div>
-                  	<div class="do-mail-list">
-                  		<p class="do-mail-subject do-p-darkgray do-eclipse">안녕하세요</p><p class="do-mail-writer do-p-darkgray">홍길동</p>
-                  	</div>
+                    <c:if test="${reservList.size() < 1}">
+						<p>예약된 회의가 없습니다...</p>
+					</c:if>
+					<c:forEach items="${reservList}" var="item">
+						<div class="do-reservlist">
+							<div class="do-reservlist-left">
+								<h4>${item.startDate}</h4>
+								<h5>${item.startTime}</h5>
+							</div>
+							<div class="do-reservlist-right">
+								<p>${item.mr_name}</p>
+							</div>
+	                  	</div>
+					</c:forEach>
                   </div>
+                  </a>
                 </div>
               </div>
               
@@ -254,36 +257,20 @@
               </div>
               
               
-              <!-- 회의실 예약 -->
+              <!-- 매출 관리 -->
               <div class="col-xxl-5 col-xl-7 box-col-7 proorder-xl-9 proorder-md-10"> 
                 <div class="card">
                   <div class="card-header card-no-border pb-0">
                     <div class="header-top">
                       <div class="do-flexdirection-row">
-                        <h4>회의실 예약</h4><i class="greater-than" data-feather="chevron-right"></i>
+                        <h4>매출 현황</h4><i class="greater-than" data-feather="chevron-right"></i>
                       </div>
                     </div>
                   </div>
                   <div class="card-body sales-product px-0 pb-0">
-                  </div>
-                </div>
-              </div>
-              
-              
-              <!-- 매출 그래프 -->
-              <div class="col-xl-5 col-md-7 proorder-xl-4 box-col-5 proorder-md-6"> 
-                <div class="card">
-                  <div class="card-header card-no-border pb-0">
-                    <div class="header-top">
-                      <h4>Customer Transaction</h4>
-                      <div class="dropdown icon-dropdown">
-                        <button class="btn dropdown-toggle" id="userdropdown11" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-more-alt"></i></button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown11"><a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body pb-0">
-                    <div id="customer-transaction"></div>
+                  	<div style="width: 600px; height: 320px; margin: auto;">
+				        <canvas id="customerTransactionChart"></canvas>
+				    </div>
                   </div>
                 </div>
               </div>
@@ -357,6 +344,9 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    
+    <!-- 차트 -->
+    <!-- <script src="chart.js"></script> -->
   </body>
   
 <script>
@@ -465,6 +455,115 @@
 			alert('출근 먼저 확인해 주세요.');
 		}
 	});
+	
+	
+	
+	
+	
+	// 매출 현황 그래프
+	salesGraph();
+	
+	function salesGraph() {
+		// 현재 달로부터 지난 6개월 동안의 발주금액, 판매금액, 영업 이익 (판매금액 - 발주금액) 을 불러온다.
+		fetch('/main/salesGraph.ajax', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify()
+		})
+		.then(response => response.json())
+		.then(data => {
+			drawGraph(data.yearMonthList, data.poPriceList, data.salePriceList, data.profitPriceList);
+		})
+		.catch(error => {console.log('Error: ',error);});
+	}
+	
+	// 그래프 그리기
+	function drawGraph(yearMonthList, poPriceList, salePriceList, profitPriceList){
+		const ctx = document.getElementById('customerTransactionChart').getContext('2d');
+	    
+	    const data = {
+	        labels: yearMonthList,
+	        datasets: [
+	        	{
+	                type: 'bar',
+	                label: '발주 금액',
+	                data: poPriceList,
+	                backgroundColor: 'rgba(72, 163, 215, 0.65)',
+	                borderRadius: 10,
+	                barPercentage: 0.6, 
+	                categoryPercentage: 0.3, 
+	                order: 3
+	            },
+	            {
+	                type: 'bar',
+	                label: '판매 금액',
+	                data: salePriceList,
+	                backgroundColor: 'rgba(122, 112, 186, 0.65)',
+	                borderRadius: 10,
+	                barPercentage: 0.6,
+	                categoryPercentage: 0.3,
+	                order: 3
+	            },
+	            {
+	                type: 'line',
+	                label: '영업 이익',
+	                data: profitPriceList,
+	                backgroundColor: 'rgba(122, 112, 186, 1)',
+	                borderColor: 'rgba(122, 112, 186, 1)',
+	                borderWidth: 2,
+	                fill: false,
+	                pointBackgroundColor: 'rgba(122, 112, 186, 1)',
+	                pointBorderColor: '#fff',
+	                pointBorderWidth: 2,
+	                pointRadius: 5,
+	                pointStyle: 'circle',
+	                order: 1
+	            }
+	        ]
+	    };
+
+	    const options = {
+	        responsive: true,
+	        plugins: {
+	            legend: {
+	                position: 'top'
+	            },
+	            title: {
+	                display: false,
+	            }
+	        },
+	        scales: {
+	            y: {
+	                beginAtZero: true,
+	                max: 6000000,
+	                ticks: {
+	                    callback: function(value) {
+	                        return (value / 10000);
+	                    }
+	                }
+	            },
+	            x: {
+	                stacked: false,
+	                grid: {
+	                    offset: true
+	                },
+	                ticks: {
+	                    maxRotation: 0,
+	                    minRotation: 0
+	                },
+	                categoryPercentage: 0.8
+	            }
+	        }
+	    };
+
+	    const customerTransactionChart = new Chart(ctx, {
+	        type: 'bar',  // Use 'bar' to create a mixed bar chart
+	        data: data,
+	        options: options
+	    });
+	}
 	
 	
 	

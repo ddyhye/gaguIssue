@@ -2,6 +2,9 @@ package ko.gagu.issue.service;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +34,9 @@ import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
 import ko.gagu.issue.dto.Leave_usage_tbDTO;
 import ko.gagu.issue.dto.PagingDTO;
+import ko.gagu.issue.dto.ReservationDTO;
 import ko.gagu.issue.dto.product_tbDTO;
+import ko.gagu.issue.dto.salesPriceDTO;
 
 @Service
 public class MainService {
@@ -56,6 +61,19 @@ public class MainService {
 		EmployeeDTO emp = mainDao.getEmpData(empID);
 		
 		
+		
+		
+		// 회의실 예약
+		List<ReservationDTO> reservList = mainDao.getReservList(emp.getIdx_employee());
+		for (ReservationDTO rdto : reservList) {
+			String start_datetime = "";
+			start_datetime += rdto.getStart_datetime();
+			String startDate = start_datetime.split("T")[0];
+			String startTime = start_datetime.split("T")[1];
+			rdto.setStartDate(startDate);
+			rdto.setStartTime(startTime);
+		}
+		mav.addObject("reservList", reservList);
 		
 		
 		// 기안서
@@ -195,7 +213,7 @@ public class MainService {
 		
 		int totalPages = mainDao.getFilterTotalPages(paging, idxEmployee);
 		
-		// 전체 페이지 수와 현재 페이지 수 지정
+		// 전체 페이지 수와 현재 페이지 지정
 		if (totalPages == 0) {
 			paging.setPage(0);
 		} else if (totalPages <= paging.getPage()) {
@@ -293,6 +311,53 @@ public class MainService {
 	}
 	public Map<String, Object> alarmRead(Map<String, Object> map, int idx_alarm, int idx_employee) {
 		mainDao.alarmRead(idx_alarm, idx_employee);
+		
+		return map;
+	}
+	
+	
+	
+	
+	
+	// 매출 현황 그래프
+	public Map<String, Object> salesGraph() {
+		Map<String, Object> map = new HashMap<>();
+		
+		List<String> yearMonthList = new ArrayList<String>();
+		List<Integer> poPriceList = new ArrayList<Integer>();
+		List<Integer> salePriceList = new ArrayList<Integer>();
+		List<Integer> profitPriceList = new ArrayList<Integer>();
+		
+		// 현재 날짜를 가져옴
+        LocalDate currentDate = LocalDate.now();
+        // DateTimeFormatter를 사용하여 년도와 월을 포맷팅
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        // 지난 6개월 간의 년도와 월을 추출하여 리스트에 추가
+        for (int i = 6; i > 0; i--) {
+            LocalDate date = currentDate.minusMonths(i);
+            String yearMonth = date.format(formatter);
+            // 년
+            String yearStr = yearMonth.split("-")[0];
+            int year = Integer.parseInt(yearStr);
+            // 월
+            String monthStr = yearMonth.split("-")[1];
+            int month = Integer.parseInt(monthStr);
+            
+            // 발주 금액과 판매 금액, 영업 이익 금액 dto를 만들어 매퍼로부터 한꺼번에 받아오자.
+            salesPriceDTO dto = mainDao.getMonthSalesPrice(year, month);
+            poPriceList.add(dto.getPoPriceList());
+            salePriceList.add(dto.getSalePriceList());
+            profitPriceList.add(dto.getProfitPriceList());
+            
+            // 년월
+            String yearMonthStr = yearStr+"."+monthStr;
+            yearMonthList.add(yearMonthStr);
+        }
+        
+        map.put("yearMonthList", yearMonthList);
+        map.put("poPriceList", poPriceList);
+        map.put("salePriceList", salePriceList);
+        map.put("profitPriceList", profitPriceList);
 		
 		return map;
 	}

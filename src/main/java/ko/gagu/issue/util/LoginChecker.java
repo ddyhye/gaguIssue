@@ -66,7 +66,7 @@ public class LoginChecker implements HandlerInterceptor {
 	                logger.error("EmployeeDTO의 필드 중 하나가 null입니다.");
 	            }
 	        } else {
-	            logger.error("ModelAndView 객체가 null입니다.");
+	            //logger.error("ModelAndView 객체가 null입니다.");
 	        }
 	    }
 	}
