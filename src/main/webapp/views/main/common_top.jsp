@@ -2,15 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <head>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	
-	<style>
-    	
-	</style>
-	
-	
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>	
+	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doToast.css'/>">
 </head> 
+		<!-- 토스트 알람 -->
+	    <!-- <div class="toast-container position-fixed bottom-0 right-0 p-3" style="z-index: 11;">
+	        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+	            <div class="toast-header">
+	                <strong class="mr-auto">Notification</strong>
+	                <small>Just now</small>
+	                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <div class="toast-body">
+	                This is a toast notification.
+	            </div>
+	        </div>
+	    </div> -->
 
+		<!-- 상단바 시작 -->
 		<div class="header-wrapper col m-0">
           <div class="row">
             <form class="form-inline search-full col" action="#" method="get">
@@ -113,12 +125,20 @@
                     <li><a href="<c:url value='/logout.go'/>"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                   </ul>
                 </li>
-                
-                
-                
               </ul>
             </div>
-            <script class="result-template" type="text/x-handlebars-template">
+          </div>
+        </div>
+        <!-- 상단바 끝 -->
+        
+        
+        <!-- 토스트 -->
+        <!-- <div id="do-toast" class="toast">This is a toast notification.</div> -->
+	    <%-- <%@ include file="common_bottom.jsp" %> --%>
+        
+        
+        
+<script class="result-template" type="text/x-handlebars-template">
               <div class="ProfileCard u-cf">                        
               <div class="ProfileCard-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay m-0"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
               <div class="ProfileCard-details">
@@ -126,126 +146,122 @@
               </div>
               </div>
             </script>
-            <script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
-            
+<script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+          
+<script>
+	 // [jae]     
+     $(document).ready(function() {
+    	    $('#messageButton').click(function(e) {
+    	    	var emp_id = "${sessionScope.emp_id}";
+    	    	console.log("세션ID: ", emp_id);
+    	        e.preventDefault();
+    	        $.ajax({
+    	            url: '/noteMessage2',
+    	            method: 'GET',
+    	            success: function(response) {
+    	                // 기존 모달 제거 (중복 방지)
+    	               // $('#myModal').remove();
+    	                // 모달 내용을 body에 추가
+    	                $('body').append(response);
+    	                // 모달 표시
+    	                $('#myModal').modal('show');
+    	               
+    	                
+    	                // 대화방 목록을 불러오는 함수 호출
+    	                loadChatRooms(emp_id);
+    	            },
+    	            error: function() {
+    	                alert('쪽지함을 불러오는데 실패했습니다.');
+    	            }
+    	        });
+    	    });
+    	});
              
-             <script>
-             
-            
-             
-             $(document).ready(function() {
-            	    $('#messageButton').click(function(e) {
-            	    	var emp_id = "${sessionScope.emp_id}";
-            	    	console.log("세션ID: ", emp_id);
-            	        e.preventDefault();
-            	        $.ajax({
-            	            url: '/noteMessage2',
-            	            method: 'GET',
-            	            success: function(response) {
-            	                // 기존 모달 제거 (중복 방지)
-            	               // $('#myModal').remove();
-            	                // 모달 내용을 body에 추가
-            	                $('body').append(response);
-            	                // 모달 표시
-            	                $('#myModal').modal('show');
-            	               
-            	                
-            	                // 대화방 목록을 불러오는 함수 호출
-            	                loadChatRooms(emp_id);
-            	            },
-            	            error: function() {
-            	                alert('쪽지함을 불러오는데 실패했습니다.');
-            	            }
-            	        });
-            	    });
-            	});
-             
-             function loadContact(search){
-            	 console.log("연락처 불러오기 아작스 요청");
-            	 var emp_id = "${sessionScope.emp_id}";
-            	 $.ajax({
-                     url: '/getContact.ajax',
-                     method: 'POST',
-                     dataType:'JSON',
-                     data: {
-                    	 'contactSearch': search,
-                    	 'emp_id':emp_id
-                     },
-                     success: function(data) {
-                    	 // console.log(data);
-                    	 drawContactList(data);
-                     },
-                     error: function(error) {
-                    	 console.log(error);
-                         alert('연락처를 불러오는데 실패하였습니다.');
-                     }
-                 });
-             }
-             
-             function drawContactList(data){
+     function loadContact(search){
+    	 console.log("연락처 불러오기 아작스 요청");
+    	 var emp_id = "${sessionScope.emp_id}";
+    	 $.ajax({
+             url: '/getContact.ajax',
+             method: 'POST',
+             dataType:'JSON',
+             data: {
+            	 'contactSearch': search,
+            	 'emp_id':emp_id
+             },
+             success: function(data) {
             	 // console.log(data);
-            	 $('.contact-wrapper').empty();
-            	 var content = '';
-            	 
-            	 for (item of data.ContackList) {
-          			content +=	'<ul class="border-0">'; 
-          			content +=		'<li class="common-space">';
-          			content +=		'<div class="chat-time">';
-          			if(item.file_name != null){
-		                content += '<img class="img-fluid rounded-circle" alt="user" src="/file/profile_picture/'+item.file_name+'">';			                	
-	                }else{
-	                	content += '<img class="img-fluid rounded-circle" alt="user" src="/img/user_icon.png">';    	
-	                }
-          			content +=		'<div>';
-          			content +=		'<span>'+item.emp_name+'</span>';
-          			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
-          			content +=		'</div>';
-          			content +=		'</div>';
-          			content +=		'<div class="contact-edit">';
-          			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
-          			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
-          			content +=		'</svg>';
-          			content +=		'<div class="dropdown-menu dropdown-menu-end">';
-          			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\', \'' + item.idx_employee + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
-          			content +=		'<button id="openSecondModal" onclick="secModal2(\'' + item.idx_employee + '\')" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button>';
-          			content +=		'</div>';
-          			content +=		'</li>';
-          			content +=		'</ul>';
-          		}
-            	 $('.contact-wrapper').append(content);
+            	 drawContactList(data);
+             },
+             error: function(error) {
+            	 console.log(error);
+                 alert('연락처를 불러오는데 실패하였습니다.');
              }
+         });
+     }
+             
+     function drawContactList(data){
+    	 // console.log(data);
+    	 $('.contact-wrapper').empty();
+    	 var content = '';
+    	 
+    	 for (item of data.ContackList) {
+  			content +=	'<ul class="border-0">'; 
+  			content +=		'<li class="common-space">';
+  			content +=		'<div class="chat-time">';
+  			if(item.file_name != null){
+          content += '<img class="img-fluid rounded-circle" alt="user" src="/file/profile_picture/'+item.file_name+'">';			                	
+         }else{
+         	content += '<img class="img-fluid rounded-circle" alt="user" src="/img/user_icon.png">';    	
+         }
+  			content +=		'<div>';
+  			content +=		'<span>'+item.emp_name+'</span>';
+  			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
+  			content +=		'</div>';
+  			content +=		'</div>';
+  			content +=		'<div class="contact-edit">';
+  			content +=		'<svg class="dropdown-toggle" role="menu" data-bs-toggle="dropdown" aria-expanded="false">';
+  			content +=		'<use href="/assets/svg/icon-sprite.svg#menubar"></use>';
+  			content +=		'</svg>';
+  			content +=		'<div class="dropdown-menu dropdown-menu-end">';
+  			content +=		'<button id="openSecondModal2" type="button" onclick="secModal(\'' + item.emp_name + '\', \'' + item.idx_employee + '\')" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal3">쪽지 보내기</button>';
+  			content +=		'<button id="openSecondModal" onclick="secModal2(\'' + item.idx_employee + '\')" type="button" class="btn dropdown-item" data-bs-toggle="modal" data-bs-target="#myModal2">회원 상세보기</button>';
+  			content +=		'</div>';
+  			content +=		'</li>';
+  			content +=		'</ul>';
+  		}
+    	 $('.contact-wrapper').append(content);
+     }
              
      		
              
-             function loadChatRooms(emp_id, search) {
-            	 console.log("대화방 불러오기 아작스 요청");
-            //	 console.log(search);
-            //	 console.log(emp_id);
-                 $.ajax({
-                     url: '/getChatRooms',
-                     method: 'POST',
-                     dataType:'JSON',
-                     data: {
-                    	 'messageSearch': search,
-                    	 'emp_id': emp_id
-                     },
-                     success: function(data) {
-                    	 // console.log(data);
-                         //  대화방 목록을 화면에 표시하는 로직
-                         drawRoomList(data);
-                     },
-                     error: function(error) {
-                    	 console.log(error);
-                         alert('대화방 목록을 불러오는데 실패했습니다.');
-                     }
-                 });
-             }
+      function loadChatRooms(emp_id, search) {
+     	 console.log("대화방 불러오기 아작스 요청");
+     //	 console.log(search);
+     //	 console.log(emp_id);
+          $.ajax({
+              url: '/getChatRooms',
+              method: 'POST',
+              dataType:'JSON',
+              data: {
+             	 'messageSearch': search,
+             	 'emp_id': emp_id
+              },
+              success: function(data) {
+             	 // console.log(data);
+                  //  대화방 목록을 화면에 표시하는 로직
+                  drawRoomList(data);
+              },
+              error: function(error) {
+             	 console.log(error);
+                  alert('대화방 목록을 불러오는데 실패했습니다.');
+              }
+          });
+      }
              
-           
-
-           
-              
-             
+      
              function drawRoomList(data) {
             	// console.log(data);
             	var emp_id = "${sessionScope.emp_id}";
@@ -537,147 +553,173 @@
          	
          	
          	
-         	// [do] 알림
-         	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지? ==> 비동기
-         	// do-alarmCnt 이것의 값을 바꿔줘야함.
-         	alarmCnt();
-         	// 알람의 개수를 가져오는 함수
-         	function alarmCnt() {
-         		fetch('/alarmCnt.ajax', {
-         			method: 'POST',
-         			headers: {
-         				'Content-Type': 'application/json'
-         			},
-         			body: JSON.stringify({})
-         		})
-         		.then(response => response.json())
-         		.then(data => {
-         			console.log('알림 개수 업데이트');
-         			if (data.alarmCnt > 0) {
-						document.getElementById('do-alarmCnt').innerText = data.alarmCnt;
-					} else {
-						const alarmIcon = document.getElementById('do-alarmIcon');
-						
-					    // 모든 자식 요소 제거
-					    while (alarmIcon.firstChild) {
-					        alarmIcon.removeChild(alarmIcon.firstChild);
-					    }
-		        		
-		        		var content = '';
-		        		
-	        			content += '<svg>';
-	        			content += '<use href="/assets/svg/icon-sprite.svg#notification"></use>';
-	        			content += '</svg>';
-	        			content += '</div>';
-		        		
-	        			// 새로운 내용 추가
-	        			const fragment = document.createRange().createContextualFragment(content);
-	        		    alarmIcon.appendChild(fragment);
-					}
-         		})
-         		.catch(error => {consoleerror('Fetch error:', error);})
-         	}
-         	
-         	document.getElementById('do-alarmIcon').addEventListener('mouseover', () => {
-         		fetch('/alarmList.ajax', {
-         			method: 'POST',
-         			headers: {
-         				'Content-Type': 'application/json'
-         			},
-         			body: JSON.stringify({})
-         		})
-         		.then(response => response.json())
-         		.then(data => {
-         			drawAlarmList(data);
-         		})
-         		.catch(error => {console.error('Fetch error:', error);})
-         	});
-         	
-         	function drawAlarmList(data){
-         		$('.do-alarm').empty();
-        		
-        		var content = '';
+        	// [do] 알림
+        	// 알림 갯수는 스케쥴러를 사용할 것인지, 아님 페이지 이동시마다 비동기로 할 것인지? ==> 비동기
+        	// do-alarmCnt 이것의 값을 바꿔줘야함.
+        	alarmCnt();
+        	// 알람의 개수를 가져오는 함수
+        	function alarmCnt() {
+        		fetch('/alarmCnt.ajax', {
+        			method: 'POST',
+        			headers: {
+        				'Content-Type': 'application/json'
+        			},
+        			body: JSON.stringify({})
+        		})
+        		.then(response => response.json())
+        		.then(data => {
+        			if (data.alarmCnt > 0) {
+					document.getElementById('do-alarmCnt').innerText = data.alarmCnt;
+				} else {
+					const alarmIcon = document.getElementById('do-alarmIcon');
+					
+				    // 모든 자식 요소 제거
+				    while (alarmIcon.firstChild) {
+				        alarmIcon.removeChild(alarmIcon.firstChild);
+				    }
+	        		
+	        		var content = '';
+	        		
+        			content += '<svg>';
+        			content += '<use href="/assets/svg/icon-sprite.svg#notification"></use>';
+        			content += '</svg>';
+        			content += '</div>';
+	        		
+        			// 새로운 내용 추가
+        			const fragment = document.createRange().createContextualFragment(content);
+        		    alarmIcon.appendChild(fragment);
+				}
+        		})
+        		.catch(error => {consoleerror('Fetch error:', error);})
+        	}
+        	
+        	document.getElementById('do-alarmIcon').addEventListener('mouseover', () => {
+        		fetch('/alarmList.ajax', {
+        			method: 'POST',
+        			headers: {
+        				'Content-Type': 'application/json'
+        			},
+        			body: JSON.stringify({})
+        		})
+        		.then(response => response.json())
+        		.then(data => {
+        			drawAlarmList(data);
+        		})
+        		.catch(error => {console.error('Fetch error:', error);})
+        	});
+        	
+        	function drawAlarmList(data){
+        		$('.do-alarm').empty();
+       		
+       		var content = '';
 
-        		if (!data.list || data.list.length === 0) {
-        			content += '<p>새로운 알림이 없습니다...</p>';
-        		}
-        		for (item of data.list) {
-        			content += '<li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">';
-        			content += '<div class="d-flex justify-content-between">';
-        			content += '<div class="toast-body d-flex p-0 do-alarm-path">';
-        			content += '<div class="flex-grow-1">';
-        			//content += '<div class="flex-grow-1"> <a href="private-chat.go">';
-        			content += '<input type="hidden" class="do-alarm-idx" value="'+item.idx_alarm+'"/>';
-        			content += '<input type="hidden" class="do-alarm-empIdx" value="'+item.idx_employee+'"/>';
-        			content += '<input type="hidden" class="do-alarm-path" value="'+item.al_path+'"/>';
-        			content += '<h6 class="m-0">';
-        			content += item.al_content;
-        			content += '</h6>';
-        			//content += '</h6></a>';
-        			content += '<p class="m-0">';
-        			var dateOnly = item.create_datetime.split('T')[0];
-        			content += dateOnly;
-        			content += '</p>';
-        			content += '</div>';
-        			content += '</div>';
-        			content += '<button class="btn-close btn-close-white shadow-none do-alarm-delete" type="button" data-bs-dismiss="toast" aria-label="Close"></button>';
-        			content += '</div>';
-        			content += '</li>';
-        		}
-        		
-        		$('.do-alarm').append(content);
-        		
-        		
-        		// 모든 알림에 경로가 있는지 확인하고, 경로가 있다면 링크 이동
-			    document.querySelectorAll('.do-alarm-path').forEach(element => {
-			        element.addEventListener('click', function (e) {
-			            if (e.target.classList.contains('do-alarm-delete') || e.target.closest('.do-alarm-delete')) {
-			                return;
-			            }
-			
-			            const alarmPath = element.querySelector('input.do-alarm-path').value;
-			            console.log(alarmPath);
-			            if (alarmPath) {
-			                window.location.href = '<c:url value="'+alarmPath+'"/>';
-			            }
-			        });
-			        
-			        // 삭제 버튼에 이벤트 리스너 추가
-		            const deleteButton = element.closest('li').querySelector('.do-alarm-delete');
-		            if (deleteButton) {
-		                deleteButton.addEventListener('click', function (e) {
-		                    e.stopPropagation();
-		                    
-		                    const idxAlarm = this.closest('li').querySelector('.do-alarm-idx').value;
-		                    const idxEmployee = this.closest('li').querySelector('.do-alarm-empIdx').value;
-		                    readRequest(idxAlarm, idxEmployee);
-		                    
-		                    // 알림 삭제했으면 개수도 수정하자!
-		                    alarmCnt();
-		                });
+       		if (!data.list || data.list.length === 0) {
+       			content += '<p>새로운 알림이 없습니다...</p>';
+       		}
+       		for (item of data.list) {
+       			content += '<li class="toast default-show-toast align-items-center border-0 fade show" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">';
+       			content += '<div class="d-flex justify-content-between">';
+       			content += '<div class="toast-body d-flex p-0 do-alarm-path">';
+       			content += '<div class="flex-grow-1">';
+       			//content += '<div class="flex-grow-1"> <a href="private-chat.go">';
+       			content += '<input type="hidden" class="do-alarm-idx" value="'+item.idx_alarm+'"/>';
+       			content += '<input type="hidden" class="do-alarm-empIdx" value="'+item.idx_employee+'"/>';
+       			content += '<input type="hidden" class="do-alarm-path" value="'+item.al_path+'"/>';
+       			content += '<h6 class="m-0">';
+       			content += item.al_content;
+       			content += '</h6>';
+       			//content += '</h6></a>';
+       			content += '<p class="m-0">';
+       			var dateOnly = item.create_datetime.split('T')[0];
+       			content += dateOnly;
+       			content += '</p>';
+       			content += '</div>';
+       			content += '</div>';
+       			content += '<button class="btn-close btn-close-white shadow-none do-alarm-delete" type="button" data-bs-dismiss="toast" aria-label="Close"></button>';
+       			content += '</div>';
+       			content += '</li>';
+       		}
+       		
+       		$('.do-alarm').append(content);
+       		
+       		
+       		// 모든 알림에 경로가 있는지 확인하고, 경로가 있다면 링크 이동
+		    document.querySelectorAll('.do-alarm-path').forEach(element => {
+		        element.addEventListener('click', function (e) {
+		            if (e.target.classList.contains('do-alarm-delete') || e.target.closest('.do-alarm-delete')) {
+		                return;
 		            }
-			    });
-         	}
-         	// 알람 삭제 (읽음) ajax
-         	function readRequest(idxAlarm, idxEmployee) {
-         	    fetch('/alarmRead.ajax', {
-         	        method: 'POST',
-         	        headers: {
-         	            'Content-Type': 'application/json',
-         	        },
-         	        body: JSON.stringify({ 
-         	        	idx_alarm: idxAlarm, 
-         	        	idx_employee: idxEmployee 
-         	        }),
-         	    })
-         	    .then(response => response.json())
-         	    .then(data => {
-         	    })
-         	    .catch((error) => { console.error('Error:', error); });
-         	}
-         	
-         	
-			</script>
-          </div>
-          
-        </div>
+		
+		            const alarmPath = element.querySelector('input.do-alarm-path').value;
+		            console.log(alarmPath);
+		            if (alarmPath) {
+		                window.location.href = '<c:url value="'+alarmPath+'"/>';
+		            }
+		        });
+		        
+		        // 삭제 버튼에 이벤트 리스너 추가
+	            const deleteButton = element.closest('li').querySelector('.do-alarm-delete');
+	            if (deleteButton) {
+	                deleteButton.addEventListener('click', function (e) {
+	                    e.stopPropagation();
+	                    
+	                    const idxAlarm = this.closest('li').querySelector('.do-alarm-idx').value;
+	                    const idxEmployee = this.closest('li').querySelector('.do-alarm-empIdx').value;
+	                    readRequest(idxAlarm, idxEmployee);
+	                    
+	                    // 알림 삭제했으면 개수도 수정하자!
+	                    alarmCnt();
+	                });
+	            }
+		    });
+        	}
+        	// 알람 삭제 (읽음) ajax
+        	function readRequest(idxAlarm, idxEmployee) {
+        	    fetch('/alarmRead.ajax', {
+        	        method: 'POST',
+        	        headers: {
+        	            'Content-Type': 'application/json',
+        	        },
+        	        body: JSON.stringify({ 
+        	        	idx_alarm: idxAlarm, 
+        	        	idx_employee: idxEmployee 
+        	        }),
+        	    })
+        	    .then(response => response.json())
+        	    .then(data => {
+        	    })
+        	    .catch((error) => { console.error('Error:', error); });
+        	}
+        	
+        	
+        /*
+        // [do] 토스트
+		// WebSocket 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            function showToast(message) {
+                var toast = document.getElementById("do-toast");
+                if (toast) {
+                    toast.className = "toast show";
+                    toast.innerText = message;
+                    setTimeout(function(){ 
+                    	toast.className = toast.className.replace("show", "");
+                    }, 3000);
+                } else {
+                    console.error("Toast element not found");
+                }
+            }
+
+            // WebSocket 설정
+            const socket = new SockJS('/ws');
+            const stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/notifications', function (notification) {
+                    console.log('토스트 테스트 >> ' + notification.body);
+                    showToast(notification.body);
+                });
+            });
+        });
+        */
+</script>

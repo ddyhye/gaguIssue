@@ -131,6 +131,16 @@
         flex-direction: column;
         align-items: center;
 	    }
+	    
+	    .modal-body2 {
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	        
+	        overflow-y: auto;
+	        max-height: 600px;
+	    }
+	    
 	    .form-group {
 	        margin-bottom: 1rem;
 	    }
@@ -169,6 +179,10 @@
 		    display: none;
 		}
 		#employeePhoto {
+		    /*max-width: 50%; 이미지의 최대 너비 설정 */
+		    height: auto; /* 높이 자동 조정 */
+		}
+		#employeePhoto2 {
 		    /*max-width: 50%; 이미지의 최대 너비 설정 */
 		    height: auto; /* 높이 자동 조정 */
 		}
@@ -404,6 +418,7 @@
 		    pointer-events: none; /* 클릭 이벤트 비활성화 */
 		}
 	    
+	    
        
   </style>
   
@@ -508,7 +523,7 @@
 			                        <div class="row">
 			                            <div class="col-6 mb-2">
 			                                <label for="de_name">부서</label>
-			                                <select class="form-control" id="de_name" name="de_name">
+			                                <select class="form-control" id="de_name" name="de_name" onchange="updatePositions()" >
 			                                    <option value="임원진">임원진</option>
 			                                    <option value="인사관리부서">인사관리부서</option>
 			                                    <option value="물류관리부서">물류관리부서</option>
@@ -572,7 +587,7 @@
 			        <div class="col-lg-6">
 			            <div class="search-container">
 			                <label for="searchInput">검색:</label>
-			                <input type="text" id="searchInput" placeholder="사원명 또는 사원코드">
+			                <input type="text" id="searchInput" placeholder="사원명 또는 사원번호">
 			                <label for="departmentSelect">부서:</label>
 			                <select id="departmentSelect">
 			                    <option value="전체">전체</option>
@@ -621,7 +636,7 @@
 			        <div class="col-lg-6">
 					    <div class="button-container">
 					        <button id="registerButton" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">사원등록</button>
-					        <button id="modifyButton" class="btn btn-secondary">사원수정</button>
+					        <button id="modifyButton" class="btn btn-secondary" data-toggle="modal" data-target="#employeeModifyModal">사원수정</button>
 					    </div>
 						<div class="button-detail-container">
 						    <button id="viewDetailsButton" class="btn custom-btn" style="display: none;">상세보기</button>
@@ -681,19 +696,19 @@
 					            <h5>인적정보</h5>
 					            <div class="info-content">
 					                <div class="photo-container">
-					                    <img id="employeePhoto" src="/img/user.jpg" alt="사원 사진">
+					                    <img id="employeePhoto2" src="/img/user.jpg" alt="사원 사진">
 					                </div>
 					                <div class="info-details">
 					                    <div class="namePhoneContainer">
-					                        <p><strong>이름:</strong> <span id="emp_name_detail"></span></p>
-					                        <p><strong>전화번호:</strong> <span id="emp_phone_number_detail"></span></p>
+					                        <p><strong>이름:</strong> <p id="annual_emp_name_detail"></p></p>
+					                        <p><strong>전화번호:</strong> <p id="annual_emp_phone_number_detail"></p></p>
 					                    </div>
 					                    <div class="info-row">
-					                        <p><strong>생년월일:</strong> <span id="emp_birth_date_detail"></span></p>
-					                        <p><strong>이메일:</strong> <span id="emp_email_detail"></span></p>
+					                        <p><strong>생년월일:</strong> <span id="annual_emp_birth_date_detail"></span></p>
+					                        <p><strong>이메일:</strong> <span id="annual_emp_email_detail"></span></p>
 					                    </div>
 					                    <div class="info-row">
-					                        <p><strong>거주지:</strong> <span id="address_detail"></span></p>
+					                        <p><strong>거주지:</strong> <span id="annual_emp_address_detail"></span></p>
 					                    </div>
 					                </div>
 					            </div>
@@ -718,13 +733,13 @@
 				                </thead>
 				                <tbody>
 				                    <tr>
-				                        <td id ="year_days_detail" class="no-click">15</td>
-				                        <td id="usage_days_detail" class="no-click"></td>
-				                        <td id="leave_days_detail" class="no-click"></td>
+				                        <td class="no-click">15</td>
+				                        <td id="annual_usage_days_detail" class="no-click"></td>
+				                        <td id="annual_leave_days_detail" class="no-click"></td>
 				                    </tr>
 				                </tbody>
 				            </table>
-				            <table class="leave-details-table">
+				            <table id="leaveUsageTable" class="leave-details-table">
 				                <thead>
 				                    <tr>
 				                        <th>No</th>
@@ -733,24 +748,118 @@
 				                        <th>연차 내용</th>
 				                    </tr>
 				                </thead>
-				                <tbody>
+				                <tbody  class="no-click">
 				                    <tr>
 				                        <td class="no-click"></td>
-				                        <td id ="anuual-time" class="no-click"></td>
+				                        <td id ="annual-time" class="no-click"></td>
 				                        <td id ="lu_usage_days"class="no-click"></td>
-				                        <td><button class="detail-button"></button></td>
-				                    </tr>
-				                    <tr>
-				                        <td class="no-click"></td>
-				                        <td class="no-click"></td>
-				                        <td class="no-click"></td>
 				                        <td><button class="detail-button">상세내역</button></td>
 				                    </tr>
+				                    
 				                </tbody>
 				            </table>
 				        </div>
 				    </div>
 				</div>
+				
+				<!-- 사원 수정 모달 창 -->
+				<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+			                <div class="modal-header">
+			                    <h5 class="modal-title" id="modifyModalLabel">사원 수정</h5>
+			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                        <span aria-hidden="true">&times;</span>
+			                    </button>
+			                </div>
+			                <div class="modal-body2">
+			                    <!-- 사원 수정 폼 -->
+				                    <form id="modifyForm">
+				                    <div class="text-center mb-4">
+				                        <label for="profileImage">
+				                            <img id="profileImagePreview" src="/img/user.jpg"
+				                                 alt="profile" class="img-thumbnail"
+				                                 style="width: 150px; height: 150px; cursor: pointer; object-fit: cover;">
+				                        </label>
+				                        <input type="file" id="profileImage" name="profileImage" style="display: none;"
+				                               onchange="previewImage(event)">
+				                    </div>
+			                        <div class="container">
+			                            <div class="row">
+			                                <div class="col-6 mb-2">
+			                                    <label for="modifyEmpId">사원번호</label>
+			                                    <input type="text" class="form-control" id="modifyEmpId" readonly>
+			                                </div>
+			                                <div class="col-6 mb-2">
+			                                    <label for="modifyEmpName">이름</label>
+			                                    <input type="text" class="form-control" id="modifyEmpName">
+			                                </div>
+			                            </div>
+			                            <div class="row">
+			                                <div class="col-6 mb-2">
+			                                    <label for="modifyEmpPhoneNumber">전화번호</label>
+			                                    <input type="tel" class="form-control" id="modifyEmpPhoneNumber">
+			                                </div>
+			                                <div class="col-6 mb-2">
+			                                    <label for="modifyEmpBirthDate">생년월일</label>
+			                                    <input type="date" class="form-control" id="modifyEmpBirthDate">
+			                                </div>
+			                            </div>
+			                            <div class="row">
+			                                <div class="col-6 mb-2">
+			                                    <label for="modifyEmpEmail">이메일</label>
+			                                    <input type="email" class="form-control" id="modifyEmpEmail">
+			                                </div>
+			                                <div class="col-6 mb-2">
+			                                    <label for="modifyDeName">부서</label>
+			                                    <select class="form-control" id="modifyDeName" name="modifyDeName" onchange="updatePositions()">
+			                                        <option value="임원진">임원진</option>
+			                                        <option value="인사관리부서">인사관리부서</option>
+			                                        <option value="물류관리부서">물류관리부서</option>
+			                                        <option value="경영지원부서">경영지원부서</option>
+			                                    </select>
+			                                </div>
+			                                <div class="col-6 mb-2">
+			                                    <label for="modifyTitleName">직위</label>
+			                                    <select class="form-control" id="modifyTitleName" name="modifyTitleName">
+			                                        <option value="부장">부장</option>
+			                                        <option value="과장">과장</option>
+			                                        <option value="대리">대리</option>
+			                                        <option value="사원">사원</option>
+			                                    </select>
+			                                </div>
+			                            </div>
+			                             <div class="row">
+				                            <div class="col-12 mb-2">
+				                                <label for="postal_code">우편번호</label>
+				                                <input type="text" class="form-control" id="modifyPostalCode" name="postal_code" readonly>
+				                                <button type="button" class="btn btn-outline-secondary mt-2" onclick="openPostalCodeSearch2()">우편번호 찾기</button>
+				                            </div>
+				                        </div>
+				                        <div class="row">
+				                            <div class="col-12 mb-2">
+				                                <label for="address">주소</label>
+				                                <input type="text" class="form-control" id="modifyaddress" name="address" readonly>
+				                            </div>
+				                        </div>
+				                        <div class="row">
+				                            <div class="col-12 mb-2">
+				                                <label for="detail_address">상세 주소</label>
+				                                <input type="text" class="form-control" id="detail_address" name="detail_address">
+				                            </div>
+				                        </div>
+			                        </div>
+			                    </form>
+			                </div>
+			                <div class="modal-footer">
+							    <button type="button" class="btn btn-primary" onclick="submitModifyForm()">수정</button>
+							    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+							</div>
+			            </div>
+			        </div>
+			    </div>
+
+				
 			<!-- Container-fluid 종료-->
 
           
@@ -759,20 +868,7 @@
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+       
       </div>
     
     
@@ -800,10 +896,62 @@
 		            resetImage();
 		        });
 		    });
+		    
+		    function updatePositions() {
+	            // 선택된 부서를 가져옴
+	            var deName = document.getElementById('modifyDeName').value;
+	            var titleSelect = document.getElementById('modifyTitleName');
+	            
+	            console.log('hh',deName);
+	           
+
+	            // 직위 선택 옵션을 초기화
+	            titleSelect.innerHTML = '';
+
+	            if (deName === '임원진') {
+	                // 임원진일 때 직위 옵션
+	                titleSelect.appendChild(new Option('대표이사', '대표이사'));
+	                titleSelect.appendChild(new Option('상무', '상무'));
+	                titleSelect.appendChild(new Option('이사', '이사'));
+	            } 
+	            else {
+	                // 다른 부서일 때 기본 직위 옵션
+	                titleSelect.appendChild(new Option('부장', '부장'));
+	                titleSelect.appendChild(new Option('과장', '과장'));
+	                titleSelect.appendChild(new Option('대리', '대리'));
+	                titleSelect.appendChild(new Option('사원', '사원'));
+	            }
+	        }
+		    
+		    function InsertPositions() {
+	            // 선택된 부서를 가져옴
+	            var deName = document.getElementById('de_name').value;
+	            var titleSelect = document.getElementById('title_name');
+	            
+	            console.log('hh',titleSelect);
+	           
+
+	            // 직위 선택 옵션을 초기화
+	            titleSelect.innerHTML = '';
+
+	            if (deName === '임원진') {
+	                // 임원진일 때 직위 옵션
+	                titleSelect.appendChild(new Option('대표이사', '대표이사'));
+	                titleSelect.appendChild(new Option('상무', '상무'));
+	                titleSelect.appendChild(new Option('이사', '이사'));
+	            } 
+	            else {
+	                // 다른 부서일 때 기본 직위 옵션
+	                titleSelect.appendChild(new Option('부장', '부장'));
+	                titleSelect.appendChild(new Option('과장', '과장'));
+	                titleSelect.appendChild(new Option('대리', '대리'));
+	                titleSelect.appendChild(new Option('사원', '사원'));
+	            }
+	        }
 	
 		    function submitEmployeeForm() {
 		        var formData = new FormData($('#employeeForm')[0]); // FormData 객체 생성
-	
+		        
 		        // 우편번호, 주소, 상세주소를 합쳐서 하나의 문자열로 만든다.
 		        var postalCode = $('#postal_code').val();
 		        var address = $('#address').val();
@@ -812,7 +960,7 @@
 	
 		        // 합쳐진 주소를 emp_address 필드에 추가
 		        formData.append('emp_address', fullAddress);
-		        
+		        updatePositions();
 		        formData.append('emp_term_date', '9999-12-31');
 	
 		        $.ajax({
@@ -850,14 +998,25 @@
 		        }).open();
 		    }
 		    
+		    function openPostalCodeSearch2() {
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		                // 검색된 정보를 해당 필드에 넣음
+		                document.getElementById('modifyPostalCode').value = data.zonecode;
+		                document.getElementById('modifyaddress').value = data.roadAddress; // 도로명 주소 사용
+		            }
+		        }).open();
+		    }
+		    
 		 // 등록 폼 로딩 시 실행할 함수
 		    $(document).ready(function() {
 		        // 사원 번호 초기 설정
 		        updateEmpId();
-	
+		        InsertPositions();
 		        // 부서 선택 변경 시 사원 번호 업데이트
 		        $("#de_name").change(function() {
 		            updateEmpId(); // 부서 변경 시 사원 번호 업데이트
+		            InsertPositions();
 		        });
 		    });
 	
@@ -905,6 +1064,8 @@
 		    }
 		    
 		    
+		    
+		    
 		    // 직원 상세보기 그리기
 		    $(document).ready(function() {
     // 초기에 상세 정보 영역 숨기기
@@ -946,28 +1107,34 @@
 			            $('#annualLeaveButton').hide();
 			        }
 			    });
-			    $('#viewDetailsButton').click(function() {
-			    	$(this).addClass('selected');
-		            $('#annualLeaveButton').removeClass('selected');
-
-		            $('#employeeDetails').show();
-		            $('#annualDetails').hide();
-			    });
-			    
 			    $('#annualLeaveButton').click(function() {
-		            // 버튼 스타일 변경
-		            $(this).addClass('selected');
-		            $('#viewDetailsButton').removeClass('selected');
+			        const emp_id = $('table tbody tr.selected').data('emp-id');
+			        displayAnnualDetails(emp_id);
 
-		            $('#employeeDetails').hide();
-		            $('#annualDetails').show();
-		        });
+			        $(this).addClass('selected');
+			        $('#viewDetailsButton').removeClass('selected');
+
+			        $('#employeeDetails').hide();
+			        $('#annualDetails').show();
+			    });
+
+			    // 사원 상세 정보 버튼 클릭 시 사원 상세 정보 표시
+			    $('#viewDetailsButton').click(function() {
+			        const emp_id = $('table tbody tr.selected').data('emp-id');
+			        displayEmployeeDetails(emp_id);
+
+			        $(this).addClass('selected');
+			        $('#annualLeaveButton').removeClass('selected');
+
+			        $('#employeeDetails').show();
+			        $('#annualDetails').hide();
+			    });
 			
 			    function displayEmployeeDetails(emp_id) {
 			        $.ajax({
 			            type: 'POST',
 			            url: '/employeeDetail.ajax',
-			            data: { emp_id: emp_id },
+			            data: { 'emp_id': emp_id },
 			            dataType: 'json',
 			            success: function(data) {
 			                console.log(data); // 데이터 확인용
@@ -981,7 +1148,7 @@
 			                $('#de_name_detail').text(data.de_name);
 			                $('#title_name_detail').text(data.title_name);
 			                $('#leave_days_detail').text(data.leave_days);
-			                $('#address_detail').text(data.emp_address); 
+			                $('#emp_address_detail').text(data.emp_address); 
 			                $('#emp_hire_date_detail').text(data.emp_hire_date);
 			                $('#emp_term_date_detail').text(data.emp_term_date); 
 			                $('#emp_status_detail').text(data.emp_status); 
@@ -1008,41 +1175,62 @@
 			        $.ajax({
 			            type: 'POST',
 			            url: '/annualDetail.ajax',
-			            data: { emp_id: emp_id },
+			            data: { 'emp_id': emp_id },
 			            dataType: 'json',
 			            success: function(data) {
 			                console.log(data); // 데이터 확인용
-
+							console.log('data.emp_name : ' + data.annual_emp_name);
 			                // 연차 정보를 폼에 채워 넣기
-			                $('#emp_name_detail').text(data.emp_name);
-			                $('#emp_phone_number_detail').text(data.emp_phone_number);
-			                $('#emp_birth_date_detail').text(data.emp_birth_date);
-			                $('#emp_email_detail').text(data.emp_email);			                
-			                $('#address_detail').text(data.emp_address);
-
-			                $('#leave_days_detail').text(data.leave_days);
-			                $('#usage_days_detail').text(data.usage_days);
-			                $('#remaining_days_detail').text(data.leave_days - data.usage_days);
+			                $('#annual_emp_name_detail').text(data.DTO.emp_name); // 데이터가 null인 경우 대체값 추가
+				            $('#annual_emp_phone_number_detail').text(data.DTO.emp_phone_number || '');
+				            $('#annual_emp_birth_date_detail').text(data.DTO.emp_birth_date || '');
+				            $('#annual_emp_email_detail').text(data.DTO.emp_email || '');             
+				            $('#annual_emp_address_detail').text(data.DTO.emp_address || '');
+				
+				            $('#annual_leave_days_detail').text(data.DTO.leave_days || '');
+				            $('#annual_usage_days_detail').text(data.DTO.usage_days || '');
 			               
 
 			                // 연차 사용 내역 테이블 초기화
 			                $('#leaveUsageTable tbody').empty();
-
-			                // 연차 사용 내역을 테이블에 추가
-			                if (data.leave_usage_history && data.leave_usage_history.length > 0) {
-							    let tableBody = $('#leaveUsageTable tbody');
 							
-							    data.leave_usage_history.forEach(item => {
+			                console.log('hi',data);
+			                console.log('hhii',data.DTO.annual_leave_usage_history);
+			                // 연차 사용 내역을 테이블에 추가
+			                if (data.DTO.annual_leave_usage_history && data.DTO.annual_leave_usage_history.length > 0) {
+							    let tableBody = $('#leaveUsageTable tbody');
+							    
+							    tableBody.empty(); // 테이블 내용을 초기화합니다.
+							    
+							    data.DTO.annual_leave_usage_history.forEach((item, index) => {
+							        console.log('Item:', item); // 데이터 확인용 로그
+							
+							        // 필요한 데이터를 안전하게 추출
+							        let startDate = item.lu_start_date ? item.lu_start_date : '없음';
+							        let endDate = item.lu_end_date ? item.lu_end_date : '없음';
+							        let usageDays = item.lu_usage_days !== undefined ? item.lu_usage_days : '없음';
+							
 							        let row = $('<tr>');
-							        row.append($('<td>').text(item.lu_start_date + ' - ' + item.lu_end_date));
-							        row.append($('<td>').text(item.lu_usage_days));
+							        row.append($('<td>').text(index + 1)); // No 열 추가
+							        row.append($('<td>').text(startDate + ' - ' + endDate));
+							        row.append($('<td>').text(usageDays));
+							        row.append($('<td>').html('<button class="detail-button">상세내역</button>'));
 							        tableBody.append(row);
 							    });
 							} else {
-							    // 연차 사용 내역 데이터가 없는 경우 대체 처리 (예: 메시지 표시 등)
-							    let row = $('<tr>').append($('<td colspan="2">').text('연차 사용 내역이 없습니다.'));
+							    // 연차 사용 내역 데이터가 없는 경우 대체 처리
+							    let tableBody = $('#leaveUsageTable tbody');
+							    tableBody.empty(); // 테이블 내용을 초기화합니다.
+							    let row = $('<tr>').append($('<td colspan="4">').text('연차 사용 내역이 없습니다.'));
 							    tableBody.append(row);
 							}
+			                console.log('ohoto',data.DTO.photo_url);
+			                if (data.DTO.photo_url) {
+			                    $('#employeePhoto2').attr('src', '/photo/'+data.DTO.photo_url);
+			                } else {
+			                    // 데이터에 사진 URL이 없는 경우 대체 처리
+			                    $('#employeePhoto2').attr('src', '/img/user.jpg'); // 기본 이미지로 대체
+			                }
 
 			                $('#annualDetails').show(); // 연차 상세 정보가 있는 경우 폼 표시
 			            },
@@ -1053,10 +1241,141 @@
 			        });
 			    }
 			});
+		    
+		    
+		    $(document).ready(function() {
+		        // 검색 입력 필드의 변경을 감지
+		        $('#searchInput').on('input', function() {
+		            filterTable();
+		        });
 
+		        // 부서 선택 드롭다운의 변경을 감지
+		        $('#departmentSelect').on('change', function() {
+		            filterTable();
+		        });
 
+		        function filterTable() {
+		            let searchValue = $('#searchInput').val().toLowerCase();
+		            let selectedDepartment = $('#departmentSelect').val();
 
+		            // 테이블의 각 행을 반복
+		            $('tbody tr').each(function() {
+		                let empId = $(this).children('td').eq(1).text().toLowerCase();
+		                let empName = $(this).children('td').eq(2).text().toLowerCase();
+		                let department = $(this).children('td').eq(3).text();
 
+		                // 검색 필드와 부서 선택 필터링 조건 확인
+		                let matchSearch = empId.includes(searchValue) || empName.includes(searchValue);
+		                let matchDepartment = (selectedDepartment === '전체' || selectedDepartment === department);
+
+		                // 조건에 따라 행을 표시하거나 숨기기
+		                if (matchSearch && matchDepartment) {
+		                    $(this).show();
+		                } else {
+		                    $(this).hide();
+		                }
+		            });
+		        }
+		    });
+
+			
+		    $(document).ready(function() {
+		        // 사원 행 클릭 시 상세 정보 표시
+		        $('.table tbody').on('click', 'tr', function() {
+		            let empId = $(this).data('emp-id');
+					
+		            // AJAX 요청을 사용하여 서버에서 사원 정보를 가져옵니다.
+		            $.ajax({
+		                url: '/getEmployeeDetails', // 사원 정보를 가져오는 서버 엔드포인트
+		                method: 'GET',
+		                data: { empId: empId },
+		                success: function(employee) {
+		                    // 상세 정보를 채웁니다.
+		                    $('#emp_name_detail').text(employee.emp_name);
+		                    $('#emp_phone_number_detail').text(employee.emp_phone_number);
+		                    $('#emp_birth_date_detail').text(employee.emp_birth_date);
+		                    $('#emp_email_detail').text(employee.emp_email);
+		                    $('#address_detail').text(employee.address);
+		                    $('#emp_id_detail').text(employee.emp_id);
+		                    $('#de_name_detail').text(employee.de_name);
+		                    $('#title_name_detail').text(employee.title_name);
+		                    $('#emp_hire_date_detail').text(employee.emp_hire_date);
+		                    $('#emp_term_date_detail').text(employee.emp_term_date);
+		                    $('#emp_status_detail').text(employee.emp_status);
+
+		                    // 상세보기 버튼과 연차정보 버튼을 표시
+		                    $('#viewDetailsButton').show();
+		                    $('#annualLeaveButton').show();
+		                }
+		            });
+		        });
+
+		        // 수정 버튼 클릭 시 모달 창 열기
+		        $('#modifyButton').on('click', function() {
+		            let emp_id = $('#emp_id_detail').text();
+		            updatePositions();
+		            updateEmpId();
+		            
+		            // AJAX 요청을 사용하여 서버에서 사원 정보를 가져옵니다.
+		            $.ajax({
+		                url: '/employeeDetail.ajax', // 사원 정보를 가져오는 서버 엔드포인트
+		                method: 'POST',
+		                data: { emp_id: emp_id },
+		                success: function(employee) {
+		                    // 수정 폼에 정보를 채웁니다.
+		                    $('#modifyEmpId').val(employee.emp_id);
+		                    $('#modifyEmpName').val(employee.emp_name);
+		                    $('#modifyEmpPhoneNumber').val(employee.emp_phone_number);
+		                    $('#modifyEmpBirthDate').val(employee.emp_birth_date);
+		                    $('#modifyEmpEmail').val(employee.emp_email);
+		                    $('#modifyEmpAddress').val(employee.emp_address);
+		                    $('#modifyEmpDept').val(employee.de_name);
+		                    $('#modifyEmpTitle').val(employee.title_name);
+		                    $('#modifyEmpHireDate').val(employee.emp_hire_date);
+		                    $('#modifyEmpTermDate').val(employee.emp_term_date);
+		                    $('#modifyEmpStatus').val(employee.emp_status);
+		                    
+		                    // 모달 창 표시
+		                    $('#modifyModal').modal('show');
+		                }
+		            });
+		        });
+
+		        // 수정 완료 버튼 클릭 시 서버로 데이터 전송
+		        $('#saveChangesButton').on('click', function() {
+		            let updatedEmployee = {
+		                emp_id: $('#modifyEmpId').val(),
+		                emp_name: $('#modifyEmpName').val(),
+		                emp_phone_number: $('#modifyEmpPhoneNumber').val(),
+		                emp_birth_date: $('#modifyEmpBirthDate').val(),
+		                emp_email: $('#modifyEmpEmail').val(),
+		                address: $('#modifyEmpAddress').val(),
+		                de_name: $('#modifyEmpDept').val(),
+		                title_name: $('#modifyEmpTitle').val(),
+		                emp_hire_date: $('#modifyEmpHireDate').val(),
+		                emp_term_date: $('#modifyEmpTermDate').val(),
+		                emp_status: $('#modifyEmpStatus').val()
+		            };
+
+		            // 서버로 수정된 데이터를 전송합니다.
+		            $.ajax({
+		                url: '/updateEmployeeDetails', // 사원 정보를 업데이트하는 서버 엔드포인트
+		                method: 'POST',
+		                data: JSON.stringify(updatedEmployee),
+		                contentType: 'application/json',
+		                success: function(response) {
+		                    if (response.success) {
+		                        alert('수정이 완료되었습니다.');
+		                        $('#modifyModal').modal('hide');
+		                        // 수정된 데이터를 새로고침
+		                        location.reload();
+		                    } else {
+		                        alert('수정 중 오류가 발생했습니다.');
+		                    }
+		                }
+		            });
+		        });
+		    });
 	</script>
 	
 	

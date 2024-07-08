@@ -20,6 +20,23 @@
 	
 	
 	
+	
+	<!-- 회의실 예약 관련,, -->
+	<select id="getReservList" resultType="reservation">
+		SELECT rt.idx_reservation ,
+				mt.mr_name ,
+				rt.start_datetime 
+		FROM reservation_tb rt
+			JOIN meetingroom_tb mt ON rt.idx_meeting_room = mt.idx_meeting_room 
+		WHERE rt.reservist = 13
+				AND rt.re_status = '예약완료'
+				AND rt.start_datetime > CURDATE()
+		ORDER BY rt.start_datetime
+		LIMIT 3
+	</select>
+	
+	
+	
 	<!-- 기안서 관련,, -->
 	<select id="getMyDocumentCnt" resultType="Integer">
 		SELECT COUNT(*)
@@ -164,30 +181,30 @@
 		SELECT CEIL(COUNT(*) / 13)
 		FROM leave_usage_tb lut 
 		JOIN employee_tb et ON lut.idx_employee = et.idx_employee 
-		WHERE
-	    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
-	    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= lut.lu_start_date
-	    </if>
-	    <if test="paging.endDate != null and !paging.endDate.equals('')">
-	    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= lut.lu_end_date
-	    </if>			
-	    <choose>
-		    <when test="paging.filter != null and paging.filter.equals('pending')">
-		    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
-		    </when>
-		    <when test="paging.filter != null and paging.filter.equals('rejected')">
-		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '반려'
-		    </when>
-		    <when test="paging.filter != null and paging.filter.equals('approved')">
-		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '승인'
-		    </when>
-		    <when test="paging.filter != null and paging.filter.equals('retracted')">
-		    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '회수'
-		    </when>			    
-		    <otherwise>
-		    	lut.idx_employee = #{idxEmployee}
-		    </otherwise>
-	    </choose>
+		WHERE 1=1
+		    <if test="paging.year != null">
+		    	AND YEAR(lut.lu_start_date) = #{paging.year}
+		    </if>
+		    <if test="paging.endDate != null and !paging.endDate.equals('')">
+		    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= lut.lu_end_date
+		    </if>			
+		    <choose>
+			    <when test="paging.filter != null and paging.filter.equals('pending')">
+			    	AND at.idx_approval IN (SELECT idx_approval FROM approval_line_tb WHERE idx_employee = #{idxEmployee} and is_approval = -1)  
+			    </when>
+			    <when test="paging.filter != null and paging.filter.equals('rejected')">
+			    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '반려'
+			    </when>
+			    <when test="paging.filter != null and paging.filter.equals('approved')">
+			    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '승인'
+			    </when>
+			    <when test="paging.filter != null and paging.filter.equals('retracted')">
+			    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '회수'
+			    </when>			    
+			    <otherwise>
+			    	AND lut.idx_employee = #{idxEmployee}
+			    </otherwise>
+		    </choose>
 	</select>
 	<!-- 연차 리스트 -->
 	<select id="fetchFilterList" resultType="leave_usage">
@@ -197,9 +214,9 @@
 				lut.lu_end_date
 		FROM leave_usage_tb lut 
 		JOIN employee_tb et ON lut.idx_employee = et.idx_employee 
-		WHERE
-		    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
-		    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= at.written_datetime
+		WHERE 1=1
+		    <if test="paging.year != null">
+		    	AND YEAR(lut.lu_start_date) = #{paging.year}
 		    </if>
 		    <if test="paging.endDate != null and !paging.endDate.equals('')">
 		    	AND STR_TO_DATE(CONCAT(#{paging.endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= at.written_datetime
@@ -218,11 +235,76 @@
 			    	AND at.idx_employee = #{idxEmployee} AND at.final_ap_status = '회수'
 			    </when>			    
 			    <otherwise>
-			    	lut.idx_employee = #{idxEmployee}
+			    	AND lut.idx_employee = #{idxEmployee}
 			    </otherwise>
 		    </choose>
-		    ORDER BY lu_start_date DESC
-		    LIMIT #{paging.page}, 13
+	    ORDER BY lu_start_date DESC
+	    LIMIT #{paging.page}, 13
+	</select>
+	
+	
+	
+	<!-- 매출 그래프 관련,, -->
+	<select id="getMonthSalesPrice" resultType="salesPrice">
+		SELECT
+		    COALESCE((SELECT SUM(pot.total_price)
+		     FROM purchase_order_tb pot 
+		     WHERE YEAR(pot.written_datetime) = #{param1}
+		     AND MONTH(pot.written_datetime) = #{param2}), 0) AS poPriceList,
+		    
+		    COALESCE((SELECT SUM(subquery.order_total_price)
+		     FROM (
+		        SELECT 
+		            ot.order_no,
+		            dt.delivery_datetime,
+		            ct.client_name,
+		            pt.product_name,
+		            ot.quantity,
+		            pt.unit_price,
+		            (SELECT SUM(ot2.quantity * pt2.unit_price)
+		             FROM order_tb ot2
+		             JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		             WHERE ot2.order_no = ot.order_no) AS order_total_price,
+		            dt.delivery_state	
+		        FROM 
+		            delivery_tb dt
+		            JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+		            JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+		            JOIN product_tb pt ON ot.idx_product = pt.idx_product
+		        WHERE 
+		            YEAR(dt.delivery_datetime) = #{param1}
+		            AND MONTH(dt.delivery_datetime) = #{param2}
+		    ) AS subquery), 0) AS salePriceList,
+		    
+		    COALESCE(
+		        COALESCE((SELECT SUM(subquery.order_total_price)
+		          FROM (
+		             SELECT 
+		                 ot.order_no,
+		                 dt.delivery_datetime,
+		                 ct.client_name,
+		                 pt.product_name,
+		                 ot.quantity,
+		                 pt.unit_price,
+		                 (SELECT SUM(ot2.quantity * pt2.unit_price)
+		                  FROM order_tb ot2
+		                  JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		                  WHERE ot2.order_no = ot.order_no) AS order_total_price,
+		                 dt.delivery_state	
+		             FROM 
+		                 delivery_tb dt
+		                 JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+		                 JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+		                 JOIN product_tb pt ON ot.idx_product = pt.idx_product
+		             WHERE 
+		                 YEAR(dt.delivery_datetime) = #{param1}
+		                 AND MONTH(dt.delivery_datetime) = #{param2}
+		         ) AS subquery), 0)
+		        -
+		        COALESCE((SELECT SUM(pot.total_price)
+		          FROM purchase_order_tb pot 
+		          WHERE YEAR(pot.written_datetime) = #{param1} 
+		          AND MONTH(pot.written_datetime) = #{param2}), 0), 0) AS profitPriceList
 	</select>
 	
 </mapper>

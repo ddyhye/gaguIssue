@@ -6,11 +6,13 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.controller.DocumentController;
+import ko.gagu.issue.controller.WebSocketController;
 import ko.gagu.issue.dto.EmployeeDTO;
 
 @Component
@@ -19,6 +21,8 @@ public class LoginChecker implements HandlerInterceptor {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DocumentController.class);
 
+	
+	@Autowired WebSocketController webSocketController;
 	
 	// 컨트롤러를 거치기 전에 인터셉터를 거친다.
 	// 반환값이 false면 컨트롤러에 접근할 수 없다.
@@ -66,9 +70,9 @@ public class LoginChecker implements HandlerInterceptor {
 	                logger.error("EmployeeDTO의 필드 중 하나가 null입니다.");
 	            }
 	        } else {
-	            logger.error("ModelAndView 객체가 null입니다.");
+	            //logger.error("ModelAndView 객체가 null입니다.");
 	        }
-	    }
+	    } 
 	}
 	
 	

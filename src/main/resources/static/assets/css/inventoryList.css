@@ -8,6 +8,13 @@
 	position: absolute;
 	right: 0;
 }
+.do-rightfixed2 {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	
+	position: relative;
+}
 
 
 /* 필터링 헤더 */

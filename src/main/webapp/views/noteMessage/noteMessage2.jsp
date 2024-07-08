@@ -323,8 +323,8 @@
 	            <textarea class="form-control" id="message-text"></textarea>
 	          </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >취소</button>
-		        <button type="button" class="btn btn-primary" id="CreatAndsend_btn">보내기</button>
+		        <button type="button" class="btn btn-danger" id="sendCancel" data-bs-dismiss="modal" >취소</button>
+		        <button type="button" class="btn btn-primary" id="CreatAndsend_btn" data-bs-dismiss="modal">보내기</button>
 		      </div>
 	        </form>
 	      </div>
@@ -342,6 +342,10 @@
 	    $('#contacts-tab').on('click', function() {
 	        loadContact();
 	    });
+	});
+	
+	$('#sendCancel').on('click', function(){
+		$('#message-text').val('');
 	});
 	
 	var messageSearch = document.getElementById('messageSearch').value;
@@ -384,9 +388,9 @@
     	 document.getElementById('myModal').style.display = 'none';
     }
     
-    /* function closeModal2(){
-   	 document.getElementById('Modal3').style.display = 'none';
-   } */
+    /*  function closeModal2(){
+   	 	 document.getElementById('Modal3').style.display = 'none';
+    }  */
     
     function secModal(emp_name, idx_emp){
    	 console.log("메시지 보내기 모달 오픈");
@@ -401,6 +405,7 @@
       	 document.getElementById('myModal').style.display = 'block';
       	 employeeDetail(idx_emp);
        }
+    
     
     
     function employeeDetail(idx_emp){
@@ -478,7 +483,8 @@
 	        contentType: false,
 	        dataType: 'JSON',
 	        success: function(data) {
-	            console.log(data.result);
+	            // console.log(data.result);
+	            closeModal2();
 	            loadChatRooms("${sessionScope.emp_id}");
 	        },
 	        error: function(error) {

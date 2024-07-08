@@ -67,7 +67,29 @@ public class EmployeeDTO {
 	// [jeong] 직원의 부서명과 직급명이 필요해서 추가했습니다
 	private String de_name;
 	private String title_name;
+	private String departmentName;
+	private String titleName;
+	private String empName;
+	private String employeeId;
+	private String empBirthDate;
+	private String phoneNumber;
+	private String empColor;
+	private String profileFilePath;
 	
+	private int idxDepartment;
+	
+	public int getIdxDepartment() {
+		return idxDepartment;
+	}
+	public void setIdxDepartment(int idxDepartment) {
+		this.idxDepartment = idxDepartment;
+	}
+	public String getProfileFilePath() {
+		return profileFilePath;
+	}
+	public void setProfileFilePath(String profileFilePath) {
+		this.profileFilePath = profileFilePath;
+	}
 	public int getIdx_employee() {
 		return idx_employee;
 	}
@@ -278,6 +300,48 @@ public class EmployeeDTO {
 	}
 	public void setAh_status(String ah_status) {
 		this.ah_status = ah_status;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public String getTitleName() {
+		return titleName;
+	}
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+	public String getEmpBirthDate() {
+		return empBirthDate;
+	}
+	public void setEmpBirthDate(String empBirthDate) {
+		this.empBirthDate = empBirthDate;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public String getEmpColor() {
+		return empColor;
+	}
+	public void setEmpColor(String empColor) {
+		this.empColor = empColor;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 	
 	

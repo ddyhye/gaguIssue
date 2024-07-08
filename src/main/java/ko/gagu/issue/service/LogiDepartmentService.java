@@ -22,10 +22,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import ko.gagu.issue.controller.WebSocketController;
 import ko.gagu.issue.dao.LogiDepartmentDAO;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.LogiDeptDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.dto.client_tbDTO;
 import ko.gagu.issue.dto.purchase_order_tbDTO;
 
@@ -40,33 +42,111 @@ public class LogiDepartmentService {
 	
 	private final MainDAO mainDao;
 	private final LogiDepartmentDAO logiDeptDao;
+	private final WebSocketController webSocketController;
 	
-	public LogiDepartmentService(MainDAO mainDao, LogiDepartmentDAO logiDeptDao) {
+	public LogiDepartmentService(MainDAO mainDao, LogiDepartmentDAO logiDeptDao, WebSocketController webSocketController) {
 		this.mainDao = mainDao;
 		this.logiDeptDao = logiDeptDao;
+		this.webSocketController = webSocketController;
 	}
 	
 	
-
+	// 인벤토리 페이지 고
 	public ModelAndView inventoryList(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
+		// 카테고리 출력
 		List<String> categoryList = logiDeptDao.getCategoryList();
 		mav.addObject("categoryList", categoryList);
-		
+		// 클라이언트 (발주처) 출력
 		List<String> clientList = logiDeptDao.getClientList();
 		mav.addObject("clientList", clientList);
+		// 재고 페이지 수 출력
+		int totalPages = logiDeptDao.getInventoryPage();
+		mav.addObject("totalPages", totalPages);
 		
 		mav.setViewName("/logisticsDepartment/inventoryList");
 		
 		return mav;
 	}
+	// 인벤토리 리스트 그리기 (페이징)
+	public Map<String, Object> InventorylistPaging(PagingDTO paging, int idxEmployee) {
+		Map<String, Object> map = new HashMap<>();
+		
+		// 필터에 따른 리스트 페이지 개수
+		int totalPages = logiDeptDao.getFilterTotalPagesInven(paging, idxEmployee);
+		
+		// 전체 페이지 수와 현재 페이지 지정
+		if (totalPages == 0) {
+			paging.setPage(0);
+		} else if (totalPages <= paging.getPage()) {
+			paging.setPage((totalPages - 1) * 13);
+		} else {			
+			paging.setPage(paging.getPage());
+		}
+		
+		// 필터에 따른 리스트
+		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListInven(paging, idxEmployee);
+		map.put("list",list);
+		
+		map.put("totalPages", totalPages);
+		map.put("success", true);
+		
+		return map;
+	}
+	// 인벤토리 리스트 그리기
 	public Map<String, Object> inventoryListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {		
 		List<LogiDeptDTO> list = logiDeptDao.inventoryListDraw(productSearch, productCategory, clientList);
 		map.put("list",list);
 		
 		return map;
 	}
+	
+	// 인벤토리 상세보기
+	public ModelAndView inventoryDetail(ModelAndView mav, int idx_product) {
+		
+		LogiDeptDTO dto = logiDeptDao.inventoryDetail(idx_product);
+		mav.addObject("product_name", dto.getProduct_name());
+		mav.addObject("client_name", dto.getClient_name());
+		mav.addObject("category", dto.getCategory());
+		mav.addObject("current_stock", dto.getCurrent_stock());
+		mav.addObject("minimum_stock", dto.getMinimum_stock());
+		mav.addObject("purchase_price", dto.getPurchase_price());
+		mav.addObject("unit_price", dto.getUnit_price());
+		mav.addObject("profit", dto.getProfit());
+		mav.addObject("product_description", dto.getProduct_description());
+		
+		// 제품 사진
+		List<String> photos = logiDeptDao.inventoryPhoto(idx_product);
+		mav.addObject("photos", photos);
+		
+		mav.setViewName("/logisticsDepartment/inventoryDetail");
+		
+		return mav;
+	}
+	public ResponseEntity<Resource> productView(String file_name) {
+		// 특정 경로에서 파일을 읽어와 Resource로 만든다.
+	    Resource resource = new FileSystemResource(root+"/"+file_name);
+	    HttpHeaders header = new HttpHeaders();
+	      
+	    // 보내질 파일의 형태를 지정해 준다. (헤더에)
+	    // ex) image/gif, image/png, image/jpg, image/jpeg
+	    try {
+	       String type = Files.probeContentType(Paths.get(root+"/"+file_name));   //경로를 주면 해당 파일의 mime-type 을 알아낸다.
+	       logger.info("mime-type: "+type);
+	       header.add("content-type", type);
+	    } catch (IOException e) {
+	       e.printStackTrace();
+	    }   
+	      
+	    // 보낼 내용, 헤더, 상태(200 또는 OK 는 정상이라는 뜻)
+	    return new ResponseEntity<Resource>(resource, header, HttpStatus.OK); 
+	}
+	
+	
+	
+	
+	
 	
 	
 	public ModelAndView poWrite_go(HttpSession session) {
@@ -86,13 +166,13 @@ public class LogiDepartmentService {
 		if (no != null || no == "") {
 			noInt = Integer.parseInt(no);
 			noInt++;
-			
 		}
 		map.put("no", noInt);
 		
 		
 		// 직원 정보 자동 입력
-		EmployeeDTO emp = getEmpData(session);
+		//EmployeeDTO emp = getEmpData(session);
+		EmployeeDTO emp = (EmployeeDTO) session.getAttribute("loginInfo");
 		String dept = logiDeptDao.getEmpDept(emp.getIdx_employee());
 		String level = logiDeptDao.getEmpLevel(emp.getIdx_employee());
 		map.put("emp_idx", emp.getIdx_employee());
@@ -201,15 +281,44 @@ public class LogiDepartmentService {
 	public ModelAndView receivingHistory_go() {
 		ModelAndView mav = new ModelAndView();
 		
+		// 카테고리 출력
 		List<String> categoryList = logiDeptDao.getCategoryList();
 		mav.addObject("categoryList", categoryList);
-		
+		// 클라이언트 출력
 		List<String> clientList = logiDeptDao.getClientList();
 		mav.addObject("clientList", clientList);
+		// 재고 페이지 수 출력
+		int totalPages = logiDeptDao.getReceivingPage();
+		mav.addObject("totalPages", totalPages);
 		
 		mav.setViewName("/logisticsDepartment/receivingHistory");
 		
 		return mav;
+	}
+	// ***입고 내역 페이징***
+	public Map<String, Object> ReceivinglistPaging(PagingDTO paging, int idxEmployee) {
+		Map<String, Object> map = new HashMap<>();
+		
+		// 필터에 따른 리스트 페이지 개수
+		int totalPages = logiDeptDao.getFilterTotalPagesReceiving(paging, idxEmployee);
+		
+		// 전체 페이지 수와 현재 페이지 지정
+		if (totalPages == 0) {
+			paging.setPage(0);
+		} else if (totalPages <= paging.getPage()) {
+			paging.setPage((totalPages - 1) * 13);
+		} else {			
+			paging.setPage(paging.getPage());
+		}
+		
+		// 필터에 따른 리스트
+		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListReceiving(paging, idxEmployee);
+		map.put("list",list);
+		
+		map.put("totalPages", totalPages);
+		map.put("success", true);
+		
+		return map;
 	}
 	public Map<String, Object> receivingHisListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {
 		List<LogiDeptDTO> list = logiDeptDao.getReceivingHistory(productSearch, productCategory, clientList);
@@ -256,15 +365,44 @@ public class LogiDepartmentService {
 	public ModelAndView orderList_go() {
 		ModelAndView mav = new ModelAndView();
 		
+		// 카테고리
 		List<String> categoryList = logiDeptDao.getCategoryList();
 		mav.addObject("categoryList", categoryList);
-		
+		// 클라이언트
 		List<String> clientList = logiDeptDao.getClientList2();
 		mav.addObject("clientList", clientList);
+		// 재고 페이지 수 출력
+		int totalPages = logiDeptDao.getOrderPage();
+		mav.addObject("totalPages", totalPages);
 		
 		mav.setViewName("/logisticsDepartment/orderList");
 		
 		return mav;
+	}
+	// 주문 내역 그리기
+	public Map<String, Object> OrderlistPaging(PagingDTO paging, int idxEmployee) {
+		Map<String, Object> map = new HashMap<>();
+		
+		// 필터에 따른 리스트 페이지 개수
+		int totalPages = logiDeptDao.getFilterTotalPagesOrder(paging, idxEmployee);
+		
+		// 전체 페이지 수와 현재 페이지 지정
+		if (totalPages == 0) {
+			paging.setPage(0);
+		} else if (totalPages <= paging.getPage()) {
+			paging.setPage((totalPages - 1) * 13);
+		} else {			
+			paging.setPage(paging.getPage());
+		}
+		
+		// 필터에 따른 리스트
+		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListOrder(paging, idxEmployee);
+		map.put("list",list);
+		
+		map.put("totalPages", totalPages);
+		map.put("success", true);
+		
+		return map;
 	}
 	public Map<String, Object> orderListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {
 		List<LogiDeptDTO> list = logiDeptDao.getOrderList(productSearch, productCategory, clientList);
@@ -291,7 +429,7 @@ public class LogiDepartmentService {
 		return map;
 	}
 	
-	public Map<String, Object> orderDelivery(Map<String, Object> map, int orderNo) {
+	public Map<String, Object> orderDelivery(Map<String, Object> map, int orderNo, HttpSession session) {
 		List<Integer> logiEmp = logiDeptDao.getLogiEmp();
 		
 		List<LogiDeptDTO> list = logiDeptDao.getOrderProductList(orderNo);
@@ -307,8 +445,10 @@ public class LogiDepartmentService {
 			int lackCnt = logiDeptDao.lackCnt();
 			if (lackCnt > 0) {
 				// 물류관리부서 전원에게 알림 보내자.
-				//'<c:url value="/logisticsDepartment/inventoryList.go"/>'
 				for (int emp : logiEmp) {
+					// 토스트
+					webSocketController.sendNotificationToUser(emp, "※발주가 필요한 제품이 있습니다※");
+					// 알림
 					logiDeptDao.insertAlarmLogiDept(emp);
 				}
 				logger.info("재고가 부족합니다... 관련 부서 직원에게 알림 보내기 >>");
@@ -322,15 +462,44 @@ public class LogiDepartmentService {
 	public ModelAndView deliveryHistory_go() {
 		ModelAndView mav = new ModelAndView();
 		
+		// 카테고리
 		List<String> categoryList = logiDeptDao.getCategoryList();
 		mav.addObject("categoryList", categoryList);
-		
+		// 클라이언트
 		List<String> clientList = logiDeptDao.getClientList2();
 		mav.addObject("clientList", clientList);
+		// 재고 페이지 수 출력
+		int totalPages = logiDeptDao.getDeliveryPage();
+		mav.addObject("totalPages", totalPages);
 		
 		mav.setViewName("/logisticsDepartment/deliveryHistory");
 		
 		return mav;
+	}
+	// 출고 내역 그리기
+	public Map<String, Object> deliverylistPaging(PagingDTO paging, int idxEmployee) {
+		Map<String, Object> map = new HashMap<>();
+		
+		// 필터에 따른 리스트 페이지 개수
+		int totalPages = logiDeptDao.getFilterTotalPagesDelivery(paging, idxEmployee);
+		
+		// 전체 페이지 수와 현재 페이지 지정
+		if (totalPages == 0) {
+			paging.setPage(0);
+		} else if (totalPages <= paging.getPage()) {
+			paging.setPage((totalPages - 1) * 13);
+		} else {			
+			paging.setPage(paging.getPage());
+		}
+		
+		// 필터에 따른 리스트
+		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListDelivery(paging, idxEmployee);
+		map.put("list",list);
+		
+		map.put("totalPages", totalPages);
+		map.put("success", true);
+		
+		return map;
 	}
 	public Map<String, Object> deliveryHisListDraw(Map<String, Object> map, String productSearch, String productCategory, String clientList) {
 		List<LogiDeptDTO> list = logiDeptDao.getDeliveryList(productSearch, productCategory, clientList);
@@ -368,9 +537,4 @@ public class LogiDepartmentService {
 		
 		return emp;
 	}
-
-
-
-	
-
 }

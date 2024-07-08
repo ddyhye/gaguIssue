@@ -1,5 +1,7 @@
 package ko.gagu.issue.dto;
 
+import java.time.LocalDateTime;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("reservation")
@@ -148,7 +150,47 @@ public class ReservationDTO {
 		this.reservationDate = reservationDate;
 	}
 
-    
-    
-    
+	
+	
+	
+	
+	// [do] 
+	private LocalDateTime start_datetime;
+	private String mr_name;
+	private int idx_reservation;
+	private String startDate;
+	private String startTime;
+	
+	
+	
+	public String getStartDate() {
+		return startDate;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getMr_name() {
+		return mr_name;
+	}
+	public int getIdx_reservation() {
+		return idx_reservation;
+	}
+	public void setMr_name(String mr_name) {
+		this.mr_name = mr_name;
+	}
+	public void setIdx_reservation(int idx_reservation) {
+		this.idx_reservation = idx_reservation;
+	}
+	public LocalDateTime getStart_datetime() {
+		return start_datetime;
+	}
+	public void setStart_datetime(LocalDateTime start_datetime) {
+		this.start_datetime = start_datetime;
+	}
 }

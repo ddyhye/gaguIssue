@@ -117,6 +117,9 @@
                       			</label>
                       		</div>
                       	</div>
+                      	<input type="hidden" id="startDate">
+						<input type="hidden" id="endDate">
+                      	
                       	<!--
                       	<div class="datatable-top">
                       		<div class="datatable-dropdown">
@@ -182,7 +185,7 @@
                       </table>
                       
                       <!-- 페이징 -->
-                      <div class="d-flex justify-content-center">								
+                      <div class="d-flex justify-content-center" style="margin-top: 20px">								
 						  <nav aria-label="Page navigation">
 						      <ul class="pagination" id="pagination"></ul>
 						  </nav>
@@ -331,12 +334,12 @@
 	    const yearSelector = document.getElementById('yearSelector');
 	    const currentYear = new Date().getFullYear();
 	    
-	    for (let year = 1990; year <= currentYear; year++) {
-	        let option = document.createElement('option');
+	    for (let year = currentYear; year >= 2010; year--) {
+	    	let option = document.createElement('option');
 	        option.value = year;
 	        option.textContent = year;
 	        yearSelector.appendChild(option);
-	    }
+		}
 	});
 	
 	
@@ -344,8 +347,15 @@
 	
 	// 페이징
 	var page = 1;
-	//var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+	var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
 	var filter = 'all';
+	
+	
+	// 날짜 필터링
+	document.getElementById('yearSelector').addEventListener('change', () => {
+		fetchDocumentList();
+	});
+	
 	
 	$(document).ready(function () {
 		if (totalPage == 0) {
@@ -382,6 +392,7 @@
 		const pagingDTO = {
 			filter : filter,
 			page : page,
+			year : document.getElementById('yearSelector').value,
 			startDate : document.getElementById('startDate').value,
 			endDate : document.getElementById('endDate').value
 		}
@@ -405,11 +416,9 @@
         .catch(error => {
         	console.error('Error:', error);
         });
-		
-		
-		
 	}	
 	
+	// 리스트 그리기
 	function drawList(data) {
 
 		$('.do-annual-history').empty();

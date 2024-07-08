@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.core.io.Resource;
 
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.service.LogiDepartmentService;
 
 @Controller
@@ -44,6 +45,16 @@ public class LogiDepartmentController {
 	public ModelAndView inventoryList(HttpSession session) {
 		return logiDeptService.inventoryList(session);
 	}
+	// 인벤토리 리스트 그리기 (페이징)
+	@PostMapping(value = "/logisticsDepartment/InventorylistPaging.ajax")
+	@ResponseBody	
+	public Map<String, Object> InventorylistPaging(@RequestBody PagingDTO pagingDTO
+			,HttpSession session) {
+		logger.info("pagingDTO : {}", pagingDTO);
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		
+		return logiDeptService.InventorylistPaging(pagingDTO, idxEmployee);			
+	}
 	// 인벤토리 리스트 그리기
 	@PostMapping(value="/inventoryList.ajax")
 	@ResponseBody
@@ -54,6 +65,23 @@ public class LogiDepartmentController {
 		
 		return logiDeptService.inventoryListDraw(map, productSearch, productCategory, clientList);
 	}
+	
+	// 인벤토리 상세보기
+	@GetMapping(value="/logisticsDepartment/inventoryDetail.goAjax")
+	ModelAndView inventoryDetail(String idx_productStr) {
+		ModelAndView mav = new ModelAndView();
+		
+		int idx_product = Integer.parseInt(idx_productStr);
+		
+		return logiDeptService.inventoryDetail(mav, idx_product);
+	}
+	// 인벤토리 상세보기 - 사진 경로
+	@GetMapping(value="/productPhoto/{file_name}")
+	public ResponseEntity<Resource> productView(@PathVariable String file_name) {
+		return logiDeptService.productView(file_name);
+	}
+	
+
 	
 	
 	
@@ -155,6 +183,16 @@ public class LogiDepartmentController {
 	public ModelAndView receivingHistory_go() {
 		return logiDeptService.receivingHistory_go();
 	}
+	// 입고 내역 리스트 그리그 (페이징)
+	@PostMapping(value = "/logisticsDepartment/ReceivinglistPaging.ajax")
+	@ResponseBody	
+	public Map<String, Object> ReceivinglistPaging(@RequestBody PagingDTO pagingDTO
+			,HttpSession session) {
+		logger.info("pagingDTO : {}", pagingDTO);
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		
+		return logiDeptService.ReceivinglistPaging(pagingDTO, idxEmployee);			
+	}
 	// 입고 내역 리스트 그리기
 	@PostMapping(value="/receivingHisList.ajax")
 	@ResponseBody
@@ -190,6 +228,16 @@ public class LogiDepartmentController {
 	public ModelAndView orderList_go() {
 		return logiDeptService.orderList_go();
 	}
+	// 인벤토리 리스트 그리기 (페이징)
+	@PostMapping(value = "/logisticsDepartment/OrderlistPaging.ajax")
+	@ResponseBody	
+	public Map<String, Object> OrderlistPaging(@RequestBody PagingDTO pagingDTO
+			,HttpSession session) {
+		logger.info("pagingDTO : {}", pagingDTO);
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		
+		return logiDeptService.OrderlistPaging(pagingDTO, idxEmployee);			
+	}
 	// 주문 내역 리스트 그리기
 	@PostMapping(value="/orderList.ajax")
 	@ResponseBody
@@ -214,13 +262,13 @@ public class LogiDepartmentController {
 	// 주문 출고하기
 	@PostMapping(value="/orderDelivery.ajax")
 	@ResponseBody
-	Map<String, Object> orderDelivery(@RequestBody Map<String, Object> payload) {
+	Map<String, Object> orderDelivery(@RequestBody Map<String, Object> payload, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		String orderNoStr = (String) payload.get("orderNo");
 		int orderNo = Integer.parseInt(orderNoStr);
 		
-		return logiDeptService.orderDelivery(map, orderNo);
+		return logiDeptService.orderDelivery(map, orderNo, session);
 	}
 	
 	
@@ -230,6 +278,16 @@ public class LogiDepartmentController {
 	@GetMapping(value="/logisticsDepartment/deliveryHistory.go")
 	public ModelAndView deliveryHistory_go() {
 		return logiDeptService.deliveryHistory_go();
+	}
+	// 주문 내역 리스트 그리기 (페이징)
+	@PostMapping(value = "/logisticsDepartment/deliverylistPaging.ajax")
+	@ResponseBody	
+	public Map<String, Object> deliverylistPaging(@RequestBody PagingDTO pagingDTO
+			,HttpSession session) {
+		logger.info("pagingDTO : {}", pagingDTO);
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		
+		return logiDeptService.deliverylistPaging(pagingDTO, idxEmployee);			
 	}
 	// 주문 내역 리스트 그리기
 	@PostMapping(value="/deliveryHisList.ajax")

@@ -3,6 +3,7 @@ package ko.gagu.issue.dto;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
@@ -39,6 +40,8 @@ public class HRDepartmentDTO {
 	private int lu_usage_days;
 	private Date lu_start_date;
 	private Date lu_end_date;
+	private List<Leave_usage_tbDTO> annual_leave_usage_history;
+	
 	
 	
 	
@@ -228,6 +231,12 @@ public class HRDepartmentDTO {
 	}
 	public void setUsage_days(int usage_days) {
 		this.usage_days = usage_days;
+	}
+	public List<Leave_usage_tbDTO> getAnnual_leave_usage_history() {
+		return annual_leave_usage_history;
+	}
+	public void setAnnual_leave_usage_history(List<Leave_usage_tbDTO> annual_leave_usage_history) {
+		this.annual_leave_usage_history = annual_leave_usage_history;
 	}
 
 	

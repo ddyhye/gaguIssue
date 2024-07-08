@@ -18,21 +18,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ko.gagu.issue.dao.EmployeeDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
 import ko.gagu.issue.dto.PagingDTO;
+import ko.gagu.issue.util.FileManagerUtil;
 
 @Service
 public class EmployeeService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	//@Autowired EmployeeDAO employeeDao;
-	@Autowired EmployeeDAO dao;
-	@Autowired PasswordEncoder encoder;
+	private final EmployeeDAO dao;
+	private final PasswordEncoder encoder;
+    private final FileManagerUtil fm;
+    
+    public EmployeeService (FileManagerUtil fm, EmployeeDAO dao, PasswordEncoder encoder) {
+    	this.dao = dao;
+    	this.encoder = encoder;
+    	this.fm = fm;
+    }
 
 	public void employeeGetAllEvents(Map<String, Object> response,Integer idx_employee,Model model) {
 		// [il] 개인일정 보여주기
@@ -203,6 +214,70 @@ public class EmployeeService {
 		
 		response.put("salesDataList", salesDataList);
 		response.put("success", totalPages > 0 ? true : false);
+		response.put("totalPages", totalPages);
+		response.put("page", page);
+		return response;
+	}
+
+	public ModelAndView getProfile(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("employee/profile");
+		EmployeeDTO employeeInfo = dao.getEmployeeInfo(idxEmployee);
+		mav.addObject("employeeInfo", employeeInfo);
+		return mav;
+	}
+
+	public Map<String, Object> updateProfileInfo(int idxEmployee, String birthDate
+			,String email, String phoneNumber) {
+		var response = new HashMap<String, Object>();
+		dao.updateProfileInfo(idxEmployee, birthDate, email, phoneNumber);
+		return response;
+	}
+
+	public Map<String, Object> uploadProfileImage(int idxEmployee, MultipartFile uploadProfileFile) {
+		var response = new HashMap<String, Object>();
+		String profileImageName = fm.saveFile(uploadProfileFile, "profile");
+		int idxFile = dao.isProfileImage(idxEmployee);
+		if (idxFile != 0) {
+			dao.updateProfileImage(idxFile, idxEmployee, profileImageName);
+		} else {
+			dao.insertProfileImage(idxEmployee, profileImageName);
+		}		
+		response.put("profileImageName", profileImageName);
+		return response;
+	}
+
+	public ModelAndView getGroup(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("employee/group");
+		List<Map<String, String>> temp = dao.getOrganization();
+		int totalPages = dao.getGoTotalPages(idxEmployee);
+		int page = 1; 
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page; 
+		List<EmployeeDTO> employeeList = dao.getEmployeeList(idxEmployee, page);
+        Map<String, String> rootNode = new HashMap<String, String>();
+        rootNode.put("type", "company");
+        rootNode.put("id", "gaguissue");
+        rootNode.put("parent", "#");
+        rootNode.put("text", "가구있수");
+        temp.add(rootNode);
+		ObjectMapper mapper = new ObjectMapper();
+		String organization = "";
+        try {
+            organization = mapper.writeValueAsString(temp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mav.addObject("organization", organization);
+        mav.addObject("employeeList", employeeList);
+        mav.addObject("totalPages", totalPages);
+		return mav;
+	}
+
+	public Map<String,Object> getGroupList(int idxEmployee, String selectedDepartment, int page) {
+		var response = new HashMap<String, Object>();
+		int totalPages = dao.getGoTotalPages(idxEmployee);  
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page; 
+		List<EmployeeDTO> employeeList = dao.getAJAXEmployeeList(selectedDepartment, page);
+		response.put("employeeList", employeeList);
 		response.put("totalPages", totalPages);
 		response.put("page", page);
 		return response;

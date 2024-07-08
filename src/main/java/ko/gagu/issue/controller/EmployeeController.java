@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -213,6 +214,7 @@ public class EmployeeController {
 	
 	@GetMapping(value = "/findNumber.go")
 	public String findNumber() {
+		logger.info("사원번호 찾기==============");
 		return "login/findNumber";
 	}
 	
@@ -317,6 +319,51 @@ public class EmployeeController {
 	public Map<String, Object> papingDo(HttpSession session, @RequestBody PagingDTO pagingDTO) {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		return employeeService.getPaingSalesHistory(idxEmployee, pagingDTO);
+	}
+	
+	/* [jeong] 프로필 페이지로 이동 */
+	@GetMapping(value = "/employee/profile.go")
+	public ModelAndView profileGo(HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getProfile(idxEmployee);	
+	}
+	
+	/* [jeong] 프로필 페이지로 이동 */
+	@PostMapping(value = "/employee/updateProfileInfo.do")
+	@ResponseBody
+	public Map<String,Object> updateProfileInfoDo(
+			@RequestParam String birthDate
+			,@RequestParam String email
+			,@RequestParam String phoneNumber
+ 			,HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.updateProfileInfo(idxEmployee, birthDate, email, phoneNumber);	
+	}
+	
+	/* [jeong] 프로필 페이지로 이동 */
+	@PostMapping(value = "/employee/uploadProfileImage.do")
+	@ResponseBody
+	public Map<String,Object> uploadProfileImageDo(MultipartFile uploadProfileFile
+			,HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.uploadProfileImage(idxEmployee, uploadProfileFile);	
+	}
+	
+	/* [jeong] 조직도 페이지로 이동 */
+	@GetMapping(value = "/employee/group.go")
+	public ModelAndView groupGo(HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getGroup(idxEmployee);	
+	}
+	
+	/* [jeong] 조직도 페이지로 이동 */
+	@PostMapping(value = "/employee/group.do")
+	@ResponseBody
+	public Map<String,Object> groupDo(HttpSession session
+			,@RequestParam String selectedDepartment
+			,@RequestParam int page) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getGroupList(idxEmployee, selectedDepartment, page);	
 	}
 	
 }
