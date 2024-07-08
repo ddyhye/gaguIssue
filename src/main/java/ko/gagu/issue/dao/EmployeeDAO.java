@@ -64,6 +64,26 @@ public interface EmployeeDAO {
 
 	EmployeeDTO getEmployeeInfo(int idxEmployee);
 
+	void updateProfileInfo(int idxEmployee, String birthDate, String email, String phoneNumber);
+
+	void saveProfileImage(int idxEmployee, String profileImageName);
+
+	int isProfileImage(int idxEmployee);
+
+	void updateProfileImage(int idxFile, int idxEmployee, String profileImageName);
+
+	void insertProfileImage(int idxEmployee, String profileImageName);
+
+	List<Map<String, String>> getOrganization();
+
+	List<EmployeeDTO> getEmployeeList(int idxEmployee, int page);
+
+	List<EmployeeDTO> getAJAXEmployeeList(String selectedDepartment, int page);
+
+	int getGoTotalPages(int idxEmployee);
+
+	int getTotalPages(String selectedDepartment);
+
 
 }
 

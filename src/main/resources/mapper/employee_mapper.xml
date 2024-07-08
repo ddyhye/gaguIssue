@@ -319,4 +319,109 @@
 			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = #{ideEmployee}
 	</select>
 
+	<update id="updateProfileInfo">
+		UPDATE employee_tb 
+		<set>
+			<if test="birthDate != null">emp_birth_date = #{birthDate},</if>
+			<if test="email != null">emp_email = #{email},</if>
+			<if test="phoneNumber != null">emp_phone_number = #{phoneNumber},</if>
+		</set>
+		WHERE idx_employee = #{idxEmployee}
+	</update>
+	
+	<select id="isProfileImage">
+		SELECT idx_file FROM filestore_tb 
+			WHERE idx_ref= #{idxEmployee}
+				AND idx_filetype = 1
+	</select>
+
+	<update id="updateProfileImage">
+		UPDATE filestore_tb SET file_name = #{profileImageName}
+			WHERE idx_file = #{idxFile}
+				AND idx_filetype = 1
+				AND idx_ref = #{idxEmployee}
+	</update>
+
+	<insert id="saveProfileImage">
+		INSERT INTO filestore_tb (idx_filetype, idx_ref, file_name)
+			VALUES (1, #{idxEmployee}, #{profileImageName})
+	</insert>
+	
+	<select id="getOrganization">
+		SELECT 
+			'department' AS type,
+			dt.de_name AS id,
+			dt.idx_department AS idxDepartment,
+			CASE 
+				WHEN rdt.de_name IS NULL THEN 'gaguissue'
+				ELSE rdt.de_name
+			END
+			AS parent,
+			dt.de_name AS text
+		FROM organization_tb ot
+			JOIN department_tb dt ON dt.idx_department = ot.depart_idx
+			LEFT JOIN department_tb rdt ON rdt.idx_department = ot.root_depart_idx
+	</select>
+	
+	<select id="getEmployeeList">
+		SELECT 
+			tt.title_name AS titleName,
+			dt.de_name AS departmentName,
+			dt.idx_department AS idxDepartment,
+			et.emp_birth_date AS empBirthDate,
+			et.emp_email AS email,
+			et.emp_phone_number AS phoneNumber,
+			et.emp_name AS empName,
+			et.emp_color AS empColor,
+			CASE 
+				WHEN ft.file_name IS NOT NULL THEN ft.file_name
+				ELSE 'NONE'
+			END AS profileFilePath,
+			et.idx_employee AS idx_employee
+		FROM employee_tb et
+			JOIN title_tb tt ON tt.idx_title = et.idx_title 
+			JOIN department_tb dt ON dt.idx_department = et.idx_department
+			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = et.idx_employee
+		WHERE et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
+		LIMIT ${(page - 1) * 5}, 5	
+	</select>
+	
+	<select id="getGoTotalPages">
+		SELECT 
+			CEIL(COUNT(*) / 5)
+		FROM employee_tb et
+			JOIN title_tb tt ON tt.idx_title = et.idx_title 
+			JOIN department_tb dt ON dt.idx_department = et.idx_department
+			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = et.idx_employee
+		WHERE et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})	
+	</select>	
+	
+	<select id="getAJAXEmployeeList">
+		SELECT 
+			tt.title_name AS titleName,
+			dt.de_name AS departmentName,
+			dt.idx_department AS idxDepartment,
+			et.emp_birth_date AS empBirthDate,
+			et.emp_email AS email,
+			et.emp_phone_number AS phoneNumber,
+			et.emp_name AS empName,
+			et.emp_color AS empColor,
+			CASE 
+				WHEN ft.file_name IS NOT NULL THEN ft.file_name
+				ELSE 'NONE'
+			END AS profileFilePath,
+			et.idx_employee AS idx_employee
+		FROM employee_tb et
+			JOIN title_tb tt ON tt.idx_title = et.idx_title 
+			JOIN department_tb dt ON dt.idx_department = et.idx_department
+			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = et.idx_employee
+		WHERE et.idx_department = #{selectedDepartment}
+		LIMIT ${(page - 1) * 5}, 5	
+	</select>
+	
+	<select id="getTotalPages">
+		SELECT 
+			CEIL(COUNT(*) / 5)
+		FROM employee_tb et WHERE et.idx_department = #{selectedDepartment}	
+	</select>
 </mapper>

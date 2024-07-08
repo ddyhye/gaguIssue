@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -38,6 +39,75 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+	<!-- JsTree -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css"/>
+    <!-- font-awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+	<style>
+		.main {
+	 		height: 89%;
+	 		background: white;
+	 		padding: 30px;
+	 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+		}
+		
+		.organization {
+			border: 2px dashed gray;
+			color: #7a70ba;
+			padding: 30 30 0 30;
+			height: 73vh;
+			margin: 10px;
+		}
+		
+		table {
+			width: 100%;
+		}
+		
+		th {
+			width: 15%;
+		}
+		
+		.selected {
+			background-color: #7870B5 !important;
+			color:white;
+		}
+		
+		.jstree-wholerow-clicked {
+			background: linear-gradient(to bottom, #7870B5 0, #7870B5 100%) !important;
+			opacity: 0.7;
+			color:white !important;		
+			
+		}
+		
+		.jstree-wholerow-hovered {
+			background: linear-gradient(to bottom, #7870B5 0, #7870B5 100%) !important;
+			opacity: 0.3;
+		}
+		
+		.jstree-clicked {
+			color:white !important;
+		}
+		
+		.profileImage {
+			width: 65px;
+			height: 65px;
+			border-radius: 50%;
+		}
+		
+		.pagination {
+			margin-top: 10px;
+		}
+		
+		.pagination li a {
+			color: #7a70ba; 
+		}
+		
+		.pagination li.active a {
+			background-color: #7a70ba; 
+			border-color: #7a70ba;
+		}
+		
+	</style>    
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -81,7 +151,73 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          	<div class="main">
+          		<div style="height: 10%;">
+          			<h1 style="font-size: 30px; font-weight: bold;">가구있수 조직도</h1>
+          			<hr/>
+          		</div>
+          		<div class="d-flex">
+	          		<div class="organization" id="organization"></div>
+	          		<div class="organization" id="employeeTable" style="width: 100%;">
+	          			<div class="d-flex justify-content-between">
+		          			<h3>${employeeList[0].departmentName}</h3>
+		          			<h5>전체&nbsp;&nbsp;<span>${fn:length(employeeList)}</span></h5>
+	          			</div>
+	          			<hr/>
+	          			<div style="height: 80%;">	          			
+	          			<table class="table table-striped">
+	          				<thead>
+		          				<tr>
+		          					<th>번호</th>
+		          					<th style="width: 30%;">프로필</th>
+		          					<th>부서</th>
+		          					<th>연락처</th>
+		          				</tr>
+	          				</thead>
+	          				<tbody>
+		          				<c:choose>
+			          				<c:when test="${employeeList == null}">
+			          					<tr>
+			          						<td colspan="4" style="text-align: center;">조회된 직원이 없습니다</td>
+			          					</tr>
+			          				</c:when>
+			          				<c:otherwise>
+				          				<c:forEach items="${employeeList}" var="employee" varStatus="i">
+				          					<tr>
+				          						<td>${i.index + 1}</td>
+				          						<td style="display: flex;" >
+				          							<div style="margin-right: 20px;">
+					          							<c:choose>
+					          								<c:when test="${employee.profileFilePath != 'NONE'}">
+					          									<img src="/file/${employee.profileFilePath}" class="profileImage"/>
+					          								</c:when>
+					          								<c:otherwise>
+					          									<img src="/img/user.jpg" class="profileImage"/>
+					          								</c:otherwise>
+					          							</c:choose>
+				          							</div>
+				          							<div style="flex-direction: column;display: flex;justify-content: center;">
+					          							<h3>${employee.empName}</h3><br/>
+					          							<h5>${employee.titleName}</h5>
+				          							</div>
+				          						</td>
+				          						<td>${employee.departmentName}</td>
+				          						<td>${employee.phoneNumber}<br/>${employee.email}</td>
+				          					</tr>
+				          				</c:forEach>
+			          				</c:otherwise>
+		          				</c:choose>
+	          				</tbody>
+	          			</table>
+	          			</div>
+	          			<div class="d-flex justify-content-center">								
+						    <nav aria-label="Page navigation">
+						        <ul class="pagination" id="pagination"></ul>
+						    </nav>
+						</div>
+	          		</div>
+          		</div>
+          	</div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
@@ -145,6 +281,151 @@
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
+	<!-- Sweetalert js -->
+	<script src='/assets/js/sweet-alert/sweetalert.min.js'></script>
+	<!-- JsTree -->
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js'></script>
+		<!-- pagination js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+
     <script>new WOW().init();</script>
+    <script>
+		var page = 1;
+		var totalPages = ${totalPages};
+		
+		pagination();
+		
+	    $('#organization').jstree({ 
+			'plugins': ['wholerow','radio','types','search'],
+			'core' : {
+				'multiple': false,
+				'data' : JSON.parse('${organization}')
+			},
+			'types' : {
+				'department' : {
+					'icon' : 'fas fa-users',
+				},
+				'company' : {
+					'icon' : 'fas fa-building'
+					,'select_node': false
+				}
+			}
+	   	}).on('loaded.jstree', function() {
+	   		$("#organization").jstree("open_all");
+		}).on('select_node.jstree', function(e, data) {
+			if (data.node.type == 'company') { // 선택 불가능한 타입 검사
+			    data.instance.deselect_node(data.node); // 노드 선택 해제
+			    return false; // 선택을 막음
+			}
+			selectedDepartment(data.node);
+		});   
+	    /* #7870B5 */
+    	
+	    function selectedDepartment(node) {
+	    	let data = new FormData();
+	    	data.append('selectedDepartment', node.original.idxDepartment);
+	    	data.append('page', page);
+	    	console.log(node.original.idxDepartment);
+	    	
+	        fetch('/employee/group.do', {
+	            method: 'POST',
+	            body: data
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.log('Success:', data);
+	        	drawEmployeeList(data.employeeList);
+	        	page = data.page;
+	        	totalPages = data.totalPages;
+	        	pagination();
+	        })
+	        .catch(error => {
+	        	console.error('Error:', error);
+	        });
+	    }
+/* 			<c:choose>
+				<c:when test="${employeeList == null}">
+					<tr>
+						<td colspan="4" style="text-align: center;">조회된 직원이 없습니다</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+  				<c:forEach items="${employeeList}" var="employee" varStatus="i">
+  					<tr>
+  						<td>${i.index + 1}</td>
+  						<td style="display: flex;" >
+  							<div style="margin-right: 20px;">
+      							<c:choose>
+      								<c:when test="${employee.profileFilePath != 'NONE'}">
+      									<img src="/file/${employee.profileFilePath}" class="profileImage"/>
+      								</c:when>
+      								<c:otherwise>
+      									<img src="/img/user.jpg" class="profileImage"/>
+      								</c:otherwise>
+      							</c:choose>
+  							</div>
+  							<div style="flex-direction: column;display: flex;justify-content: center;">
+      							<h3>${employee.empName}</h3><br/>
+      							<h5>${employee.titleName}</h5>
+  							</div>
+  						</td>
+  						<td>${employee.departmentName}</td>
+  						<td>${employee.phoneNumber}<br/>${employee.email}</td>
+  					</tr>
+  				</c:forEach>
+				</c:otherwise>
+			</c:choose> */
+	    function drawEmployeeList(data) {
+	    	let content = '';
+	    	let index = 1;
+	    	if (data.length == 0) {
+				content += '<tr>';
+				content += '<td colspan="4" style="text-align: center;">조회된 직원이 없습니다</td>';
+				content += '</tr>';
+	    	} else {	    		
+		    	for(row of data) {
+		    		content += '<tr>';
+		    		content += '<td>' + index++ + '</td>';
+		    		content += '<td style="display: flex;" >';
+		    		content += '<div style="margin-right: 20px;">';
+		    		if (row.profileFilePath != 'NONE') {
+		    			content += '<img src="/file/'+ row.profileFilePath +'" class="profileImage"/>';
+		    		} else {
+		    			content += '<img src="/img/user.jpg" class="profileImage"/>';
+		    		}
+		    		content += '</div>';
+		    		content += '<div style="flex-direction: column;display: flex;justify-content: center;">';
+					content += '<h3>' + row.empName + '</h3><br/>';
+					content += '<h5>' + row.titleName + '</h5>';
+					content += '</div>';
+					content += '</td>';
+					content += '<td>' + row.departmentName + '</td>';
+					content += '<td>' + row.phoneNumber + '<br/>' + row.email + '</td>';
+		    		content += '</tr>';
+		    	}
+	    	}
+	    	document.querySelector('tbody').innerHTML = content;
+	    	// document.querySelector('tbody')[0].innerHTML = content;
+	    }
+			
+		function pagination() {			
+			$('#pagination').twbsPagination('destroy');
+			$('#pagination').twbsPagination({
+					startPage:page,
+					totalPages:totalPages, 
+					visiblePages:5, 
+					first: '처음', 
+					prev: '이전',
+					next: '다음', 
+					last: '마지막', 
+					onPageClick:function(evt, clickPageIdx){
+						if (page != clickPageIdx) {							
+							page = clickPageIdx;
+							selectedDepartment();
+						}
+				}
+			});		
+		}			
+    </script>
   </body>
 </html>
