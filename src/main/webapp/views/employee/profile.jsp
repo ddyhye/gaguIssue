@@ -64,14 +64,37 @@
 			text-align: center;
 		}
 		
+		#photoBtn {
+		    position: relative;
+		    display:flex;
+		    align-items: center;
+		    justify-content: center;
+			left: 70%;
+			width: 75px;
+			height: 75px;
+			background: white;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+		
 		#profileImage img {
 			position: absolute;
 		}
 		
 		.profileInfo {
-			padding: 75px;
+			padding: 75 0 0 155;
 			display: flex;
+			width: 100%;
 			justify-content: space-between;
+		}
+		
+		.infomation {
+			width: 25%;
+		}
+		
+		.form-input {
+			width: 60%;
+			height: 40%;
 		}
     </style>
   </head>
@@ -121,34 +144,57 @@
           		<div class="profileBackground">
           			<div id="profileImage">
           				<!-- <img src="/img/user.jpg"/> -->
-          				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+          				<div id="photoBtn">
+          					<i class="fa fa-3x fa-camera"></i>
+          					<input class='hidden-file-input' type='file' id='fileInput' style='display: none;'>
+          				</div>
+          				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 						<h1>김정원</h1>
           				<h6>210823B02</h6>
           			</div>
           		</div>
           		<div>
-          			<div style="width: 100%; height: 10%;">
+          			<div style="width: 100%; height: 10%;display: flex; justify-content: end;">
+	          			<div class="d-flex align-items-center">
+          					<button class="btn btn-primary btn-ms" onClick="updateEmployeeInfo()">프로필 수정</button>
+          				</div>
           			</div>
+          			<br/>
 					<div class="profileInfo">
-						<div>
-							<h3>부서/직위</h3>
-							<h6>인사부서/대리</h6>
+						<div class="infomation">
+							<div class="d-flex align-items-center">
+								<i class="fa fa-2x fa-user m-5"></i>
+								<h3>부서/직위</h3>
+							</div>
+							<h4>${employeeInfo.departmentName}/${employeeInfo.titleName}</h4>
 						</div>
-						<div>
-							<h3>생일</h3>
-							<h6>인사부서/대리</h6>
+						<div class="infomation">
+							<div class="d-flex align-items-center">
+								<i class="fa fa-2x fa-birthday-cake m-5"></i>
+								<h3>생일</h3>
+							</div>
+							<input class="form-control flatpickr-input form-input" id="birthDate" type="text" value="${employeeInfo.empBirthDate}" onChange="startDateOnChanage()" readonly="readonly">
 						</div>
-						<div>
-							<h3>우편함</h3>
-							<h6>인사부서/대리</h6>
-						</div>													
-						<div>
-							<h3>이메일</h3>
-							<h6>인사부서/대리</h6>
+<!-- 						<div class="infomation">
+							<div class="d-flex align-items-center">
+								<i class="fa fa-2x fa-comment m-5"></i>
+								<h3>우편함</h3>
+							</div>
+							<a href=""></a><h4>우편함 바로가기</h4>
+						</div>	 -->												
+						<div class="infomation">
+							<div class="d-flex align-items-center">
+								<i class="fa fa-2x fa-envelope m-5"></i>
+								<h3>이메일</h3>
+							</div>
+							<input class="form-control form-input" id="email" type="text" value="${employeeInfo.email}"/>
 						</div>
-						<div>
-							<h3>전화번호</h3>
-							<h6>인사부서/대리</h6>
+						<div class="infomation">
+							<div class="d-flex align-items-center">
+								<i class="fa fa-2x fa-mobile m-5"></i>
+								<h3>전화번호</h3>
+							</div>
+							<input class="form-control form-input" id="phoneNumber" type="text" value="${employeeInfo.phoneNumber}"/>
 						</div>
 					</div>
           		</div>
@@ -216,6 +262,146 @@
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
+    <!-- flatpickr -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+	<!-- Sweetalert js -->
+	<script src='/assets/js/sweet-alert/sweetalert.min.js'></script>
     <script>new WOW().init();</script>
+    <script>
+    	var uploadProfileFile = 'none';
+    	var filepath = '${employeeInfo.profileFilePath}';
+    	
+		async function loadImage() {
+		    try {
+		        const response = await fetch('/file/'+ filepath);
+		        if (response.ok) {
+		        	
+		            const blob = await response.blob();
+		            const url = URL.createObjectURL(blob);
+		            console.log(url);
+		            document.querySelector('#profileImage').style.backgroundImage = 'url('+url+')';
+		        } else {
+		            console.error('Failed to load image');
+		        }
+		    } catch (error) {
+		        console.error('Error:', error);
+		    }
+		}
+		loadImage();
+		
+		document.querySelector('#photoBtn').addEventListener('click', function(event){
+			document.getElementById('fileInput').click();		
+		});
+		
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            console.log(file);
+            addFile(file);
+        });
+		
+	    function addFile(file) {
+			if(!isValid(file)) {
+				return;
+			}
+			uploadProfileFile = file;
+			uploadProfileImage();
+			
+	    }
+	    
+	    function updateEmployeeInfo() {
+	    	const birthDate = document.querySelector('#birthDate').value;
+	    	const email = document.querySelector('#email').value;
+	    	const phoneNumber = document.querySelector('#phoneNumber').value;
+	    	
+            const birthDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const phoneNumberPattern = /^\d{3}-\d{4}-\d{4}$/;
+
+            let valid = true;
+
+            if (!birthDatePattern.test(birthDate)) {
+                Swal.fire('생일은 날짜 형식(2024-07-16)에 맞추어서 작성해주세요')
+                valid = false;
+            }
+
+            if (!emailPattern.test(email)) {
+                Swal.fire('이메일 형식에 맞추어서 작성해주세요');
+                valid = false;
+            }
+
+            if (!phoneNumberPattern.test(phoneNumber)) {
+                Swal.fire('휴대폰 번호 형식(xxx-xxxx-xxxx)에 맞추어서 작성해주세요');
+                valid = false;
+            }
+
+            if (valid) {
+            	var data = new FormData();
+            	data.append('birthDate', birthDate);
+            	data.append('email', email);
+            	data.append('phoneNumber', phoneNumber);
+    	        fetch('/employee/updateProfileInfo.do', {
+    	            method: 'POST',
+    	            body: data
+    	        })
+    	        .then(response => response.json())
+    	        .then(data => {
+
+    	        })
+    	        .catch(error => {
+    	        });
+            }	 
+	    }
+	    
+	    function uploadProfileImage() {
+	    	var data = new FormData();
+	    	const profileImage = new Blob([uploadProfileFile], {type: uploadProfileFile.type});
+	    	
+	    	data.append('uploadProfileFile', profileImage, uploadProfileFile.name);
+	    	
+	        fetch('/employee/uploadProfileImage.do', {
+	            method: 'POST',
+	            body: data
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.log(data);
+	        	filepath = data.profileImageName;
+	        	loadImage();
+	        })
+	        .catch(error => {
+	        });
+	    }
+		
+		function isValid(file) {
+			//이미지인지 유효성 검사
+	        const allowedMimeTypes = [
+	            // 이미지
+	            'image/jpeg', 
+	            'image/png', 
+	            'image/gif', 
+	            'image/bmp', 
+	            'image/webp',
+	        ];
+			
+			// 첨부 파일 형식은 한글, MS문서, 이미지, 텍스트 등이다.
+			if(!allowedMimeTypes.includes(file.type)){
+				Swal.fire('이미지 형식으로만 프로필 사진을 변경할 수 있습니다.');
+				return false;
+			}
+			
+			// 파일의 사이즈는 5MB 미만이다.
+			if(file.size >= 1024 * 1024 * 5){
+				Swal.fire('5MB 이상인 파일은 첨부할 수 없습니다.');
+				return false;
+			}
+
+			return true;
+		}
+		
+        function bytesToMB(bytes) {
+            return (bytes / (1024 * 1024)).toFixed(2); // 메가바이트로 변환하고 소수점 둘째 자리까지 표시
+        }
+    </script>
   </body>
 </html>
