@@ -138,7 +138,7 @@
 	            <option value="임원진">임원진</option>
 	            <option value="경영지원부서">경영지원부서</option>
 	            <option value="물류관리부서">물류관리부서</option>
-	            <option value="경영지원관리부서">인사관리부서</option>
+	            <option value="인사관리부서">인사관리부서</option>
 	        </select>
 	    </div>
 	
@@ -295,7 +295,8 @@
             var content = '';
 
             for (var item of list) {
-                content += '<tr>';
+                // [il] 각 행에 data-url 속성을 추가해서, 클릭 시 이동할 URL을 설정하깅
+                content += '<tr data-url="/employee/attendance.go?idx_employee=' + item.idx_employee + '">';
                 content += '<td>' + item.idx_employee + '</td>';
                 content += '<td>' + item.emp_name + '</td>';
                 content += '<td>' + item.ah_check_in + '</td>';
@@ -305,6 +306,12 @@
             }
 
             $("#employeeTable tbody").append(content);
+
+            // 테이블 행 클릭 이벤트 추가하깅
+            $("#employeeTable tbody tr").click(function() {
+                var url = $(this).data('url');
+                window.location.href = url;
+            });
         }
     });
 
