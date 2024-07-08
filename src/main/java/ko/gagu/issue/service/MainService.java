@@ -26,6 +26,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import ko.gagu.issue.controller.WebSocketController;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.AlarmDTO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
@@ -48,7 +49,13 @@ public class MainService {
 	private String root;
 	
 	
-	@Autowired MainDAO mainDao;
+	private final MainDAO mainDao;
+	private final WebSocketController webSocketController;
+	
+	public MainService(MainDAO mainDao, WebSocketController webSocketController) {
+		this.mainDao = mainDao;
+		this.webSocketController = webSocketController;
+	}
 
 	
 	
@@ -61,6 +68,8 @@ public class MainService {
 		EmployeeDTO emp = mainDao.getEmpData(empID);
 		
 		
+		// 토스트 테스트
+		//webSocketController.sendNotification("토스트 기능 테스트...");
 		
 		
 		// 회의실 예약
