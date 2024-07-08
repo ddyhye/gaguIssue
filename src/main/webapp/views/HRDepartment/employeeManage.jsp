@@ -133,9 +133,12 @@
 	    }
 	    
 	    .modal-body2 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	        
+	        overflow-y: auto;
+	        max-height: 600px;
 	    }
 	    
 	    .form-group {
