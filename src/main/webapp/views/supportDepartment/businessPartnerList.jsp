@@ -259,8 +259,8 @@
 					            </div>
 					            <div class="button-group"> 
 		                        	<a class="btn btn-primary add_btn" href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-plus"></i>&nbsp;추가</a>
-		                        	<a class="btn btn-primary edit_btn" href="#" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit"></i>&nbsp;수정</a>
-		                        	<a class="btn btn-primary del_btn" href="#"><i class="fa fa-trash"></i>&nbsp;삭제</a>
+		                        	<a class="btn btn-primary edit_btn" href="#" onclick="edit()"data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit"></i>&nbsp;수정</a>
+		                        	<a class="btn btn-primary del_btn" href="#" onclick="del()"><i class="fa fa-trash"></i>&nbsp;삭제</a>
 		                        </div>
 							</div>
 				             <hr/>
@@ -279,12 +279,13 @@
 									
 								</tbody>
 							</table>
+							</br>
+							<div class="d-flex justify-content-center">								
+							    <nav aria-label="Page navigation">
+							        <ul class="pagination" id="pagination"></ul>
+							    </nav>
+							</div>						
 						</div>
-						<div class="d-flex justify-content-center">								
-						    <nav aria-label="Page navigation">
-						        <ul class="pagination" id="pagination"></ul>
-						    </nav>
-						</div>						
 					</div>
 				</div>
 				
@@ -355,6 +356,80 @@
 			        </div>
 			    </div>
 			</div>
+			
+			
+			
+			
+			
+			<!-- 거래처 수정 모달 창 -->
+			<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h5 class="modal-title" id="registerModalLabel">거래처 등록</h5>
+			                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			            </div>
+			            <div class="modal-body">
+			                <!-- 사원 등록 폼 -->
+			                <form action="/clientForm" id="clientForm" method="post" enctype="multipart/form-data">
+			                    
+			                    <!-- 폼 요소 -->
+			                    <div class="container2">
+			                    	<div class="col-12 mb-2">
+		                                <label for="client_name">사업자등록번호</label>
+		                                <input type="text" class="form-control" id="idx_business2" name="idx_business" required>
+		                            </div>
+			                    
+				                    <div class="row">
+			                            <div class="col-12 mb-2">
+			                                <label for="client_name">거래처명</label>
+			                                <input type="text" class="form-control" id="client_name2" name="client_name" required>
+			                            </div>   
+			                        </div> 
+			                        <div class="row">
+   			                            <div class="col-12 mb-2">
+			                                <label for="ceo_name">대표자명</label>
+			                                <input type="text" class="form-control" id="ceo_name2" name="ceo_name" required>
+			                            </div>
+			                        </div> 
+									<div class="row">
+			                            <div class="col-12 mb-2">
+			                                <label for="client_phone_num">연락처</label>
+			                                <input type="tel" class="form-control" id="client_phone_num2" name="client_phone_num" required>
+			                            </div>
+			                        </div> 			                            
+			                        <div class="row">
+			                            <div class="col-12 mb-2 radio-group">
+							                <label><input type="radio" id="select" name="client_type2" value="발주처">발주처</label>
+							                <label><input type="radio" id="select2" name="client_type2" value="수주처">수주처</label>
+							            </div>
+			                        </div> 
+			                            <div class="col-12 mb-2">
+			                                <label for="address">주소 &nbsp;
+			                                <button type="button" class="btn btn-outline-secondary mt-2" onclick="openPostalCodeSearch()">주소 입력</button></label>
+			                                <input type="text" class="form-control" id="address2" name="address" readonly>
+			                                
+			                                <label for="detail_address">상세 주소</label>
+			                                <input type="text" class="form-control" id="detail_address2" name="detail_address">
+			                            </div>
+			                            <div class="col-12 mb-2">
+			                                <label for="detail_address">기타</label>
+			                                <input type="text" class="form-control input-etc" id="etc2" name="etc">
+			                            </div>
+			                    </div>
+			            <div class="modal-footer">
+			                <button type="submit" class="btn btn-primary">수정</button>
+			                <button type="button" class="btn btn-secondary" id="editCancel" data-bs-dismiss="modal">닫기</button>
+			            </div>
+			                </form>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			
+			
+			
+			
 			
 				
           <!-- Container-fluid Ends-->
@@ -484,7 +559,7 @@
 	    for(item of list){
 	      // console.log(item);
 	       content += '<tr>';
-	       content += '<td><input type="checkbox" name="selected" value="' + item.idx_business +'"/></td>';
+	       content += '<td class="col"><input type="checkbox" name="selected" value="' + item.idx_business +'"/></td>';
 	       content += '<td>'+ item.client_type + '</td>';
 	       content += '<td>'+ '<a href="alarmDetail.go?alarm_idx=' + item.idx_business + '">' + item.client_name + '</a>' + '</td>';
 	       content += '<td>'+ item.client_phone_num + '</td>';
@@ -507,38 +582,99 @@
           listCall(showPage, clientSearch);
       }
   });
-  /* 
-  function submitEmployeeForm() {
-      var formData = new FormData($('#clientForm')[0]); // FormData 객체 생성
+  
+  
+  function del() {
+	    var delArr = [];
+	    $("input[name='selected']").each(function(index, item) {
+	      if ($(item).is(":checked")) {
+	         var val = $(this).val();
+	         console.log(val);
+	         delArr.push(val);
+	      }
+	   });
+	     $.ajax({
+	         type:'post' // method 방식
+	         ,url:'./del.ajax' // 요청할 주소 // 파라미터 
+	         ,data:{delList:delArr}
+	        ,dataType:'json' // 기본 데이터 타입은 JSON 이다
+	         ,success:function(data){
+	            if(data.cnt>0){
+	               alert('선택하신'+data.cnt+'개의 거래처가 삭제되었습니다.');
+	               $('.client-List').empty(); // 업데이트 전 리스트들을 지워버리고
+	               listCall(showPage, search); // 업데이트 후 리스트들을 다시 불러옴
+	            }
+	            console.log(data);
+	         } 
+	         ,error:function(error){ // 통신 실패한 경우
+	             console.log(error);
+	         }
+	     });
+	}
+  
+  var val = 0;
+  function edit() {
+      var selectedCount = 0;
 
-      // 우편번호, 주소, 상세주소를 합쳐서 하나의 문자열로 만든다.
-      var address = $('#address').val();
-      var detailAddress = $('#detail_address').val();
-      var fullAddress = address + ' ' + detailAddress;
-
-      // 합쳐진 주소를 emp_address 필드에 추가
-      formData.append('emp_address', fullAddress);
-      
-      $.ajax({
-          type: 'POST',
-          url: '/employeeInsert',
-          data: formData,
-          dataType: 'json',
-          processData: false,
-          contentType: false,
-          success: function (data) {
-              alert('사원 등록 성공');
-              $('#registerModal').modal('hide');
-              resetForm();
-          },
-          error: function (error) {
-              alert('사원 등록 실패');
+      $("input[name='selected']").each(function(index, item) {
+          if ($(item).is(":checked")) {
+              selectedCount++;
+              val = parseInt($(this).val());
+              console.log(val);
+              console.log(selectedCount);
           }
       });
+
+	      if (selectedCount === 0) {
+	    	    alert("수정할 거래처를 선택해주세요.");
+	    	    return;
+	    	}
+
+
+          if (selectedCount > 1) {
+              alert("수정할 거래처는 1개만 가능합니다");
+              return;
+          }
+
+          if (selectedCount === 1) {
+              $.ajax({
+                  url: './getClient',
+                  type: 'GET',
+                  data: { idx: val },
+                  success: function(data) {
+                      // 데이터가 성공적으로 불러와지면 모달에 데이터 채우기
+                      $('#idx_business2').val(data.idx_business);
+                      $('#client_name2').val(data.client_name);
+                      $('#ceo_name2').val(data.ceo_name);
+                      $('#client_phone_num2').val(data.client_phone_num);
+                      $('#address2').val(data.address);
+                      $('#detail_address2').val(data.detail_address);
+                      $('#etc2').val(data.etc);
+                      // 라디오 버튼 값 설정
+                      $('input[name="client_type2"][value="' + data.client_type + '"]').prop('checked', true);
+
+                      // 모달 창 열기
+                      //$('#editModal').modal('show');
+                  },
+                  error: function(error) {
+                      console.error('에러 메시지:', error);
+                      alert('데이터를 불러오는 중 오류가 발생했습니다.');
+                  }
+              });
+          }
+      
   }
- */
+
   
-  
+  $('#editCancel').on('click', function(){
+	  $('#idx_business2').val('');
+      $('#client_name2').val('');
+      $('#ceo_name2').val('');
+      $('#client_phone_num2').val('');
+      $('#address2').val('');
+      $('#detail_address2').val('');
+      $('#etc2').val('');
+	});
   
   
   /* 셀렉트 박스 모두 선택 버튼 기능 */

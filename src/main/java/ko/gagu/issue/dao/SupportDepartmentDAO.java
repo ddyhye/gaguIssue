@@ -16,5 +16,9 @@ public interface SupportDepartmentDAO {
 
 	int clientReg(Map<String, String> param);
 
+	int del(String idx);
+
+	Map<String, Object> getClient(int idx);
+
 	
 }

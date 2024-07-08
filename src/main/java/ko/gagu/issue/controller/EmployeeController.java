@@ -211,6 +211,7 @@ public class EmployeeController {
 	
 	@GetMapping(value = "/findNumber.go")
 	public String findNumber() {
+		logger.info("사원번호 찾기==============");
 		return "login/findNumber";
 	}
 	

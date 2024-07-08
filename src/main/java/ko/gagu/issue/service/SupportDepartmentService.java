@@ -64,6 +64,19 @@ public class SupportDepartmentService {
 		return mav;
 	}
 
+	public int del(List<String> delList) {
+		int cnt = 0;
+	    for (String idx : delList) {
+	        cnt += supportDAO.del(idx);
+	    }
+	    return cnt;
+	}
+
+	public Map<String, Object> getClient(int idx) {
+		
+		return supportDAO.getClient(idx);
+	}
+
 
 
 
