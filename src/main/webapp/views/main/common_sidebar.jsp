@@ -161,7 +161,7 @@
                   <!-- do: 거래처 관리 -->
                   <!-- 경영지원부서만 보여야 함 -->
                   <c:if test="${de_name eq '경영지원부서' || de_name eq '임원진'}">
-	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.go">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="/businessPartnerList.go">
 	                      <svg class="stroke-icon">
 	                        <use href="/assets/svg/icon-sprite.svg#stroke-learning"></use>
 	                      </svg>
@@ -174,7 +174,7 @@
                   <!-- do: 창고 관리 -->
                   <!-- 경영지원부서만 보여야 함 -->
                   <c:if test="${de_name eq '경영지원부서' || de_name eq '임원진'}">
-	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="storageManage.go">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="/storageManage.go">
 	                      <svg class="stroke-icon">
 	                        <use href="/assets/svg/icon-sprite.svg#stroke-animation"></use>
 	                      </svg>

@@ -38,7 +38,173 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'/>" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+    #rsvList {
+		background: white;
+		height: 85%;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+		padding: 30px;
+	}
+	
+	#rsvTable {
+		height: 95%;
+	}
+	
+	#rsvTitle {
+		font-weight: bold;
+	}
+	
+	#rsvList table th {
+		background: #f4f7f9;
+		opacity: 0.9;
+	}
+	
+	#rsvList table {
+		text-align: center;
+	}
+	
+	#rsvList table th:first-child {
+		border-top-left-radius: 10px; /* 왼쪽 상단 모서리 둥글게 */
+	}
+	
+	#rsvList table th:last-child {
+		border-top-right-radius: 10px; /* 오른쪽 상단 모서리 둥글게 */
+	}
+	
+	#rsvList table tr:last-child td:first-child {
+		border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
+	}
+	
+	#rsvList table tr:last-child td:last-child {
+		border-bottom-right-radius: 10px; /* 오른쪽 하단 모서리 둥글게 */
+	}
+	table #checkbox{
+		width: 1px;
+	}
+	.client-search {
+	    display: flex;
+	    align-items: center;
+	    position: relative;
+	    width: 60%; /* 검색창 너비를 조정 */
+	    max-width: 285px; /* 최대 너비를 설정 */
+	}
+	
+	.client-search .form-control {
+	    width: 100%; /* 입력 필드가 전체 너비를 차지하도록 설정 */
+	    padding-left: 35px; /* 왼쪽에 여백을 추가하여 아이콘이 겹치지 않도록 설정 */
+	}
+	
+	.client-search .form-control:focus {
+	    box-shadow: none;
+	    border-color: var(--chart-dashed-border);
+	}
+	
+	.client-search svg {
+	    stroke: var(--chart-text-color);
+	    width: 18px;
+	    height: 18px;
+	    left: 10px; /* 아이콘의 왼쪽 위치 설정 */
+	    top: 50%; /* 수직 중앙 정렬 */
+	    transform: translateY(-50%); /* 수직 중앙 정렬을 위한 변환 */
+	    position: absolute;
+	}
+	
+	[dir=rtl] .client-search svg {
+	    left: unset;
+	    right: 10px;
+	}
+
+	.container {
+	    margin-bottom: 20px;  /* 원하는 간격으로 설정 */
+	    position: relative;
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	}
+	
+	.button-group {
+	    display: flex;
+	    gap: 10px;
+	    justify-content: flex-end;
+	}
+	.button-group .btn {
+	    white-space: nowrap;
+	}
+	
+	.edit_btn{
+	  background-color: #0ab414 !important;
+	  border-color: #0ab414 !important;
+	}
+	.del_btn{
+	  background-color: #f9554d !important;
+	  border-color: #f9554d !important;
+	}
+   	/* 폼 요소 컨테이너를 그리드 레이아웃으로 설정 */
+	.container2 {
+	    display: grid;
+	    grid-template-columns: repeat(2, 1fr); /* 두 개의 열로 구성된 그리드 */
+	    gap: 20px; /* 요소들 사이의 간격 */
+	    padding: 20px; /* 폼 내부의 여백 */
+	}	
+	
+	/* 전체 너비를 차지하는 요소 */
+	.container2 .col-12 {
+	    grid-column: span 2;
+	}
+	/* 모달 다이얼로그 크기 조정 */
+	.modal-dialog {
+	    max-width: 80%;
+	    width: 40%;
+	    height: 80%;
+	}
+	
+	.modal-content {
+	    height: 92vh;
+	}
+	
+	/* 모달 헤더와 푸터에 여백 추가 */
+	.modal-header, .modal-footer {
+	    padding: 20px;
+	}
+	.modal-body{
+		height: 60vh;
+	}
+	
+	/* 폼 요소에 여백 추가 */
+	.modal-body .form-control {
+	    margin-bottom: 10px;
+	}
+ 	.modal-footer {
+        display: flex;
+        justify-content: center;
+    }
+	    
+    /* 라디오 버튼 그룹 스타일 */
+	.radio-group {
+	    display: flex;
+	    justify-content: center; /* 가운데 정렬 */
+	    gap: 30px; /* 라디오 버튼 사이의 간격 */
+	    margin-top: 10px; /* 위쪽 간격 */
+	}
+	
+	.radio-group label {
+	    display: flex;
+	    align-items: center; /* 라디오 버튼과 라벨 수직 정렬 */
+	    gap: 5px; /* 라디오 버튼과 라벨 사이 간격 */
+	}
+
+    /* 기타 입력 칸 높이 조절 */
+	.input-etc {
+	    height: 100px; /* 원하는 높이로 설정 */
+	}
+	
+    </style>
   </head>
+  
   <body> 
     <div class="loader-wrapper"> 
       <div class="loader loader-1">
@@ -59,13 +225,12 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">거래처 관리</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400 active">거래처 관리</li>
             </ol>
           </nav>
         </div>
@@ -81,8 +246,117 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          </div>
+					<div id="rsvList">
+						<div id="rsvTable">
+							<h1 id="rsvTitle">거래처 목록</h1>
+							<hr/>
+							<div class="container">
+								<div class="client-search">
+					                <input class="form-control" name="clientSearch" id="clientSearch" type="text" placeholder="거래처명 검색 ">
+					                <svg>
+					                  <use href="/assets/svg/icon-sprite.svg#stroke-search"></use>
+					                </svg>
+					            </div>
+					            <div class="button-group"> 
+		                        	<a class="btn btn-primary add_btn" href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-plus"></i>&nbsp;추가</a>
+		                        	<a class="btn btn-primary edit_btn" href="#" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit"></i>&nbsp;수정</a>
+		                        	<a class="btn btn-primary del_btn" href="#"><i class="fa fa-trash"></i>&nbsp;삭제</a>
+		                        </div>
+							</div>
+				             <hr/>
+							<table class="table table-striped rsv-list-table">
+								<thead>
+									<tr>
+										<th id= "checkbox"><input type="checkbox" id="all"/></th>
+										<th><span class="f-light f-w-600">유형</span></th>
+										<th><span class="f-light f-w-600">거래처명</span></th>
+										<th><span class="f-light f-w-600">연락처</span></th>
+										<th><span class="f-light f-w-600">주소</span></th>
+									</tr>
+								</thead>
+								<tbody class="client-List">
+									
+									
+								</tbody>
+							</table>
+						</div>
+						<div class="d-flex justify-content-center">								
+						    <nav aria-label="Page navigation">
+						        <ul class="pagination" id="pagination"></ul>
+						    </nav>
+						</div>						
+					</div>
+				</div>
+				
+				
+				
+			<!-- 거래처 추가 모달 창 -->
+			<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h5 class="modal-title" id="registerModalLabel">거래처 등록</h5>
+			                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			            </div>
+			            <div class="modal-body">
+			                <!-- 사원 등록 폼 -->
+			                <form action="/clientForm" id="clientForm" method="post" enctype="multipart/form-data">
+			                    
+			                    <!-- 폼 요소 -->
+			                    <div class="container2">
+			                    	<div class="col-12 mb-2">
+		                                <label for="client_name">사업자등록번호</label>
+		                                <input type="text" class="form-control" id="idx_business" name="idx_business" required>
+		                            </div>
+			                    
+				                    <div class="row">
+			                            <div class="col-12 mb-2">
+			                                <label for="client_name">거래처명</label>
+			                                <input type="text" class="form-control" id="client_name" name="client_name" required>
+			                            </div>   
+			                        </div> 
+			                        <div class="row">
+   			                            <div class="col-12 mb-2">
+			                                <label for="ceo_name">대표자명</label>
+			                                <input type="text" class="form-control" id="ceo_name" name="ceo_name" required>
+			                            </div>
+			                        </div> 
+									<div class="row">
+			                            <div class="col-12 mb-2">
+			                                <label for="client_phone_num">연락처</label>
+			                                <input type="tel" class="form-control" id="client_phone_num" name="client_phone_num" required>
+			                            </div>
+			                        </div> 			                            
+			                        <div class="row">
+			                            <div class="col-12 mb-2 radio-group">
+							                <label><input type="radio" id="select" name="client_type" value="발주처">발주처</label>
+							                <label><input type="radio" id="select2" name="client_type" value="수주처">수주처</label>
+							            </div>
+			                        </div> 
+			                            <div class="col-12 mb-2">
+			                                <label for="address">주소 &nbsp;
+			                                <button type="button" class="btn btn-outline-secondary mt-2" onclick="openPostalCodeSearch()">주소 입력</button></label>
+			                                <input type="text" class="form-control" id="address" name="address" readonly>
+			                                
+			                                <label for="detail_address">상세 주소</label>
+			                                <input type="text" class="form-control" id="detail_address" name="detail_address">
+			                            </div>
+			                            <div class="col-12 mb-2">
+			                                <label for="detail_address">기타</label>
+			                                <input type="text" class="form-control input-etc" id="etc" name="etc">
+			                            </div>
+			                    </div>
+			            <div class="modal-footer">
+			                <button type="submit" class="btn btn-primary">등록</button>
+			                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+			            </div>
+			                </form>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			
+				
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
@@ -102,6 +376,7 @@
         </footer>
       </div>
     </div>
+    <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
@@ -144,7 +419,156 @@
     <script src="/assets/js/script.js"></script>
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
+    <!-- pagination js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+	
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>
+  
+  <script>
+  var showPage = 1;
+  var search = '';
+  $(document).ready(function(){ // html 문서가 모두 읽히면 되면(준비되면) 다음 내용을 실행 해라
+  	
+  	   listCall(showPage, search);
+  });
+  
+  function listCall(page, search){
+		
+		
+	    $.ajax({
+	       type:'get',
+	       url:'/clientList.ajax',
+	       data:{
+	    	  'clientSearch': search,
+	          'page':page,
+	          'cnt':5
+	       },
+	       dataType:'json',
+	       success:function(data){
+	          drawList(data.list);
+	          console.log(data);
+	          //플러그인 추가
+	          var startPage = data.currPage > data.totalPages? data.totalPages : data.currPage;
+	          
+	          $('#pagination').twbsPagination({
+	        	  startPage:startPage, //시작페이지
+	        	  totalPages:data.totalPages, //총 페이지 갯수
+	        	  visiblePages:5, //보여줄 페이지 수 [1][2][3][4][5]
+	        	  first: '<<', 
+  	        	  prev: '<',
+	  	          next: '>', 
+	  	          last: '>>',
+	         	  onPageClick:function(evt, pg){//페이지 클릭시 실행 함수
+	        		  console.log(evt); // 이벤트 객체
+	        		  console.log(pg); //클릭한 페이지 번호
+	        		  listCall(pg, clientSearch);
+	        	  }
+	        	  
+	          });
+	          
+	       },
+	       error: function(request, status, error) {
+	           console.log("code: " + request.status)
+	           console.log("message: " + request.responseText)
+	           console.log("error: " + error);
+	       }
+	    });
+	}
+  
+  
+  
+  function drawList(list){
+	    var content = '';
+	    for(item of list){
+	      // console.log(item);
+	       content += '<tr>';
+	       content += '<td><input type="checkbox" name="selected" value="' + item.idx_business +'"/></td>';
+	       content += '<td>'+ item.client_type + '</td>';
+	       content += '<td>'+ '<a href="alarmDetail.go?alarm_idx=' + item.idx_business + '">' + item.client_name + '</a>' + '</td>';
+	       content += '<td>'+ item.client_phone_num + '</td>';
+	       content += '<td>'+ item.address + '</td>';
+	       content += '</tr>';
+	    }
+	    $('.client-List').html(content);
+	}
+
+  
+  
+  
+  var clientSearch = document.getElementById('clientSearch').value;
+	
+  document.getElementById('clientSearch').addEventListener('keydown', function(event) {
+	console.log(clientSearch);
+      if (event.key === "Enter") {
+          event.preventDefault();
+          clientSearch = document.getElementById('clientSearch').value;
+          listCall(showPage, clientSearch);
+      }
+  });
+  /* 
+  function submitEmployeeForm() {
+      var formData = new FormData($('#clientForm')[0]); // FormData 객체 생성
+
+      // 우편번호, 주소, 상세주소를 합쳐서 하나의 문자열로 만든다.
+      var address = $('#address').val();
+      var detailAddress = $('#detail_address').val();
+      var fullAddress = address + ' ' + detailAddress;
+
+      // 합쳐진 주소를 emp_address 필드에 추가
+      formData.append('emp_address', fullAddress);
+      
+      $.ajax({
+          type: 'POST',
+          url: '/employeeInsert',
+          data: formData,
+          dataType: 'json',
+          processData: false,
+          contentType: false,
+          success: function (data) {
+              alert('사원 등록 성공');
+              $('#registerModal').modal('hide');
+              resetForm();
+          },
+          error: function (error) {
+              alert('사원 등록 실패');
+          }
+      });
+  }
+ */
+  
+  
+  
+  
+  /* 셀렉트 박스 모두 선택 버튼 기능 */
+  $('#all').on('click', function() {
+	    var $chk = $('input[name="selected"]');
+	    if ($(this).prop('checked')) {
+	        $chk.prop('checked', true);
+	    } else {
+	        $chk.prop('checked', false);
+	    }
+	});
+  
+  
+  //주소 API 함수
+  function openPostalCodeSearch() {
+      new daum.Postcode({
+          oncomplete: function(data) {
+              // 검색된 정보를 해당 필드에 넣음
+             // document.getElementById('postal_code').value = data.zonecode;
+              document.getElementById('address').value = data.roadAddress; // 도로명 주소 사용
+          }
+      }).open();
+  }
+  
+  
+  </script>
+  
+  
+  
+  
+  
+  
 </html>

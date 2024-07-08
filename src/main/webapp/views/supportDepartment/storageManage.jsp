@@ -38,6 +38,51 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    
+    <style>
+    #rsvList {
+		background: white;
+		height: 85%;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+		padding: 30px;
+	}
+	
+	#rsvTable {
+		height: 95%;
+	}
+	
+	#rsvTitle {
+		font-weight: bold;
+	}
+	
+	#rsvList table th {
+		background: #f4f7f9;
+		opacity: 0.9;
+	}
+	
+	#rsvList table {
+		text-align: center;
+	}
+	
+	#rsvList table th:first-child {
+		border-top-left-radius: 10px; /* 왼쪽 상단 모서리 둥글게 */
+	}
+	
+	#rsvList table th:last-child {
+		border-top-right-radius: 10px; /* 오른쪽 상단 모서리 둥글게 */
+	}
+	
+	#rsvList table tr:last-child td:first-child {
+		border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
+	}
+	
+	#rsvList table tr:last-child td:last-child {
+		border-bottom-right-radius: 10px; /* 오른쪽 하단 모서리 둥글게 */
+	}
+	
+
+	
+    </style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -59,13 +104,12 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">창고 관리</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400 active">창고 관리</li>
             </ol>
           </nav>
         </div>
