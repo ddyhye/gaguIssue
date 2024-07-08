@@ -268,7 +268,7 @@
                     </div>
                   </div>
                   <div class="card-body sales-product px-0 pb-0">
-                  	<div style="width: 600px; height: 320px; margin: auto;">
+                  	<div style="width: 550px; height: 320px; margin: auto;">
 				        <canvas id="customerTransactionChart"></canvas>
 				    </div>
                   </div>
@@ -298,8 +298,17 @@
             </div>
           </div>
         </footer>
+        
+        
+	    <!-- 토스트 -->
+        <!-- <div id="do-toast" class="toast">This is a toast notification.</div> -->
+	    <%@ include file="common_bottom.jsp" %>
       </div>
     </div>
+    
+    
+    
+    
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
