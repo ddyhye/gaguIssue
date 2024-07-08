@@ -206,6 +206,13 @@ public class EmployeeService {
 		response.put("totalPages", totalPages);
 		response.put("page", page);
 		return response;
+	}
+
+	public ModelAndView getProfile(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("employee/profile");
+		EmployeeDTO employeeInfo = dao.getEmployeeInfo(idxEmployee);
+		mav.addObject("employeeInfo", employeeInfo);
+		return mav;
 	}	
 
 	

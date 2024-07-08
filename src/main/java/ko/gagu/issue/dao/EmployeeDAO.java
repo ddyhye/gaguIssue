@@ -62,6 +62,8 @@ public interface EmployeeDAO {
 
 	int getSalesHistoryTotalPages(PagingDTO pagingDTO);
 
+	EmployeeDTO getEmployeeInfo(int idxEmployee);
+
 
 }
 
