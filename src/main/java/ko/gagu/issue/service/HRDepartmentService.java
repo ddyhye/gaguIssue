@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ko.gagu.issue.dao.HRDepartmentDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
+import ko.gagu.issue.dto.Leave_usage_tbDTO;
 
 @Service
 public class HRDepartmentService {
@@ -171,22 +174,64 @@ public class HRDepartmentService {
 	   }
 
 	public Map<String, Object> getannualDetail(Map<String, Object> map, String emp_id) {
-		HRDepartmentDTO annual = hrDepartmentDao.getAnnualLeaveInfoById(emp_id);
-		
-		map.put("emp_id", annual.getEmp_id());
-		map.put("emp_name", annual.getEmp_name());
-		map.put("emp_phone_number", annual.getEmp_phone_number());
-		map.put("emp_birth_date", annual.getEmp_birth_date());
-		map.put("emp_email", annual.getEmp_email());
-		map.put("emp_address", annual.getEmp_address());
-		map.put("leave_days", annual.getLeave_days());
-		map.put("usage_days", annual.getUsage_days());
-		map.put("lu_usage_days", annual.getLu_usage_days());
-		map.put("lu_start_date", annual.getLu_start_date());
-		map.put("lu_end_date", annual.getLu_end_date());
-		
-		return map;
+	    Map<String, Object> resultMap = new HashMap<>();
+
+	    // HRDepartmentDTO 객체를 생성하고 데이터를 설정합니다.
+	    HRDepartmentDTO annual = hrDepartmentDao.getAnnualLeaveInfoById(emp_id);
+	    annual.setAnnual_leave_usage_history(hrDepartmentDao.gethistory(annual.getIdx_employee()));
+	    resultMap.put("DTO", annual);
+//	    if (annual != null) {
+//	        resultMap.put("annual_emp_id", annual.getEmp_id());
+//	        resultMap.put("annual_emp_name", annual.getEmp_name());
+//	        resultMap.put("annual_emp_phone_number", annual.getEmp_phone_number());
+//	        resultMap.put("annual_emp_birth_date", annual.getEmp_birth_date());
+//	        resultMap.put("annual_emp_email", annual.getEmp_email());
+//	        resultMap.put("annual_emp_address", annual.getEmp_address());
+//	        resultMap.put("annual_leave_days", annual.getLeave_days());
+//	        resultMap.put("annual_usage_days", annual.getUsage_days());
+//	        
+//	        // 연차 사용 내역을 리스트로 변환하여 resultMap에 추가합니다.
+//	        List<Map<String, Object>> leaveUsageHistory = new ArrayList<>();
+//	        if (annual.getAnnual_leave_usage_history() != null) {
+//	            logger.info("Annual leave usage history found for employee ID: {}", emp_id);
+//	            
+//
+//	            for (Leave_usage_tbDTO usage : annual.getAnnual_leave_usage_history()) {
+//	                Map<String, Object> historyMap = new HashMap<>();
+//	                historyMap.put("lu_start_date", usage.getLu_start_date());
+//	                historyMap.put("lu_end_date", usage.getLu_end_date());
+//	                historyMap.put("lu_usage_days", usage.getLu_usage_days());
+//	                leaveUsageHistory.add(historyMap);
+//	                logger.info(""+usage.getLu_usage_days());
+//	            }
+//	        }
+//	        
+//	        resultMap.put("annual_leave_usage_history", leaveUsageHistory);
+//	    }
+
+	    return resultMap;
 	}
+
+	public List<HRDepartmentDTO> searchEmployee(String searchInput, String department) {
+	    return hrDepartmentDao.searchEmployee(searchInput, department);
+	}
+
+	 public String updateEmployee(HRDepartmentDTO employee) {
+	        try {
+	            // 직원 정보 업데이트 (사원 번호를 통해 검색 후 정보 수정)
+	            int rowsUpdated = hrDepartmentDao.updateEmployee(employee);
+	            if (rowsUpdated > 0) {
+	                return "사원 정보가 성공적으로 업데이트되었습니다.";
+	            } else {
+	                return "사원 정보를 업데이트하는데 실패했습니다. 사원 번호를 확인하세요.";
+	            }
+	        } catch (Exception e) {
+	            logger.error("사원 정보 업데이트 실패: " + e.getMessage(), e);
+	            return "사원 정보 업데이트 중 오류가 발생했습니다.";
+	        }
+	    }
+	
+
 	
 	
 }
