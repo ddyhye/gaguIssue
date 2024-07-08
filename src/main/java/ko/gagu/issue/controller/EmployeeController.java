@@ -123,8 +123,10 @@ public class EmployeeController {
 	
 		// [il] 개인 근태관리
 		@GetMapping(value="/employee/attendance.go")
-		public String employeeAttendance() {
+		public String employeeAttendance(Integer idx_employee,Model model) {
+			logger.info("idx_employee : {}",idx_employee);
 			logger.info("attendance calendar in");
+			model.addAttribute("idx_employee",idx_employee);
 			return "employee/attendance";
 		}
 		

@@ -142,7 +142,14 @@
 	      </c:if>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
-		    <input type="hidden" id="idx_employee" value="${sessionScope.idxEmployee}">  
+		    <!-- 모델에서 idx_employee 값을 가져옵니다 -->
+			<c:set var="modelIdxEmployee" value="${idx_employee}" />
+			
+			<!-- 모델의 idx_employee가 null이 아닌 경우 해당 값을 사용하고, null인 경우 세션의 idxEmployee 값을 사용합니다 -->
+			<c:set var="finalIdxEmployee" value="${not empty modelIdxEmployee ? modelIdxEmployee : sessionScope.idxEmployee}" />
+			
+			<!-- 최종 값을 hidden input에 설정합니다 -->
+			<input type="hidden" id="idx_employee" value="${finalIdxEmployee}">
 		    <br>
 		    <!-- [il]Modal -->
 		    
