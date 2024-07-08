@@ -104,6 +104,10 @@ public interface LogiDepartmentDAO {
 
 	List<LogiDeptDTO> fetchFilterListDelivery(PagingDTO paging, int idxEmployee);
 
+	LogiDeptDTO inventoryDetail(int idx_product);
+
+	List<String> inventoryPhoto(int idx_product);
+
 
 
 

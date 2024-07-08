@@ -513,7 +513,7 @@
 			content += '<tr><td colspan="6">현재 보유중인 재고가 없습니다...</td></tr>';
 		}
 		for (item of data.list) {
-			content += '<tr>';
+			content += '<tr class="inventoryDetail">';
 			
 			content += '<td class="do-table-td1">';
 			content += item.idx_product;
@@ -583,6 +583,46 @@
 		filter = category;
 		fetchDocumentList();
 	}
+	
+	
+	
+	
+	// 재고 상세보기
+	document.querySelector('.do-inventory').addEventListener('mouseover', function(e) {
+		if (e.target && e.target.closest('.inventoryDetail')) {
+			var invenDetail = e.target.closest('.inventoryDetail');
+			invenDetail.style.backgroundColor = 'rgba(106, 113, 133, 0.1)';
+		}
+	});
+	document.querySelector('.do-inventory').addEventListener('click', function(e) {
+		if (e.target && e.target.closest('.inventoryDetail')) {
+			// 해당 제품의 제품번호
+			var idx_productStr = e.target.closest('.inventoryDetail').querySelector('.do-table-td1').innerText;
+			
+			/* ajax로 이동보다..
+			fetch('/logisticsDepartment/inventoryDetail.goAjax', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ idx_productStr: idx_productStr})
+			})
+			.then(response => response.json())
+			.then(data=> {
+				
+			})
+			.catch(error => {console.error('Fetch error: ', error);});
+			*/
+			
+			window.location.href='<c:url value="/logisticsDepartment/inventoryDetail.goAjax?idx_productStr='+idx_productStr+'"/>';
+		}
+	});
+	document.querySelector('.do-inventory').addEventListener('mouseout', function(e) {
+		if (e.target && e.target.closest('.inventoryDetail')) {
+			var invenDetail = e.target.closest('.inventoryDetail');
+			invenDetail.style.backgroundColor = '';
+		}
+	});
 	
 </script>
 

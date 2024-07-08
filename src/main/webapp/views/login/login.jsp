@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>가구있슈 로그인</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doToast.css'/>">
+	<title>가구있슈 로그인</title>
 <style>
     body {
         font-family: 'Arial', sans-serif;
@@ -104,11 +104,12 @@
             </table>
         </form>
     </div>
-    <script>
-        var msg = '${msg}';
-        if(msg != ""){
-            alert(msg);
-        }
-    </script>
+    
 </body>
+<script>
+    var msg = '${msg}';
+    if(msg != ""){
+        alert(msg);
+    }
+</script>
 </html>

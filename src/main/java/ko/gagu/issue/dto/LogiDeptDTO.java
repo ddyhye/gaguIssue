@@ -423,5 +423,27 @@ public class LogiDeptDTO {
 	}
     
     
+	
+	
+	// 영업 이익
+	private int profit;
+	// 바코드 사진
+	private String barcode;
+
+
+	public int getProfit() {
+		return profit;
+	}
+	public String getBarcode() {
+		return barcode;
+	}
+	public void setProfit(int profit) {
+		this.profit = profit;
+	}
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+	
+	
 
 }

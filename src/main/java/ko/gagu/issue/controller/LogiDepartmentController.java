@@ -66,6 +66,21 @@ public class LogiDepartmentController {
 		return logiDeptService.inventoryListDraw(map, productSearch, productCategory, clientList);
 	}
 	
+	// 인벤토리 상세보기
+	@GetMapping(value="/logisticsDepartment/inventoryDetail.goAjax")
+	ModelAndView inventoryDetail(String idx_productStr) {
+		ModelAndView mav = new ModelAndView();
+		
+		int idx_product = Integer.parseInt(idx_productStr);
+		
+		return logiDeptService.inventoryDetail(mav, idx_product);
+	}
+	// 인벤토리 상세보기 - 사진 경로
+	@GetMapping(value="/productPhoto/{file_name}")
+	public ResponseEntity<Resource> productView(@PathVariable String file_name) {
+		return logiDeptService.productView(file_name);
+	}
+	
 
 	
 	
@@ -247,13 +262,13 @@ public class LogiDepartmentController {
 	// 주문 출고하기
 	@PostMapping(value="/orderDelivery.ajax")
 	@ResponseBody
-	Map<String, Object> orderDelivery(@RequestBody Map<String, Object> payload) {
+	Map<String, Object> orderDelivery(@RequestBody Map<String, Object> payload, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		String orderNoStr = (String) payload.get("orderNo");
 		int orderNo = Integer.parseInt(orderNoStr);
 		
-		return logiDeptService.orderDelivery(map, orderNo);
+		return logiDeptService.orderDelivery(map, orderNo, session);
 	}
 	
 	

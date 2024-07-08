@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import ko.gagu.issue.controller.WebSocketController;
 import ko.gagu.issue.dao.LogiDepartmentDAO;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
@@ -41,10 +42,12 @@ public class LogiDepartmentService {
 	
 	private final MainDAO mainDao;
 	private final LogiDepartmentDAO logiDeptDao;
+	private final WebSocketController webSocketController;
 	
-	public LogiDepartmentService(MainDAO mainDao, LogiDepartmentDAO logiDeptDao) {
+	public LogiDepartmentService(MainDAO mainDao, LogiDepartmentDAO logiDeptDao, WebSocketController webSocketController) {
 		this.mainDao = mainDao;
 		this.logiDeptDao = logiDeptDao;
+		this.webSocketController = webSocketController;
 	}
 	
 	
@@ -98,6 +101,52 @@ public class LogiDepartmentService {
 		
 		return map;
 	}
+	
+	// 인벤토리 상세보기
+	public ModelAndView inventoryDetail(ModelAndView mav, int idx_product) {
+		
+		LogiDeptDTO dto = logiDeptDao.inventoryDetail(idx_product);
+		mav.addObject("product_name", dto.getProduct_name());
+		mav.addObject("client_name", dto.getClient_name());
+		mav.addObject("category", dto.getCategory());
+		mav.addObject("current_stock", dto.getCurrent_stock());
+		mav.addObject("minimum_stock", dto.getMinimum_stock());
+		mav.addObject("purchase_price", dto.getPurchase_price());
+		mav.addObject("unit_price", dto.getUnit_price());
+		mav.addObject("profit", dto.getProfit());
+		mav.addObject("product_description", dto.getProduct_description());
+		
+		// 제품 사진
+		List<String> photos = logiDeptDao.inventoryPhoto(idx_product);
+		mav.addObject("photos", photos);
+		
+		mav.setViewName("/logisticsDepartment/inventoryDetail");
+		
+		return mav;
+	}
+	public ResponseEntity<Resource> productView(String file_name) {
+		// 특정 경로에서 파일을 읽어와 Resource로 만든다.
+	    Resource resource = new FileSystemResource(root+"/"+file_name);
+	    HttpHeaders header = new HttpHeaders();
+	      
+	    // 보내질 파일의 형태를 지정해 준다. (헤더에)
+	    // ex) image/gif, image/png, image/jpg, image/jpeg
+	    try {
+	       String type = Files.probeContentType(Paths.get(root+"/"+file_name));   //경로를 주면 해당 파일의 mime-type 을 알아낸다.
+	       logger.info("mime-type: "+type);
+	       header.add("content-type", type);
+	    } catch (IOException e) {
+	       e.printStackTrace();
+	    }   
+	      
+	    // 보낼 내용, 헤더, 상태(200 또는 OK 는 정상이라는 뜻)
+	    return new ResponseEntity<Resource>(resource, header, HttpStatus.OK); 
+	}
+	
+	
+	
+	
+	
 	
 	
 	public ModelAndView poWrite_go(HttpSession session) {
@@ -380,7 +429,7 @@ public class LogiDepartmentService {
 		return map;
 	}
 	
-	public Map<String, Object> orderDelivery(Map<String, Object> map, int orderNo) {
+	public Map<String, Object> orderDelivery(Map<String, Object> map, int orderNo, HttpSession session) {
 		List<Integer> logiEmp = logiDeptDao.getLogiEmp();
 		
 		List<LogiDeptDTO> list = logiDeptDao.getOrderProductList(orderNo);
@@ -396,8 +445,10 @@ public class LogiDepartmentService {
 			int lackCnt = logiDeptDao.lackCnt();
 			if (lackCnt > 0) {
 				// 물류관리부서 전원에게 알림 보내자.
-				//'<c:url value="/logisticsDepartment/inventoryList.go"/>'
 				for (int emp : logiEmp) {
+					// 토스트
+					webSocketController.sendNotificationToUser(emp, "※발주가 필요한 제품이 있습니다※");
+					// 알림
 					logiDeptDao.insertAlarmLogiDept(emp);
 				}
 				logger.info("재고가 부족합니다... 관련 부서 직원에게 알림 보내기 >>");

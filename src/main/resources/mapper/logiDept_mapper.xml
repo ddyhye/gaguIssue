@@ -108,6 +108,29 @@
 		ORDER BY it.idx_product
 	</select>
 	
+	<!-- 제품 상새보기 -->
+	<select id="inventoryDetail" resultType="logi">
+		SELECT pt.product_name ,
+				ct.client_name ,
+				pct.category ,
+				wt.section_name ,
+				it.current_stock ,
+				pt.minimum_stock ,
+				pt.purchase_price ,
+				pt.unit_price ,
+				SUM(pt.unit_price - pt.purchase_price) as profit ,
+				pt.product_description 
+		FROM product_tb pt 
+			JOIN client_tb ct ON pt.idx_business = ct.idx_business 
+			JOIN warehouse_tb wt ON pt.idx_storage = wt.idx_storage 
+			JOIN inventory_tb it ON pt.idx_product = it.idx_product 
+			JOIN product_category_tb pct ON pt.idx_product_category = pct.idx_product_category 
+		WHERE pt.idx_product = #{param1}
+	</select>
+	<select id="inventoryPhoto" resultType="String">
+		SELECT file_name FROM filestore_tb ft WHERE idx_filetype = 10 AND idx_ref = #{param1}
+	</select>
+	
 	
 	
 	<!-- 카테고리 리스트 -->
