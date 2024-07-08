@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -194,6 +195,30 @@ public class HRDepartmentController {
 	    
 		return hrDepartmentService.getannualDetail(map, emp_id);
 	}
+	
+	@RequestMapping(value = "/searchEmployee", method = RequestMethod.POST)
+	@ResponseBody
+	public List<HRDepartmentDTO> searchEmployee(@RequestParam("searchInput") String searchInput, @RequestParam("department") String department) {
+	    return hrDepartmentService.searchEmployee(searchInput, department);
+	}
+	
+	 @PostMapping(value = "/updateEmployeeDetails")
+	    @ResponseBody
+	    public Map<String, Object> updateEmployeeDetails(@RequestBody HRDepartmentDTO employee) {
+	        Map<String, Object> response = new HashMap<>();
+	        try {
+	            String msg = hrDepartmentService.updateEmployee(employee);
+	            response.put("status", "success");
+	            response.put("message", msg);
+	            logger.info("Employee updated: " + msg);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            response.put("status", "error");
+	            response.put("message", "사원 정보 업데이트 실패: " + e.getMessage());
+	            logger.error("사원 정보 업데이트 실패: " + e.getMessage());
+	        }
+	        return response;
+	    }
 	
 
 			

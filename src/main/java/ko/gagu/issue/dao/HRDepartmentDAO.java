@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
+import ko.gagu.issue.dto.Leave_usage_tbDTO;
 
 @Mapper
 public interface HRDepartmentDAO {
@@ -35,6 +36,12 @@ public interface HRDepartmentDAO {
 	int isEmpty(String emp_id);
 
 	HRDepartmentDTO getAnnualLeaveInfoById(String emp_id);
+
+	List<HRDepartmentDTO> searchEmployee(String searchInput, String department);
+
+	int updateEmployee(HRDepartmentDTO employee);
+
+	List<Leave_usage_tbDTO> gethistory(int i);
 
 	
 

@@ -119,6 +119,7 @@
 	
 	<select id="getAnnualLeaveInfoById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
 			SELECT 
+			e.idx_employee,
             e.emp_id,
             e.emp_name,
             e.emp_phone_number,
@@ -129,16 +130,68 @@
             la.usage_days,
             lu.lu_start_date,
             lu.lu_end_date,
-            lu.lu_usage_days
+            lu.lu_usage_days,
+            COALESCE(ft.file_name, 'user.jpg') as photo_url
         FROM 
             employee_tb e
         LEFT JOIN 
             leave_accruals_tb la ON e.idx_employee = la.idx_employee
         LEFT JOIN 
             leave_usage_tb lu ON e.idx_employee = lu.idx_employee
+        LEFT JOIN
+     filestore_tb ft ON e.idx_employee = ft.idx_ref AND ft.idx_filetype = 1
         WHERE 
             e.emp_id = #{emp_id}
+            LIMIT 1
 	</select>
+	
+	<select id="gethistory" resultType="ko.gagu.issue.dto.Leave_usage_tbDTO">
+			SELECT 
+			
+           lu_start_date,
+           lu_end_date,
+           lu_usage_days
+        FROM 
+            leave_usage_tb
+        
+        WHERE 
+            idx_employee = #{param1}
+	</select>
+	
+	<select id="searchEmployee" parameterType="map" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    SELECT 
+	        e.emp_id,
+	        e.emp_name,
+	        e.emp_phone_number,
+	        e.emp_birth_date,
+	        e.emp_email,
+	        e.emp_address,
+	        d.de_name
+	    FROM 
+	        employee_tb e
+	    JOIN 
+	        department_tb d ON e.idx_department = d.idx_department
+	    WHERE 
+	        (e.emp_id LIKE CONCAT('%', #{searchInput}, '%') 
+	        OR e.emp_name LIKE CONCAT('%', #{searchInput}, '%'))
+	    AND 
+	        (#{department} = '전체' OR d.de_name = #{department})
+	</select>
+	
+	<update id="updateEmployee" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
+        UPDATE employee_tb SET
+            emp_name = #{emp_name},
+            emp_phone_number = #{emp_phone_number},
+            emp_birth_date = #{emp_birth_date},
+            emp_email = #{emp_email},
+            emp_address = #{emp_address},
+            emp_pw = #{emp_pw},
+            idx_department = (SELECT idx_department FROM department_tb WHERE de_name = #{de_name}),
+            idx_title = (SELECT idx_title FROM title_tb WHERE title_name = #{title_name}),
+            emp_status = #{emp_status}
+        WHERE emp_id = #{emp_id}
+    </update>
+	
 
 	
 	
