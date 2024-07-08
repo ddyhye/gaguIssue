@@ -317,4 +317,11 @@ public class EmployeeController {
 		return employeeService.getPaingSalesHistory(idxEmployee, pagingDTO);
 	}
 	
+	/* [jeong] 프로필 페이지로 이동 */
+	@GetMapping(value = "/employee/profile.go")
+	public ModelAndView profileGo(HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getProfile(idxEmployee);	
+	}
+	
 }

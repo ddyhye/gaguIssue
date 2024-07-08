@@ -38,6 +38,42 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    <style>
+		.profileMain {
+			height: 90%;
+			background: white;
+			padding: 15px;
+		}
+		
+		.profileBackground {
+			height: 65%;
+			background: purple;
+			display: flex;
+			justify-content: center;
+		}
+		
+		#profileImage {
+			background: url(/img/user.jpg) center 50% no-repeat;
+			height: 350px;
+			width: 350px;
+			border-radius: 50%;
+			position: relative;
+			border: 10px solid white;
+			justify-content: center;
+			top: 50%;
+			text-align: center;
+		}
+		
+		#profileImage img {
+			position: absolute;
+		}
+		
+		.profileInfo {
+			padding: 75px;
+			display: flex;
+			justify-content: space-between;
+		}
+    </style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -81,7 +117,42 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          	<div class="profileMain">
+          		<div class="profileBackground">
+          			<div id="profileImage">
+          				<!-- <img src="/img/user.jpg"/> -->
+          				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+						<h1>김정원</h1>
+          				<h6>210823B02</h6>
+          			</div>
+          		</div>
+          		<div>
+          			<div style="width: 100%; height: 10%;">
+          			</div>
+					<div class="profileInfo">
+						<div>
+							<h3>부서/직위</h3>
+							<h6>인사부서/대리</h6>
+						</div>
+						<div>
+							<h3>생일</h3>
+							<h6>인사부서/대리</h6>
+						</div>
+						<div>
+							<h3>우편함</h3>
+							<h6>인사부서/대리</h6>
+						</div>													
+						<div>
+							<h3>이메일</h3>
+							<h6>인사부서/대리</h6>
+						</div>
+						<div>
+							<h3>전화번호</h3>
+							<h6>인사부서/대리</h6>
+						</div>
+					</div>
+          		</div>
+          	</div>
           </div>
           <!-- Container-fluid Ends-->
         </div>

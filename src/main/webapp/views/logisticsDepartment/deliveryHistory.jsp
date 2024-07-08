@@ -147,9 +147,9 @@
                       </div>
                       <div class="do-annual-header-right">
                       	<div class="do-rightfixed"> 
-	                        <div class="do-warning" id="do-warning">
+	                        <!-- <div class="do-warning" id="do-warning">
 	                        	<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;재고부족
-	                        </div>
+	                        </div> -->
 	                    </div>
                       </div>
                     </div>
@@ -177,7 +177,7 @@
                       </table>
                       
                       <!-- 페이징 -->
-                      <div class="d-flex justify-content-center">								
+                      <div class="d-flex justify-content-center" style="margin-top: 20px">								
 						  <nav aria-label="Page navigation">
 						      <ul class="pagination" id="pagination"></ul>
 						  </nav>
@@ -265,7 +265,7 @@
   
   
 <script>
-
+/*
 	// 필터링 값
 	// memberSearch (productSearch)
 	// productCategory
@@ -371,6 +371,179 @@
 	  	return dateStr;
 	}
 	
+*/
+
+
+
+
+
+
+	//페이징 ,,
+	var page = 1;
+	var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+	var filter = 'all';
+	
+	fetchDocumentList();
+	
+	document.getElementById('memberSearch').addEventListener('keydown', function(event) {
+	    if (event.key === "Enter") {
+	        event.preventDefault();
+	        fetchDocumentList();
+	    }
+	});
+	document.getElementById('productSearchBtn').addEventListener('click', () => {
+		fetchDocumentList();
+	});
+	document.getElementById('productCategory').addEventListener('change', () => {
+		fetchDocumentList();
+	});
+	document.getElementById('clientList').addEventListener('change', () => {
+		fetchDocumentList();
+	});
+	
+	// 페이지 이동
+	$(document).ready(function () {
+		if (totalPage == 0) {
+			
+		} else {
+		    $('#pagination').twbsPagination({
+				startPage:page, //시작페이지
+				totalPages:totalPage, //총 페이지 갯수
+				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+		        first: '처음', // 첫 페이지 버튼 텍스트 변경
+		        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+		        next: '다음', // 다음 페이지 버튼 텍스트 변경
+		        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+				onPageClick:function(evt, clickPageIdx){
+					// 페이지 이동 번호 클릭시 이벤트 발동
+	                if (page !== clickPageIdx) {
+	                    page = clickPageIdx;
+	                    fetchDocumentList();
+	                }
+				}
+		    });			
+		}
+		// pagination();
+	});	
+	
+	function fetchDocumentList() {
+		// 1. 날짜 필터링
+		// 시작 날짜는 undefined 로 들어오면 모든 과거 내용을 가져와야한다
+		//console.log(startDate.selectedDates[0]);
+		//console.log(endDate.selectedDates[0]);
+		
+		// 2. filter 는 문서 유형을 나눈다  
+		//console.log(filter);
+		const pagingDTO = {
+			filter : filter,
+			page : page,
+			doProductSearch : document.getElementById('memberSearch').value,
+			doProductCategory : document.getElementById('productCategory').value,
+			doClientList : document.getElementById('clientList').value
+		}
+		
+	    fetch('/logisticsDepartment/deliverylistPaging.ajax', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify(pagingDTO)
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	    	console.log('Success:', data);
+	    	drawList(data);
+	    	totalPage = data.totalPages;
+	    	pagination();
+	    	// 3. 현재 페이지 번호가 몇번인지 알아야한다
+	    	
+	    })
+	    .catch(error => {
+	    	console.error('Error:', error);
+	    });
+	}	
+	
+	// 리스트 그리기
+	function drawList(data) {
+	
+		$('.do-inventory').empty();
+		
+		var content = '';
+	
+		if (!data.list || data.list.length === 0) {
+			content += '<tr><td colspan="8">NOTHING...</td></tr>';
+		}
+		for (item of data.list) {
+			content += '<tr>';
+			content += '<td class="do-table-td1">';
+			content += item.order_no;
+			content += '</td>';
+			content += '<td class="do-table-td2">';
+			var dateOnly = item.delivery_datetime.split('T')[0];
+			content += dateOnly
+			content += '</td>';
+			content += '<td class="do-table-td3">';
+			content += item.client_name;
+			content += '</td>';
+			content += '<td class="do-table-td4">';
+			content += item.product_name;
+			content += '</td>';
+			content += '<td class="do-table-td5">';
+			content += item.quantity;
+			content += '</td>';
+			content += '<td class="do-table-td6">';
+			content += item.unit_price;
+			content += '</td>';
+			content += '<td class="do-table-td7">';
+			content += item.order_total_price;
+			content += '</td>';
+			content += '<td class="do-table-td8">';
+			content += item.delivery_state;
+			content += '</td>';
+			content += '</tr>';
+		}
+		
+		$('.do-inventory').append(content);
+	}
+	
+	
+	function pagination() {
+		if (totalPage < page) {
+			page = totalPage;
+		}
+		console.log(page, totalPage);
+		if (totalPage == 1 && page == 0) {
+			page = 1;
+		}
+		if (totalPage != 0) {				
+			$('#pagination').twbsPagination('destroy');
+		    $('#pagination').twbsPagination({
+				startPage:page, //시작페이지
+				totalPages:totalPage, //총 페이지 갯수
+				visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
+		        first: '처음', // 첫 페이지 버튼 텍스트 변경
+		        prev: '이전', // 이전 페이지 버튼 텍스트 변경
+		        next: '다음', // 다음 페이지 버튼 텍스트 변경
+		        last: '마지막', // 마지막 페이지 버튼 텍스트 변경
+				onPageClick:function(evt, clickPageIdx){
+					// 페이지 이동 번호 클릭시 이벤트 발동
+	                if (page !== clickPageIdx) {
+	                    page = clickPageIdx;
+	                    fetchDocumentList();
+	                }
+				}
+		    });		
+		} 
+	}
+	
+	function setFilter(category) {
+		filter = category;
+		fetchDocumentList();
+	}
+
+
+
+
 	
 	
 	

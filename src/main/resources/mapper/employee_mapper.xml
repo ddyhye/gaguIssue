@@ -174,82 +174,149 @@
 	
 	
 	<select id="getSalesHistoryTotalPages" resultType="integer">
+		SELECT CEIL(COUNT(*) / 13) FROM 
+		(SELECT 
+		    '발주' AS transactionType,
+		    pot.idx_purchase_order AS transactionId,
+		    pot.written_datetime AS transactionDatetime,
+			CASE 
+				WHEN COUNT(*) != 1 THEN CONCAT(pt.product_name, '외 ', COUNT(*), '건')
+				ELSE pt.product_name
+			END AS productName,
+			ct.client_name AS customerName,
+			SUM(pot.total_price) AS transactionAmount
+		FROM purchase_order_tb pot
+			JOIN product_tb pt ON pot.idx_product = pt.idx_product
+			JOIN client_tb ct ON pot.idx_business = ct.idx_business
+		GROUP BY pot.idx_purchasehtml
+			UNION ALL
 		SELECT
-			CEIL(count(*) / 13)
-		FROM sales_history_tb sht
+			'판매' AS transactionType,
+			ot.order_no AS transactionId,
+			ot.order_datetime AS transactionDatetime,
+			CASE 
+				WHEN COUNT(*) != 1 THEN CONCAT(pt.product_name, '외 ', COUNT(*), '건')
+				ELSE pt.product_name
+			END AS productName,
+			ct.client_name AS customerName,
+			SUM(ot.quantity * pt.unit_price) AS transactionAmount 
+		FROM (SELECT * FROM order_tb ORDER BY order_datetime DESC LIMIT 18446744073709551615) ot
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business
+		GROUP BY ot.order_no ASC) sht
 		WHERE 1 = 1
 		<if test="startDate != null and !startDate.equals('')">
-			AND STR_TO_DATE(CONCAT(#{startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= sht.transaction_datetime
+			AND STR_TO_DATE(CONCAT(#{startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= sht.transactionDatetime
 		</if>
 		<if test="endDate != null and !endDate.equals('')">
-			AND STR_TO_DATE(CONCAT(#{endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= sht.transaction_datetime
+			AND STR_TO_DATE(CONCAT(#{endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= sht.transactionDatetime
 		</if>
 		<if test="searchKeyword != null and !searchKeyword.equals('')">
 			<choose>
 				<when test="searchOption != null and searchOption.equals('product')">
-					AND sht.product_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+					AND sht.productName LIKE CONCAT('%', #{searchKeyword}, '%') 
 				</when>
 				<when test="searchOption != null and searchOption.equals('businessPartner')">
-					AND sht.customer_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+					AND sht.customerName LIKE CONCAT('%', #{searchKeyword}, '%') 
 				</when>
 			</choose>
 		</if>
 	    <choose>
 		    <when test="filter != null and filter.equals('purchaseOrder')">
-		    	AND transaction_type = '발주'
+		    	AND sht.transactionType = '발주'
 		    </when>
 		    <when test="filter != null and filter.equals('order')">
-		    	AND transaction_type = '주문'
+		    	AND sht.transactionType = '판매'
 		    </when>		    
 		</choose>	
 	</select>
 	
 	<select id="getSalesHistory" resultType="salesData">
+		SELECT * FROM
+		(SELECT 
+		    '발주' AS transactionType,
+		    pot.idx_purchase_order AS transactionId,
+		    pot.written_datetime AS transactionDatetime,
+			CASE 
+				WHEN COUNT(*) != 1 THEN CONCAT(pt.product_name, '외 ', COUNT(*), '건')
+				ELSE pt.product_name
+			END AS productName,
+			ct.client_name AS customerName,
+			SUM(pot.total_price) AS transactionAmount
+		FROM purchase_order_tb pot
+			JOIN product_tb pt ON pot.idx_product = pt.idx_product
+			JOIN client_tb ct ON pot.idx_business = ct.idx_business
+		GROUP BY pot.idx_purchasehtml
+			UNION ALL
 		SELECT
-			sht.product_name AS productName,
-			sht.transaction_id AS transactionId,
-			sht.transaction_type AS transactionType,
-			sht.customer_name AS customerName,
-		    CONCAT(FORMAT(sht.transaction_amount, 0), '원') AS transactionAmount,
-		    CONCAT(FORMAT(sht.cost, 0), '원') AS cost,
-		    sht.remarks AS remarks,
-		    DATE_FORMAT(sht.transaction_datetime, '%Y/%m/%d') AS transactionDatetime
-		FROM sales_history_tb sht
+			'판매' AS transactionType,
+			ot.order_no AS transactionId,
+			ot.order_datetime AS transactionDatetime,
+			CASE 
+				WHEN COUNT(*) != 1 THEN CONCAT(pt.product_name, '외 ', COUNT(*), '건')
+				ELSE pt.product_name
+			END AS productName,
+			ct.client_name AS customerName,
+			SUM(ot.quantity * pt.unit_price) AS transactionAmount 
+		FROM (SELECT * FROM order_tb ORDER BY order_datetime DESC LIMIT 18446744073709551615) ot
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business
+		GROUP BY ot.order_no ASC) sht
 		WHERE 1 = 1
 		<if test="startDate != null and !startDate.equals('')">
-			AND STR_TO_DATE(CONCAT(#{startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= sht.transaction_datetime
+			AND STR_TO_DATE(CONCAT(#{startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= sht.transactionDatetime
 		</if>
 		<if test="endDate != null and !endDate.equals('')">
-			AND STR_TO_DATE(CONCAT(#{endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= sht.transaction_datetime
+			AND STR_TO_DATE(CONCAT(#{endDate}, '23:59:59.999'), '%Y-%m-%d %T.%f') &gt;= sht.transactionDatetime
 		</if>
 		<choose>
 			<when test="searchOption != null and searchOption.equals('product')">
-				AND sht.product_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+				AND sht.productName LIKE CONCAT('%', #{searchKeyword}, '%') 
 			</when>
 			<when test="searchOption != null and searchOption.equals('businessPartner')">
-				AND sht.customer_name LIKE CONCAT('%', #{searchKeyword}, '%') 
+				AND sht.customerName LIKE CONCAT('%', #{searchKeyword}, '%') 
 			</when>
 		</choose>
 	    <choose>
 		    <when test="filter != null and filter.equals('purchaseOrder')">
-		    	AND transaction_type = '발주'
+		    	AND sht.transactionType = '발주'
 		    </when>
 		    <when test="filter != null and filter.equals('order')">
-		    	AND transaction_type = '주문'
+		    	AND sht.transactionType = '판매'
 		    </when>		    
 		</choose>
 		<choose>
 			<when test="sortOption != null and sortOption.equals('new')">
-				ORDER BY transaction_datetime DESC
+				ORDER BY sht.transactionDatetime DESC
 			</when>
 			<when test="sortOption != null and sortOption.equals('name')">
-				ORDER BY product_name
+				ORDER BY sht.productName
 			</when>
 			<otherwise>
-				ORDER BY transaction_datetime DESC
+				ORDER BY sht.transactionDatetime DESC
 			</otherwise>
 		</choose>	
 		LIMIT ${(page - 1) * 13}, 13			
+	</select>
+
+	<select id="getEmployeeInfo">
+		SELECT 
+			tt.title_name AS titleName,
+			dt.de_name AS departmentName,
+			et.emp_birth_date AS empBirthDate,
+			et.emp_email AS email,
+			et.emp_phone_number AS phoneNumber,
+			et.emp_name AS empName,
+			et.emp_color AS empColor,
+			CASE 
+				WHEN COUNT(ft.file_name) = 1 THEN ft.file_name
+				ELSE 'NONE'
+			END
+			AS profileFilePath
+		FROM employee_tb et
+			JOIN title_tb tt ON tt.idx_title = et.idx_title AND et.idx_employee = #{ideEmployee}
+			JOIN department_tb dt ON dt.idx_department = et.idx_department
+			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = #{ideEmployee}
 	</select>
 
 </mapper>

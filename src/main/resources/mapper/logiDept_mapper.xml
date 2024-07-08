@@ -39,6 +39,75 @@
 		GROUP BY pct.category
 		ORDER BY it.idx_product
 	</select>
+	<!-- ***페이징*** -->
+	<select id="getInventoryPage" resultType="Integer">
+		SELECT CEIL(COUNT(*)/13)
+		FROM product_tb pt 
+			JOIN client_tb ct ON ct.idx_business = pt.idx_business 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+			JOIN inventory_tb it ON it.idx_product = pt.idx_product
+	</select>
+	<!-- ***페이징-필터에 따른 페이지 개수*** -->
+	<select id="getFilterTotalPagesInven" resultType="Integer">
+		SELECT CEIL(COUNT(*) / 13)
+		FROM product_tb pt 
+			JOIN client_tb ct ON ct.idx_business = pt.idx_business 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+			JOIN inventory_tb it ON it.idx_product = pt.idx_product
+		<where> 1=1
+			<choose>
+				<when test="paging.doProductSearch == 'warn'">
+					AND it.current_stock &lt; pt.minimum_stock
+				</when>
+				<otherwise>
+					<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{paging.doProductSearch},'%')
+					</if>
+					<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+						AND pct.category = #{paging.doProductCategory}
+					</if>
+					<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+						AND ct.client_name = #{paging.doClientList}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+		ORDER BY it.idx_product
+	</select>
+	<!-- ***페이징-필터에 따른 리스트 출력 -->
+	<select id="fetchFilterListInven" resultType="logi">
+		SELECT it.idx_product , 
+				pct.category ,
+				pt.product_name ,
+				ct.client_name ,
+				it.current_stock ,
+				pt.minimum_stock 
+		FROM product_tb pt 
+			JOIN client_tb ct ON ct.idx_business = pt.idx_business 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+			JOIN inventory_tb it ON it.idx_product = pt.idx_product
+		<where> 1=1 
+			<choose>
+				<when test="paging.doProductSearch == 'warn'">
+					AND it.current_stock &lt; pt.minimum_stock
+				</when>
+				<otherwise>
+					<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{paging.doProductSearch},'%')
+					</if>
+					<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+						AND pct.category = #{paging.doProductCategory}
+					</if>
+					<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+						AND ct.client_name = #{paging.doClientList}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+		GROUP BY pct.category
+		ORDER BY it.idx_product
+	</select>
+	
 	
 	
 	<!-- 카테고리 리스트 -->
@@ -87,20 +156,33 @@
 			AND it.is_po = 'n'
 	</select>
 	<!-- 발주 - 클라이언트에 따른 재고부족리스트 -->
-	<select id="lackProductByClient" resultType="logi">
-		SELECT it.idx_product , 
-				pt.product_name ,
-				ct.client_name ,
-				it.current_stock ,
-				pt.minimum_stock 
-		FROM product_tb pt 
-			join client_tb ct on ct.idx_business = pt.idx_business 
-			join product_category_tb pct on pct.idx_product_category = pt.idx_product_category 
-			join inventory_tb it on it.idx_product = pt.idx_product 
-			left join stockentries_tb st on it.idx_product = st.idx_product
-		WHERE it.current_stock &lt; pt.minimum_stock 
-			AND ct.client_name = #{param1}
-			AND (st.stock_status is null OR st.stock_status!='입고예정')
+	<select id="lackProductByClient" resultType="logi">	
+		SELECT 
+		    it.idx_product, 
+		    pt.product_name, 
+		    ct.client_name, 
+		    it.current_stock, 
+		    pt.minimum_stock
+		FROM 
+		    product_tb pt
+		    JOIN client_tb ct ON ct.idx_business = pt.idx_business
+		    JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category
+		    JOIN inventory_tb it ON it.idx_product = pt.idx_product
+		    LEFT JOIN (
+		        SELECT 
+		            st.idx_product, 
+		            st.stock_status
+		        FROM 
+		            stockentries_tb st
+		        WHERE 
+		            st.stock_status = '입고완료'
+		        GROUP BY 
+		            st.idx_product
+		    ) st ON it.idx_product = st.idx_product
+		WHERE 
+		    it.current_stock &lt; pt.minimum_stock 
+		    AND ct.client_name = #{param1}
+		    AND (st.idx_product IS NULL OR st.stock_status = '입고완료')
 	</select>
 	<!-- 발주 - 재고부족리스트로 html 채워넣기 -->
 	<select id="getClientData" resultType="client">
@@ -174,6 +256,77 @@
 			</choose>
 		</where>
 		ORDER BY st.stock_datetime DESC
+	</select>
+	<!-- ***입고내역-페이징-jsp 로드시 페이지 개수 -->
+	<select id="getReceivingPage" resultType="Integer">
+		SELECT CEIL (COUNT(*)/13)
+		FROM stockentries_tb st 
+			JOIN purchase_order_tb pot ON st.idx_purchase_order = pot.idx_purchase_order 
+			JOIN client_tb ct ON pot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON st.idx_product = pt.idx_product 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category
+	</select>
+	<!-- ***입고내역-페이징 개수*** -->
+	<select id="getFilterTotalPagesReceiving" resultType="Integer">
+		SELECT CEIL (COUNT(*)/13)
+		FROM stockentries_tb st 
+			JOIN purchase_order_tb pot ON st.idx_purchase_order = pot.idx_purchase_order 
+			JOIN client_tb ct ON pot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON st.idx_product = pt.idx_product 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		<where> 1=1
+			<choose>
+				<when test="paging.doProductSearch == 'warn'">
+					AND st.stock_status = '입고예정'
+				</when>
+				<otherwise>
+					<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{paging.doProductCategory},'%')
+					</if>
+					<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+						AND pct.category = #{paging.doProductCategory}
+					</if>
+					<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+						AND ct.client_name = #{paging.doClientList}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	<!-- ***페이징-리스트*** -->
+	<select id="fetchFilterListReceiving" resultType="logi">
+		SELECT pot.idx_purchasehtml, 
+				pt.idx_product,
+				st.stock_datetime, 
+				ct.client_name,
+				pt.product_name, 
+				st.order_quantity, 
+				st.stock_quantity, 
+				st.stock_status, 
+				pot.html_filename
+		FROM stockentries_tb st 
+			JOIN purchase_order_tb pot ON st.idx_purchase_order = pot.idx_purchase_order 
+			JOIN client_tb ct ON pot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON st.idx_product = pt.idx_product 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		<where> 1=1
+			<choose>
+				<when test="paging.doProductSearch == 'warn'">
+					AND st.stock_status = '입고예정'
+				</when>
+				<otherwise>
+					<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{paging.doProductCategory},'%')
+					</if>
+					<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+						AND pct.category = #{paging.doProductCategory}
+					</if>
+					<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+						AND ct.client_name = #{paging.doClientList}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
 	</select>
 	<!-- 바코드로 입고 수량 증가 -->
 	<update id="updatePOQuantity">
@@ -262,7 +415,108 @@
 		</where>
 		GROUP BY ot.order_no DESC
 	</select>
-	
+	<!-- *** 주문내역 페이징 - 페이지 로드 시 개수 *** -->
+	<select id="getOrderPage" resultType="Integer">
+		SELECT CEIL(COUNT(*)/13)
+		FROM (
+		    SELECT
+		        ot.order_no,
+		        ot.order_datetime,
+		        ct.client_name,
+		        pt.product_name,
+		        COUNT(ot.order_no) AS order_row,
+		        (SELECT SUM(ot2.quantity * pt2.unit_price)
+		         FROM order_tb ot2
+		            JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		         WHERE ot2.order_no = ot.order_no) AS order_total_price,
+		        ot.accept
+		    FROM
+		        order_tb ot 
+		        JOIN product_tb pt ON ot.idx_product = pt.idx_product
+		        JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+		        JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		    GROUP BY ot.order_no DESC
+		) AS subquery
+	</select>
+	<!-- *** 주문내역 페이징 - 필터링 페이지 개수 -->
+	<select id="getFilterTotalPagesOrder" resultType="Integer">
+		SELECT CEIL(COUNT(*)/13)
+		FROM (
+		    SELECT
+		        ot.order_no,
+		        ot.order_datetime,
+		        ct.client_name,
+		        pt.product_name,
+		        COUNT(ot.order_no) AS order_row,
+		        (SELECT SUM(ot2.quantity * pt2.unit_price)
+		         FROM order_tb ot2
+		            JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		         WHERE ot2.order_no = ot.order_no) AS order_total_price,
+		        ot.accept
+		    FROM
+		        order_tb ot 
+		        JOIN product_tb pt ON ot.idx_product = pt.idx_product
+		        JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+		        JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		    <where>
+				<choose>
+					<when test="paging.doProductSearch == 'warn'">
+						ot.accept='n'
+					</when>
+					<otherwise>
+						<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+							AND pt.product_name LIKE CONCAT('%',#{param1},'%')
+						</if>
+						<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+							AND pct.category = #{param2}
+						</if>
+						<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+							AND ct.client_name = #{param3}
+						</if>
+					</otherwise>
+				</choose>
+			</where>
+		    GROUP BY ot.order_no DESC
+		) AS subquery
+	</select>
+	<!-- *** 주문내역 페이징 - 필터링 리스트 -->
+	<select id="fetchFilterListOrder" resultType="logi">
+		SELECT 
+			ot.order_no,
+			ot.order_datetime,
+			ct.client_name,
+		    pt.product_name,
+		    COUNT(ot.order_no) AS order_row,
+		    (SELECT SUM(ot2.quantity * pt2.unit_price)
+		     FROM order_tb ot2
+		     	JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		     WHERE ot2.order_no = ot.order_no) AS order_total_price,
+			ot.accept
+		FROM order_tb ot 
+	        JOIN product_tb pt ON ot.idx_product = pt.idx_product
+	        JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+	        JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+	    <where>
+			<choose>
+				<when test="paging.doProductSearch == 'warn'">
+					ot.accept='n'
+				</when>
+				<otherwise>
+					<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{param1},'%')
+					</if>
+					<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+						AND pct.category = #{param2}
+					</if>
+					<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+						AND ct.client_name = #{param3}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	    GROUP BY ot.order_no
+	    ORDER BY ot.order_no DESC
+	</select>
 	<!-- 주문 상세 내역 -->
 	<select id="getOrderTime" resultType="String">
 		SELECT order_datetime 
@@ -348,6 +602,9 @@
 	</insert>
 	
 	
+	
+	
+	
 	<!-- 수주처 리스트 -->
 	<select id="getClientList2" resultType="String">
 		SELECT client_name 
@@ -386,6 +643,77 @@
 					</if>
 					<if test="param3 != null and param3 != '' and param3 != '전체'">
 						AND ct.client_name = #{param3}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	<!-- 출고 내역 페이징 - 로드 시 페이지 수 -->
+	<select id="getDeliveryPage" resultType="Integer">
+		select CEIL(COUNT(*)/13)
+		from delivery_tb dt
+			JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+	</select>
+	<!-- 출고 내역 페이징 - 페이지 수 -->
+	<select id="getFilterTotalPagesDelivery" resultType="Integer">
+		select CEIL(COUNT(*)/13)
+		from delivery_tb dt
+			JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		<where> 1=1 
+			<choose>
+				<when test="paging.doProductSearch == 'warn'">
+				</when>
+				<otherwise>
+					<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{paging.doProductSearch},'%')
+					</if>
+					<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+						AND pct.category = #{paging.doProductCategory}
+					</if>
+					<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+						AND ct.client_name = #{paging.doClientList}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	<!-- 출고 내역 페이징 - 출고 내역 리스트 -->
+	<select id="fetchFilterListDelivery" resultType="logi">
+		select ot.order_no, 
+			dt.delivery_datetime,
+			ct.client_name,
+			pt.product_name,
+			ot.quantity,
+			pt.unit_price,
+			(SELECT SUM(ot2.quantity * pt2.unit_price)
+		     FROM order_tb ot2
+		     	JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		     WHERE ot2.order_no = ot.order_no) AS order_total_price,
+			dt.delivery_state	
+		from delivery_tb dt
+			JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		<where> 1=1 
+			<choose>
+				<when test="paging.doProductSearch == 'warn'">
+				</when>
+				<otherwise>
+					<if test="paging.doProductSearch != null and paging.doProductSearch != '' and paging.doProductSearch != '전체'">
+						AND pt.product_name LIKE CONCAT('%',#{paging.doProductSearch},'%')
+					</if>
+					<if test="paging.doProductCategory != null and paging.doProductCategory != '' and paging.doProductCategory != '전체'">
+						AND pct.category = #{paging.doProductCategory}
+					</if>
+					<if test="paging.doClientList != null and paging.doClientList != '' and paging.doClientList != '전체'">
+						AND ct.client_name = #{paging.doClientList}
 					</if>
 				</otherwise>
 			</choose>

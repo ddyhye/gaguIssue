@@ -36,6 +36,32 @@
 
 
 
+/* 미팅 일정 */
+.do-reservlist {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	width: 100%;
+	margin: 2px 0;
+	padding: 3px 0;
+	border : 1px dotted rgba(122, 112, 186, 0.5);
+	
+	gap: 50px;
+}
+.do-reservlist-left {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-right: 50px;
+}
+.do-reservlist-right p {
+	font-weight: bold;
+	font-size: 20px;
+}
 /* 메일 */
 .opening-box {
 	display: flex;

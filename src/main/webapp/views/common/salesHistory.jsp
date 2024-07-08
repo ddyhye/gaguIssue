@@ -156,7 +156,7 @@
 									<select id="filter" class="form-select-sm m-5" onchange="filter()">
 										<option value="" selected disabled hidden>선택</option>
 										<option value="purchaseOrder">발주</option>
-										<option value="order">주문</option>
+										<option value="order">판매</option>
 									</select>
 								</div>
 								<div class="d-flex align-items-center flex-shrink-0" style="width: 33%;'">
@@ -184,14 +184,12 @@
 								<thead>
 									<tr>
 										<th><span class="f-light f-w-600">번호</span></th>
-										<th><span class="f-light f-w-600">거래번호</span></th>
-										<th style="width: 15%;"><span class="f-light f-w-600">제품명</span></th>
 										<th><span class="f-light f-w-600">구분</span></th>
 										<th><span class="f-light f-w-600">거래일자</span></th>
+										<th style="width: 5%;"><span class="f-light f-w-600">거래번호</span></th>
+										<th style="width: 35%;"><span class="f-light f-w-600">제품명</span></th>
 										<th><span class="f-light f-w-600">거래처명</span></th>
 										<th><span class="f-light f-w-600">거래금액</span></th>
-										<th><span class="f-light f-w-600">제품 원가</span></th>
-										<th><span class="f-light f-w-600">비고</span></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -200,19 +198,17 @@
 											<c:forEach items="${salesDataList}" var="salesData" varStatus="status">
 												<tr>
 													<td>${status.index + 1}</td>
-													<td>${salesData.transactionId}</td>
-													<td>${salesData.productName}</td>
 													<td>${salesData.transactionType}</td>
 													<td>${salesData.transactionDatetime}</td>
+													<td>${salesData.transactionId}</td>
+													<td>${salesData.productName}</td>
 													<td>${salesData.customerName}</td>
 													<td>${salesData.transactionAmount}</td>
-													<td>${salesData.cost}</td>
-													<td>${salesData.remarks}</td>
 												</tr>
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
-											<td colspan="9" style="text-align: center;">조회된 내역이 없습니다.</td>
+											<td colspan="7" style="text-align: center;">조회된 내역이 없습니다.</td>
 										</c:otherwise>
 									</c:choose>
 <%-- 									<c:forEach begin="1" end="13" varStatus="status">
@@ -458,19 +454,17 @@
 		let content = '';
 		let index = 1;
 		if (data.totalPages == 0) {
-			content += '<td colspan="9" style="text-align: center;">조회된 내역이 없습니다.</td>';
+			content += '<td colspan="7" style="text-align: center;">조회된 내역이 없습니다.</td>';
 		} else {				
 			for (row of data.salesDataList) {
 				content += '<tr>';
 				content += '<td>' + index++ + '</td>';
-				content += '<td>' + row.transactionId + '</td>';
-				content += '<td>' + row.productName + '</td>';
 				content += '<td>' + row.transactionType + '</td>';
 				content += '<td>' + row.transactionDatetime + '</td>';
+				content += '<td>' + row.transactionId + '</td>';
+				content += '<td>' + row.productName + '</td>';
 				content += '<td>' + row.customerName + '</td>';
 				content += '<td>' + row.transactionAmount + '</td>';	
-				content += '<td>' + row.cost + '</td>';
-				content += '<td>' + row.remarks + '</td>';
 				content += '</tr>';
 			}
 		}
