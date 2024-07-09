@@ -368,4 +368,12 @@ public class EmployeeController {
 		return employeeService.getGroupList(idxEmployee, selectedDepartment, page);	
 	}
 	
+	/* [jeong] 프로필 정보 요청 */
+	@PostMapping(value = "/employee/profile.do")
+	@ResponseBody
+	public Map<String,Object> profileDo(HttpSession session
+			,@RequestParam int selectedIdxEmployee) {
+		return employeeService.getProfileInfo(selectedIdxEmployee);	
+	}	
+	
 }

@@ -34,8 +34,6 @@
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <!-- Bootstrap css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
-<link href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css' rel='stylesheet'>
-<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'></script>
 <!-- App css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
 <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
@@ -144,12 +142,13 @@ table img {
 				</div>
 			</div>
 			<div class="col-4 col-xl-4 page-title">
-				<h4 class="f-w-700">Default dashboard</h4>
+				<h4 class="f-w-700">기안서 열람</h4>
 				<nav>
 					<ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
 						<li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-						<li class="breadcrumb-item f-w-400">Dashboard</li>
-						<li class="breadcrumb-item f-w-400 active">Default</li>
+						<li class="breadcrumb-item f-w-400">전자 결재</li>
+						<li class="breadcrumb-item f-w-400">기안서 리스트</li>
+						<li class="breadcrumb-item f-w-400 active">문서 열람</li>
 					</ol>
 				</nav>
 			</div>
@@ -209,7 +208,7 @@ table img {
 												<td>
 													<span style="color: red; font-weight: bold; font-size: 18px;">반려</span>
 													<div>
-														<a  data-toggle="modal" data-target="#rejectCommentModal" >
+														<a  data-toggle="modal" onClick="rejectCommentModalOpen()">
 															<i class="f-15 fa fa-comment" style="color: red;"></i>
 														</a>
 													</div>
@@ -220,8 +219,8 @@ table img {
 													<c:when test="${approvalDetails.accessIdxEmployee == step.idxEmployee 
 															and step.currentApprovalStep == approvalDetails.approvalStep}">
 														<td rowspan="2">
-															<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rejectModal" id="rejectionBtn">반려</button>
-															<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#approvalModal">승인</button>
+															<button type="button" class="btn btn-primary btn-xs" onClick="rejectModalOpen()" id="rejectionBtn">반려</button>
+															<button type="button" class="btn btn-primary btn-xs" onClick="approvalModalOpen()">승인</button>
 														</td>
 													</c:when>
 													<c:otherwise>
@@ -319,7 +318,7 @@ table img {
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="signatureModalLabel">결재처리</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" onClick="approvalModalClose()">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
@@ -329,7 +328,7 @@ table img {
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" onClick="approval()">승인</button>
 							<button type="button" class="btn btn-secondary" onClick="clearSignature()">서명 지우기</button>
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-secondary" onClick="approvalModalClose()">취소</button>
 						</div>
 					</div>
 				</div>
@@ -341,7 +340,7 @@ table img {
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="rejectModalLabel">반려 처리</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" onClick="rejectModalClose()">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
@@ -350,7 +349,7 @@ table img {
 							</textarea>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" style="margin-right: 10px;" data-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-secondary" style="margin-right: 10px;" onClick="rejectModalClose()">취소</button>
 							<button type="button" class="btn btn-primary" onclick="reject()">반려하기</button>
 						</div>
 					</div>
@@ -363,7 +362,7 @@ table img {
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="rejectModalLabel">반려 의견</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" onClick="rejectCommentModalClose()">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
@@ -376,7 +375,7 @@ table img {
 							
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" style="margin-right: 10px;" data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-secondary" style="margin-right: 10px;" onClick="rejectCommentModalClose()">닫기</button>
 						</div>
 					</div>
 				</div>
@@ -436,6 +435,32 @@ table img {
 		new WOW().init();
 	</script>
 	<script>
+		function approvalModalOpen() {
+			$('#approvalModal').modal("show");
+		}
+
+		function approvalModalClose() {
+			$('#approvalModal').modal("hide");
+		}
+		
+		function rejectModalOpen() {
+			$('#rejectModal').modal("show");
+		}
+		
+		function rejectModalClose() {
+			$('#rejectModal').modal("hide");
+		}
+		
+		function rejectCommentModalOpen() {
+			$('#rejectCommentModal').modal("show");
+		}
+		
+		function rejectCommentModalClose() {
+			$('#rejectCommentModal').modal("hide");
+		}
+	</script>
+	
+	<script>
 		/* [jeong] 전자서명 이미지 저장, 승인, 반려 요청 처리 */
 		var signaturePad;
         const canvas = document.getElementById('signature-pad');
@@ -458,6 +483,7 @@ table img {
 		}
 		
 		function retract() {
+			rejectCommentModalClose();
 	        fetch('/document/retract.do', {
 	            method: 'POST'
 	        })
@@ -470,6 +496,7 @@ table img {
 		}
 		
 		function reject() {
+			rejectModalClose();
 			const data = new FormData();
 			const apComment = document.getElementById('apComment').value;
 			data.append('apComment', apComment);
@@ -490,6 +517,7 @@ table img {
 		function approval() {
 			// const signatureImage = new Blob([signaturePad.toDataURL('image/png')], {type: 'image/png'});
 			// 시그니처 이미지를 데이터 URL로 변환
+			approvalModalClose();
 			const dataURL = signaturePad.toDataURL('image/png');
 			
 			// 데이터 URL을 Blob으로 변환하는 함수

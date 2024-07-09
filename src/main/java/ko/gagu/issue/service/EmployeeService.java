@@ -274,12 +274,19 @@ public class EmployeeService {
 
 	public Map<String,Object> getGroupList(int idxEmployee, String selectedDepartment, int page) {
 		var response = new HashMap<String, Object>();
-		int totalPages = dao.getGoTotalPages(idxEmployee);  
+		int totalPages = dao.getTotalPages(selectedDepartment);  
 		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page; 
 		List<EmployeeDTO> employeeList = dao.getAJAXEmployeeList(selectedDepartment, page);
 		response.put("employeeList", employeeList);
 		response.put("totalPages", totalPages);
 		response.put("page", page);
+		return response;
+	}
+
+	public Map<String, Object> getProfileInfo(int selectedIdxEmployee) {
+		var response = new HashMap<String, Object>();
+		EmployeeDTO employeeProfile = dao.getEmployeeProfile(selectedIdxEmployee);
+		response.put("employeeProfile", employeeProfile);
 		return response;
 	}	
 
