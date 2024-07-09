@@ -666,7 +666,7 @@
 						                    </div>
 					                    </div>
 					                    <div class="info-row">
-					                        <p><strong>거주지:</strong> <span id="address_detail"></span></p>
+					                        <p><strong>거주지:</strong> <span id="emp_address_detail"></span></p>
 					                    </div>
 					                </div>
 					            </div>
@@ -1184,6 +1184,7 @@
 			                $('#emp_status_detail').text(data.emp_status); 
 			                $('#idx').val(emp_id);
 			                
+			                
 			                if (data.photo_url) {
 			                    $('#employeePhoto').attr('src', '/photo/'+data.photo_url);
 			                } else {
@@ -1381,9 +1382,9 @@
 		                success: function(response) {
 		                	console.log(response);
 		                    if (response.success) {
-// 		                        alert('수정이 완료되었습니다.');
-// 		                        $('#modifyModal').modal('hide');
-// 		                        location.reload();
+		                        alert('수정이 완료되었습니다.');
+		                        $('#modifyModal').modal('hide');
+		                        location.reload();
 		                    } else {
 		                        alert('수정 중 오류가 발생했습니다.');
 		                    }
