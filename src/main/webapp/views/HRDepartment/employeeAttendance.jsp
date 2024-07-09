@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/datatables.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
     <!-- Plugins css Ends-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
@@ -52,9 +53,41 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 	<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/calendar.css'/>"> -->	
 	
-	<!--[il]  부트스트랩 CSS 링크-->
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-  	
+	<!-- [il] 페이징 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+	<style>
+	.page-body {
+    margin: 20px;
+	}
+	
+	h1, h2 {
+	    text-align: center;
+	}
+	
+	.table {
+	    margin-top: 20px;
+	    width: 100%;
+	    max-width: 100%;
+	    border-collapse: collapse;
+	}
+	
+	.table th, .table td {
+	    text-align: center;
+	    vertical-align: middle;
+	}
+	
+	.table thead {
+	    background-color: #7a70ba;
+	    color: white;
+	}
+	
+	.table-striped tbody tr:nth-of-type(odd) {
+	    background-color: rgba(0,0,0,.05);
+	}
+	</style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -96,35 +129,50 @@
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
         <div class="page-body">
-          <!-- Container-fluid Ends-->
-        </div>
+	    <h1>사원 근태 내역</h1>
+	    <div class="form-group">
+	        <label for="date">근무일</label>
+	        <input type="date" class="form-control" id="date" style="width: 200px; display: inline-block; margin-right: 10px;">
+	        <label for="department">부서 선택</label>
+	        <select id="department" class="form-control" style="width: 200px; display: inline-block;">
+	            <option value="임원진">임원진</option>
+	            <option value="경영지원부서">경영지원부서</option>
+	            <option value="물류관리부서">물류관리부서</option>
+	            <option value="인사관리부서">인사관리부서</option>
+	        </select>
+	    </div>
+		
+	    <!-- 부서원 목록 테이블 -->
+	    <div id="employeeTableContainer" style="display: none;">
+	        <h2>부서원 목록</h2>
+	        <table id="employeeTable" class="table table-striped table-bordered">
+	            <thead class="thead-dark">
+	                <tr>
+	                    <th>직원 ID</th>
+	                    <th>이름</th>
+	                    <th>출근</th>
+	                    <th>퇴근</th>
+	                    <th>상태</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            </tbody>
+	        </table>
+	    </div>
+	    <div class="container">
+	        <nav aria-label="Page navigation" style="text-align: center">
+	            <ul class="pagination" id="pagination"></ul>
+	        </nav>
+	    </div>
+	</div>
         <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+        
       </div>
     </div>
-    <script>
-    
-        
-        
-    });
-    </script>
     
     
     <!-- latest jquery-->
-    <script src="/assets/js/jquery.min.js"></script>
+    <!-- <script src="/assets/js/jquery.min.js"></script> -->
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
@@ -151,8 +199,8 @@
     <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
-    <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+    <!-- <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
+    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script> -->
     <script src="/assets/js/typeahead/handlebars.js"></script>
     <script src="/assets/js/typeahead/typeahead.bundle.js"></script>
     <script src="/assets/js/typeahead/typeahead.custom.js"></script>
@@ -165,7 +213,112 @@
     <script src="/assets/js/script.js"></script>
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
+    <!-- [il] twbs-pagination -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    <script>
+    var showPage = 1;
+    $(document).ready(function() {
+        console.log($.fn.twbsPagination);
+
+        // [il] 오늘 날짜를 yyyy-mm-dd 형식으로 반환
+        function getTodayDate() {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+            return yyyy + '-' + mm + '-' + dd;
+        }
+
+        // [il] 날짜 입력 필드에 기본값으로 오늘 날짜 설정
+        $("#date").val(getTodayDate());
+        var selectedDate = $("#date").val();
+        var selectedDepartment = $("#department").val();
+        console.log('처음 selectedDate : ', selectedDate);
+        console.log('처음 selectedDepartment : ', selectedDepartment);
+
+        // [il] 페이지 로드 시 fetchDepartmentAttendance 호출
+        fetchDepartmentAttendance(selectedDate, selectedDepartment, showPage);
+
+        // [il] 날짜 선택기가 변경될 때마다 fetchDepartmentAttendance 호출
+        $("#date").change(function() {
+            selectedDate = $(this).val();
+            $('#pagination').twbsPagination('destroy');
+            console.log('selectedDate 변경: ', selectedDate);
+            fetchDepartmentAttendance(selectedDate, selectedDepartment, showPage);
+        });
+
+        // [il] 부서 선택기가 변경될 때마다 fetchDepartmentAttendance 호출
+        $("#department").change(function() {
+            selectedDepartment = $(this).val();
+            $('#pagination').twbsPagination('destroy');
+            console.log('selectedDepartment 변경: ', selectedDepartment);
+            fetchDepartmentAttendance(selectedDate, selectedDepartment, showPage);
+        });
+
+        function fetchDepartmentAttendance(selectedDate, selectedDepartment, showPage) {
+        	$.ajax({
+                type: "post",
+                url: "./attendanceOfAllEmployees.ajax",
+                data: {
+                    'date': selectedDate,
+                    'department': selectedDepartment,
+                    'page': showPage,
+                    'cnt': 15
+                },
+                dataType: 'json',
+                success: function(data) {
+                    // [il] 테이블 초기화
+                    $("#employeeTable tbody").empty();
+                    
+                    $('#pagination').twbsPagination({
+                        startPage: data.currentPage, // 시작페이지
+                        totalPages: data.totalPages, // 총 페이지 수
+                        visiblePages: 5, // 보여줄 페이지 수 1,2,3,4,5
+                        onPageClick: function(evt, pg) { // 페이지 클릭시 실행 함수
+                            console.log(pg); // 클릭한 페이지 번호
+                            fetchDepartmentAttendance(selectedDate, selectedDepartment, pg); // 페이지 변경 시 새로운 데이터 로드
+                        }
+                    });
+                    drawList(data.attendanceList);
+                    // [il] 테이블을 보이도록 설정 
+                    $("#employeeTableContainer").show();
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX request 실패ㅠㅠ: " + error);
+                }
+            });
+        }
+
+        function drawList(list) {
+            var content = '';
+
+            for (var item of list) {
+                // [il] 각 행에 data-url 속성을 추가해서, 클릭 시 이동할 URL을 설정하깅
+                content += '<tr data-url="/employee/attendance.go?idx_employee=' + item.idx_employee + '">';
+                content += '<td>' + item.idx_employee + '</td>';
+                content += '<td>' + item.emp_name + '</td>';
+                content += '<td>' + item.ah_check_in + '</td>';
+                content += '<td>' + item.ah_check_out + '</td>';
+                content += '<td>' + item.ah_status + '</td>';
+                content += '</tr>';
+            }
+
+            $("#employeeTable tbody").append(content);
+
+            // 테이블 행 클릭 이벤트 추가하깅
+            $("#employeeTable tbody tr").click(function() {
+                var url = $(this).data('url');
+                window.location.href = url;
+            });
+        }
+    });
+
+    
+    </script>
+    
+    
+    
   </body>
 </html>

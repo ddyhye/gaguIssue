@@ -123,8 +123,10 @@ public class EmployeeController {
 	
 		// [il] 개인 근태관리
 		@GetMapping(value="/employee/attendance.go")
-		public String employeeAttendance() {
+		public String employeeAttendance(Integer idx_employee,Model model) {
+			logger.info("idx_employee : {}",idx_employee);
 			logger.info("attendance calendar in");
+			model.addAttribute("idx_employee",idx_employee);
 			return "employee/attendance";
 		}
 		
@@ -164,12 +166,14 @@ public class EmployeeController {
 			logger.info("요청 페이지 : " +page);
 			int idx_employee= (int) session.getAttribute("idxEmployee");
 			logger.info("idxEmployee : {}",idx_employee);
+			String formattedDate =null;
 			
 			java.util.Date selectedDate=null;
-			
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 				selectedDate=dateFormat.parse(date);
+				formattedDate = dateFormat.format(selectedDate);
+				logger.info("formattedDate : {}",formattedDate);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -178,7 +182,7 @@ public class EmployeeController {
 			int currentPage = Integer.parseInt(page);
 			int pagePerCnt = Integer.parseInt(cnt);
 			
-			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,selectedDate,currentPage,pagePerCnt);
+			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,formattedDate,currentPage,pagePerCnt);
 			logger.info("map : {}",map);
 			
 			return map;
@@ -354,7 +358,7 @@ public class EmployeeController {
 		return employeeService.getGroup(idxEmployee);	
 	}
 	
-	/* [jeong] 조직도 페이지로 이동 */
+	/* [jeong] 조직도 데이터 요청 */
 	@PostMapping(value = "/employee/group.do")
 	@ResponseBody
 	public Map<String,Object> groupDo(HttpSession session
@@ -363,5 +367,13 @@ public class EmployeeController {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		return employeeService.getGroupList(idxEmployee, selectedDepartment, page);	
 	}
+	
+	/* [jeong] 프로필 정보 요청 */
+	@PostMapping(value = "/employee/profile.do")
+	@ResponseBody
+	public Map<String,Object> profileDo(HttpSession session
+			,@RequestParam int selectedIdxEmployee) {
+		return employeeService.getProfileInfo(selectedIdxEmployee);	
+	}	
 	
 }

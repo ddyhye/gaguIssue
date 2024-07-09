@@ -60,14 +60,20 @@
 	        ah.ah_check_out,
 	        ah.ah_status,
 	        et.idx_department,
-	        et.idx_employee,
 	        et.emp_name,
 	        et.emp_status
 		FROM attendance_history_tb ah
 	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
-	    WHERE et.idx_department = #{param1} AND ah.ah_date=#{param2} AND emp_status='재직'
+	    WHERE et.idx_department = #{param2} AND ah.ah_date=#{param3} AND et.emp_status='재직'
+	    LIMIT 15 OFFSET #{param4}
 	</select>
 	
+	<select id="allCountPage" resultType="Object">
+		SELECT CEIL(COUNT(ah.idx_attendance) / #{param3}) AS pages
+		FROM attendance_history_tb ah
+		WHERE ah.ah_date=#{param2}
+		ORDER BY ah.idx_employee DESC
+	</select>
 	
 	
 	<!-- [il] 임의로 idx_employee =1 집어넣었음 나중에 바꿔줘야함!! -->
@@ -383,6 +389,7 @@
 			JOIN department_tb dt ON dt.idx_department = et.idx_department
 			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = et.idx_employee
 		WHERE et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = #{idxEmployee})
+		ORDER BY tt.idx_title ASC
 		LIMIT ${(page - 1) * 5}, 5	
 	</select>
 	
@@ -416,6 +423,7 @@
 			JOIN department_tb dt ON dt.idx_department = et.idx_department
 			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = et.idx_employee
 		WHERE et.idx_department = #{selectedDepartment}
+		ORDER BY tt.idx_title ASC
 		LIMIT ${(page - 1) * 5}, 5	
 	</select>
 	
@@ -423,5 +431,23 @@
 		SELECT 
 			CEIL(COUNT(*) / 5)
 		FROM employee_tb et WHERE et.idx_department = #{selectedDepartment}	
+	</select>
+	
+	<select id="getEmployeeProfile" resultType="employee">
+		SELECT 
+			et.emp_name AS empName,
+			et.emp_phone_number AS phoneNumber,
+			et.emp_birth_date AS empBirthDate,
+			et.emp_email AS emp_email,
+			dt.de_name AS departmentName,
+			tt.title_name AS titleName,
+			CASE 
+				WHEN ft.file_name IS NOT NULL THEN ft.file_name
+				ELSE 'NONE'
+			END AS profileFilePath
+		FROM employee_tb et
+			JOIN title_tb tt on et.idx_title = tt.idx_title AND et.idx_employee = #{selectedIdxEmployee}
+			JOIN department_tb dt ON et.idx_department = dt.idx_department
+			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = et.idx_employee
 	</select>
 </mapper>

@@ -156,22 +156,22 @@ public class EmployeeService {
 	    response.put("title", idx_title);
 	    logger.info("title : {}", idx_title);
 	    
-	    return response; // 데이터를 담은 Map을 반환
+	    return response; 
 	}
 
-	public Map<String, Object> departmentAttendanceList(int idx_employee, Date selectedDate, int currentPage,
+	public Map<String, Object> departmentAttendanceList(int idx_employee, String formattedDate, int currentPage,
 			int pagePerCnt) {
 		// [il] 부서번호 가져오기
-		// [il] 현재 보여지는 페이지 : 페이지당 보여줄 개수
+		// [il] 현재 보여지는 페이지 : currentPage
 		// [il] 페이지당 보여줄 개수 : pagePerCnt
 		int idx_department = dao.getDepartmentIdxByEmployee(idx_employee);
 		int start = (currentPage - 1) * pagePerCnt;
 		Map<String, Object>map=new HashMap<String, Object>();
-		List<EmployeeDTO>attendanceList=dao.departmentAttendanceList(idx_employee,idx_department,selectedDate,start,pagePerCnt);
-		
+		List<EmployeeDTO>attendanceList=dao.departmentAttendanceList(idx_employee,idx_department,formattedDate,start,pagePerCnt);
+		logger.info("attendanceList : {}",attendanceList);
 		map.put("attendanceList", attendanceList);
 		map.put("currentPage", currentPage);
-		map.put("totalPages",dao.allCountPage(idx_department,selectedDate,pagePerCnt));
+		map.put("totalPages",dao.allCountPage(idx_department,formattedDate,pagePerCnt));
 		
 		return map;
 	}
@@ -219,6 +219,7 @@ public class EmployeeService {
 		return response;
 	}
 
+	/* [jeong] 프로필 페이지로 이동 */
 	public ModelAndView getProfile(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("employee/profile");
 		EmployeeDTO employeeInfo = dao.getEmployeeInfo(idxEmployee);
@@ -226,6 +227,7 @@ public class EmployeeService {
 		return mav;
 	}
 
+	/* [jeong] 프로필 정보 수정 */
 	public Map<String, Object> updateProfileInfo(int idxEmployee, String birthDate
 			,String email, String phoneNumber) {
 		var response = new HashMap<String, Object>();
@@ -233,9 +235,10 @@ public class EmployeeService {
 		return response;
 	}
 
+	/* [jeong] 프로필 사진 변경 */
 	public Map<String, Object> uploadProfileImage(int idxEmployee, MultipartFile uploadProfileFile) {
 		var response = new HashMap<String, Object>();
-		String profileImageName = fm.saveFile(uploadProfileFile, "profile");
+		String profileImageName = fm.saveFile(uploadProfileFile, "profile_picture");
 		int idxFile = dao.isProfileImage(idxEmployee);
 		if (idxFile != 0) {
 			dao.updateProfileImage(idxFile, idxEmployee, profileImageName);
@@ -246,6 +249,7 @@ public class EmployeeService {
 		return response;
 	}
 
+	/* [jeong] 조직도 페이지로 이동 */
 	public ModelAndView getGroup(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("employee/group");
 		List<Map<String, String>> temp = dao.getOrganization();
@@ -272,14 +276,23 @@ public class EmployeeService {
 		return mav;
 	}
 
+	/* [jeong] 조직도 데이터 반환 */
 	public Map<String,Object> getGroupList(int idxEmployee, String selectedDepartment, int page) {
 		var response = new HashMap<String, Object>();
-		int totalPages = dao.getGoTotalPages(idxEmployee);  
+		int totalPages = dao.getTotalPages(selectedDepartment);  
 		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page; 
 		List<EmployeeDTO> employeeList = dao.getAJAXEmployeeList(selectedDepartment, page);
 		response.put("employeeList", employeeList);
 		response.put("totalPages", totalPages);
 		response.put("page", page);
+		return response;
+	}
+
+	/* [jeong] 프로필 상세보기 정보 불러오기 */
+	public Map<String, Object> getProfileInfo(int selectedIdxEmployee) {
+		var response = new HashMap<String, Object>();
+		EmployeeDTO employeeProfile = dao.getEmployeeProfile(selectedIdxEmployee);
+		response.put("employeeProfile", employeeProfile);
 		return response;
 	}	
 

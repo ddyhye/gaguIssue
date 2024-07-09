@@ -35,63 +35,9 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
-    
-    <!-- [il]id color->ec_color로 바꿈 / 06.22 -->
-    <link id="ec_color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
-    
+    <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
-    
-    <!-- [il] 캘린더 -->
-    <!-- [il]jquery / 원래는 3.2.1 버전이었으나, 3.7.1버전으로 바꿔둠 -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-	<!-- modal창 -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
-	<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/calendar.css'/>"> -->	
-	
-	<!--[il]  부트스트랩 CSS 링크-->
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-	<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/main.min.js'></script>
-	<style>
-	#departmentButton {
-        background-color: #7a70ba;
-        border: none;
-        color: white;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 5px;
-        float: right; /* 오른쪽으로 이동 */
-        margin-right: 10px; /* 버튼 간 여백 */
-        }
-	
-	.fc-event-title {
-            font-size: 1.9em; /* 원하는 글자 크기로 변경 */
-        }
-	
-	#calendar {
-	   width: 80%;
-	   margin: 5px auto;
-	}
-	.datepicker-input {
-    position: relative;
-	}
-	.datepicker-input input, .timepicker-input select, .modal-body textarea {
-	    width: 100%;
-	}
-	.datepicker-input .ui-datepicker-trigger, .timepicker-input .ui-timepicker-trigger {
-	    position: absolute;
-	    right: 5px;
-	    top: 50%;
-	    transform: translateY(-50%);
-	}
-	</style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -112,12 +58,10 @@
           <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt=""/></a></div>
         </div>
         <div class="col-4 col-xl-4 page-title">
-          <!-- do: 페이지명 변경 -->
           <h4 class="f-w-700">Default dashboard</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-              <!-- do: 경로명 변경 -->
               <li class="breadcrumb-item f-w-400">Dashboard</li>
               <li class="breadcrumb-item f-w-400 active">Default</li>
             </ol>
@@ -134,111 +78,30 @@
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <!-- [il] 캘린더 시작 -->
-          <br>
-          <h2><center>Employee Attendance</center></h2>
-          <c:if test="${sessionScope.idxTitle == 4 || sessionScope.idxTitle == 3 || sessionScope.idxTitle == 2 || sessionScope.idxTitle == 1}">
-	          <button id="departmentButton" onclick="location.href='/employee/departmentAttendance.go'">직원 근태</button>
-	      </c:if>
-		    <div id="calendar"></div>
-			<c:set var="modelIdxEmployee" value="${idx_employee}" />
-			
-			<!-- [il] 모델의 idx_employee가 null이 아닌 경우 해당 값을 사용하고, null인 경우 세션의 idxEmployee 값을 사용 -->
-			<c:set var="finalIdxEmployee" value="${not empty modelIdxEmployee ? modelIdxEmployee : sessionScope.idxEmployee}" />
-			
-			<!-- [il] 최종 값을 hidden input에 설정 -->
-			<input type="hidden" id="idx_employee" value="${finalIdxEmployee}">
-		    <br>
+          <div class="container-fluid default-dashboard">
+          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          </div>
           <!-- Container-fluid Ends-->
         </div>
-        
+        <!-- footer start-->
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
+                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
+                <p class="mb-0 f-w-600">Hand crafted & made with
+                  <svg class="footer-icon">
+                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
+                  </svg>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
-      		  <script>
-      		  var idx_employee = document.getElementById('idx_employee').value;
-			  document.addEventListener('DOMContentLoaded', function() {
-				var calendarEl = document.getElementById('calendar');
-			    var calendar = new FullCalendar.Calendar(calendarEl, {
-			      themeSystem: 'bootstrap',
-			      initialView: 'dayGridMonth',
-			      headerToolbar: {
-			        left: 'prev,next today',
-			        center: 'title',
-			        right: ''
-			      },
-			      events: fetchEvents,
-			      eventContent: function(arg) {
-			        var eventTitle = arg.event.title;
-			        return { html: '<div>' + eventTitle + '</div>' };
-			      },
-			      dayMaxEvents: 5
-			    });
-			
-			    calendar.render();
-			
-			    function fetchEvents(info, successCallback, failureCallback) {
-			      $.ajax({
-			        url: './getAttendance.ajax',
-			        method: 'GET',
-			        data: { idx_employee: idx_employee },
-			        dataType: 'json',
-			        success: function(response) {
-			          var events = [];
-			
-			          for (var i = 0; i < response.employeeAttendance.length; i++) {
-			            var checkIn = response.employeeAttendance[i].ah_check_in;
-			            var checkOut = response.employeeAttendance[i].ah_check_out;
-			            var status = response.employeeAttendance[i].ah_status;
-			            var title;
-			
-			            if (status === '연차') {
-			              title = '연차';
-			            } else if (!checkIn && !checkOut) {
-			              title = '결근';
-			            } else if (checkIn > '09:00:00' && checkOut < '18:00:00') {
-			              title = checkIn + ' ~ ' + checkOut + '(결근)';
-			            } else {
-			              title = checkIn + ' ~ ';
-			
-			              if (checkOut) {
-			                title += checkOut;
-			                if (checkOut < '18:00:00') {
-			                  title = checkIn + ' ~ ' + checkOut + '(조퇴)';
-			                }
-			              }
-			            }
-			
-			            var event = {
-			              id: response.employeeAttendance[i].idx_attendance,
-			              title: title,
-			              start: checkIn ? response.employeeAttendance[i].ah_date + 'T' + checkIn : null,
-			              end: checkOut ? response.employeeAttendance[i].ah_date + 'T' + checkOut : null,
-			              status: status,
-			              allDay: false
-			            };
-			
-			            events.push(event);
-			          }
-			
-			          successCallback(events); // 이벤트 배열을 성공 콜백으로 전달
-			        },
-			        error: function(xhr, status, error) {
-			          console.error('이벤트 로딩에 실패했습니다: ' + error);
-			          if (typeof failureCallback === "function") {
-			            failureCallback(xhr, status, error);
-			          }
-			        }
-			      });
-			    }
-			  });
-			  
-			  
-			</script>
-
     <!-- latest jquery-->
-    <!-- [il]부트스트랩 jquery 버전 : 3.7.1 -->
-    <!-- [il]<script src="/assets/js/jquery.min.js"></script>     -->
-    
+    <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
@@ -265,9 +128,8 @@
     <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
     <script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
-    <!-- [il] datepicker 겹치는 부분 있어서 주석처리했습니다. 
     <script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
-    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script> -->
+    <script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
     <script src="/assets/js/typeahead/handlebars.js"></script>
     <script src="/assets/js/typeahead/typeahead.bundle.js"></script>
     <script src="/assets/js/typeahead/typeahead.custom.js"></script>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ko.gagu.issue.dao.MailDAO">
+	
+	<insert id="saveSendingMail" parameterType="mail">
+		INSERT INTO sending_email_tb
+			(idx_employee,se_recipient,se_references,se_title,se_description,se_sending_datetime)
+		VALUES(#{param2},#{se_recipient},#{se_references},#{se_title},#{se_description},#{se_sending_datetime})
+	</insert>
+	
+	<insert id="saveAttachment" parameterType="mail">
+		INSERT INTO filestore_tb
+			(idx_filetype,idx_ref,origin_name,file_name,upload_datetime)
+		VALUES(11,#{param1},#{param2},#{param2},#{param3})
+	</insert>
+	
+</mapper>
