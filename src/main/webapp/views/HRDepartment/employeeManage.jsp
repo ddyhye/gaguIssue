@@ -764,72 +764,69 @@
 				
 				<!-- 사원 수정 모달 창 -->
 				<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
-			                <div class="modal-header">
-			                    <h5 class="modal-title" id="modifyModalLabel">사원 수정</h5>
-			                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			                        <span aria-hidden="true">&times;</span>
-			                    </button>
-			                </div>
-			                <div class="modal-body2">
-			                    <!-- 사원 수정 폼 -->
-				                    <form id="modifyForm">
+				    <div class="modal-dialog">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <h5 class="modal-title" id="modifyModalLabel">사원 수정</h5>
+				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                    <span aria-hidden="true">&times;</span>
+				                </button>
+				            </div>
+				            <div class="modal-body2">
+				                <!-- 사원 수정 폼 -->
+				                <form id="modifyForm">
 				                    <div class="text-center mb-4">
 				                        <label for="profileImage">
-				                            <img id="profileImagePreview" src="/img/user.jpg"
-				                                 alt="profile" class="img-thumbnail"
-				                                 style="width: 150px; height: 150px; cursor: pointer; object-fit: cover;">
+				                            <img id="profileImagePreview2" src="/img/user.jpg" alt="profile" class="img-thumbnail" style="width: 150px; height: 150px; cursor: pointer; object-fit: cover;">
 				                        </label>
-				                        <input type="file" id="profileImage" name="profileImage" style="display: none;"
-				                               onchange="previewImage(event)">
+				                        <input type="file" class="hidden-file-input" id="profileImage2" name="profileImage" style="display: none;" onChange="previewImage2(event)">
 				                    </div>
-			                        <div class="container">
-			                            <div class="row">
-			                                <div class="col-6 mb-2">
-			                                    <label for="modifyEmpId">사원번호</label>
-			                                    <input type="text" class="form-control" id="modifyEmpId" readonly>
-			                                </div>
-			                                <div class="col-6 mb-2">
-			                                    <label for="modifyEmpName">이름</label>
-			                                    <input type="text" class="form-control" id="modifyEmpName">
-			                                </div>
-			                            </div>
-			                            <div class="row">
-			                                <div class="col-6 mb-2">
-			                                    <label for="modifyEmpPhoneNumber">전화번호</label>
-			                                    <input type="tel" class="form-control" id="modifyEmpPhoneNumber">
-			                                </div>
-			                                <div class="col-6 mb-2">
-			                                    <label for="modifyEmpBirthDate">생년월일</label>
-			                                    <input type="date" class="form-control" id="modifyEmpBirthDate">
-			                                </div>
-			                            </div>
-			                            <div class="row">
-			                                <div class="col-6 mb-2">
-			                                    <label for="modifyEmpEmail">이메일</label>
-			                                    <input type="email" class="form-control" id="modifyEmpEmail">
-			                                </div>
-			                                <div class="col-6 mb-2">
-			                                    <label for="modifyDeName">부서</label>
-			                                    <select class="form-control" id="modifyDeName" name="modifyDeName" onchange="updatePositions()">
-			                                        <option value="임원진">임원진</option>
-			                                        <option value="인사관리부서">인사관리부서</option>
-			                                        <option value="물류관리부서">물류관리부서</option>
-			                                        <option value="경영지원부서">경영지원부서</option>
-			                                    </select>
-			                                </div>
-			                                <div class="col-6 mb-2">
-			                                    <label for="modifyTitleName">직위</label>
-			                                    <select class="form-control" id="modifyTitleName" name="modifyTitleName">
-			                                        <option value="부장">부장</option>
-			                                        <option value="과장">과장</option>
-			                                        <option value="대리">대리</option>
-			                                        <option value="사원">사원</option>
-			                                    </select>
-			                                </div>
-			                            </div>
-			                             <div class="row">
+				                    <div class="container">
+				                        <div class="row">
+				                            <div class="col-6 mb-2">
+				                                <label for="modifyEmpId">사원번호</label>
+				                                <input type="text" name="emp_id" class="form-control" id="modifyEmpId" readonly>
+				                            </div>
+				                            <div class="col-6 mb-2">
+				                                <label for="modifyEmpName">이름</label>
+				                                <input type="text" name="emp_name" class="form-control" id="modifyEmpName">
+				                            </div>
+				                        </div>
+				                        <div class="row">
+				                            <div class="col-6 mb-2">
+				                                <label for="modifyEmpPhoneNumber">전화번호</label>
+				                                <input type="tel" name="emp_phone_number" class="form-control" id="modifyEmpPhoneNumber">
+				                            </div>
+				                            <div class="col-6 mb-2">
+				                                <label for="modifyEmpBirthDate">생년월일</label>
+				                                <input type="date" name="emp_birth_date" class="form-control" id="modifyEmpBirthDate">
+				                            </div>
+				                        </div>
+				                        <div class="row">
+				                            <div class="col-6 mb-2">
+				                                <label for="modifyEmpEmail">이메일</label>
+				                                <input type="email" name="emp_email" class="form-control" id="modifyEmpEmail">
+				                            </div>
+				                            <div class="col-6 mb-2">
+				                                <label for="modifyDeName">부서</label>
+				                                <select class="form-control" id="modifyDeName" name="de_name" onchange="updatePositions()">
+				                                    <option value="임원진">임원진</option>
+				                                    <option value="인사관리부서">인사관리부서</option>
+				                                    <option value="물류관리부서">물류관리부서</option>
+				                                    <option value="경영지원부서">경영지원부서</option>
+				                                </select>
+				                            </div>
+				                            <div class="col-6 mb-2">
+				                                <label for="modifyTitleName">직위</label>
+				                                <select class="form-control" id="modifyTitleName" name="title_name">
+				                                    <option value="부장">부장</option>
+				                                    <option value="과장">과장</option>
+				                                    <option value="대리">대리</option>
+				                                    <option value="사원">사원</option>
+				                                </select>
+				                            </div>
+				                        </div>
+				                        <div class="row">
 				                            <div class="col-12 mb-2">
 				                                <label for="postal_code">우편번호</label>
 				                                <input type="text" class="form-control" id="modifyPostalCode" name="postal_code" readonly>
@@ -845,19 +842,22 @@
 				                        <div class="row">
 				                            <div class="col-12 mb-2">
 				                                <label for="detail_address">상세 주소</label>
-				                                <input type="text" class="form-control" id="detail_address" name="detail_address">
+				                                <input type="text" class="form-control" id="modifydetail_address" name="detail_address">
 				                            </div>
 				                        </div>
-			                        </div>
-			                    </form>
-			                </div>
-			                <div class="modal-footer">
-							    <button type="button" class="btn btn-primary" onclick="submitModifyForm()">수정</button>
-							    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-							</div>
-			            </div>
-			        </div>
-			    </div>
+				                    </div>
+				                    <input type="hidden" id="originImage" name="originImage">
+				                    <input type="hidden" id="idx_employee" name="idx_employee">
+				                </form>
+				            </div>
+				            <div class="modal-footer">
+				                <button type="button" class="btn btn-primary" id = "saveChangesButton">수정</button>
+				                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+
 
 				
 			<!-- Container-fluid 종료-->
@@ -874,8 +874,16 @@
     
 	
 	<script>
-		 function previewImage(event) {
+		    document.getElementById('profileImagePreview2').addEventListener('click', function(event) {
+		    	event.preventDefault();
+		    	document.getElementById('profileImage2').click();
+		    });
+		    document.getElementById('profileImage2').addEventListener('change', function(event) {
+		        console.log('파일이 선택되었습니다.');
+		    });
+		 	function previewImage(event) {
 		        var output = document.getElementById('profileImagePreview');
+		        
 		        output.src = URL.createObjectURL(event.target.files[0]);
 		        output.onload = function() {
 		            URL.revokeObjectURL(output.src);  
@@ -888,6 +896,26 @@
 		        profileImage.src = defaultImageSrc;
 	
 		        var fileInput = document.getElementById('profileImage');
+		        fileInput.value = null;
+		    }
+		    
+		    function previewImage2(event) {
+		        var output = document.getElementById('profileImagePreview2');
+		        console.log(output);
+		        output.src = URL.createObjectURL(event.target.files[0]);
+		        output.onload = function() {
+		            URL.revokeObjectURL(output.src);  
+		        }
+		    }
+		    
+		    
+	
+		    function resetImage2() {
+		        var defaultImageSrc = '/img/user.jpg';
+		        var profileImage = document.getElementById('profileImagePreview2');
+		        profileImage.src = defaultImageSrc;
+	
+		        var fileInput = document.getElementById('profileImage2');
 		        fileInput.value = null;
 		    }
 	
@@ -1129,6 +1157,8 @@
 			        $('#employeeDetails').show();
 			        $('#annualDetails').hide();
 			    });
+			    
+			    
 			
 			    function displayEmployeeDetails(emp_id) {
 			        $.ajax({
@@ -1152,6 +1182,7 @@
 			                $('#emp_hire_date_detail').text(data.emp_hire_date);
 			                $('#emp_term_date_detail').text(data.emp_term_date); 
 			                $('#emp_status_detail').text(data.emp_status); 
+			                $('#idx').val(emp_id);
 			                
 			                if (data.photo_url) {
 			                    $('#employeePhoto').attr('src', '/photo/'+data.photo_url);
@@ -1280,37 +1311,7 @@
 
 			
 		    $(document).ready(function() {
-		        // 사원 행 클릭 시 상세 정보 표시
-		        $('.table tbody').on('click', 'tr', function() {
-		            let empId = $(this).data('emp-id');
-					
-		            // AJAX 요청을 사용하여 서버에서 사원 정보를 가져옵니다.
-		            $.ajax({
-		                url: '/getEmployeeDetails', // 사원 정보를 가져오는 서버 엔드포인트
-		                method: 'GET',
-		                data: { empId: empId },
-		                success: function(employee) {
-		                    // 상세 정보를 채웁니다.
-		                    $('#emp_name_detail').text(employee.emp_name);
-		                    $('#emp_phone_number_detail').text(employee.emp_phone_number);
-		                    $('#emp_birth_date_detail').text(employee.emp_birth_date);
-		                    $('#emp_email_detail').text(employee.emp_email);
-		                    $('#address_detail').text(employee.address);
-		                    $('#emp_id_detail').text(employee.emp_id);
-		                    $('#de_name_detail').text(employee.de_name);
-		                    $('#title_name_detail').text(employee.title_name);
-		                    $('#emp_hire_date_detail').text(employee.emp_hire_date);
-		                    $('#emp_term_date_detail').text(employee.emp_term_date);
-		                    $('#emp_status_detail').text(employee.emp_status);
-
-		                    // 상세보기 버튼과 연차정보 버튼을 표시
-		                    $('#viewDetailsButton').show();
-		                    $('#annualLeaveButton').show();
-		                }
-		            });
-		        });
-
-		        // 수정 버튼 클릭 시 모달 창 열기
+		        // 사원 행 클릭 이벤트 핸들러
 		        $('#modifyButton').on('click', function() {
 		            let emp_id = $('#emp_id_detail').text();
 		            updatePositions();
@@ -1322,6 +1323,7 @@
 		                method: 'POST',
 		                data: { emp_id: emp_id },
 		                success: function(employee) {
+		                	console.log(employee);
 		                    // 수정 폼에 정보를 채웁니다.
 		                    $('#modifyEmpId').val(employee.emp_id);
 		                    $('#modifyEmpName').val(employee.emp_name);
@@ -1329,53 +1331,77 @@
 		                    $('#modifyEmpBirthDate').val(employee.emp_birth_date);
 		                    $('#modifyEmpEmail').val(employee.emp_email);
 		                    $('#modifyEmpAddress').val(employee.emp_address);
-		                    $('#modifyEmpDept').val(employee.de_name);
-		                    $('#modifyEmpTitle').val(employee.title_name);
+		                    $('#modifyDeName').val(employee.de_name);
+		                    $('#modifyTitleName').val(employee.title_name);
 		                    $('#modifyEmpHireDate').val(employee.emp_hire_date);
 		                    $('#modifyEmpTermDate').val(employee.emp_term_date);
 		                    $('#modifyEmpStatus').val(employee.emp_status);
+		                    $('#originImage').val(employee.photo_url);
+		                    $('#idx_employee').val(employee.idx_employee);
+		                    if (employee.photo_url) {
+		                        $('#profileImagePreview2').attr('src', '/photo/'+employee.photo_url);
+		                    } else {
+		                        $('#profileImagePreview2').attr('src', '/img/user.jpg'); // 기본 이미지
+		                    }
 		                    
 		                    // 모달 창 표시
 		                    $('#modifyModal').modal('show');
 		                }
 		            });
+		            
 		        });
 
 		        // 수정 완료 버튼 클릭 시 서버로 데이터 전송
 		        $('#saveChangesButton').on('click', function() {
-		            let updatedEmployee = {
-		                emp_id: $('#modifyEmpId').val(),
-		                emp_name: $('#modifyEmpName').val(),
-		                emp_phone_number: $('#modifyEmpPhoneNumber').val(),
-		                emp_birth_date: $('#modifyEmpBirthDate').val(),
-		                emp_email: $('#modifyEmpEmail').val(),
-		                address: $('#modifyEmpAddress').val(),
-		                de_name: $('#modifyEmpDept').val(),
-		                title_name: $('#modifyEmpTitle').val(),
-		                emp_hire_date: $('#modifyEmpHireDate').val(),
-		                emp_term_date: $('#modifyEmpTermDate').val(),
-		                emp_status: $('#modifyEmpStatus').val()
-		            };
+		            submitModifyForm();
+		        });
 
-		            // 서버로 수정된 데이터를 전송합니다.
+		        // submitModifyForm 함수 정의
+		        function submitModifyForm() {
+		            let formData = new FormData($('#modifyForm')[0]);
+			        // 우편번호, 주소, 상세주소를 합쳐서 하나의 문자열로 만든다.
+			        var postalCode = $('#modifyPostalCode').val();
+			        var address = $('#modifyaddress').val();
+			        var detailAddress = $('#modifydetail_address').val();
+			        var fullAddress = postalCode + ' ' + address + ' ' + detailAddress;
+					console.log(postalCode);
+					console.log(address);
+					console.log(detailAddress);
+					console.log(fullAddress);
+					console.log($('#originImage').val());
+			        // 합쳐진 주소를 emp_address 필드에 추가
+			        formData.append('emp_address', fullAddress);
+			        
 		            $.ajax({
-		                url: '/updateEmployeeDetails', // 사원 정보를 업데이트하는 서버 엔드포인트
+		                url: '/updateEmployeeDetails',
 		                method: 'POST',
-		                data: JSON.stringify(updatedEmployee),
-		                contentType: 'application/json',
+		                data: formData,
+		                processData: false,
+		                contentType: false,
 		                success: function(response) {
+		                	console.log(response);
 		                    if (response.success) {
-		                        alert('수정이 완료되었습니다.');
-		                        $('#modifyModal').modal('hide');
-		                        // 수정된 데이터를 새로고침
-		                        location.reload();
+// 		                        alert('수정이 완료되었습니다.');
+// 		                        $('#modifyModal').modal('hide');
+// 		                        location.reload();
 		                    } else {
 		                        alert('수정 중 오류가 발생했습니다.');
 		                    }
+		                },
+		                error: function(error) {
+		                    alert('수정 정보를 전송하는 동안 오류가 발생했습니다.');
+		                    console.error('Ajax 오류:', error);
 		                }
 		            });
+		        }
+
+		        // 모달 닫기 버튼 클릭 이벤트 핸들러
+		        $('#modifyModal .close, #modifyModal .btn-secondary').on('click', function() {
+		            $('#modifyModal').modal('hide');
 		        });
 		    });
+
+
 	</script>
 	
 	

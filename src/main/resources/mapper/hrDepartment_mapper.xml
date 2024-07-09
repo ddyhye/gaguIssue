@@ -85,6 +85,7 @@
 	
 	 <select id="getEmployeeById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
 	    SELECT 
+	    	e.idx_employee,
 	        e.emp_id,
 	        e.emp_name,
 	        e.emp_phone_number,
@@ -185,10 +186,9 @@
             emp_birth_date = #{emp_birth_date},
             emp_email = #{emp_email},
             emp_address = #{emp_address},
-            emp_pw = #{emp_pw},
             idx_department = (SELECT idx_department FROM department_tb WHERE de_name = #{de_name}),
-            idx_title = (SELECT idx_title FROM title_tb WHERE title_name = #{title_name}),
-            emp_status = #{emp_status}
+            idx_title = (SELECT idx_title FROM title_tb WHERE title_name = #{title_name})
+            
         WHERE emp_id = #{emp_id}
     </update>
 	
