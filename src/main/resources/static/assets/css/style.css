@@ -44115,6 +44115,7 @@ body.dark-only .page-wrapper .chat-box .chat-right-aside .chat .chat-msg-box .my
 }
 body.dark-only .page-wrapper .chat-box .chat-right-aside .chat .chat-msg-box .message {
   color: rgba(255, 255, 255, 0.7);
+  top: 25px !important;
 }
 body.dark-only .page-wrapper .chat-box .chat-right-aside .chat .chat-msg-box .other-message {
   background-color: #374462;

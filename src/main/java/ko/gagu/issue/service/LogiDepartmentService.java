@@ -426,6 +426,9 @@ public class LogiDepartmentService {
 		String accept = logiDeptDao.getOrderAccept(orderNo);
 		map.put("accept", accept);
 		
+		// 토스트 테스트,,
+		webSocketController.sendNotificationToUser(14, "※발주가 필요한 제품이 있습니다※");
+		
 		return map;
 	}
 	
@@ -447,7 +450,7 @@ public class LogiDepartmentService {
 				// 물류관리부서 전원에게 알림 보내자.
 				for (int emp : logiEmp) {
 					// 토스트
-					webSocketController.sendNotificationToUser(emp, "※발주가 필요한 제품이 있습니다※");
+					webSocketController.sendNotificationToUser(emp, "※ 발주가 필요한 제품이 있습니다 ※");
 					// 알림
 					logiDeptDao.insertAlarmLogiDept(emp);
 				}

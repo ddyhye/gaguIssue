@@ -268,6 +268,12 @@
             </div>
           </div>
         </footer>
+        
+        
+        <!-- 토스트 -->
+	    <%@ include file="../main/common_bottom.jsp" %>
+	    
+	    
       </div>
     </div>
     <!-- latest jquery-->
@@ -767,6 +773,7 @@
 		}
 		$('.do-popup5').append(content);
 		
+		content = '';
 		
 		// orderX 클래스가 존재하는지 확인
 		let orderXExists = document.querySelectorAll('.orderX').length > 0;

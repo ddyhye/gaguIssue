@@ -72,6 +72,11 @@ public class LoginChecker implements HandlerInterceptor {
 	        } else {
 	            //logger.error("ModelAndView 객체가 null입니다.");
 	        }
+	        
+	        // WebSocket 세션 등록
+            String sessionId = req.getSession().getId();
+            webSocketController.registerUserSession(dto.getIdx_employee(), sessionId);
+            logger.info("웹소켓 세션 등록됨: " + sessionId);
 	    } 
 	}
 	
