@@ -20,6 +20,24 @@
 	
 	
 	
+	<!-- 조직도 관련,, -->
+	<select id="getDename" resultType="String">
+		SELECT dt.de_name
+		FROM employee_tb et
+			JOIN department_tb dt ON et.idx_department = dt.idx_department
+		WHERE et.idx_employee = #{param1}
+	</select>
+	<select id="getOrganization" resultType="employee">
+		SELECT et.emp_name , ft.file_name 
+		FROM employee_tb et 
+			JOIN filestore_tb ft ON et.idx_employee = ft.idx_ref
+		WHERE ft.idx_filetype =1
+			and et.idx_department = #{param2}
+		limit 3
+	</select>
+	
+	
+	
 	
 	<!-- 회의실 예약 관련,, -->
 	<select id="getReservList" resultType="reservation">

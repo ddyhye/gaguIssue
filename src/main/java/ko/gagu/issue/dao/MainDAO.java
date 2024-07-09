@@ -73,4 +73,8 @@ public interface MainDAO {
 	List<ReservationDTO> getReservList(int idx_employee);
 
 	salesPriceDTO getMonthSalesPrice(int year, int month);
+
+	String getDename(int idx_employee);
+
+	List<EmployeeDTO> getOrganization(int idx_employee, int i);
 }
