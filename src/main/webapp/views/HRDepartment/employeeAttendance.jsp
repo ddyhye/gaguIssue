@@ -141,7 +141,7 @@
 	            <option value="인사관리부서">인사관리부서</option>
 	        </select>
 	    </div>
-	
+		
 	    <!-- 부서원 목록 테이블 -->
 	    <div id="employeeTableContainer" style="display: none;">
 	        <h2>부서원 목록</h2>

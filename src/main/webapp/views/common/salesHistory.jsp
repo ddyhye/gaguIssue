@@ -118,13 +118,13 @@
 			</div>
 			<div class="col-4 col-xl-4 page-title">
 				<!-- do: 페이지명 변경 -->
-				<h4 class="f-w-700">매출 관리</h4>
+				<h4 class="f-w-700">매출 내역</h4>
 				<nav>
 					<ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
 						<li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
 						<!-- do: 경로명 변경 -->
-						<li class="breadcrumb-item f-w-400">Common</li>
-						<li class="breadcrumb-item f-w-400 active">매출 관리</li>
+						<li class="breadcrumb-item f-w-400">매출 관리</li>
+						<li class="breadcrumb-item f-w-400 active">매출 내역</li>
 					</ol>
 				</nav>
 			</div>
@@ -173,7 +173,7 @@
 										<option value="order">판매</option>
 									</select>
 								</div>
-								<div class="d-flex align-items-center flex-shrink-0" style="width: 33%;'">
+								<div class="d-flex align-items-center flex-shrink-0" style="width: 33%;">
 									<h4 style="width: 125px;">검색 :</h4>
 									<select id="searchOption" class="form-select-sm m-5">
 										<option value="" selected disabled hidden>선택</option>

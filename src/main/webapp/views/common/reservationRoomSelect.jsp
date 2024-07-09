@@ -138,13 +138,14 @@ table span {
 			</div>
 			<div class="col-4 col-xl-4 page-title">
 				<!-- do: 페이지명 변경 -->
-				<h4 class="f-w-700">Default dashboard</h4>
+				<h4 class="f-w-700">예약할 회의실 선택</h4>
 				<nav>
 					<ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
 						<li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
 						<!-- do: 경로명 변경 -->
-						<li class="breadcrumb-item f-w-400">Dashboard</li>
-						<li class="breadcrumb-item f-w-400 active">Default</li>
+						<li class="breadcrumb-item f-w-400">예약 관리</li>
+						<li class="breadcrumb-item f-w-400">날짜 및 시간 선택</li>
+						<li class="breadcrumb-item f-w-400 active">회의실 선택</li>
 					</ol>
 				</nav>
 			</div>

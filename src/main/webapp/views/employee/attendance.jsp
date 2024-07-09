@@ -137,15 +137,18 @@
           <!-- [il] 캘린더 시작 -->
           <br>
           <h2><center>Employee Attendance</center></h2>
-          <c:if test="${sessionScope.idxTitle == 4}">
+          <c:if test="${sessionScope.idxTitle == 4 || sessionScope.idxTitle == 3 || sessionScope.idxTitle == 2 || sessionScope.idxTitle == 1}">
 	          <button id="departmentButton" onclick="location.href='/employee/departmentAttendance.go'">직원 근태</button>
 	      </c:if>
 		    <div id="calendar"></div>
-		    <!-- [il] : value 나중에 바꿔줘야함. -->
-		    <input type="hidden" id="idx_employee" value="${sessionScope.idxEmployee}">  
+			<c:set var="modelIdxEmployee" value="${idx_employee}" />
+			
+			<!-- [il] 모델의 idx_employee가 null이 아닌 경우 해당 값을 사용하고, null인 경우 세션의 idxEmployee 값을 사용 -->
+			<c:set var="finalIdxEmployee" value="${not empty modelIdxEmployee ? modelIdxEmployee : sessionScope.idxEmployee}" />
+			
+			<!-- [il] 최종 값을 hidden input에 설정 -->
+			<input type="hidden" id="idx_employee" value="${finalIdxEmployee}">
 		    <br>
-		    <!-- [il]Modal -->
-		    
           <!-- Container-fluid Ends-->
         </div>
         

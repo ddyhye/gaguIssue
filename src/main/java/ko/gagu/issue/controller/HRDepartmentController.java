@@ -241,16 +241,21 @@ public class HRDepartmentController {
 	
 	 @PostMapping(value = "/updateEmployeeDetails")
 	    @ResponseBody
-	    public Map<String, Object> updateEmployeeDetails(@RequestBody HRDepartmentDTO employee) {
+	    public Map<String, Object> updateEmployeeDetails(HRDepartmentDTO employee) {
 	        Map<String, Object> response = new HashMap<>();
+	        logger.info(employee.getEmp_email());
+	        logger.info(employee.getProfileImage().getOriginalFilename());
+	        logger.info(employee.getEmp_id());
+	        logger.info(employee.getEmp_address());
+	        logger.info(employee.getOriginImage());
 	        try {
-	            String msg = hrDepartmentService.updateEmployee(employee);
-	            response.put("status", "success");
+	            String msg = hrDepartmentService.updateEmployee(employee, employee.getProfileImage());
+	            response.put("success", true);
 	            response.put("message", msg);
 	            logger.info("Employee updated: " + msg);
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	            response.put("status", "error");
+	            response.put("success", false);
 	            response.put("message", "사원 정보 업데이트 실패: " + e.getMessage());
 	            logger.error("사원 정보 업데이트 실패: " + e.getMessage());
 	        }

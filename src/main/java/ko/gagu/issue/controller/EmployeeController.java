@@ -123,8 +123,10 @@ public class EmployeeController {
 	
 		// [il] 개인 근태관리
 		@GetMapping(value="/employee/attendance.go")
-		public String employeeAttendance() {
+		public String employeeAttendance(Integer idx_employee,Model model) {
+			logger.info("idx_employee : {}",idx_employee);
 			logger.info("attendance calendar in");
+			model.addAttribute("idx_employee",idx_employee);
 			return "employee/attendance";
 		}
 		
@@ -356,7 +358,7 @@ public class EmployeeController {
 		return employeeService.getGroup(idxEmployee);	
 	}
 	
-	/* [jeong] 조직도 페이지로 이동 */
+	/* [jeong] 조직도 데이터 요청 */
 	@PostMapping(value = "/employee/group.do")
 	@ResponseBody
 	public Map<String,Object> groupDo(HttpSession session
@@ -365,5 +367,13 @@ public class EmployeeController {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		return employeeService.getGroupList(idxEmployee, selectedDepartment, page);	
 	}
+	
+	/* [jeong] 프로필 정보 요청 */
+	@PostMapping(value = "/employee/profile.do")
+	@ResponseBody
+	public Map<String,Object> profileDo(HttpSession session
+			,@RequestParam int selectedIdxEmployee) {
+		return employeeService.getProfileInfo(selectedIdxEmployee);	
+	}	
 	
 }

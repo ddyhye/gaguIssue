@@ -219,6 +219,7 @@ public class EmployeeService {
 		return response;
 	}
 
+	/* [jeong] 프로필 페이지로 이동 */
 	public ModelAndView getProfile(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("employee/profile");
 		EmployeeDTO employeeInfo = dao.getEmployeeInfo(idxEmployee);
@@ -226,6 +227,7 @@ public class EmployeeService {
 		return mav;
 	}
 
+	/* [jeong] 프로필 정보 수정 */
 	public Map<String, Object> updateProfileInfo(int idxEmployee, String birthDate
 			,String email, String phoneNumber) {
 		var response = new HashMap<String, Object>();
@@ -233,9 +235,10 @@ public class EmployeeService {
 		return response;
 	}
 
+	/* [jeong] 프로필 사진 변경 */
 	public Map<String, Object> uploadProfileImage(int idxEmployee, MultipartFile uploadProfileFile) {
 		var response = new HashMap<String, Object>();
-		String profileImageName = fm.saveFile(uploadProfileFile, "profile");
+		String profileImageName = fm.saveFile(uploadProfileFile, "profile_picture");
 		int idxFile = dao.isProfileImage(idxEmployee);
 		if (idxFile != 0) {
 			dao.updateProfileImage(idxFile, idxEmployee, profileImageName);
@@ -246,6 +249,7 @@ public class EmployeeService {
 		return response;
 	}
 
+	/* [jeong] 조직도 페이지로 이동 */
 	public ModelAndView getGroup(int idxEmployee) {
 		ModelAndView mav = new ModelAndView("employee/group");
 		List<Map<String, String>> temp = dao.getOrganization();
@@ -272,14 +276,23 @@ public class EmployeeService {
 		return mav;
 	}
 
+	/* [jeong] 조직도 데이터 반환 */
 	public Map<String,Object> getGroupList(int idxEmployee, String selectedDepartment, int page) {
 		var response = new HashMap<String, Object>();
-		int totalPages = dao.getGoTotalPages(idxEmployee);  
+		int totalPages = dao.getTotalPages(selectedDepartment);  
 		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page; 
 		List<EmployeeDTO> employeeList = dao.getAJAXEmployeeList(selectedDepartment, page);
 		response.put("employeeList", employeeList);
 		response.put("totalPages", totalPages);
 		response.put("page", page);
+		return response;
+	}
+
+	/* [jeong] 프로필 상세보기 정보 불러오기 */
+	public Map<String, Object> getProfileInfo(int selectedIdxEmployee) {
+		var response = new HashMap<String, Object>();
+		EmployeeDTO employeeProfile = dao.getEmployeeProfile(selectedIdxEmployee);
+		response.put("employeeProfile", employeeProfile);
 		return response;
 	}	
 

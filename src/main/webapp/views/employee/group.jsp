@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/datatables.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
     <!-- Plugins css Ends-->
+    <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
     <!-- Bootstrap css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
@@ -52,7 +53,6 @@
 		}
 		
 		.organization {
-			border: 2px dashed gray;
 			color: #7a70ba;
 			padding: 30 30 0 30;
 			height: 73vh;
@@ -95,18 +95,32 @@
 		}
 		
 		.pagination {
-			margin-top: 10px;
+			margin-top: 20px !important;
 		}
 		
 		.pagination li a {
-			color: #7a70ba; 
+			color: #7a70ba !important;
 		}
 		
 		.pagination li.active a {
-			background-color: #7a70ba; 
-			border-color: #7a70ba;
+			background-color: #7a70ba !important; 
+			border-color: #7a70ba !important;
+			color: white !important;
 		}
 		
+		#profileInfoTable {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        #profileInfoTable tr:nth-child(odd) {
+        	font-size: 18px;
+        	font-weight: bold;
+        }
+        
+        #profileInfoTable tr:nth-child(even) {
+            height: 50px;
+        }
 	</style>    
   </head>
   <body> 
@@ -129,13 +143,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">조직도</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400">회원 서비스</li>
+              <li class="breadcrumb-item f-w-400 active">조직도</li>
             </ol>
           </nav>
         </div>
@@ -160,8 +174,8 @@
 	          		<div class="organization" id="organization"></div>
 	          		<div class="organization" id="employeeTable" style="width: 100%;">
 	          			<div class="d-flex justify-content-between">
-		          			<h3>${employeeList[0].departmentName}</h3>
-		          			<h5>전체&nbsp;&nbsp;<span>${fn:length(employeeList)}</span></h5>
+		          			<h3 id="departmentName">${employeeList[0].departmentName}</h3>
+		          			<h5>전체&nbsp;&nbsp;<span id="departmentEmpNumber">${fn:length(employeeList)}</span></h5>
 	          			</div>
 	          			<hr/>
 	          			<div style="height: 80%;">	          			
@@ -174,6 +188,7 @@
 		          					<th>연락처</th>
 		          				</tr>
 	          				</thead>
+	          				<!-- <a data-toggle="modal" data-target="#profileModal"> -->
 	          				<tbody>
 		          				<c:choose>
 			          				<c:when test="${employeeList == null}">
@@ -187,14 +202,16 @@
 				          						<td>${i.index + 1}</td>
 				          						<td style="display: flex;" >
 				          							<div style="margin-right: 20px;">
-					          							<c:choose>
-					          								<c:when test="${employee.profileFilePath != 'NONE'}">
-					          									<img src="/file/${employee.profileFilePath}" class="profileImage"/>
-					          								</c:when>
-					          								<c:otherwise>
-					          									<img src="/img/user.jpg" class="profileImage"/>
-					          								</c:otherwise>
-					          							</c:choose>
+				          								<a onClick="profileModalOpen(${employee.idx_employee})">
+						          							<c:choose>
+						          								<c:when test="${employee.profileFilePath != 'NONE'}">
+						          									<img src="/file/${employee.profileFilePath}" class="profileImage"/>
+						          								</c:when>
+						          								<c:otherwise>
+						          									<img src="/img/user.jpg" class="profileImage"/>
+						          								</c:otherwise>
+						          							</c:choose>
+				          								</a>
 				          							</div>
 				          							<div style="flex-direction: column;display: flex;justify-content: center;">
 					          							<h3>${employee.empName}</h3><br/>
@@ -236,6 +253,58 @@
             </div>
           </div>
         </footer>
+        <!-- footer ends -->
+        <!-- [jeong] 프로필 모달 -->
+        <div class="modal" id="profileModal" tabindex="-1" role="dialog" aria-modal="true">
+		  <div class="modal-dialog" role="document" style="top: 10%;height: 525;left: 1%;">
+		    <div class="modal-content h-100">
+		      <div class="modal-header">
+		        <h5 class="modal-title"><span class="empName"></span>님의 프로필</h5>
+		        <button type="button" class="close" data-dismiss="modal" onClick="modalClose()" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+	      		<div class="d-flex justify-content-center">	      		
+			      	<img id="profileDetailImage" src="/img/user.jpg" width="100px" height="100px"/>
+	      		</div>
+	      		<hr/>
+	      		<div >	      		
+			        <table id="profileInfoTable" style="text-align: center;">
+			        	<tr>
+			        		<td>이름</td>
+			        		<td>전화번호</td>
+			        	</tr>
+			        	<tr style="margin-bottom: 50px;">
+			        		<td class="empName">김정원</td>
+			        		<td class="phoneNumber">010-0000-000</td>
+			        	</tr>
+			        	<tr>
+			        		<td>생년월일</td>
+			        		<td>이메일</td>
+			        	</tr>
+			        	<tr>
+			        		<td class="empBirthDate">2001-05-12</td>
+			        		<td class="emp_email">ahruru@gmail.com</td>
+			        	</tr>		        			 
+			        	<tr>
+			        		<td>부서</td>
+			        		<td>직위</td>
+			        	</tr>		
+			        	<tr>
+			        		<td class="departmentName">임원진</td>
+			        		<td class="titleName">대표이사</td>
+			        	</tr>        	       			        	
+			        </table>
+	      		</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" onClick="modalClose()" data-dismiss="modal">닫기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- [jeong] 프로필 모달 -->
       </div>
     </div>
     <!-- latest jquery-->
@@ -292,6 +361,7 @@
     <script>
 		var page = 1;
 		var totalPages = ${totalPages};
+		var node;
 		
 		pagination();
 		
@@ -317,11 +387,16 @@
 			    data.instance.deselect_node(data.node); // 노드 선택 해제
 			    return false; // 선택을 막음
 			}
-			selectedDepartment(data.node);
+			node = data.node;
+			selectedDepartment();
 		});   
 	    /* #7870B5 */
     	
-	    function selectedDepartment(node) {
+	    function modalClose() {
+	    	$("#profileModal").modal("hide");
+	    }
+	    
+	    function selectedDepartment() {
 	    	let data = new FormData();
 	    	data.append('selectedDepartment', node.original.idxDepartment);
 	    	data.append('page', page);
@@ -343,41 +418,13 @@
 	        	console.error('Error:', error);
 	        });
 	    }
-/* 			<c:choose>
-				<c:when test="${employeeList == null}">
-					<tr>
-						<td colspan="4" style="text-align: center;">조회된 직원이 없습니다</td>
-					</tr>
-				</c:when>
-				<c:otherwise>
-  				<c:forEach items="${employeeList}" var="employee" varStatus="i">
-  					<tr>
-  						<td>${i.index + 1}</td>
-  						<td style="display: flex;" >
-  							<div style="margin-right: 20px;">
-      							<c:choose>
-      								<c:when test="${employee.profileFilePath != 'NONE'}">
-      									<img src="/file/${employee.profileFilePath}" class="profileImage"/>
-      								</c:when>
-      								<c:otherwise>
-      									<img src="/img/user.jpg" class="profileImage"/>
-      								</c:otherwise>
-      							</c:choose>
-  							</div>
-  							<div style="flex-direction: column;display: flex;justify-content: center;">
-      							<h3>${employee.empName}</h3><br/>
-      							<h5>${employee.titleName}</h5>
-  							</div>
-  						</td>
-  						<td>${employee.departmentName}</td>
-  						<td>${employee.phoneNumber}<br/>${employee.email}</td>
-  					</tr>
-  				</c:forEach>
-				</c:otherwise>
-			</c:choose> */
+	    
 	    function drawEmployeeList(data) {
 	    	let content = '';
 	    	let index = 1;
+	    	
+	    	document.querySelector('#departmentName').innerHTML = data[0].departmentName;
+	    	document.querySelector('#departmentEmpNumber').innerHTML = data.length;
 	    	if (data.length == 0) {
 				content += '<tr>';
 				content += '<td colspan="4" style="text-align: center;">조회된 직원이 없습니다</td>';
@@ -388,11 +435,14 @@
 		    		content += '<td>' + index++ + '</td>';
 		    		content += '<td style="display: flex;" >';
 		    		content += '<div style="margin-right: 20px;">';
+					content += '<a onClick="profileModalOpen('+row.idx_employee+')">';
+		    		// content += '<a data-toggle="modal" data-target="#profileModal">';
 		    		if (row.profileFilePath != 'NONE') {
 		    			content += '<img src="/file/'+ row.profileFilePath +'" class="profileImage"/>';
 		    		} else {
 		    			content += '<img src="/img/user.jpg" class="profileImage"/>';
 		    		}
+		    		content += '</a>';
 		    		content += '</div>';
 		    		content += '<div style="flex-direction: column;display: flex;justify-content: center;">';
 					content += '<h3>' + row.empName + '</h3><br/>';
@@ -407,6 +457,44 @@
 	    	document.querySelector('tbody').innerHTML = content;
 	    	// document.querySelector('tbody')[0].innerHTML = content;
 	    }
+	    
+	    function updateEmployeeProfile(data) {
+	    	let content = '';
+	    	let index = 1;
+	    	console.log(data);
+	    	let keys = Array.from(Object.keys(data));
+	    	for (key of keys) {
+	    		$("." + key).text(data[key]);
+	    		console.log(key, $("#" + key));	
+	    	}
+	    	
+	    	if (data.profileFilePath == 'NONE') {
+	    		$("#profileDetailImage").attr("src", "/img/user.jpg");	
+	    	} else {
+	    		$("#profileDetailImage").attr("src", "/file/" + data.profileFilePath);
+	    	}
+	    	
+	    	$("#profileModal").modal("show");
+	    }
+			
+		function profileModalOpen(selectedIdxEmployee) {
+	    	let data = new FormData();
+	    	data.append('selectedIdxEmployee', selectedIdxEmployee);
+	    	
+	        fetch('/employee/profile.do', {
+	            method: 'POST',
+	            body: data
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	        	console.log('Success:', data);
+	        	updateEmployeeProfile(data.employeeProfile);
+	        })
+	        .catch(error => {
+	        	console.error('Error:', error);
+	        });
+			
+		}
 			
 		function pagination() {			
 			$('#pagination').twbsPagination('destroy');

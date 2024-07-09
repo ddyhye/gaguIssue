@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.web.multipart.MultipartFile;
 
 @Alias(value="HRDept")
 public class HRDepartmentDTO {
@@ -41,7 +42,8 @@ public class HRDepartmentDTO {
 	private Date lu_start_date;
 	private Date lu_end_date;
 	private List<Leave_usage_tbDTO> annual_leave_usage_history;
-	
+	private MultipartFile profileImage;
+	private String originImage;
 	
 	
 	
@@ -237,6 +239,18 @@ public class HRDepartmentDTO {
 	}
 	public void setAnnual_leave_usage_history(List<Leave_usage_tbDTO> annual_leave_usage_history) {
 		this.annual_leave_usage_history = annual_leave_usage_history;
+	}
+	public MultipartFile getProfileImage() {
+		return profileImage;
+	}
+	public void setProfileImage(MultipartFile profileImage) {
+		this.profileImage = profileImage;
+	}
+	public String getOriginImage() {
+		return originImage;
+	}
+	public void setOriginImage(String originImage) {
+		this.originImage = originImage;
 	}
 
 	

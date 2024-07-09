@@ -134,7 +134,8 @@ public class HRDepartmentService {
 		
 		HRDepartmentDTO employee = hrDepartmentDao.getEmployeeById(emp_id);
 		
-		// emp_id를 통해 직원의 모든 정보를 불러오자.
+		// emp_id를 통해 직원의 모든 정보를 불러오자.\
+		map.put("idx_employee", employee.getIdx_employee());
 		map.put("emp_id", employee.getEmp_id());
         map.put("emp_name", employee.getEmp_name());
         map.put("emp_phone_number", employee.getEmp_phone_number());
@@ -236,20 +237,41 @@ public class HRDepartmentService {
 	
 	
 
-	 public String updateEmployee(HRDepartmentDTO employee) {
-	        try {
-	            // 직원 정보 업데이트 (사원 번호를 통해 검색 후 정보 수정)
-	            int rowsUpdated = hrDepartmentDao.updateEmployee(employee);
-	            if (rowsUpdated > 0) {
-	                return "사원 정보가 성공적으로 업데이트되었습니다.";
-	            } else {
-	                return "사원 정보를 업데이트하는데 실패했습니다. 사원 번호를 확인하세요.";
-	            }
-	        } catch (Exception e) {
-	            logger.error("사원 정보 업데이트 실패: " + e.getMessage(), e);
-	            return "사원 정보 업데이트 중 오류가 발생했습니다.";
-	        }
-	    }
+		@Transactional
+		public String updateEmployee(HRDepartmentDTO employee, MultipartFile profileImage) {
+		    try {
+		        // 프로필 이미지 업데이트 처리
+		        if (profileImage != null && !profileImage.isEmpty()) {
+		        	if(!employee.getOriginImage().equals("user.jpg")) {
+		        		deleteProfileImage(employee.getOriginImage());
+		        	}
+		        	
+		            uploadProfileImage(profileImage, employee.getIdx_employee());
+		        }
+	
+		        // 직원 정보 업데이트
+		        int rowsUpdated = hrDepartmentDao.updateEmployee(employee);
+		        logger.info(rowsUpdated+"");
+		        if (rowsUpdated > 0) {
+		            return "사원 정보가 성공적으로 업데이트되었습니다.";
+		        } else {
+		            return "사원 정보를 업데이트하는데 실패했습니다. 사원 번호를 확인하세요.";
+		        }
+		    } catch (Exception e) {
+		        logger.error("사원 정보 업데이트 실패: " + e.getMessage(), e);
+		        return "사원 정보 업데이트 중 오류가 발생했습니다.";
+		    }
+		}
+
+		private void deleteProfileImage(String originImage) {
+			File file = new File(uploadDir+"/profile_picture", originImage);
+			if(file.exists()) {
+				logger.info(originImage+"삭제");
+				file.delete();
+			}
+			
+		}
+	
 	
 	
 }

@@ -20,5 +20,9 @@ public interface SupportDepartmentDAO {
 
 	Map<String, Object> getClient(int idx);
 
+	int clientEdit(Map<String, String> param);
+
+	SupportDepartmentDTO clientDetail(String idx_business);
+
 	
 }
