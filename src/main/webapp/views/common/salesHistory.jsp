@@ -38,15 +38,17 @@
 <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 #salesHistoryDataList {
 	background: white;
-	height: 85%;
+	/* height: 85%; */
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
 }
 
 #salesHistoryHeader {
-	height: 17%;
+	/* height: 17%; */
 	/* background: red; */
 	padding: 15px;
 }
@@ -143,7 +145,19 @@
 							<div>
 								<h2>매출 내역</h2>
 							</div>
+							
+							
 							<hr />
+							
+							
+							<div style="width: 700px; height: 350px; margin: auto;">
+						        <canvas id="customerTransactionChart"></canvas>
+						    </div>
+						    
+						    
+							<hr />
+							
+							
 							<div class="d-flex align-items-center justify-content-between w-100">
 								<div class="d-flex align-items-center flex-shrink-0">
 									<h4 style="width: 125px;">날짜 :</h4>
@@ -159,7 +173,7 @@
 										<option value="order">판매</option>
 									</select>
 								</div>
-								<div class="d-flex align-items-center flex-shrink-0" style="width: 33%;'">
+								<div class="d-flex align-items-center flex-shrink-0" style="width: 33%;">
 									<h4 style="width: 125px;">검색 :</h4>
 									<select id="searchOption" class="form-select-sm m-5">
 										<option value="" selected disabled hidden>선택</option>
@@ -469,6 +483,115 @@
 			}
 		}
 		salesDataListTag.innerHTML = content;
+	}
+	
+	
+	
+	
+	// [do] 매출 관리 그래프
+	// 매출 현황 그래프
+	salesGraph();
+	
+	function salesGraph() {
+		// 현재 달로부터 지난 6개월 동안의 발주금액, 판매금액, 영업 이익 (판매금액 - 발주금액) 을 불러온다.
+		fetch('/main/salesGraph.ajax', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify()
+		})
+		.then(response => response.json())
+		.then(data => {
+			drawGraph(data.yearMonthList, data.poPriceList, data.salePriceList, data.profitPriceList);
+		})
+		.catch(error => {console.log('Error: ',error);});
+	}
+	
+	// 그래프 그리기
+	function drawGraph(yearMonthList, poPriceList, salePriceList, profitPriceList){
+		const ctx = document.getElementById('customerTransactionChart').getContext('2d');
+	    
+	    const data = {
+	        labels: yearMonthList,
+	        datasets: [
+	        	{
+	                type: 'bar',
+	                label: '발주 금액',
+	                data: poPriceList,
+	                backgroundColor: 'rgba(72, 163, 215, 0.65)',
+	                borderRadius: 10,
+	                barPercentage: 0.6, 
+	                categoryPercentage: 0.3, 
+	                order: 3
+	            },
+	            {
+	                type: 'bar',
+	                label: '판매 금액',
+	                data: salePriceList,
+	                backgroundColor: 'rgba(122, 112, 186, 0.65)',
+	                borderRadius: 10,
+	                barPercentage: 0.6,
+	                categoryPercentage: 0.3,
+	                order: 3
+	            },
+	            {
+	                type: 'line',
+	                label: '영업 이익',
+	                data: profitPriceList,
+	                backgroundColor: 'rgba(122, 112, 186, 1)',
+	                borderColor: 'rgba(122, 112, 186, 1)',
+	                borderWidth: 2,
+	                fill: false,
+	                pointBackgroundColor: 'rgba(122, 112, 186, 1)',
+	                pointBorderColor: '#fff',
+	                pointBorderWidth: 2,
+	                pointRadius: 5,
+	                pointStyle: 'circle',
+	                order: 1
+	            }
+	        ]
+	    };
+
+	    const options = {
+	        responsive: true,
+	        plugins: {
+	            legend: {
+	                position: 'top'
+	            },
+	            title: {
+	                display: false,
+	            }
+	        },
+	        scales: {
+	            y: {
+	                beginAtZero: true,
+	                max: 6000000,
+	                ticks: {
+	                    callback: function(value) {
+	                        return (value / 10000);
+	                    }
+	                }
+	            },
+	            x: {
+	                stacked: false,
+	                grid: {
+	                    offset: true
+	                },
+	                ticks: {
+	                    maxRotation: 0,
+	                    minRotation: 0
+	                },
+	                categoryPercentage: 0.8
+	            }
+	        }
+	    };
+
+	    const customerTransactionChart = new Chart(ctx, {
+	        type: 'bar',  // Use 'bar' to create a mixed bar chart
+	        data: data,
+	        options: options
+	    });
 	}
 	</script>
 </body>

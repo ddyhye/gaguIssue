@@ -216,6 +216,9 @@ public class HRDepartmentService {
 
 	    return resultMap;
 	}
+
+
+	
 	public Map<String, Object> departmentAttendanceList(String formattedDate, int currentPage, int pagePerCnt,String department) {
 		
 		// [il] 현재 보여지는 페이지 : currentPage
@@ -230,9 +233,13 @@ public class HRDepartmentService {
 		
 		return map;
 	}
+
+	
 	public List<HRDepartmentDTO> searchEmployee(String searchInput, String department) {
 	    return hrDepartmentDao.searchEmployee(searchInput, department);
 	}
+	
+	
 
 		@Transactional
 		public String updateEmployee(HRDepartmentDTO employee, MultipartFile profileImage) {
