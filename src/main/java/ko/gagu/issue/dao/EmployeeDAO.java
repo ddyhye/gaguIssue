@@ -53,10 +53,10 @@ public interface EmployeeDAO {
 
 	int getDepartmentIdxByEmployee(int idx_employee);
 
-	List<EmployeeDTO> departmentAttendanceList(int idx_employee, int idx_department, Date selectedDate, int start,
+	List<EmployeeDTO> departmentAttendanceList(int idx_employee, int idx_department, String formattedDate, int start,
 			int pagePerCnt);
 
-	Object allCountPage(int idx_department, Date selectedDate, int pagePerCnt);
+	Object allCountPage(int idx_department, String formattedDate, int pagePerCnt);
 
 	List<SalesDataDTO> getSalesHistory(PagingDTO pagingDTO);
 

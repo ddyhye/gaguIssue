@@ -164,12 +164,14 @@ public class EmployeeController {
 			logger.info("요청 페이지 : " +page);
 			int idx_employee= (int) session.getAttribute("idxEmployee");
 			logger.info("idxEmployee : {}",idx_employee);
+			String formattedDate =null;
 			
 			java.util.Date selectedDate=null;
-			
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 				selectedDate=dateFormat.parse(date);
+				formattedDate = dateFormat.format(selectedDate);
+				logger.info("formattedDate : {}",formattedDate);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -178,7 +180,7 @@ public class EmployeeController {
 			int currentPage = Integer.parseInt(page);
 			int pagePerCnt = Integer.parseInt(cnt);
 			
-			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,selectedDate,currentPage,pagePerCnt);
+			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,formattedDate,currentPage,pagePerCnt);
 			logger.info("map : {}",map);
 			
 			return map;

@@ -213,6 +213,22 @@ public class HRDepartmentService {
 	    return resultMap;
 	}
 
+<<<<<<< HEAD
+	public Map<String, Object> departmentAttendanceList(String formattedDate, int currentPage, int pagePerCnt,String department) {
+		
+		// [il] 현재 보여지는 페이지 : currentPage
+		// [il] 페이지당 보여줄 개수 : pagePerCnt
+		int start = (currentPage - 1) * pagePerCnt;
+		Map<String, Object>map=new HashMap<String, Object>();
+		List<EmployeeDTO>attendanceList=hrDepartmentDao.departmentAttendanceList(formattedDate,start,pagePerCnt,department);
+		logger.info("attendanceList : {}",attendanceList);
+		map.put("attendanceList", attendanceList);
+		map.put("currentPage", currentPage);
+		map.put("totalPages",hrDepartmentDao.allCountPage(department,formattedDate,pagePerCnt));
+		
+		return map;
+	}
+=======
 	public List<HRDepartmentDTO> searchEmployee(String searchInput, String department) {
 	    return hrDepartmentDao.searchEmployee(searchInput, department);
 	}
@@ -253,6 +269,7 @@ public class HRDepartmentService {
 		}
 	
 
+>>>>>>> f411531550ba12a7b966021265dfafa9f31ea4ff
 	
 	
 }
