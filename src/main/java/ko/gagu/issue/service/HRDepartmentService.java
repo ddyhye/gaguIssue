@@ -117,7 +117,11 @@ public class HRDepartmentService {
         //String imageUrl = "/images/profile/" + fileName;
 
         // 데이터베이스에 파일 경로 저장 (DAO 호출)
-        hrDepartmentDao.saveProfileImagePath(profileImage.getOriginalFilename(), fileName, idx_employee);
+        if(hrDepartmentDao.checkProfile(idx_employee)>0) {
+        	hrDepartmentDao.updateProfileImagePath(profileImage.getOriginalFilename(), fileName, hrDepartmentDao.getIdxFile(idx_employee));
+        }else {
+        	hrDepartmentDao.saveProfileImagePath(profileImage.getOriginalFilename(), fileName, idx_employee);
+        }
 
         //return imageUrl;
     }
