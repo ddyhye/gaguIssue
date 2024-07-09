@@ -259,7 +259,7 @@
 					            </div>
 					            <div class="button-group"> 
 		                        	<a class="btn btn-primary add_btn" href="#" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa fa-plus"></i>&nbsp;추가</a>
-		                        	<a class="btn btn-primary edit_btn" href="#" onclick="edit()"data-bs-toggle="modal" data-bs-target="#editModal"><i class="fa fa-edit"></i>&nbsp;수정</a>
+		                        	<a class="btn btn-primary edit_btn" href="#" onclick="edit()"><i class="fa fa-edit"></i>&nbsp;수정</a>
 		                        	<a class="btn btn-primary del_btn" href="#" onclick="del()"><i class="fa fa-trash"></i>&nbsp;삭제</a>
 		                        </div>
 							</div>
@@ -366,12 +366,12 @@
 			    <div class="modal-dialog">
 			        <div class="modal-content">
 			            <div class="modal-header">
-			                <h5 class="modal-title" id="registerModalLabel">거래처 등록</h5>
+			                <h5 class="modal-title" id="registerModalLabel">거래처 수정</h5>
 			                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			            </div>
 			            <div class="modal-body">
 			                <!-- 사원 등록 폼 -->
-			                <form action="/clientForm" id="clientForm" method="post" enctype="multipart/form-data">
+			                <form action="/clientEdit" id="clientEdit" method="post" enctype="multipart/form-data">
 			                    
 			                    <!-- 폼 요소 -->
 			                    <div class="container2">
@@ -505,12 +505,11 @@
   var showPage = 1;
   var search = '';
   $(document).ready(function(){ // html 문서가 모두 읽히면 되면(준비되면) 다음 내용을 실행 해라
-  	
   	   listCall(showPage, search);
+  
   });
   
   function listCall(page, search){
-		
 		
 	    $.ajax({
 	       type:'get',
@@ -522,8 +521,12 @@
 	       },
 	       dataType:'json',
 	       success:function(data){
+		    	
 	          drawList(data.list);
 	          console.log(data);
+	          console.log("총 페이지수 :",data.totalPages);
+	          
+	       	  
 	          //플러그인 추가
 	          var startPage = data.currPage > data.totalPages? data.totalPages : data.currPage;
 	          
@@ -561,7 +564,7 @@
 	       content += '<tr>';
 	       content += '<td class="col"><input type="checkbox" name="selected" value="' + item.idx_business +'"/></td>';
 	       content += '<td>'+ item.client_type + '</td>';
-	       content += '<td>'+ '<a href="alarmDetail.go?alarm_idx=' + item.idx_business + '">' + item.client_name + '</a>' + '</td>';
+	       content += '<td>'+ '<a href="clientDetail.go?idx_business=' + item.idx_business + '">' + item.client_name + '</a>' + '</td>';
 	       content += '<td>'+ item.client_phone_num + '</td>';
 	       content += '<td>'+ item.address + '</td>';
 	       content += '</tr>';
@@ -579,6 +582,7 @@
       if (event.key === "Enter") {
           event.preventDefault();
           clientSearch = document.getElementById('clientSearch').value;
+          $('#pagination').twbsPagination('destroy');
           listCall(showPage, clientSearch);
       }
   });
@@ -593,6 +597,14 @@
 	         delArr.push(val);
 	      }
 	   });
+	    
+	 	// 선택된 항목이 없을 때
+	    if (delArr.length === 0) {
+	        alert("삭제하실 거래처를 선택 해 주세요.");
+	        return;
+	    }
+	    
+	    
 	     $.ajax({
 	         type:'post' // method 방식
 	         ,url:'./del.ajax' // 요청할 주소 // 파라미터 
@@ -632,7 +644,7 @@
 
 
           if (selectedCount > 1) {
-              alert("수정할 거래처는 1개만 가능합니다");
+              alert("거래처 수정은 1개씩만 가능합니다");
               return;
           }
 
@@ -654,7 +666,7 @@
                       $('input[name="client_type2"][value="' + data.client_type + '"]').prop('checked', true);
 
                       // 모달 창 열기
-                      //$('#editModal').modal('show');
+                      $('#editModal').modal('show');
                   },
                   error: function(error) {
                       console.error('에러 메시지:', error);

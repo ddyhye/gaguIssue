@@ -147,4 +147,10 @@
 		INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name) 
 			VALUES (6, #{param3}, #{param1},#{param2})
 	</insert>
+	
+	<select id="noreadCount" resultType="int">
+	SELECT COUNT(mht.is_receiver_read) AS no_read
+	FROM message_history_tb mht 
+	WHERE mht.receiver = #{param1} AND mht.is_receiver_read = 0;
+	</select>
 </mapper>
