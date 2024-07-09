@@ -53,6 +53,11 @@ public class SupportDepartmentController {
 		return supportService.clientReg(param);
 	}
 	
+	/* 거래처 수정 */
+	@PostMapping(value="/clientEdit")
+	public ModelAndView clientEdit(@RequestParam Map<String, String> param){
+		return supportService.clientEdit(param);
+	}
 	
 	
 	// 배열 형태로 들어올 경우 따로 명시를 해줘야 한다.
@@ -84,10 +89,30 @@ public class SupportDepartmentController {
 	}
 	
 	
+	/* 거래처 상세보기 이동 */
+	@GetMapping("/clientDetail.go")
+	public String clientDetail(String idx_business, Model model) {
+		logger.info("-----------거래처 상세보기 이동----------");
+		
+		supportService.clientDetail(idx_business, model);
+		
+		return "supportDepartment/businessPartnerDetail";
+	}
 	
 	
-	
-	
+	/* 거래처 리스트 아작스 요청 */
+	/*
+	@GetMapping(value="/purchase_history")
+	@ResponseBody
+	public Map<String, Object> purchaseHistory(String page, int cnt){
+		logger.info("!!!!!!!!!거래처 발주이력 아작스 요청!!!!!!!!!!");
+		// logger.info("clientSearch :" + clientSearch);
+		
+		int currPage = Integer.parseInt(page);
+		Map<String, Object> map = supportService.purchaseHistory(currPage, cnt);
+		return map;
+	}
+	 */
 	
 	/* 창고 관리로 이동 */
 	@GetMapping("/storageManage.go")

@@ -36,6 +36,8 @@ public interface MessageDAO {
 	void saveProfileImagePath(String originalFilename, String fileName, int idx_emp);
 
 	int sendMessageWithFile(MessageDTO dto);
+
+	int noreadCount(int idx_emp);
 	
 
 	

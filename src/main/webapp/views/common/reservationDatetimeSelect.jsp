@@ -152,13 +152,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">회의실 예약 날짜 및 시간 선택</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400">예약 관리</li>
+              <li class="breadcrumb-item f-w-400 active">날짜 및 시간 선택</li>
             </ol>
           </nav>
         </div>
@@ -221,7 +221,8 @@
 							</a></li>
 						</ul>
 					</div>
-					<!-- jeong : 사이드바 끝 -->					          	
+					<!-- jeong : 사이드바 끝 -->	
+					<!-- [jeong] 예약 내역 테이블 시작 -->				          	
 					<div id="calendar" class="sidebar-left-wrapper" style="padding-right: 24px;"></div>
 					<div style="width: 35%">		
 						<div class="d-flex justify-content-end" style="margin-bottom: 30px;">
@@ -266,7 +267,8 @@
 					        <tr>
 					            <td id="time_18" onClick="timeSelect(18)">오후 6시 ~ 오후 7시</td>
 					        </tr>
-						</table>  		
+						</table>
+						<!-- [jeong] 예약 내역 테이블 끝 -->  		
 					</div>
 	          </div>
           </div>
@@ -354,25 +356,11 @@
             return selectInfo.start >= new Date();
         },
 		events: function(fetchInfo, successCallback, failureCallback) { 
-			// 서버에 모든 일정(이벤트)를 요청하여 캘린더에 반영함
-/* 	        $.ajax({
-	            type: 'GET',
-	            url: '/calendar',
-	            dataType: 'json',
-	            success: function(response) {
-	            	// ajax 통신이 성공하면 모든 일정을 반환한다
-	                successCallback(response.calendarEvents);
-	            },
-	            error: function(error) {
-	                failureCallback(error);
-	                console.log(error);
-	            }
-	        }); */			
+			// 서버에 모든 일정(이벤트)를 요청하여 캘린더에 반영함			
 		},
 		dateClick: function(info) { // 캘린더에서 날짜를 클릭 이벤트
 			// 일정 추가하는 창(모달)을 보여준다
 			// 일정의 시작 날짜, 종료날짜를 선택한 날짜로 설정한다
-			console.log(info.date.getDay());
 			if (info.date <= new Date()) {
 				return;
 			} else if (info.date.getDay() == 0 || info.date.getDay() == 6) {
@@ -417,71 +405,6 @@
 	function dateStrToInt(dateStr) {
 		return parseInt(dateStr.substring(11, 16));
 	}
-	
-/* 	const time = new FullCalendar.Calendar(timeEl, {
-			initialView: 'timeGridDay',
-            headerToolbar: {
-                left: '',
-                center: 'title',
-                right: ''
-            },
-            allDaySlot: false,
-            selectable: true,
-    		dateClick: function(info) {
-    			const time = dateStrToInt(info.dateStr);
-				let timeStr = time.toString().padStart(2, '0') + ":00:00";
-				let timeSlot = document.querySelector('td[data-time="'+ timeStr +'"].fc-timegrid-slot-lane');
-    			if (selectedTime.includes(time) == true) {
-    				const index = selectedTime.indexOf(time);
-    				selectedTime.splice(index, 1);
-
-    				timeSlot.classList.remove('selectedSlot');
-    			} else {
-    				selectedTime.push(time);
-    				timeSlot.classList.add('selectedSlot');
-    			}
-    			let btnEl = document.querySelector('#meetingRoomSelectBtn');
-    			btnEl.style.setProperty('background', '#7a70ba', 'important');
-    			btnEl.style.setProperty('border-color', '#7a70ba', 'important');
-    			isDatetimeSelected = true;
-    		},     
-    		select: function(info) {
-    			// dateClick 이랑 이벤트가 곂쳐서 리턴시킴
-    			if (info.end - info.start == (1000 * 60 * 60)) {
-    				return;
-    			}
-    			// selectedTime.push(dateToTimeStr(info.startStr));
-    			const startTime =  dateStrToInt(info.startStr);
-    			const endTime =  dateStrToInt(info.endStr);
-    			for (let time = startTime; time < endTime; time++) {
-    				if (selectedTime.includes(time) == true) {
-    					continue;
-    				}
-    				selectedTime.push(time);
-    				let timeStr = time.toString().padStart(2, '0') + ":00:00";
-    				let timeSlot = document.querySelector('td[data-time="'+ timeStr +'"].fc-timegrid-slot-lane');
-    				timeSlot.classList.add('selectedSlot');
-        			let btnEl = document.querySelector('#meetingRoomSelectBtn');
-        			btnEl.style.setProperty('background', '#7a70ba', 'important');
-        			btnEl.style.setProperty('border-color', '#7a70ba', 'important');
-    			}
-    			isDatetimeSelected = true;
-    		},
-            titleFormat: function(info) {
-            	if (cnt == 0) {
-            		cnt++;
-            		return '날짜를 선택해주세요'; // 제목을 "날짜를 선택해주세요"로 설정 	
-            	}
-            	return (info.date.month + 1) + '월 ' + info.date.day + '일';
-            },    		
-            height: 'auto',
-            contentHeight: 'auto',
-            locale: 'ko', // 언어를 한글로 변경
-            slotDuration: '01:00:00', // 타임 슬롯을 1시간 단위로 설정
-            slotMinTime: '09:00:00', // 시작 시간
-            slotMaxTime: '19:00:00' // 종료 시간     
-	});
-	time.render(); */
 	
 	function timeSelect(time) {
 		// selectedTime.push(dateToTimeStr(info.startStr));

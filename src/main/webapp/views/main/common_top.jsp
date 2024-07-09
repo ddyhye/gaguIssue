@@ -102,7 +102,8 @@
                     <div class="notification-box">
                       <svg>
                         <use href="/assets/svg/icon-sprite.svg#header-message"></use>
-                      </svg><span class="badge rounded-pill badge-info">3 </span>
+                      </svg>
+                      <span id="unreadBadge" class="badge rounded-pill badge-info" style="display: none;"></span>
                     </div>
                   </a>
                 </li>
@@ -180,6 +181,41 @@
     	    });
     	});
              
+	 
+     $(document).ready(function() {
+    	    // 서버에서 읽지 않은 메시지 수를 가져오는 함수
+    	    function fetchUnreadMessageCount() {
+    	    	let emp_id = "${sessionScope.emp_id}";
+    	        $.ajax({
+    	            url: '/unreadMessageCount', // 실제 API 엔드포인트로 변경
+    	            type: 'GET',
+    	            data: {
+    	            	'emp_id': emp_id
+    	            },
+    	            success: function(response) {
+    	                var unreadCount = response.unreadCount; // 서버에서 반환한 읽지 않은 메시지 수
+    	                
+    	                
+    	                if (unreadCount > 0) {
+    	                    $('#unreadBadge').text(unreadCount).show(); // 배지에 숫자를 설정하고 표시
+    	                } else {
+    	                    $('#unreadBadge').hide(); // 배지를 숨김
+    	                }
+    	            },
+    	            error: function(error) {
+    	                console.error('에러 메시지:', error);
+    	                // 오류 처리
+    	            }
+    	        });
+    	    }
+
+    	    // 페이지 로드 시 읽지 않은 메시지 수를 가져옴
+    	    fetchUnreadMessageCount();
+
+    	    // 필요에 따라 주기적으로 읽지 않은 메시지 수를 업데이트 (선택사항)
+    	    // setInterval(fetchUnreadMessageCount, 60000); // 1분마다 업데이트
+    	});
+	 
      function loadContact(search){
     	 console.log("연락처 불러오기 아작스 요청");
     	 var emp_id = "${sessionScope.emp_id}";

@@ -121,14 +121,14 @@
 				</div>
 			</div>
 			<div class="col-4 col-xl-4 page-title">
-				<h4 class="f-w-700">Default dashboard</h4>
+				<h4 class="f-w-700">기안서 리스트</h4>
 				<nav>
 					<ol
 						class="breadcrumb justify-content-sm-start align-items-center mb-0">
 						<li class="breadcrumb-item"><a href="index.go"> <i
 								data-feather="home"> </i></a></li>
-						<li class="breadcrumb-item f-w-400">Dashboard</li>
-						<li class="breadcrumb-item f-w-400 active">Default</li>
+						<li class="breadcrumb-item f-w-400">전자 결재</li>
+						<li class="breadcrumb-item f-w-400 active">기안서 리스트</li>
 					</ol>
 				</nav>
 			</div>
@@ -155,6 +155,7 @@
 							</div>
 							<hr/>
 						</div>
+						<!-- [jeong] 기안서 리스트 시작 -->
 						<div class="d-flex justify-content-between m-5">
 							<div>
 								<ul class="simple-wrapper nav nav-tabs" id="myTab" role="tablist">
@@ -227,52 +228,18 @@
 												<td colspan="7" style="text-align: center;">조회된 문서가 없습니다.</td>
 											</c:otherwise>
 										</c:choose>
-
-									</tbody>
-<!-- 									<tr class="product-removes">
-										<td>인사팀 김정원 휴가 올립니다.</td>
-										<td>연차 및 휴가 신청서</td>
-										<td>인사팀</td>
-										<td>김정원</td>
-										<td>진행중</td>
-										<td>2024/06/10</td>
-									</tr>
-									<tr class="product-removes">
-										<td>연차 및 휴가 신청서</td>
-									</tr>
-									<tr class="product-removes">
-										<td>연차 및 휴가 신청서</td>
-									</tr> -->																		
+									</tbody>																		
 								</table>
 								<br/>
 								<br/>
-							</div>
-<!-- 							<div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="profile-tabs">
-								<p class="pt-3">
-									결재해야할 문서
-								</p>							
-							</div>
-							<div class="tab-pane fade" id="rejected" role="tabpanel" aria-labelledby="profile-tabs">
-								<p class="pt-3">
-									반려된 문서
-								</p>							
-							</div>
-							<div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="profile-tabs">
-								<p class="pt-3">
-									승인된 문서
-								</p>							
-							</div>
-							<div class="tab-pane fade" id="retracted" role="tabpanel" aria-labelledby="profile-tabs">
-								<p class="pt-3">
-									회수한 문서
-								</p>							
-							</div> -->							
+							</div>						
 						</div>
 						<div class="d-flex justify-content-center">								
 						    <nav aria-label="Page navigation">
 						        <ul class="pagination" id="pagination"></ul>
 						    </nav>
 						</div>
+						<!-- [jeong] 기안서 리스트 끝 -->
 					</div>
 				</div>
 				<!-- Container-fluid Ends-->
@@ -375,9 +342,6 @@
             return new Date(kstTime);
         }
         
-        // var startDate = document.getElementById('startDate').value;
-        // var endDate = document.getElementById('endDate').value;
-        
 		var startflatpickr = flatpickr("#startDate", {
 			locale: "ko",
 			maxDate: "today",
@@ -452,6 +416,7 @@
 			// pagination();
 		});
 		
+		/* [jeong] 페이징 다시 그려내는 함수 */
 		function pagination() {			
 			$('#pagination').twbsPagination('destroy');
 		    $('#pagination').twbsPagination({
@@ -472,16 +437,19 @@
 		    });		
 		}
 	    
+		/* [jeong] 필터링 변경 감지 함수 */
 		function setFilter(category) {
 			filter = category;
 			fetchDocumentList();
 		}
 		
+		/* [jeong] 검색 감지 함수 */
 		function search() {
 			searchKeyword = document.getElementById('searchInput').value;
 			fetchDocumentList();
 		}
 		
+		/* [jeong] 필터링, 페이지, 검색이 처리된 기안서 목록을 요청 */
 		function fetchDocumentList() {
 			// 1. 날짜 필터링
 			// 시작 날짜는 undefined 로 들어오면 모든 과거 내용을 가져와야한다
@@ -522,6 +490,7 @@
 	        searchKeyword = '';
 		}	
 		
+		/* [jeong] 요청 받은 기안서 목록을 그려냄 */
 		function drawDocumentList(data) {
 
 			const documentListTag = document.getElementsByTagName('tbody')[0];
@@ -544,33 +513,6 @@
 			}
 			documentListTag.innerHTML = content;
 		}
-		
-/* 		function searchResultPagination(startpage) {
-			//console.log(choice);
-			$.ajax({
-				type:'post', 
-				url:'/searchResult.ajax',  
-				data:{
-				},
-				dataType:'json',
-				success:function(response){ 
-					drawSearchResultList(response);	
-		            $('#pagination').twbsPagination({
-						startPage:startpage,       //시작페이지
-						totalPages:response.totalPages,    //총 페이지 갯수
-						visiblePages:5, // 보여줄 페이지 수 [1][2][3][4][5] <<이렇게 나옴
-						onPageClick:function(evt, clickPageIdx){
-							// 페이지 이동 번호 클릭시 이벤트 발동
-							searchResultPageIndex = clickPageIdx;
-							searchResultPagination(clickPageIdx);
-						}
-		            });
-				}, 
-				error:function(error){ // 통신 실패 시
-					console.log(error);
-				} 
-			});
-		} */
 	</script>
 </body>
 </html>

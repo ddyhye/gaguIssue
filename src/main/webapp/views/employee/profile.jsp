@@ -47,7 +47,7 @@
 		
 		.profileBackground {
 			height: 65%;
-			background: purple;
+			background: #7a70ba;
 			display: flex;
 			justify-content: center;
 		}
@@ -118,13 +118,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">프로필</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400">회원 서비스</li>
+              <li class="breadcrumb-item f-w-400 active">프로필</li>
             </ol>
           </nav>
         </div>
@@ -143,7 +143,6 @@
           	<div class="profileMain">
           		<div class="profileBackground">
           			<div id="profileImage">
-          				<!-- <img src="/img/user.jpg"/> -->
           				<div id="photoBtn">
           					<i class="fa fa-3x fa-camera"></i>
           					<input class='hidden-file-input' type='file' id='fileInput' style='display: none;'>
@@ -174,14 +173,7 @@
 								<h3>생일</h3>
 							</div>
 							<input class="form-control flatpickr-input form-input" id="birthDate" type="text" value="${employeeInfo.empBirthDate}" onChange="startDateOnChanage()" readonly="readonly">
-						</div>
-<!-- 						<div class="infomation">
-							<div class="d-flex align-items-center">
-								<i class="fa fa-2x fa-comment m-5"></i>
-								<h3>우편함</h3>
-							</div>
-							<a href=""></a><h4>우편함 바로가기</h4>
-						</div>	 -->												
+						</div>												
 						<div class="infomation">
 							<div class="d-flex align-items-center">
 								<i class="fa fa-2x fa-envelope m-5"></i>

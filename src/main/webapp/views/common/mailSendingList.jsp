@@ -7,6 +7,10 @@
     <meta name="description" content="Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="이메일 대시보드">
     <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
     <title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
@@ -38,89 +42,13 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-    .excel_btn{
-	  background-color: #0ab414 !important;
-	  border-color: #0ab414 !important;
-	}
-	
-	    #rsvList {
-		background: white;
-		height: 85%;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-		padding: 30px;
-	}
-	
-	#rsvTable {
-		height: 95%;
-	}
-	
-	#rsvTitle {
-		font-weight: bold;
-	}
-	
-	#rsvList table th {
-		background: #f4f7f9;
-		opacity: 0.9;
-	}
-	
-	#rsvList table {
-		text-align: center;
-	}
-	
-	#rsvList table th:first-child {
-		border-top-left-radius: 10px; /* 왼쪽 상단 모서리 둥글게 */
-	}
-	
-	#rsvList table th:last-child {
-		border-top-right-radius: 10px; /* 오른쪽 상단 모서리 둥글게 */
-	}
-	
-	#rsvList table tr:last-child td:first-child {
-		border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
-	}
-	
-	#rsvList table tr:last-child td:last-child {
-		border-bottom-right-radius: 10px; /* 오른쪽 하단 모서리 둥글게 */
-	}
-	table #checkbox{
-		width: 1px;
-	}
-	.client-details p {
-        font-size: 18px;
-    }
-	.client-details table {
-        width: 100%;
-        margin-bottom: 20px;
-        border-collapse: collapse; /* 변경: separate -> collapse */
-    }
-    .client-details td, .client-details th {
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #dee2e6; /* 테두리 설정 */
-    }
-    .client-details th {
-        font-weight: bold;
-    }
-    .client-details td:first-child,
-    .client-details td:nth-child(odd) {
-        background-color: #f8f9fa;
-    }
-    .client-details tr:first-child td:first-child {
-        border-top-left-radius: 10px;
-    }
-    .client-details tr:first-child td:last-child {
-        border-top-right-radius: 10px;
-    }
-    .client-details tr:last-child td:first-child {
-        border-bottom-left-radius: 10px;
-    }
-    .client-details tr:last-child td:last-child {
-        border-bottom-right-radius: 10px;
-    }
-    .excel_btn {
-   	    margin-bottom: 14px;
-    }
+        /* 스타일링 추가 */
+        .email-list .table th, .email-list .table td {
+            text-align: center;
+        }
     </style>
   </head>
   <body> 
@@ -142,14 +70,12 @@
           <div class="logo-wrapper"><a href="index.go"><img class="img-fluid for-light" src="/assets/images/logo/logo.png" alt=""/><img class="img-fluid for-dark" src="/assets/images/logo/logo_light.png" alt=""/></a></div>
         </div>
         <div class="col-4 col-xl-4 page-title">
-          <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">거래처 상세정보</h4>
+          <h4 class="f-w-700">Default dashboard</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-              <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">거래처 관리</li>
-              <li class="breadcrumb-item f-w-400 active">거래처 상세정보</li>
+              <li class="breadcrumb-item f-w-400">Dashboard</li>
+              <li class="breadcrumb-item f-w-400 active">Default</li>
             </ol>
           </nav>
         </div>
@@ -166,88 +92,82 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
           <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
-          	<div id="rsvList">
-						<div id="rsvTable">
-        <h1 id="rsvTitle">${client.client_name}</h1>
-        <hr/>
-        <div class="container">
-            <div class="client-details">
-			    <table class="table table-bordered">
-			        <tbody>
-			            <tr>
-			                <td>유형</td>
-			                <td id="clientType">${client.client_type}</td>
-			                <td>대표자명</td>
-			                <td id="clientRep">${client.ceo_name}</td>
-			            </tr>
-			            <tr>
-			                <td>연락처</td>
-			                <td id="clientContact">${client.client_phone_num}</td>
-			                <td>주소</td>
-			                <td id="clientAddress">${client.address}</td>
-			            </tr>
-			            <tr>
-			                <td>사업자 번호</td>
-			                <td id="clientBizNo">${client.idx_business}</td>
-			                <td>기타</td>
-			                <td id="clientEtc">${client.etc}</td>
-			            </tr>
-			        </tbody>
-			    </table>
-			</div>
+		    <!-- 상단 네비게이션 바 -->
+		    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		        <div class="container-fluid">
+		            <a class="navbar-brand" href="#">나의 이메일</a>
+		            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+		                    <li class="nav-item">
+		                        <a class="nav-link active" aria-current="page" href="#">받은 메일</a>
+		                    </li>
+		                    <li class="nav-item">
+		                        <a class="nav-link" href="#">안 읽은 메일</a>
+		                    </li>
+		                    <li class="nav-item">
+		                        <a class="nav-link" href="#">보낸 메일</a>
+		                    </li>
+		                </ul>
+		                <!-- 연도 및 월 선택 옵션 -->
+		                <form class="d-flex">
+		                    <select class="form-select" aria-label="연도 선택">
+		                        <option selected>연도 선택</option>
+		                        <option value="2023">2024</option>
+		                        <option value="2023">2023</option>
+		                        <option value="2022">2022</option>
+		                        <option value="2021">2021</option>
+		                    </select>
+		                    <select class="form-select" aria-label="월 선택">
+		                        <option selected>월 선택</option>
+		                        <option value="1">1월</option>
+		                        <option value="2">2월</option>
+		                        <option value="3">3월</option>
+		                        <option value="3">4월</option>
+		                        <option value="3">5월</option>
+		                        <option value="3">6월</option>
+		                        <option value="3">7월</option>
+		                        <option value="3">8월</option>
+		                        <option value="3">9월</option>
+		                        <option value="3">10월</option>
+		                        <option value="3">11월</option>
+		                        <option value="3">12월</option>
+		                    </select>
+		                </form>
+		            </div>
+		        </div>
+		    </nav>
+		
+		    <!-- 이메일 리스트 테이블 -->
+		    <div class="container mt-4">
+		        <div class="card">
+		            <div class="card-header">
+		                이메일 목록
+		            </div>
+		            <div class="card-body">
+		                <div class="table-responsive">
+		                    <table class="table table-bordered">
+		                    <thead>
+		                        <tr>
+		                            <th>From</th>
+		                            <th>Title</th>
+		                            <th>Content</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                        <c:forEach var="mail" items="${mailList}">
+		                            <tr>
+		                                <td>${mail.from}</td>
+		                                <td>${mail.title}</td>
+		                                <td>${mail.content}</td>
+		                            </tr>
+		                        </c:forEach>
+		                    </tbody>
+		                </table>
+		                </div>
+		            </div>
+		            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         </div>
-        <hr/>
-        <div id = "excel_btn">
-        <a class="btn btn-primary excel_btn" href="#" onclick="excel_btn()"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;엑셀로 받기</a>
-        </div>
-        
-        
-        <table class="table table-striped rsv-list-table">
-            <thead>
-            <c:choose>
-			    <c:when test="${client.client_type eq '발주처'}">
-			        <tr>
-			            <th>발주번호</th>
-			            <th>품 명</th>
-			            <th>상품번호</th>
-			            <th>단가(원)</th>
-			            <th>총 금액(원)</th>
-			            <th>발주일</th>
-			            <th>발주 상태</th>
-			        </tr>
-			    </c:when>
-			    <c:when test="${client.client_type eq '수주처'}">
-			        <tr>
-			            <th>주문번호</th>
-			            <th>품 명</th>
-			            <th>상품번호</th>
-			            <th>단가(원)</th>
-			            <th>총 금액(원)</th>
-			            <th>출고일</th>
-			            <th>출고 상태</th>
-			        </tr>
-			    </c:when>
-			    <c:otherwise>
-			        <!-- 기본적인 테이블 구조나 오류 처리 등 -->
-			    </c:otherwise>
-			</c:choose>
-            </thead>
-            <tbody class="client-transaction">
-                <!-- 데이터 행은 여기 추가됩니다. -->
-            </tbody>
-        </table>
-        </br>
-        <div class="d-flex justify-content-center">                                
-            <nav aria-label="Page navigation">
-                <ul class="pagination" id="pagination"></ul>
-            </nav>
-        </div>                      
     </div>
-					</div>
-          
-          
-          
-          
           </div>
           <!-- Container-fluid Ends-->
         </div>
@@ -310,72 +230,7 @@
     <script src="/assets/js/script.js"></script>
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
-    <!-- pagination js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
   </body>
-  
-  <script>
-  var showPage = 1;
-  var search = '';
-  $(document).ready(function(){ // html 문서가 모두 읽히면 되면(준비되면) 다음 내용을 실행 해라
-  	   listCall(showPage);
-  });
-  
-/*   
-  // JSP 변수를 JavaScript 변수로 전달
-  var idxBusiness = "${client.idx_business}";
-
-  // 콘솔에 출력하여 확인
-  console.log("idxBusiness: ", idxBusiness);
- */
- 
-	var urlParams = new URLSearchParams(window.location.search);
-	var idxBusiness = urlParams.get('idx_business');
- 
-	console.log(idxBusiness);
-   function listCall(page, search){
-		
-	    $.ajax({
-	       type:'get',
-	       url:'/purchase_history',
-	       data:{
-	          'page':page,
-	          'cnt':5
-	       },
-	       dataType:'json',
-	       success:function(data){
-		    	
-	          drawList(data.list);
-	          console.log(data);
-	          console.log("총 페이지수 :",data.totalPages);
-	          
-	          //플러그인 추가
-	          var startPage = data.currPage > data.totalPages? data.totalPages : data.currPage;
-	          
-	          $('#pagination').twbsPagination({
-	        	  startPage:startPage, //시작페이지
-	        	  totalPages:data.totalPages, //총 페이지 갯수
-	        	  visiblePages:5, //보여줄 페이지 수 [1][2][3][4][5]
-	        	  first: '<<', 
-	        	  prev: '<',
-	  	          next: '>', 
-	  	          last: '>>',
-	         	  onPageClick:function(evt, pg){//페이지 클릭시 실행 함수
-	        		  console.log(evt); // 이벤트 객체
-	        		  console.log(pg); //클릭한 페이지 번호
-	        		  listCall(pg, clientSearch);
-	        	  }
-	          });
-	       },
-	       error: function(request, status, error) {
-	           console.log("code: " + request.status)
-	           console.log("message: " + request.responseText)
-	           console.log("error: " + error);
-	       }
-	    });
-	} 
-  
-  </script>
 </html>
