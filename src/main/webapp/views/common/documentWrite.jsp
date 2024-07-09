@@ -1,72 +1,44 @@
-<%@ page language='java' contentType='text/html; charset=UTF-8'
-	pageEncoding='UTF-8'%><%@ taglib prefix='c'
-	uri='http://java.sun.com/jsp/jstl/core'%><html>
+<%@ page language='java' contentType='text/html; charset=UTF-8' pageEncoding='UTF-8'%><%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%><html>
 <html lang='ko'>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<meta name='description'
-	content='Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.'>
-<meta name='keywords'
-	content='admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app'>
+<meta name='description' content='Mofi admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.'>
+<meta name='keywords' content='admin template, Mofi admin template, dashboard template, flat admin template, responsive admin template, web app'>
 <meta name='author' content='pixelstrap'>
 <link rel='icon' href='/assets/images/favicon.png' type='image/x-icon'>
-<link rel='shortcut icon' href='/assets/images/favicon.png'
-	type='image/x-icon'>
-<title>Default Dashboard | Mofi - Premium Admin Template By
-	Pixelstrap</title>
+<link rel='shortcut icon' href='/assets/images/favicon.png' type='image/x-icon'>
+<title>Default Dashboard | Mofi - Premium Admin Template By Pixelstrap</title>
 <!-- Google font-->
 <link rel='preconnect' href='https://fonts.googleapis.com'>
 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin=''>
-<link
-	href='https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap'
-	rel='stylesheet'>
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/font-awesome.css'/>'>
+<link href='https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&amp;display=swap' rel='stylesheet'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/font-awesome.css'/>'>
 <!-- ico-font-->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/icofont.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/icofont.css'/>'>
 <!-- Themify icon-->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/themify.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/themify.css'/>'>
 <!-- Flag icon-->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/flag-icon.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/flag-icon.css'/>'>
 <!-- Feather icon-->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/feather-icon.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/feather-icon.css'/>'>
 <!-- Plugins css start-->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/slick.css'/>'>
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/slick-theme.css'/>'>
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/scrollbar.css'/>'>
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/animate.css'/>'>
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/datatables.css'/>'>
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/slick.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/slick-theme.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/scrollbar.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/animate.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/datatables.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>'>
 <!-- Plugins css Ends-->
 <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
 <!-- Bootstrap -->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/vendors/bootstrap.css'/>'>
-<link
-	href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'
-	rel='stylesheet'>
-<script
-	src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'></script>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/vendors/bootstrap.css'/>'>
 <!-- App css-->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/style.css'/>'>
-<link id='color' rel='stylesheet'
-	href='<c:url value='/assets/css/color-1.css'/>' media='screen'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/style.css'/>'>
+<link id='color' rel='stylesheet' href='<c:url value='/assets/css/color-1.css'/>' media='screen'>
 <!-- Responsive css-->
-<link rel='stylesheet' type='text/css'
-	href='<c:url value='/assets/css/responsive.css'/>'>
+<link rel='stylesheet' type='text/css' href='<c:url value='/assets/css/responsive.css'/>'>
 <!-- jsTree theme -->
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css' />
 <style>
@@ -114,27 +86,32 @@ iframe {
 	background: white;
 	align-items: center;
 }
+
 .upload-box span {
 	font-size: 12px;
 }
+
 #jstree {
 	overflow-y: auto;
 	max-height: 300px;
 	height: 290px;
 	border: 1px solid #ccc;
 }
+
 #approvalLine {
 	font-family: outfit;
 	font-size: 15px;
 	text-align: center;
 	border: 1px #dbdbdb solid;
 }
+
 .approvalHr {
 	color: #000000;
 	background: #F4F4F4;
 	font-weight: bold;
 	border: 1.5px #dbdbdb solid;
 }
+
 #writer {
 	color: #aeaeae;
 }
@@ -142,9 +119,11 @@ iframe {
 #approvalLineHeader {
 	font-size: 18px;
 }
-.no-checkbox > .jstree-checkbox {
+
+.no-checkbox>.jstree-checkbox {
 	display: none;
 }
+
 .seectionBorder {
 	width: 100%;
 	border: 1px solid black;
@@ -170,22 +149,18 @@ iframe {
 		<div class='page-header row'>
 			<div class='header-logo-wrapper col-auto'>
 				<div class='logo-wrapper'>
-					<a href='/index.go'> <img class='img-fluid for-light'
-						src='/assets/images/logo/logo.png' alt='' /> <img
-						class='img-fluid for-dark'
-						src='/assets/images/logo/logo_light.png' alt='' />
+					<a href='/index.go'> <img class='img-fluid for-light' src='/assets/images/logo/logo.png' alt='' /> <img class='img-fluid for-dark' src='/assets/images/logo/logo_light.png' alt='' />
 					</a>
 				</div>
 			</div>
 			<div class='col-4 col-xl-4 page-title'>
-				<h4 class='f-w-700'>Default dashboard</h4>
+				<h4 class='f-w-700'>기안서 작성</h4>
 				<nav>
-					<ol
-						class='breadcrumb justify-content-sm-start align-items-center mb-0'>
-						<li class='breadcrumb-item'><a href='index.go'> <i
-								data-feather='home'> </i></a></li>
-						<li class='breadcrumb-item f-w-400'>Dashboard</li>
-						<li class='breadcrumb-item f-w-400 active'>Default</li>
+					<ol class='breadcrumb justify-content-sm-start align-items-center mb-0'>
+						<li class='breadcrumb-item'><a href='index.go'> <i data-feather='home'> </i></a></li>
+						<li class='breadcrumb-item f-w-400'>전자 결재</li>
+						<li class='breadcrumb-item f-w-400'>양식 선택</li>
+						<li class='breadcrumb-item f-w-400 active'>작성 및 파일 첨부</li>
 					</ol>
 				</nav>
 			</div>
@@ -203,16 +178,13 @@ iframe {
 				<div class='container-fluid default-dashboard'>
 					<div class='row h-100 w-100'>
 						<!-- jeong : 사이드바 시작 -->
-						<div class='col-2 sidebar-left-wrapper'
-							style='padding-right: 24px;'>
-							<ul class='sidebar-left-icons nav nav-pills'
-								id='add-product-pills-tab' role='tablist'>
+						<div class='col-2 sidebar-left-wrapper' style='padding-right: 24px;'>
+							<ul class='sidebar-left-icons nav nav-pills' id='add-product-pills-tab' role='tablist'>
 								<li class='nav-item'><a class='nav-link'>
 										<div class='nav-rounded'>
 											<div class='product-icons'>
 												<svg class='stroke-icon'>
-                                    			<use
-														href='/assets/svg/icon-sprite.svg#product-detail'></use>
+                                    			<use href='/assets/svg/icon-sprite.svg#product-detail'></use>
                                   			</svg>
 											</div>
 										</div>
@@ -224,8 +196,7 @@ iframe {
 										<div class='nav-rounded'>
 											<div class='product-icons'>
 												<svg class='stroke-icon'>
-                                    			<use
-														href='/assets/svg/icon-sprite.svg#pencil'></use>
+                                    			<use href='/assets/svg/icon-sprite.svg#pencil'></use>
                                   			</svg>
 											</div>
 										</div>
@@ -237,8 +208,7 @@ iframe {
 										<div class='nav-rounded'>
 											<div class='product-icons'>
 												<svg class='stroke-icon'>
-                                    			<use
-														href='/assets/svg/icon-sprite.svg#fill-user'></use>
+                                    			<use href='/assets/svg/icon-sprite.svg#fill-user'></use>
                                   			</svg>
 											</div>
 										</div>
@@ -250,8 +220,7 @@ iframe {
 										<div class='nav-rounded'>
 											<div class='product-icons'>
 												<svg class='stroke-icon'>
-                                    			<use
-														href='/assets/svg/icon-sprite.svg#orders'> </use>
+                                    			<use href='/assets/svg/icon-sprite.svg#orders'> </use>
                                   			</svg>
 											</div>
 										</div>
@@ -268,24 +237,18 @@ iframe {
 							<div class='row'>
 								<div class='col-1'></div>
 								<div class='col-10'>
-									<div id='submit'
-										style='display: flex; justify-content: end; padding: 5px;'>
+									<div id='submit' style='display: flex; justify-content: end; padding: 5px;'>
 										<!-- <button class='btn btn-primary ripple-button' style='cursor: default;margin-right: 10px;cursor: pointer;'>결재자 지정</button> -->
-										<button type='button' class='btn btn-primary'
-											style='margin-right: 20px;' data-toggle='modal'
-											data-target='#approverModal'>결재자 지정</button>
-										<button class='btn btn-primary ripple-button' id="confirmBtn"
-											style='background: gray !important; border-color: gray !important; cursor: default;'
-											onclick='documentWrite()'>작성 완료</button>
+										<button type='button' class='btn btn-primary' style='margin-right: 20px;' data-toggle='modal' data-target='#approverModal' onClick="approverModalOpen()">결재자 지정</button>
+										<button class='btn btn-primary ripple-button' id="confirmBtn" style='background: gray !important; border-color: gray !important; cursor: default;' onclick='documentWrite()'>작성 완료</button>
 									</div>
 									<br />
-									<div class='row'
-										style='display: flex; flex-direction: column; align-items: center;'>
-										<div style="width: 80%;margin-bottom: 10px;">
-					                        <label class="form-label">문서 제목</label>
-					                        <input class="form-control" id="documentTtile" type="text" placeholder="문서의 제목을 입력해주세요." required="">								
+									<div class='row' style='display: flex; flex-direction: column; align-items: center;'>
+										<div style="width: 80%; margin-bottom: 10px;">
+											<label class="form-label">문서 제목</label>
+											<input class="form-control" id="documentTtile" type="text" placeholder="문서의 제목을 입력해주세요." required="">
 										</div>
-										<div id='form' class='row'>		
+										<div id='form' class='row'>
 											<iframe id='form-document' src='/file/${formSrc}'></iframe>
 										</div>
 									</div>
@@ -293,12 +256,10 @@ iframe {
 										<section id='ex9'>
 											<div class='upload-box'>
 												<p style='font-size: 1.5rem; margin-bottom: 0rem;'>
-													이 곳에 파일을 드래그 하세요. 또는 <a id='fileSelectLink'
-														style='font-size: 1.5rem; text-decoration: underline; cursor: pointer;'>파일선택</a>
+													이 곳에 파일을 드래그 하세요. 또는 <a id='fileSelectLink' style='font-size: 1.5rem; text-decoration: underline; cursor: pointer;'>파일선택</a>
 												</p>
 											</div>
-											<input class='hidden-file-input' type='file' id='fileInput'
-												style='display: none;' multiple>
+											<input class='hidden-file-input' type='file' id='fileInput' style='display: none;' multiple>
 										</section>
 									</div>
 								</div>
@@ -314,17 +275,14 @@ iframe {
 			<footer class='footer'>
 				<div class='container-fluid'>
 					<div class='row'>
-						<div
-							class='col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between'>
+						<div class='col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between'>
 							<p class='mb-0 f-w-600'>
-								Copyright <span class='year-update'> </span> Â© Mofi theme by
-								pixelstrap
+								Copyright <span class='year-update'> </span> Â© Mofi theme by pixelstrap
 							</p>
 							<p class='mb-0 f-w-600'>
 								Hand crafted & made with
 								<svg class='footer-icon'>
-                    				<use
-										href='/assets/svg/icon-sprite.svg#footer-heart'> </use>
+                    				<use href='/assets/svg/icon-sprite.svg#footer-heart'> </use>
                   				</svg>
 							</p>
 						</div>
@@ -334,36 +292,33 @@ iframe {
 			<!-- footer end-->
 		</div>
 		<!-- [jeong] : 결재재 지정 모달 시작 -->
-		<div class='modal fade' id="approverModal" role='dialog'>
-			<div class='modal-dialog' role='document' style="top: 10%;height: 525px;max-width: 1200px;">
+		<div class="modal" tabindex="-1" id="approverModal" role="dialog">
+			<div class='modal-dialog' role='document' style="top: 10%; height: 525px; max-width: 1200px;">
 				<div class='modal-content' style="height: 100%">
 					<div class='modal-header'>
 						<h5 class='modal-title' id='approverModalLabel'>결재자 지정</h5>
-						<button type='button' class='close' data-dismiss='modal'
-							aria-label='Close'>
+						<button type='button' class='close' data-dismiss='modal' aria-label='Close' onClick="approverModalClose()">
 							<span aria-hidden='true'>&times;</span>
 						</button>
 					</div>
-					<div class='modal-body' style='display: flex;height: 80%'>
+					<div class='modal-body' style='display: flex; height: 80%'>
 						<!-- 결재자 목록 -->
 						<div class='col-4'>
 							<h5 style="font-weight: bold;">조직도</h5>
-							<section class="seectionBorder">							
-								<div id='jstree'>
-									
-								</div>
+							<section class="seectionBorder">
+								<div id='jstree'></div>
 							</section>
 							<input type="text" id="searchInput" placeholder="직원 이름을 검색하세요." style="margin-top: 5px; width: 100%">
 						</div>
 						<!-- 버튼 -->
-						<div class="col-1 d-flex flex-column align-items-center justify-content-center">
-							<button type='button' class='btn btn-primary' onClick="approvalAdd()" style="width:100px;">추가</button>
-							<button type='button' class='btn btn-primary' onClick="approvalRemove()" style="width:100px;margin-top: 10px;">제외</button>
+						<div class="d-flex flex-column align-items-center justify-content-center" style="padding: 10px;">
+							<button type='button' class='btn btn-primary btn-sm' onClick="approvalAdd()" style="width: 85px;">추가</button>
+							<button type='button' class='btn btn-primary btn-sm' onClick="approvalRemove()" style="width: 85px; margin-top: 10px;">제외</button>
 						</div>
 						<!-- 결재라인 -->
 						<div class='col-7'>
 							<h5 style="font-weight: bold;">결재 순서</h5>
-							<section class="seectionBorder"style="height: 325px;">	
+							<section class="seectionBorder" style="height: 325px;">
 								<table id='approvalLine' style='width: 100%'>
 									<tr id='approvalLineHeader'>
 										<td style='width: 15%'>순서</td>
@@ -390,7 +345,7 @@ iframe {
 						</div>
 					</div>
 					<div class='modal-footer' style="padding-top: 7px;">
-						<button type='button' class='btn btn-secondary'data-dismiss='modal' onclick='resetApprover()'>취소</button>
+						<button type='button' class='btn btn-secondary' data-dismiss='modal' onclick='resetApprover()'>취소</button>
 						<button type='button' class='btn btn-primary' data-dismiss='modal' onclick='assignApprover()'>확인</button>
 					</div>
 				</div>
@@ -398,6 +353,8 @@ iframe {
 		</div>
 		<!-- [jeong] : 결재재 지정 모달 끝 -->
 	</div>
+	<!-- latest jquery-->
+	<script src="/assets/js/jquery.min.js"></script>
 	<!-- Bootstrap js-->
 	<script src='/assets/js/bootstrap/bootstrap.bundle.min.js'></script>
 	<!-- feather icon js-->
@@ -418,17 +375,34 @@ iframe {
 	<script src='/assets/js/chart/apex-chart/stock-prices.js'></script>
 	<script src='/assets/js/chart/apex-chart/moment.min.js'></script>
 	<script src='/assets/js/notify/bootstrap-notify.min.js'></script>
+	<!-- calendar js-->
+	<script src="/assets/js/dashboard/default.js"></script>
+	<script src="/assets/js/notify/index.js"></script>
+	<script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
+	<script src="/assets/js/datatable/datatables/datatable.custom.js"></script>
+	<script src="/assets/js/datatable/datatables/datatable.custom1.js"></script>
+	<script src="/assets/js/datepicker/date-range-picker/moment.min.js"></script>
+	<script src="/assets/js/datepicker/date-range-picker/datepicker-range-custom.js"></script>
+	<script src="/assets/js/typeahead/handlebars.js"></script>
+	<script src="/assets/js/typeahead/typeahead.bundle.js"></script>
+	<script src="/assets/js/typeahead/typeahead.custom.js"></script>
+	<script src="/assets/js/typeahead-search/handlebars.js"></script>
+	<script src="/assets/js/typeahead-search/typeahead-custom.js"></script>
+	<script src="/assets/js/height-equal.js"></script>
+	<script src="/assets/js/animation/wow/wow.min.js"></script>
 	<!-- Plugins JS Ends-->
 	<!-- Theme js-->
 	<script src='/assets/js/script.js'></script>
 	<script src='/assets/js/script1.js'></script>
+	<script src="/assets/js/theme-customizer/customizer.js"></script>
+	<!-- Plugin used-->
 	<!-- Sweetalert js -->
 	<script src='/assets/js/sweet-alert/sweetalert.min.js'></script>
 	<!-- JsTree -->
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js'></script>
 	<!-- font-awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-	
+
 	<script>
 		/* [jeong] 헤더와 page-body 의 간격이 벌어져서 스크립트로 맞춤 */
 /* 	    var pageHeader = document.querySelector('.page-header');
@@ -455,7 +429,7 @@ iframe {
             }
         }
     </script>
-    <script>
+	<script>
    		/* [jeong] 조직도 불러오기 */
    		var selectedEmp = 0;
    		var approvalLine = [];
@@ -537,6 +511,14 @@ iframe {
 			}
 		}
 		
+		function approverModalOpen() {
+			$('#approverModal').modal('show');
+		}
+		
+		function approverModalClose() {
+			$('#approverModal').modal('hide');
+		}
+		
 		/* [jeong] approvalLine 에 저장된 결재라인을 그려주는 함수 */
 		function drawApprovalTable() {
 			let content = '';
@@ -574,6 +556,7 @@ iframe {
 		
 		/* [jeong] 결재자 지정 모달에서 취소버튼을 누르면 결재 라인을 비운다 */
 		function resetApprover() {
+			$('#approverModal').modal('hide');
 			approvalLine = [];
 			confirmApprovalLine = [];
 			drawApprovalTable();
@@ -586,6 +569,7 @@ iframe {
 		
 		/* [jeong] 결재자 지정 모달에서 확인 버튼을 누르면 결재자 지정이 완료된다 */
     	function assignApprover() {
+    		$('#approverModal').modal('hide');
     		if (approvalLine.length == 0) {
     			Swal.fire('최소 한명의 결재자를 지정해야합니다.');
     			return;
@@ -606,7 +590,7 @@ iframe {
 	<script>
 		/* [jeong] 서버에게 문서, 결재자 정보들을 묶어서 결재(문서)를 요청 */
 	    function documentWrite() {
-	    	const documentTtile = document.getElementById('documentTtile').value;
+			const documentTtile = document.getElementById('documentTtile').value;
 			if (approvalStatus == false) {
 				Swal.fire('결재자 지정을 먼저 해야합니다.');
 				return;
@@ -614,6 +598,7 @@ iframe {
 				Swal.fire('문서의 제목을 입력 해야합니다.');
 				return;
 			}
+            
 			
 	    	// 작성한 내용은 담은 iframe 요소를 가져온다
 	        const iframe = document.getElementById('form-document');

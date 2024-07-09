@@ -84,6 +84,8 @@ public interface EmployeeDAO {
 
 	int getTotalPages(String selectedDepartment);
 
+	EmployeeDTO getEmployeeProfile(int selectedIdxEmployee);
+
 
 }
 
