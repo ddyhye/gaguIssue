@@ -238,7 +238,7 @@ public class EmployeeService {
 	/* [jeong] 프로필 사진 변경 */
 	public Map<String, Object> uploadProfileImage(int idxEmployee, MultipartFile uploadProfileFile) {
 		var response = new HashMap<String, Object>();
-		String profileImageName = fm.saveFile(uploadProfileFile, "profile");
+		String profileImageName = fm.saveFile(uploadProfileFile, "profile_picture");
 		int idxFile = dao.isProfileImage(idxEmployee);
 		if (idxFile != 0) {
 			dao.updateProfileImage(idxFile, idxEmployee, profileImageName);
