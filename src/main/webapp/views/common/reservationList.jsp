@@ -128,13 +128,13 @@
 			</div>
 			<div class="col-4 col-xl-4 page-title">
 				<!-- do: 페이지명 변경 -->
-				<h4 class="f-w-700">Default dashboard</h4>
+				<h4 class="f-w-700">예약 내역</h4>
 				<nav>
 					<ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
 						<li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
 						<!-- do: 경로명 변경 -->
-						<li class="breadcrumb-item f-w-400">Dashboard</li>
-						<li class="breadcrumb-item f-w-400 active">Default</li>
+						<li class="breadcrumb-item f-w-400">예약 관리</li>
+						<li class="breadcrumb-item f-w-400 active">회의실 예약 내역</li>
 					</ol>
 				</nav>
 			</div>
@@ -180,10 +180,6 @@
 													<c:choose>
 														<c:when test="${item.rsvStatus == '예약완료'}">
 															<td>
-																<%-- 															<form action="/reservation/cancel.do" method="POST">
-																	<input type="hidden" name="idxReservation" value="${item.idxReservation}">													
-																	<button class="btn btn-primary btn-xs">예약취소</button>
-																</form> --%>
 																<button class="btn btn-primary btn-xs" onClick="cancel(${item.idxReservation})">예약취소</button>
 															</td>
 														</c:when>

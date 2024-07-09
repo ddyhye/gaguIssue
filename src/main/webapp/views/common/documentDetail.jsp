@@ -435,6 +435,7 @@ table img {
 		new WOW().init();
 	</script>
 	<script>
+		/* [jeong] 모달 열고 닫기 */
 		function approvalModalOpen() {
 			$('#approvalModal').modal("show");
 		}
@@ -482,6 +483,7 @@ table img {
 			signaturePad.clear();
 		}
 		
+		/* [jeong] 문서 회수 처리 요청 */
 		function retract() {
 			rejectCommentModalClose();
 	        fetch('/document/retract.do', {
@@ -495,6 +497,7 @@ table img {
 	        .catch(error => console.error('Error:', error));			
 		}
 		
+		/* [jeong] 문서 반려 처리 요청 */
 		function reject() {
 			rejectModalClose();
 			const data = new FormData();
@@ -514,6 +517,7 @@ table img {
 	        .catch(error => console.error('Error:', error));			
 		}
 		
+		/* [jeong] 해당 문서 승인 처리 요청 */
 		function approval() {
 			// const signatureImage = new Blob([signaturePad.toDataURL('image/png')], {type: 'image/png'});
 			// 시그니처 이미지를 데이터 URL로 변환
@@ -559,6 +563,7 @@ table img {
 		}
 	</script>
 	<script>
+	/* [jeong] pdf 파일 다운로드 */
 	function downloadPDF() {
 	    const element = document.getElementById('form-document'); // PDF로 변환하고자 하는 HTML 요소를 선택합니다. 예: document.getElementById('your-element-id')
 		console.log(element);

@@ -358,7 +358,7 @@ public class EmployeeController {
 		return employeeService.getGroup(idxEmployee);	
 	}
 	
-	/* [jeong] 조직도 페이지로 이동 */
+	/* [jeong] 조직도 데이터 요청 */
 	@PostMapping(value = "/employee/group.do")
 	@ResponseBody
 	public Map<String,Object> groupDo(HttpSession session
