@@ -53,6 +53,8 @@ public interface HRDepartmentDAO {
 
 	int getIdxFile(int idx_employee);
 
+	void updateAttendanceOfAllEmployees(Integer idx_employee, String ah_status,Integer idx_attendance);
+
 
 	
 

@@ -275,6 +275,10 @@ public class HRDepartmentService {
 			}
 			
 		}
+
+		public void updateAttendanceOfAllEmployees(Integer idx_employee, String ah_status,Integer idx_attendance) {
+			hrDepartmentDao.updateAttendanceOfAllEmployees(idx_employee,ah_status,idx_attendance);
+		}
 	
 	
 	

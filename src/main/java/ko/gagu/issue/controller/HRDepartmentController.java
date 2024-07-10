@@ -155,6 +155,15 @@ public class HRDepartmentController {
 		return map;
 	}
 	
+	@PostMapping(value="/hrdepartment/updateAttendanceOfAllEmployees.ajax")
+	@ResponseBody
+	public void updateAttendanceOfAllEmployees(Integer idx_employee, String ah_status, Integer idx_attendance){
+		logger.info("idx_employee : {}",idx_employee);
+		logger.info("ah_status : {}",ah_status);
+		logger.info("idx_attendance, {}",idx_attendance);
+		hrDepartmentService.updateAttendanceOfAllEmployees(idx_employee,ah_status,idx_attendance);
+	}
+	
 	
 	
 	@GetMapping(value="/employeeManage.go")

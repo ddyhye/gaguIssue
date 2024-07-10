@@ -131,7 +131,7 @@
 				            </td>
 				        </tr>
 				    </table>
-				    <button type="submit" class="btn btn-default">발송</button>
+				    <button type="submit" class="btn btn-default" onclick="">발송</button>
 				</form>
 
 				 

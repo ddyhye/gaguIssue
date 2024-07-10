@@ -232,5 +232,12 @@
 		ORDER BY ah.idx_employee DESC
 	</select>
 	
+	<update id="updateAttendanceOfAllEmployees">
+		UPDATE attendance_history_tb SET 
+			ah_status =#{param2}
+		WHERE idx_employee =#{param1}
+		AND idx_attendance=#{param3}
+	</update>
+	
 	
 </mapper>
