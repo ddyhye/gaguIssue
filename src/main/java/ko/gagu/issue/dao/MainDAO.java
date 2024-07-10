@@ -77,4 +77,10 @@ public interface MainDAO {
 	String getDename(int idx_employee);
 
 	List<EmployeeDTO> getOrganization(int idx_employee, int i);
+
+	List<Integer> getempLeaveHistoryDoc2(int idx_employee);
+
+	String getempLeaveHistoryFileName(Integer integer);
+
+	List<Integer> getempLeaveHistoryDoc(int idxEmployee);
 }

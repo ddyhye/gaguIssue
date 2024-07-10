@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -209,8 +210,20 @@ public class MainService {
 		mav.addObject("leave_days", empLdto.getLeave_days());
 		mav.addObject("usage_days", empLdto.getUsage_days());
 		
-		// 리스트
+		// 리스트 (연차 내용)
 		List<Leave_usage_tbDTO> empLhistory = mainDao.getempLeaveHistory2(emp.getIdx_employee());
+		// 리스트 (연차 신청서 번호)
+		List<Integer> docList = mainDao.getempLeaveHistoryDoc2(emp.getIdx_employee());
+		// 연차내역 dto에 파일명 설정
+		int i = 0;
+		if (docList.size() != 0) {
+				for (Leave_usage_tbDTO dto : empLhistory) {
+					String file_name = mainDao.getempLeaveHistoryFileName(docList.get(i));
+					dto.setFile_name(file_name);
+					i++;
+				}
+		}
+		
 		int totalPages = mainDao.getFilterTotalPages2(emp.getIdx_employee());
 		
 		mav.addObject("empLhistory", empLhistory);
@@ -244,7 +257,18 @@ public class MainService {
 			paging.setPage(paging.getPage());
 		}
 		
+		// 리스트 (내용)
 		List<Leave_usage_tbDTO> empLhistory = mainDao.fetchFilterList(paging, idxEmployee);
+//		// 리스트 (연차 신청서 번호)
+//		List<Integer> docList = mainDao.getempLeaveHistoryDoc(idxEmployee);
+//		// 연차내역 dto에 파일명 설정
+//		int i = 0;
+//		for (Leave_usage_tbDTO dto : empLhistory) {
+//			String file_name = mainDao.getempLeaveHistoryFileName(docList.get(i));
+//			dto.setFile_name(file_name);
+//			i++;
+//		}
+		
 		map.put("empLhistory", empLhistory);
 		
 		map.put("totalPages", totalPages);

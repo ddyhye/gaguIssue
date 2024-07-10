@@ -36,9 +36,14 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+    
     <!-- [do] css 추가 -->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/annualList.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
@@ -171,7 +176,7 @@
 											<td class="do-table-td1">${counter}</td>
 											<td class="do-table-td2">${item.lu_start_date} ~ ${item.lu_end_date}</td>
 											<td class="do-table-td3">${item.lu_usage_days}</td>
-											<td class="do-table-td4"><button>상세보기</button></td>
+											<td class="do-table-td4"><button class="do-poBtn" value="'+item.file_name+'">상세보기<i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i></button></td>
 										</tr>
 										<c:set var="counter" value="${counter + 1}" />
 									</c:forEach>										
@@ -458,6 +463,8 @@
 		if (e.target && e.target.closest('button.do-poBtn')) {
 	        var button = e.target.closest('button.do-poBtn');
 	        var fileName = button.value;
+	        
+	        console.log('클릭됨,,, 파일명은 >> '+fileName);
 
 	        window.open("/file/"+fileName, "_blank", "width=1000,height=700");
 	    }		

@@ -43,6 +43,78 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/dashboard.css'/>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    
+    <style>
+    	#calendar-background {
+	        background: white;
+	        width: 100%;
+	        padding: 45px;
+	        height: 85%;
+	        margin: auto;
+	        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25); /* X, Y, Blur, Spread, Color */
+	    }
+	    #calendar {
+	        /* width: 50%; */
+	        height: 100%;
+	        margin: 0 30 0 30;
+	        border-right: none !important;
+	    }
+	    .fc-view-harness-active {
+	    	height: 256 !important; 
+	    }
+	    .fc-header-toolbar {
+	    	margin-bottom: 15px !important;
+	    }
+	    .fc-daygrid-day-events {
+	    	min-height: 0 !important;
+	    }
+	    .fc-day {
+	    	
+	    }
+	    .fc-disabled {
+	        pointer-events: none; /* 모든 이벤트 비활성화 */
+	        opacity: 0.5; /* 캘린더 불투명도 낮춤 */
+	    }
+	    /* 요일 표시 부분 숨기기 */
+	    .fc-scrollgrid-section-header {
+	        display: none;
+	    }
+	    /* 셀 높이 조절 */
+	    .fc-timegrid-slots tr {
+	        height: 3.5em; /* 원하는 높이로 설정 */
+	    }
+	    /* 현재 날짜 이전은 배경색 회색으로 처리 */
+	    .fc-day-past  {
+	        background: #f7f7f7;
+	        opacity: 0.9;
+	    }
+	    .fc-day-sun {
+	        background: #f7f7f7;
+	        opacity: 0.9;
+	        cursor: default !important;
+	    }
+	    .fc-day-sat {
+	        background: #f7f7f7;
+	        opacity: 0.9;
+	        cursor: default !important;
+	    }
+	    .fc-toolbar-title {
+	        content: 'My Custom Header Text';
+	    }
+	    .fc-day-future {
+	        cursor: pointer;
+	    }
+	    .fc-timegrid-slot {
+	        cursor: pointer;
+	    }
+	    .selectedSlot {
+	        background: #ded9ff;
+	    }
+	    .closedSlot {
+	        background: #f7f7f7;
+	    }
+    </style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -248,19 +320,18 @@
               <!-- 달력 api -->
               <div class="col-xxl-7 col-xl-12 box-col-12 proorder-xl-8 proorder-md-9"> 
                 <div class="card">
+                  <a href="<c:url value='/employee/calendar.go'/>">
                   <div class="card-header card-no-border pb-0">
                     <div class="header-top">
                       <div class="do-flexdirection-row">
                         <h4>Calendar</h4><i class="greater-than" data-feather="chevron-right"></i>
                       </div>
-                      <div class="dropdown icon-dropdown">
-                        <button class="btn dropdown-toggle" id="userdropdown14" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="icon-more-alt"></i></button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown14"><a class="dropdown-item" href="#">Weekly</a><a class="dropdown-item" href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a></div>
-                      </div>
                     </div>
                   </div>
                   <div class="card-body sale-statistic">
+                  	<div id="calendar" class="sidebar-left-wrapper"></div>
                   </div>
+                  </a>
                 </div>
               </div>
               
@@ -268,6 +339,7 @@
               <!-- 매출 관리 -->
               <div class="col-xxl-5 col-xl-7 box-col-7 proorder-xl-9 proorder-md-10"> 
                 <div class="card">
+                  <a href="<c:url value='/common/salesHistory.go'/>">
                   <div class="card-header card-no-border pb-0">
                     <div class="header-top">
                       <div class="do-flexdirection-row">
@@ -280,6 +352,7 @@
 				        <canvas id="customerTransactionChart"></canvas>
 				    </div>
                   </div>
+                  </a>
                 </div>
               </div>
               
@@ -364,6 +437,8 @@
     
     <!-- 차트 -->
     <!-- <script src="chart.js"></script> -->
+    <!-- Full Calendar -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
   </body>
   
 <script>
@@ -581,6 +656,120 @@
 	        options: options
 	    });
 	}
+	
+	
+	
+	
+	
+	// 캘린더
+	document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar'); // 요소 지정, JS
+        var timeTableEl = document.getElementById('timeTable'); // 요소 지정, JS
+        var beforedayEl = '';
+
+        var calendar = new FullCalendar.Calendar(calendarEl, { // 캘린더 생성
+            headerToolbar: { // 캘린더 헤더에 버튼, 텍스트를 추가할 수 있음
+                left: 'prev', // 이전달로 이동하는 버튼 추가
+                center: 'title', // 현재 년도와 월을 보여준다
+                right: 'next' // 다음달로 이동하는 버튼 추가
+            },
+            locale: 'ko', // 언어를 한글로 변경
+            selectAllow: function(selectInfo) {
+                // 현재 날짜 이후만 선택 가능
+                // if (selectInfo.start)
+                return selectInfo.start >= new Date();
+            },
+            events: function(fetchInfo, successCallback, failureCallback) {
+                // 서버에 모든 일정(이벤트)를 요청하여 캘린더에 반영함
+            },
+            dateClick: function(info) { // 캘린더에서 날짜를 클릭 이벤트
+                // 일정 추가하는 창(모달)을 보여준다
+                // 일정의 시작 날짜, 종료날짜를 선택한 날짜로 설정한다
+                if (info.date <= new Date()) {
+                    return;
+                } else if (info.date.getDay() == 0 || info.date.getDay() == 6) {
+                    return;
+                }
+                if (selectedTime.length != 0) {
+                    selectedTime.forEach(time => {
+                        let elements  = document.querySelectorAll('#time_' + time);
+                        elements.forEach(el => {
+                            el.classList.remove('selectedSlot');
+                        });
+                    });
+                    selectedTime.length = 0;
+                }
+                // 이전에 선택한 날짜의 배경색을 없애준다
+                if (beforedayEl != '') {
+                    beforedayEl.style.backgroundColor = '#ffffff';
+                }
+                selectedDate = info.dateStr;
+
+                info.dayEl.style.backgroundColor = '#ded9ff';
+                // 이전 선택한 날짜 요소를 befordayEl 에 저장한다
+                beforedayEl = info.dayEl;
+                // 오른쪽의 시간 선택 캘린더의 날짜를 변경한다
+                let tableTitleEl = document.querySelector('#tableTitle');
+                tableTitleEl.innerHTML = selectedDate;
+                // 선택불가 상태을 해제한다
+                timeTableEl.classList.remove('fc-disabled');
+                let btnEl = document.querySelector('#meetingRoomSelectBtn');
+                btnEl.style.removeProperty('background');
+                btnEl.style.removeProperty('border-color');
+                isDatetimeSelected = false;
+            }
+        });
+        calendar.render(); // 캘린더를 그려냄(렌더링)
+
+        var selectedDate = '';
+        var selectedTime = [];
+        var isDatetimeSelected = false;
+
+        function timeSelect(time) {
+            const startTime =  time;
+            const endTime =  time + 1;
+            const timeSlot = document.querySelector('#time_' + time);
+
+            if (selectedTime.includes(time) == true) {
+                timeSlot.classList.remove('selectedSlot');
+                const index = selectedTime.indexOf(time);
+                selectedTime.splice(index, 1);
+                if (selectedTime.length == 0) {
+                    let btnEl = document.querySelector('#meetingRoomSelectBtn');
+                    btnEl.style.setProperty('background', 'gray', 'important');
+                    btnEl.style.setProperty('border-color', 'gray', 'important');
+                    btnEl.style.cursor = 'default';
+                }
+                return;
+            }
+            selectedTime.push(time);
+
+            timeSlot.classList.add('selectedSlot');
+
+            let btnEl = document.querySelector('#meetingRoomSelectBtn');
+            btnEl.style.setProperty('background', '#7a70ba', 'important');
+            btnEl.style.setProperty('border-color', '#7a70ba', 'important');
+            isDatetimeSelected = true;
+        }
+
+        function selected() {
+            if (isDatetimeSelected == false) {
+                Swal.fire('회의실 예약 날짜 및 시간을 선택해주세요');
+                return;
+            } else if (selectedTime.length == 0) {
+                Swal.fire('시간을 선택해주세요.');
+                return;
+            }
+
+            document.querySelector('input[name="selectedTime"]').value = selectedTime;
+            document.querySelector('input[name="selectedDate"]').value = selectedDate;
+
+            document.querySelector('#meetingRoomSelectForm').submit();
+        }
+
+        window.timeSelect = timeSelect;
+        window.selected = selected;
+    });
 	
 	
 	
