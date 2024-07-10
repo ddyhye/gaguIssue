@@ -1,44 +1,46 @@
 package ko.gagu.issue.controller;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.service.EmployeeService;
+import ko.gagu.issue.util.SessionUtil;
 
 @Controller
 public class EmployeeController {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired EmployeeService employeeService;
-	@Autowired PasswordEncoder encoder;
+	
+	private final EmployeeService employeeService;
+	private final PasswordEncoder encoder;
+	private final SessionUtil su;
+	
+	public EmployeeController(EmployeeService employeeService, PasswordEncoder encoder, SessionUtil su) {
+		this.employeeService = employeeService;
+		this.encoder = encoder;
+		this.su = su;
+	}
 	
 	// 작성자 : 구일승 , 기능 : 캘린더
 	@GetMapping(value="/employee/calendar.go")
@@ -200,8 +202,8 @@ public class EmployeeController {
 	}
 	// 로그인
 	@PostMapping(value="/login.do")
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
-		return employeeService.login(emp_id, emp_pw, rAttr, session);
+	public ModelAndView login(HttpServletRequest request, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+		return employeeService.login(request, emp_id, emp_pw, rAttr, session);
 	}
 	
 	@GetMapping(value = "/joinForm.go")
@@ -295,11 +297,19 @@ public class EmployeeController {
 	
 	// [do] 로그아웃
 	@GetMapping(value="/logout.go")
-	public ModelAndView logout(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView logout(HttpServletRequest request,
+			HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
 		
 		session.removeAttribute("loginInfo");
 		session.removeAttribute("emp_id");
+        if (su.isSessionExpired(session)) {
+            // 세션이 만료되었거나 새로운 세션이 필요한 경우
+        	logger.info("세션 새로 만들기");
+        	session.invalidate();
+        	session = request.getSession(true);
+            session.setMaxInactiveInterval(60); // 세션 타임아웃 설정 (60초)
+        }
 		
 		rAttr.addFlashAttribute("msg","로그아웃 성공, 로그인 페이지로 돌아갑니다...");
 		

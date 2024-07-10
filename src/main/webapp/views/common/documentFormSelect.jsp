@@ -148,7 +148,7 @@
 										<div class="card-body">
 											<a class="effect-card" href="/document/1/write.go" style="display: flex; align-items: center; flex-direction: column;">
 												<br/>
-												<img class="img-fluid" src="/assets/images/document/chair.png" alt="" width="100px" height="100px">
+												<img class="img-fluid" src="/assets/images/document/chair.png" alt="" style="height: 100px; width: 100px;">
 												<br/>
 												<br/>
 												<h2 class="text-truncate">연차 및 휴가 신청서</h2>
@@ -161,7 +161,7 @@
 										<div class="card-body">
 											<a class="effect-card" href="/document/2/write.go" style="display: flex; align-items: center; flex-direction: column;">
 												<br/>
-												<img class="img-fluid" src="/assets/images/document/contract-document.png" alt="" width="100px" height="100px">
+												<img class="img-fluid" src="/assets/images/document/contract-document.png" alt="" style="height: 100px; width: 100px;">
 												<br/>
 												<br/>
 												<h2 class="text-truncate">계약서</h2>
@@ -174,7 +174,7 @@
 										<div class="card-body">
 											<a class="effect-card" href="/document/3/write.go" style="display: flex; align-items: center; flex-direction: column;">
 												<br/>
-												<img class="img-fluid" src="/assets/images/document/shopping-cart.png" alt="" width="100px" height="100px">
+												<img class="img-fluid" src="/assets/images/document/shopping-cart.png" alt="" style="height: 100px; width: 100px;">
 												<br/>
 												<br/>
 												<h2 class="text-truncate">기자재 구입 요청서</h2>

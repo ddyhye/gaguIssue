@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
 import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.util.FileManagerUtil;
+import ko.gagu.issue.util.SessionUtil;
 
 @Service
 public class EmployeeService {
@@ -38,11 +40,13 @@ public class EmployeeService {
 	private final EmployeeDAO dao;
 	private final PasswordEncoder encoder;
     private final FileManagerUtil fm;
+    private final SessionUtil su;
     
-    public EmployeeService (FileManagerUtil fm, EmployeeDAO dao, PasswordEncoder encoder) {
+    public EmployeeService (FileManagerUtil fm, EmployeeDAO dao, PasswordEncoder encoder, SessionUtil su) {
     	this.dao = dao;
     	this.encoder = encoder;
     	this.fm = fm;
+    	this.su = su;
     }
 
 	public void employeeGetAllEvents(Map<String, Object> response,Integer idx_employee,Model model) {
@@ -94,15 +98,21 @@ public class EmployeeService {
 	
 	
 	// [do] 수정 - 인터셉터 및 로그인
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+	public ModelAndView login(HttpServletRequest request, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		
+	
 		logger.info("id :{}",emp_id);
 		logger.info("pw : {}",emp_pw);
 		
 		String memPw = dao.login(emp_id);
 		logger.info("mem_Pw = "+memPw);
-		
+        if (su.isSessionExpired(session)) {
+            // 세션이 만료되었거나 새로운 세션이 필요한 경우
+        	logger.info("세션 새로 만들기");
+        	session.invalidate();
+        	session = request.getSession(true);
+            session.setMaxInactiveInterval(60); // 세션 타임아웃 설정 (60초)
+        }
 		if(encoder.matches(emp_pw, memPw)) {
 			mav.setViewName("redirect:/main/dashboard.go");
 			EmployeeDTO dto = dao.employeeData(emp_id);
@@ -111,6 +121,7 @@ public class EmployeeService {
 			session.setAttribute("idxEmployee", dto.getIdx_employee());
 			session.setAttribute("employeeDTO", dto);
 			session.setAttribute("idxTitle", dto.getIdx_title());
+			session.setMaxInactiveInterval(60);
 			rAttr.addFlashAttribute("msg","환영합니다.");
 		}else {
 			mav.setViewName("redirect:/login.go");
