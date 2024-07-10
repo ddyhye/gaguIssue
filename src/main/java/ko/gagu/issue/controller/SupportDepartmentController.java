@@ -100,19 +100,32 @@ public class SupportDepartmentController {
 	}
 	
 	
-	/* 거래처 리스트 아작스 요청 */
-	/*
+	/* 발주 이력 아작스 요청 */
 	@GetMapping(value="/purchase_history")
 	@ResponseBody
-	public Map<String, Object> purchaseHistory(String page, int cnt){
+	public Map<String, Object> purchaseHistory(String page, int cnt, String idx_business){
 		logger.info("!!!!!!!!!거래처 발주이력 아작스 요청!!!!!!!!!!");
 		// logger.info("clientSearch :" + clientSearch);
 		
 		int currPage = Integer.parseInt(page);
-		Map<String, Object> map = supportService.purchaseHistory(currPage, cnt);
+		Map<String, Object> map = supportService.purchaseHistory(currPage, cnt, idx_business);
 		return map;
 	}
-	 */
+	
+	
+	/* 출고 이력 아작스 요청 */
+	@GetMapping(value="/delivery_history")
+	@ResponseBody
+	public Map<String, Object> deliveryHistory(String page, int cnt, String idx_business){
+		logger.info("!!!!!!!!!거래처 발주이력 아작스 요청!!!!!!!!!!");
+		// logger.info("clientSearch :" + clientSearch);
+		
+		int currPage = Integer.parseInt(page);
+		Map<String, Object> map = supportService.deliveryHistory(currPage, cnt, idx_business);
+		return map;
+	}
+	
+	 
 	
 	/* 창고 관리로 이동 */
 	@GetMapping("/storageManage.go")
@@ -120,7 +133,17 @@ public class SupportDepartmentController {
 		return "supportDepartment/storageManage";
 	}
 	
-	
+	/* 창고 리스트 아작스 요청 */
+	@GetMapping(value="/storageList")
+	@ResponseBody
+	public Map<String, Object> storageList(String page, int cnt){
+		logger.info("!!!!!!!!!창고 리스트 요청!!!!!!!!!!");
+		// logger.info("clientSearch :" + clientSearch);
+		
+		int currPage = Integer.parseInt(page);
+		Map<String, Object> map = supportService.storageList(currPage, cnt);
+		return map;
+	}
 	
 	
 	

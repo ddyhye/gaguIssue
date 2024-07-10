@@ -36,8 +36,8 @@ public class interCeptorConfig implements WebMvcConfigurer{
 		excludeList.add("/supportDepartment*");
 		excludeList.add("/resources/**");
 		excludeList.add("/login*");
-		excludeList.add("/findNumber.go");
-		excludeList.add("/findPW.go");
+		excludeList.add("/findNumber*");
+		excludeList.add("/findPW*");
 		excludeList.add("/joinForm.go");
 		
 		registry.addInterceptor(checker)

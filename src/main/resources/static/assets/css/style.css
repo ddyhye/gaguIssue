@@ -1347,6 +1347,14 @@ svg.f-light {
   height: 100px !important;
 }
 
+.img-500 {
+  width: 500px !important;
+}
+
+.img-h-500 {
+  height: 500px !important;
+}
+
 /*====== Image-sizes css ends ======*/
 /*======= Text css starts ===========*/
 .font-primary {

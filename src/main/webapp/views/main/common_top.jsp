@@ -46,9 +46,11 @@
             </div>
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
               <ul class="nav-menus">
-              
-                <!-- do: 전체화면 -->
-                <li>                         <span class="header-search">
+              	<li class="d-flex align-items-center" style="height: 45px;">
+              		<p style="margin-bottom: 0;" id="sessionCurrentTime">${remainingMinutes}:${remainingSeconds}</p><span style="text-decoration: underline; font-size: 12px;cursor: pointer;">연장</span>
+              	</li>
+                <li>                         
+                	<span class="header-search">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#search"></use>
                     </svg></span></li>
@@ -60,7 +62,7 @@
                 
                 <!-- do: 야간모드 -->
                 <li>
-                  <div class="mode">
+                  <div class="mode active">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#moon"></use>
                     </svg>
@@ -151,8 +153,37 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-          
+    <script>
+		// [jeong] 세션 남은 시간 표시
+	        function startTimer(sessionDeadTime) {
+	            var countDownDate = new Date(sessionDeadTime).getTime();
+	            var x = setInterval(function () {
+	                var now = new Date().getTime();
+	                var distance = countDownDate - now;
+	                
+					console.log(sessionDeadTime, new Date(), distance);
+	                if (distance < 0) {
+	                    clearInterval(x);
+	                    document.getElementById("sessionCurrentTime").innerHTML = "세션 뒤짐";
+	                 	window.location.href='/logout.go';
+	                 	return;
+	                }
+	
+	                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+	                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+	                document.getElementById("sessionCurrentTime").innerHTML = 
+	                    (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+	            }, 1000);
+	        }
+	
+	        window.onload = function () {
+	            var sessionDeadTime = '${sessionDeadTime}';
+	            startTimer(sessionDeadTime);
+	        };
+    </script>          
 <script>
+
+
 	 // [jae]     
      $(document).ready(function() {
     	    $('#messageButton').click(function(e) {

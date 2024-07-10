@@ -295,24 +295,56 @@
             var content = '';
 
             for (var item of list) {
-                // [il] 각 행에 data-url 속성을 추가해서, 클릭 시 이동할 URL을 설정하깅
                 content += '<tr data-url="/employee/attendance.go?idx_employee=' + item.idx_employee + '">';
                 content += '<td>' + item.idx_employee + '</td>';
                 content += '<td>' + item.emp_name + '</td>';
                 content += '<td>' + item.ah_check_in + '</td>';
                 content += '<td>' + item.ah_check_out + '</td>';
-                content += '<td>' + item.ah_status + '</td>';
+                content += '<td>';
+                content += '<input type="hidden" class="attendance-id" data-id="' + item.idx_employee + '" value="' + item.idx_attendance + '">';
+                content += '<select class="status-select" data-id="' + item.idx_employee + '">';
+                content += '<option value="출근"' + (item.ah_status === '출근' ? ' selected' : '') + '>출근</option>';
+                content += '<option value="연차"' + (item.ah_status === '연차' ? ' selected' : '') + '>연차</option>';
+                content += '<option value="지각"' + (item.ah_status === '지각' ? ' selected' : '') + '>지각</option>';
+                content += '<option value="결근"' + (item.ah_status === '결근' ? ' selected' : '') + '>결근</option>';
+                content += '<option value="조퇴"' + (item.ah_status === '조퇴' ? ' selected' : '') + '>조퇴</option>';
+                content += '</select>';
+                content += '</td>';
                 content += '</tr>';
             }
 
             $("#employeeTable tbody").append(content);
 
-            // 테이블 행 클릭 이벤트 추가하깅
-            $("#employeeTable tbody tr").click(function() {
-                var url = $(this).data('url');
-                window.location.href = url;
+            $("#employeeTable tbody tr").click(function(event) {
+                if (!$(event.target).is('.status-select')) {
+                    var url = $(this).data('url');
+                    window.location.href = url;
+                }
+            });
+
+            $(".status-select").change(function() {
+                var employeeId = $(this).data('id');
+                var newStatus = $(this).val();
+                var attendanceId = $('.attendance-id[data-id="' + employeeId + '"]').val();
+
+                $.ajax({
+                    url: './updateAttendanceOfAllEmployees.ajax',
+                    type: 'POST',
+                    data: {
+                        idx_employee: employeeId,
+                        ah_status: newStatus,
+                        idx_attendance: attendanceId
+                    },
+                    success: function(response) {
+                        console.log('Status updated successfully');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to update status:', error);
+                    }
+                });
             });
         }
+
     });
 
     

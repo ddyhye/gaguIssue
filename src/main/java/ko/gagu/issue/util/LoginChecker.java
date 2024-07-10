@@ -1,5 +1,12 @@
 package ko.gagu.issue.util;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -54,6 +61,16 @@ public class LoginChecker implements HandlerInterceptor {
 	    HttpSession session = req.getSession();
 	    String emp_id = (String) session.getAttribute("emp_id");
 	    EmployeeDTO dto = (EmployeeDTO) session.getAttribute("loginInfo");
+        // Instant 객체 생성
+        Instant c = Instant.ofEpochMilli(session.getCreationTime());
+        Instant l = Instant.ofEpochMilli(session.getLastAccessedTime());
+
+        // 시스템 기본 시간대의 LocalDateTime으로 변환
+        LocalDateTime sessionCreatedTime = LocalDateTime.ofInstant(c, ZoneId.systemDefault());
+        LocalDateTime sessionDeadTime = sessionCreatedTime.plusSeconds(session.getMaxInactiveInterval());
+        
+        // DateTimeFormatter를 사용하여 포맷 설정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	    if (dto != null) {
 	        String emp_name = dto.getEmp_name();
@@ -62,6 +79,8 @@ public class LoginChecker implements HandlerInterceptor {
 
 	        // ModelAndView 객체가 null이 아닌 경우에만 addObject 호출
 	        if (mav != null) {
+	        	mav.addObject("sessionCreatedTime", sessionCreatedTime.format(formatter));
+	        	mav.addObject("sessionDeadTime", sessionDeadTime.format(formatter));
 	            if (emp_name != null && de_name != null && title_name != null) {
 	                mav.addObject("emp_name", emp_name);
 	                mav.addObject("de_name", de_name);

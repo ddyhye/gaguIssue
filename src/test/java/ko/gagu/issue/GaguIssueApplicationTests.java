@@ -43,6 +43,10 @@ class GaguIssueApplicationTests {
 	}
 	
 	@Test
+	void session() {
+		
+	}
+	
 	void excelTest() {
 		// POI 라이브러리
 		// https://blog.naver.com/since201109/222483943578

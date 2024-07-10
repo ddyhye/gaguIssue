@@ -1,6 +1,8 @@
 package ko.gagu.issue.service;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +19,7 @@ import javax.mail.Store;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,109 +85,94 @@ public class MailService {
 	    helper.setTo(mailDto.getAddress());
 	    emailSender.send(message);
 	}
-
-	public List<MailDTO> receiveMails() {
-        List<MailDTO> mailList = new ArrayList<>();
-
-        if (mailConfig == null) {
-            logger.error("MailConfig is null. Check the configuration.");
-            return mailList;  
-        }
-
-        Properties properties = new Properties();
-        properties.put("mail.store.protocol", mailConfig.getStoreProtocol());
-        properties.put("mail.imap.host", mailConfig.getHost());
-        properties.put("mail.imap.port", mailConfig.getPort());
-        properties.put("mail.imap.auth", mailConfig.isAuth());
-        properties.put("mail.imap.starttls.enable", mailConfig.isStarttlsEnable());
-        properties.put("mail.imap.ssl.enable", mailConfig.isSslEnable());
-
-        Session emailSession = null;
-        Store store = null;
-        Folder emailFolder = null;
-
-        try {
-            emailSession = Session.getDefaultInstance(properties);
-            store = emailSession.getStore(mailConfig.getStoreProtocol());
-            store.connect(mailConfig.getHost(), mailConfig.getUsername(), mailConfig.getPassword());
-
-            emailFolder = store.getFolder("INBOX");
-            emailFolder.open(Folder.READ_ONLY);
-
-            Message[] messages = emailFolder.getMessages();
-            logger.info("message size1 : {}", messages.length);
-            
-            int start = Math.max(0, messages.length - 100); // [il] 최근 100개로 제한
-            for (int i = start; i < messages.length; i++) {
-                Message message = messages[i];
-                MailDTO mailDto = new MailDTO();
-                mailDto.setTitle(message.getSubject());
-                mailDto.setFrom(message.getFrom()[0].toString());
-                
-                // [il] 0702 바뀐부분 
-                Object content = message.getContent();
-                if (content instanceof String) {
-                    mailDto.setContent(content.toString());
-                } else if (content instanceof Multipart) {
-                    mailDto.setContent(mailUtil.getTextFromMimeMultipart((Multipart) message.getContent()));
-                }
-                
-                mailList.add(mailDto);
-            }
-            
-            logger.info("Mail Receive Complete, mailList Size : {}", mailList.size());
-        } catch (MessagingException | IOException e) {
-            logger.error("Error receiving emails", e);
-            
-            throw new RuntimeException("Failed to receive emails", e);
-        } finally {
-            try {
-                if (emailFolder != null) {
-                    emailFolder.close(true);
-                }
-                if (store != null) {
-                    store.close();
-                }
-            } catch (MessagingException e) {
-                logger.error("Error closing email resources", e);
-            }
-        }
-
-        return mailList;
-    }
-
-
+	public void saveMail(MailDTO mailDto, MultipartFile[] files, int idx_employee) {
+		
+		
+		mailDao.saveMail(mailDto,idx_employee);
+//		// 첨부 파일 저장
+//	    for (MultipartFile file : files) {
+//	        if (!file.isEmpty()) {
+//	            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//	            try {
+//	                mailDao.saveAttachment(mailId, fileName);
+//	            } catch (Exception e) {
+//	                e.printStackTrace();
+//	            }
+//	        }
+//	    }
+	}
 	
-	
-
-//	private String getTextFromMessage(Message message) throws MessagingException, IOException {
-//		if (message.isMimeType("text/plain")) {
-//            return message.getContent().toString();
-//        } else if (message.isMimeType("multipart/*")) {
-//            String result = "";
-//            MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
-//            int count = mimeMultipart.getCount();
-//            for (int i = 0; i < count; i++) {
-//                BodyPart bodyPart = mimeMultipart.getBodyPart(i);
-//                if (bodyPart.isMimeType("text/plain")) {
-//                    result = result + "\n" + bodyPart.getContent();
-//                    break;
-//                } else if (bodyPart.isMimeType("text/html")) {
-//                    String html = (String) bodyPart.getContent();
-//                    result = result + "\n" + org.jsoup.Jsoup.parse(html).text();
-//                }
-//            }
-//            return result;
+//	public List<MailDTO> receiveMails() {
+//        List<MailDTO> mailList = new ArrayList<>();
+//
+//        if (mailConfig == null) {
+//            logger.error("MailConfig is null. Check the configuration.");
+//            return mailList;  
 //        }
-//        return "";
-//	}
+//
+//        Properties properties = new Properties();
+//        properties.put("mail.store.protocol", mailConfig.getStoreProtocol());
+//        properties.put("mail.imap.host", mailConfig.getHost());
+//        properties.put("mail.imap.port", mailConfig.getPort());
+//        properties.put("mail.imap.auth", mailConfig.isAuth());
+//        properties.put("mail.imap.starttls.enable", mailConfig.isStarttlsEnable());
+//        properties.put("mail.imap.ssl.enable", mailConfig.isSslEnable());
+//
+//        Session emailSession = null;
+//        Store store = null;
+//        Folder emailFolder = null;
+//
+//        try {
+//            emailSession = Session.getDefaultInstance(properties);
+//            store = emailSession.getStore(mailConfig.getStoreProtocol());
+//            store.connect(mailConfig.getHost(), mailConfig.getUsername(), mailConfig.getPassword());
+//
+//            emailFolder = store.getFolder("INBOX");
+//            emailFolder.open(Folder.READ_ONLY);
+//
+//            Message[] messages = emailFolder.getMessages();
+//            logger.info("message size1 : {}", messages.length);
+//            
+//            int start = Math.max(0, messages.length - 100); // [il] 최근 100개로 제한
+//            for (int i = start; i < messages.length; i++) {
+//                Message message = messages[i];
+//                MailDTO mailDto = new MailDTO();
+//                mailDto.setSe_title(message.getSubject());
+//                mailDto.set (message.getFrom()[0].toString());
+//                
+//                // [il] 0702 바뀐부분 
+//                Object content = message.getContent();
+//                if (content instanceof String) {
+//                    mailDto.setSe_description(content.toString());
+//                } else if (content instanceof Multipart) {
+//                    mailDto.setSe_description(mailUtil.getTextFromMimeMultipart((Multipart) message.getContent()));
+//                }
+//                
+//                mailList.add(mailDto);
+//            }
+//            
+//            logger.info("Mail Receive Complete, mailList Size : {}", mailList.size());
+//        } catch (MessagingException | IOException e) {
+//            logger.error("Error receiving emails", e);
+//            
+//            throw new RuntimeException("Failed to receive emails", e);
+//        } finally {
+//            try {
+//                if (emailFolder != null) {
+//                    emailFolder.close(true);
+//                }
+//                if (store != null) {
+//                    store.close();
+//                }
+//            } catch (MessagingException e) {
+//                logger.error("Error closing email resources", e);
+//            }
+//        }
+//
+//        return mailList;
+//    }
 
 	
-	// [il] 수신자 개별 전송       
-//  for(String s : mailDto.getAddress()) {
-//  	helper.setTo(s);
-//  	emailSender.send(message);
-//  }
 	
 
 }

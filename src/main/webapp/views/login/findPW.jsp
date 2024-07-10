@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>비밀번호 찾기</title>
+<title>비밀번호 변경</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
     body {
@@ -17,7 +17,7 @@
         height: 100vh;
         margin: 0;
     }
-    .find-pw-container {
+    .change-pw-container {
         background: rgba(255, 255, 255, 0.8);
         padding: 30px;
         border-radius: 10px;
@@ -36,27 +36,18 @@
     th, td {
         padding: 10px;
         text-align: left;
-        vertical-align: middle; /* 수직 정렬 */
+        vertical-align: middle;
     }
-    input[type="text"] {
-        width: calc(100% - 22px); /* 입력란 너비 조정 */
+    input[type="password"], input[type="text"] {
+        width: calc(100% - 22px);
         padding: 10px;
         margin-top: 10px;
         margin-bottom: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-    }
-    select {
-        width: 30%;
-        padding: 10px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        display: inline-block;
     }
     input[type="submit"], input[type="button"] {
-        background-color: #8e44ad; /* 보라색 배경색 */
+        background-color: #8e44ad;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -69,6 +60,17 @@
     input[type="submit"]:hover, input[type="button"]:hover {
         background-color: #6c3483;
     }
+    .password-match {
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+    .match {
+        color: green;
+    }
+    .mismatch {
+        color: red;
+    }
 </style>
 <script>
     $(document).ready(function() {
@@ -76,60 +78,70 @@
         if (errorMessage) {
             alert(errorMessage);
         }
-        
+
         $("form").submit(function() {
-            const year = $("select[name='year']").val();
-            const month = $("select[name='month']").val();
-            const day = $("select[name='day']").val();
-            
-            if (year === "" || month === "" || day === "") {
-                alert("생년월일을 모두 선택해주세요.");
+            const newPassword = $("input[name='new_password']").val();
+            const confirmPassword = $("input[name='confirm_password']").val();
+
+            if (newPassword !== confirmPassword) {
+                alert("새 비밀번호가 일치하지 않습니다.");
                 return false;
             }
         });
+
+        $("input[name='new_password'], input[name='confirm_password']").on('keyup', function() {
+            const newPassword = $("input[name='new_password']").val();
+            const confirmPassword = $("input[name='confirm_password']").val();
+
+            if (newPassword && confirmPassword) {
+                if (newPassword === confirmPassword) {
+                    $("#password-match-status").text("비밀번호가 일치합니다.").removeClass("mismatch").addClass("match").show();
+                } else {
+                    $("#password-match-status").text("비밀번호가 일치하지 않습니다.").removeClass("match").addClass("mismatch").show();
+                }
+            } else {
+                $("#password-match-status").hide();
+            }
+        });
     });
+    var msg = '${msg}';
+    if (msg != "") {
+        alert(msg);
+    }
 </script>
 </head>
 <body>
-    <div class="find-pw-container">
-        <h3>비밀번호 찾기</h3>
+    <div class="change-pw-container">
+        <h3>비밀번호 변경</h3>
         <hr/>
-        <form action="findPW.do" method="post">
+        <form action="/findPW.do" method="post">
             <table>
                 <tr>
-                    <th style="width: 100px;">사원번호</th>
+                    <th style="width: 150px;">사원번호</th>
                     <td><input type="text" name="emp_id" placeholder="사원번호를 입력하세요" required></td>
                 </tr>
                 <tr>
-                    <th>이름</th>
-                    <td><input type="text" name="emp_name" placeholder="이름을 입력하세요" required></td>
+                    <th>사원 이름</th>
+                    <td><input type="text" name="emp_name" placeholder="사원 이름을 입력하세요" required></td>
                 </tr>
                 <tr>
-                    <th>생년월일</th>
+                    <th>현재 비밀번호</th>
+                    <td><input type="password" name="current_password" placeholder="현재 비밀번호를 입력하세요" required></td>
+                </tr>
+                <tr>
+                    <th>새 비밀번호</th>
+                    <td><input type="password" name="new_password" placeholder="새 비밀번호를 입력하세요" required></td>
+                </tr>
+                <tr>
+                    <th>비밀번호 확인</th>
                     <td>
-                        <select name="year" required>
-                            <option value="">년도</option>
-                            <c:forEach begin="1900" end="2023" var="year">
-                                <option value="${year}">${year}</option>
-                            </c:forEach>
-                        </select>
-                        <select name="month" required>
-                            <option value="">월</option>
-                            <c:forEach begin="1" end="12" var="month">
-                                <option value="${month}">${month}</option>
-                            </c:forEach>
-                        </select>
-                        <select name="day" required>
-                            <option value="">일</option>
-                            <c:forEach begin="1" end="31" var="day">
-                                <option value="${day}">${day}</option>
-                            </c:forEach>
-                        </select>
+                        <input type="password" name="confirm_password" placeholder="비밀번호를 다시 입력하세요" required>
+                        <div id="password-match-status" class="password-match"></div>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input type="submit" value="비밀번호 찾기" />
+                        <input type="submit" value="비밀번호 변경" />
                         <input type="button" value="취소" onclick='location.href="./login.go"'/>
                     </td>
                 </tr>
