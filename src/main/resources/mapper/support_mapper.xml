@@ -64,4 +64,111 @@
 		SELECT * FROM client_tb ct WHERE ct.idx_business = #{param1}
 	</select>
 	
+	<select id="purchaseHistory">
+		 SELECT pot.idx_purchasehtml, 
+				pt.product_name, 
+				pt.idx_product_category,
+				st.order_quantity, 
+				pt.purchase_price ,
+				(pt.purchase_price*st.order_quantity) AS allcount, 
+				st.stock_status, 
+				st.stock_datetime 
+		FROM stockentries_tb st 
+			JOIN purchase_order_tb pot ON st.idx_purchase_order = pot.idx_purchase_order 
+			JOIN client_tb ct ON pot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON st.idx_product = pt.idx_product 
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+			WHERE pt.idx_business = #{param3}
+	ORDER BY st.stock_datetime DESC
+	LIMIT #{param2},#{param1}
+	</select>
+	
+	
+	<select id="purchaseHistoryAllCount" resultType="Integer" parameterType="map">
+		SELECT CEIL(COUNT(*) / #{param1})
+		FROM (
+		    SELECT 
+		        pot.idx_purchasehtml, 
+		        pt.product_name, 
+		        pt.idx_product_category,
+		        st.order_quantity, 
+		        pt.purchase_price,
+		        (pt.purchase_price * st.order_quantity) AS allcount, 
+		        st.stock_status, 
+		        st.stock_datetime 
+		    FROM stockentries_tb st 
+		    JOIN purchase_order_tb pot ON st.idx_purchase_order = pot.idx_purchase_order 
+		    JOIN client_tb ct ON pot.idx_business = ct.idx_business 
+		    JOIN product_tb pt ON st.idx_product = pt.idx_product 
+		    JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category 
+		    WHERE pt.idx_business = #{param2}
+		    ORDER BY st.stock_datetime DESC
+		) AS subquery
+	</select>
+	
+	
+	
+	<select id="deliveryHistory">
+		select ot.order_no, 
+			pt.product_name,
+			pt.idx_product_category,
+			dt.delivery_datetime,
+			ct.client_name,
+			ot.quantity,
+			pt.unit_price,
+			(SELECT SUM(ot2.quantity * pt2.unit_price)
+		FROM order_tb ot2
+		    JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+	    WHERE ot2.order_no = ot.order_no) AS order_total_price,
+			dt.delivery_state	
+		from delivery_tb dt
+			JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category
+		WHERE ot.idx_business = #{param3}
+		LIMIT #{param2},#{param1}
+	</select>
+	
+	<select id="deliveryHistoryAllCount" resultType="Integer" parameterType="map">
+		SELECT CEIL(COUNT(*) / #{param1})
+	FROM (
+	select ot.order_no, 
+			pt.product_name,
+			pt.idx_product_category,
+			dt.delivery_datetime,
+			ct.client_name,
+			ot.quantity,
+			pt.unit_price,
+			(SELECT SUM(ot2.quantity * pt2.unit_price)
+		     FROM order_tb ot2
+		     	JOIN product_tb pt2 ON ot2.idx_product = pt2.idx_product
+		     WHERE ot2.order_no = ot.order_no) AS order_total_price,
+			dt.delivery_state	
+		from delivery_tb dt
+			JOIN order_tb ot ON dt.idx_order = ot.idx_order 
+			JOIN client_tb ct ON ot.idx_business = ct.idx_business 
+			JOIN product_tb pt ON ot.idx_product = pt.idx_product
+			JOIN product_category_tb pct ON pct.idx_product_category = pt.idx_product_category
+		WHERE ot.idx_business = #{param2}
+	) AS subquery
+	</select>
+	
+	<select id="storageList" parameterType="map">
+	SELECT 
+		wt.*,
+		(SELECT pct.category FROM product_category_tb pct WHERE pct.idx_product_category = pt.idx_product_category) AS category 
+	FROM warehouse_tb wt, product_tb pt WHERE wt.idx_storage = pt.idx_storage
+	LIMIT #{param2},#{param1}
+	</select>
+	
+	<select id="storageListAllCount" resultType="Integer" parameterType="map">
+		SELECT CEIL(COUNT(*) / #{param1}) 
+  		FROM (
+  		SELECT 
+  			wt.*,
+  			(SELECT pct.category FROM product_category_tb pct WHERE pct.idx_product_category = pt.idx_product_category) AS category 
+  		FROM warehouse_tb wt, product_tb pt WHERE wt.idx_storage = pt.idx_storage) as subquery
+	</select>
+	
 </mapper>
