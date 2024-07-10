@@ -444,12 +444,24 @@
 			content += '<td class="do-table-td3">';
 			content += item.lu_usage_days;
 			content += '</td>';
-			content += '<td class="do-table-td4"><button>상세보기</button></td>';
+			content += '<td class="do-table-td4">';
+			content += '<button class="do-poBtn" value="'+item.file_name+'"><i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i></button>';
+			content += '</td>';
 			content += '</tr>';
 		}
 		
 		$('.do-annual-history').append(content);
 	}
+	
+	// 연차 신청서 보기
+	document.querySelector('.do-annual-history').addEventListener('click', function(e){
+		if (e.target && e.target.closest('button.do-poBtn')) {
+	        var button = e.target.closest('button.do-poBtn');
+	        var fileName = button.value;
+
+	        window.open("/file/"+fileName, "_blank", "width=1000,height=700");
+	    }		
+	});
 	
 	
 	function pagination() {
