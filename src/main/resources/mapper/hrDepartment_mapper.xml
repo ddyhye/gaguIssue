@@ -77,11 +77,23 @@
 	    INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name, upload_datetime)
 	   		VALUES ('1',#{param3}, #{param1}, #{param2}, now())
 	</insert>
+	
+	<update id="updateProfileImagePath">
+		UPDATE filestore_tb SET origin_name = #{param1}, file_name = #{param2} WHERE idx_file = #{param3}
+	</update>
+	
+	<select id="getIdxFile" resultType="int">
+		SELECT idx_file from filestore_tb ft where idx_filetype = 1 AND idx_ref = #{param1} ORDER BY idx_file DESC limit 1
+	</select>
 		
 	<select id="getnewIdx" resultType="String">
 		SELECT
 			RIGHT(CONCAT('0000', (SELECT et.idx_employee + 1 FROM employee_tb et ORDER BY et.idx_employee DESC LIMIT 1)), 5)
 	</select>
+	<select id="checkProfile" resultType="int">
+		SELECT COUNT(idx_file) from filestore_tb ft where idx_filetype = 1 AND idx_ref = #{param1}
+	</select>
+	
 	
 	 <select id="getEmployeeById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
 	    SELECT 
@@ -219,6 +231,13 @@
 		WHERE ah.ah_date=#{param2} AND dt.de_name=#{param1}
 		ORDER BY ah.idx_employee DESC
 	</select>
+	
+	<update id="updateAttendanceOfAllEmployees">
+		UPDATE attendance_history_tb SET 
+			ah_status =#{param2}
+		WHERE idx_employee =#{param1}
+		AND idx_attendance=#{param3}
+	</update>
 	
 	
 </mapper>

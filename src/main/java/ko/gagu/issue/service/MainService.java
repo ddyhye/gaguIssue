@@ -1,7 +1,10 @@
 package ko.gagu.issue.service;
 
+import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,6 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -68,8 +76,13 @@ public class MainService {
 		EmployeeDTO emp = mainDao.getEmpData(empID);
 		
 		
-		// 토스트 테스트
-		//webSocketController.sendNotification("토스트 기능 테스트...");
+		
+		// 조직도
+		String de_name = mainDao.getDename(emp.getIdx_employee());
+		List<EmployeeDTO> organization = mainDao.getOrganization(emp.getIdx_employee(), emp.getIdx_department());
+		mav.addObject("or_de_name", de_name);
+		mav.addObject("organization", organization);
+		
 		
 		
 		// 회의실 예약
@@ -369,6 +382,27 @@ public class MainService {
         map.put("profitPriceList", profitPriceList);
 		
 		return map;
+	}
+
+
+
+	public ResponseEntity<Resource> profileView(String file_name) {
+		// 특정 경로에서 파일을 읽어와 Resource로 만든다.
+	    Resource resource = new FileSystemResource(root+"/profilepicture/"+file_name);
+	    HttpHeaders header = new HttpHeaders();
+	      
+	    // 보내질 파일의 형태를 지정해 준다. (헤더에)
+	    // ex) image/gif, image/png, image/jpg, image/jpeg
+	    try {
+	       String type = Files.probeContentType(Paths.get(root+"/"+file_name));   //경로를 주면 해당 파일의 mime-type 을 알아낸다.
+	       logger.info("mime-type: "+type);
+	       header.add("content-type", type);
+	    } catch (IOException e) {
+	       e.printStackTrace();
+	    }   
+	      
+	    // 보낼 내용, 헤더, 상태(200 또는 OK 는 정상이라는 뜻)
+	    return new ResponseEntity<Resource>(resource, header, HttpStatus.OK); 
 	}
 	
 

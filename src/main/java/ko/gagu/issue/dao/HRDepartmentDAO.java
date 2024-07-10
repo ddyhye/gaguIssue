@@ -47,6 +47,14 @@ public interface HRDepartmentDAO {
 
 	List<Leave_usage_tbDTO> gethistory(int i);
 
+	int checkProfile(int idx_employee);
+
+	void updateProfileImagePath(String originalFilename, String fileName, int idx_file);
+
+	int getIdxFile(int idx_employee);
+
+	void updateAttendanceOfAllEmployees(Integer idx_employee, String ah_status,Integer idx_attendance);
+
 
 	
 
