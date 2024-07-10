@@ -107,7 +107,7 @@ public class EmployeeService {
 	        if (encoder.matches(emp_pw, memPw)) {
 	            EmployeeDTO dto = dao.employeeData(emp_id);
 	
-	            // 첫 로그인 체크 및 업데이트
+	            // 첫 로그인 체크 및 업데이트 하기
 	            if (dto.getFirst_login() == 0) {
 	                mav.setViewName("redirect:/findPW.go");  // 비밀번호 변경 페이지로 이동
 	                session.setAttribute("loginInfo", dto);
