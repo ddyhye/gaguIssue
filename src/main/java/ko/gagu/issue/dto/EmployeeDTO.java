@@ -61,7 +61,7 @@ public class EmployeeDTO {
 	private Timestamp emp_hire_date;
 	private Timestamp emp_term_date;
 	private String emp_address;
-	private boolean first_login;
+	private int first_login;
 	private String email;
 	
 	// [jeong] 직원의 부서명과 직급명이 필요해서 추가했습니다
@@ -241,12 +241,6 @@ public class EmployeeDTO {
 	public void setEmp_address(String emp_address) {
 		this.emp_address = emp_address;
 	}
-	public boolean isFirst_login() {
-		return first_login;
-	}
-	public void setFirst_login(boolean first_login) {
-		this.first_login = first_login;
-	}
 	public String getDe_name() {
 		return de_name;
 	}
@@ -342,6 +336,12 @@ public class EmployeeDTO {
 	}
 	public void setEmpName(String empName) {
 		this.empName = empName;
+	}
+	public int getFirst_login() {
+		return first_login;
+	}
+	public void setFirst_login(int first_login) {
+		this.first_login = first_login;
 	}
 	
 	

@@ -62,7 +62,7 @@
                 
                 <!-- do: 야간모드 -->
                 <li>
-                  <div class="mode">
+                  <div class="mode active">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#moon"></use>
                     </svg>

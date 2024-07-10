@@ -450,4 +450,31 @@
 			JOIN department_tb dt ON et.idx_department = dt.idx_department
 			LEFT JOIN filestore_tb ft ON ft.idx_filetype = 1 AND ft.idx_ref = et.idx_employee
 	</select>
+	
+	<select id="findEmployeeByIdAndName" parameterType="map" resultType="employee">
+	    SELECT *
+	    FROM employee_tb
+	    WHERE emp_id = #{emp_id}
+	      AND emp_name = #{emp_name}
+	</select>
+	
+	<select id="findEmployeeById" parameterType="String" resultType="employee">
+	    SELECT *
+	    FROM employee_tb
+	    WHERE emp_id = #{emp_id}
+	</select>
+	
+	<update id="updateEmployeePassword" parameterType="employee">
+	    UPDATE employee_tb
+	    SET emp_pw = #{emp_pw}
+	    WHERE emp_id = #{emp_id}
+	</update>
+	
+	<update id="updateFirstLoginStatus" parameterType="map">
+	    UPDATE employee_tb
+	    SET first_login = #{first_login}
+	    WHERE emp_id = #{emp_id}
+	</update>
+	
+	
 </mapper>

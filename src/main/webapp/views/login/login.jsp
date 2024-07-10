@@ -96,9 +96,8 @@
                 </tr>
                 <tr>
                     <td colspan="3" style="text-align: center;"> <!-- 나머지 버튼들을 포함한 버튼 컨테이너 -->
-                        <input type="button" value="사원번호 찾기" class="small-button" onclick='location.href="./findNumber.go"' style="margin-right: 10px;">
-                        <input type="button" value="비밀번호 찾기" class="small-button" onclick='location.href="./findPW.go"'>
-                        <input type="button" onclick='location.href="./joinForm.go"' value="회원가입">
+                        <input type="button" value="사원번호 찾기" class="small-button" onclick='location.href="<c:url value='./findNumber.go'/>"' style="margin-right: 10px;">
+                        <input type="button" value="비밀번호 찾기" class="small-button" onclick='location.href="<c:url value='./findPW.go'/>"'>
                     </td>
                 </tr>
             </table>
@@ -107,9 +106,12 @@
     
 </body>
 <script>
-    var msg = '${msg}';
-    if(msg != ""){
-        alert(msg);
-    }
+
+var msg = '${msg}';
+if (msg != "") {
+    alert(msg);
+}
+
+
 </script>
 </html>

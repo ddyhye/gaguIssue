@@ -86,6 +86,14 @@ public interface EmployeeDAO {
 
 	EmployeeDTO getEmployeeProfile(int selectedIdxEmployee);
 
+	EmployeeDTO findEmployeeByIdAndName(String emp_id, String emp_name);
+
+	EmployeeDTO findEmployeeById(String emp_id);
+
+	void updateEmployeePassword(EmployeeDTO employee);
+
+    void updateFirstLoginStatus(@Param("emp_id") String emp_id, @Param("first_login") int first_login);
+
 
 }
 
