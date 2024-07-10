@@ -94,31 +94,50 @@ public class EmployeeService {
 	
 	
 	// [do] 수정 - 인터셉터 및 로그인
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
+	// [tae] - first_login 여부에 따라 상태변경
+		public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+	        ModelAndView mav = new ModelAndView();
+	        
+	        logger.info("id :{}", emp_id);
+	        logger.info("pw : {}", emp_pw);
+	        
+	        String memPw = dao.login(emp_id);
+	        logger.info("mem_Pw = " + memPw);
+	        
+	        if (encoder.matches(emp_pw, memPw)) {
+	            EmployeeDTO dto = dao.employeeData(emp_id);
+	
+	            // 첫 로그인 체크 및 업데이트
+	            if (dto.getFirst_login() == 0) {
+	                mav.setViewName("redirect:/findPW.go");  // 비밀번호 변경 페이지로 이동
+	                session.setAttribute("loginInfo", dto);
+	                session.setAttribute("emp_id", emp_id);
+	                session.setAttribute("idxEmployee", dto.getIdx_employee());
+	                session.setAttribute("employeeDTO", dto);
+	                session.setAttribute("idxTitle", dto.getIdx_title());
+	                mav.addObject("msg", "첫 로그인입니다. 비밀번호를 변경해주세요.");
+	                rAttr.addFlashAttribute("msg","첫 로그인입니다. 비밀번호를 변경해주세요.");
+	            } else {
+	                mav.setViewName("redirect:/main/dashboard.go");
+	                session.setAttribute("loginInfo", dto);
+	                session.setAttribute("emp_id", emp_id);
+	                session.setAttribute("idxEmployee", dto.getIdx_employee());
+	                session.setAttribute("employeeDTO", dto);
+	                session.setAttribute("idxTitle", dto.getIdx_title());
+	                mav.addObject("msg", "환영합니다.");
+	            }
+	        } else {
+	            mav.setViewName("redirect:/login.go");
+	            rAttr.addFlashAttribute("msg", "사원번호 및 비밀번호를 확인해 주세요!");
+	        }
+	        
+	        return mav;
+	    }
 		
-		logger.info("id :{}",emp_id);
-		logger.info("pw : {}",emp_pw);
-		
-		String memPw = dao.login(emp_id);
-		logger.info("mem_Pw = "+memPw);
-		
-		if(encoder.matches(emp_pw, memPw)) {
-			mav.setViewName("redirect:/main/dashboard.go");
-			EmployeeDTO dto = dao.employeeData(emp_id);
-			session.setAttribute("loginInfo", dto);
-			session.setAttribute("emp_id", emp_id);
-			session.setAttribute("idxEmployee", dto.getIdx_employee());
-			session.setAttribute("employeeDTO", dto);
-			session.setAttribute("idxTitle", dto.getIdx_title());
-			rAttr.addFlashAttribute("msg","환영합니다.");
-		}else {
-			mav.setViewName("redirect:/login.go");
-			rAttr.addFlashAttribute("msg","사원번호 및 비밀번호를 확인해 주세요!");
-		}
-		
-		return mav;
-	}
+		public void updateFirstLoginStatus(String emp_id, int first_login) {
+	        dao.updateFirstLoginStatus(emp_id, first_login);
+	    }
+	
 
 	public ModelAndView join(Map<String, String> param) {
 		ModelAndView mav = new ModelAndView();
@@ -294,14 +313,27 @@ public class EmployeeService {
 		EmployeeDTO employeeProfile = dao.getEmployeeProfile(selectedIdxEmployee);
 		response.put("employeeProfile", employeeProfile);
 		return response;
-	}	
+	}
+
+	public EmployeeDTO findEmployee(String emp_id, String emp_name) {
+        return dao.findEmployeeByIdAndName(emp_id, emp_name);
+    }
+	
+	public void updateEmployeePassword(String emp_id, String newPassword) {
+        // 직원 정보를 emp_id를 통해 조회
+        EmployeeDTO employee = dao.findEmployeeById(emp_id);
+
+        if (employee != null) {
+            // 새 비밀번호를 암호화하여 설정
+            String encodedPassword = encoder.encode(newPassword);
+            employee.setEmp_pw(encodedPassword);
+
+            // DAO를 통해 비밀번호 업데이트
+            dao.updateEmployeePassword(employee);
+        }
+    }
 
 	
-
-	
-
-	
-
 	
 
 }
