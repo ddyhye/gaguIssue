@@ -517,7 +517,7 @@
 	       data:{
 	    	  'clientSearch': search,
 	          'page':page,
-	          'cnt':5
+	          'cnt':10
 	       },
 	       dataType:'json',
 	       success:function(data){

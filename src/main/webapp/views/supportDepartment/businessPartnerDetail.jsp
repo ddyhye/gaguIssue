@@ -243,8 +243,7 @@
             </nav>
         </div>                      
     </div>
-					</div>
-          
+</div>
           
           
           
@@ -318,31 +317,39 @@
   
   <script>
   var showPage = 1;
-  var search = '';
   $(document).ready(function(){ // html 문서가 모두 읽히면 되면(준비되면) 다음 내용을 실행 해라
-  	   listCall(showPage);
+	  var clientType = "${client.client_type}";
+	  console.log("clientType :", clientType);
+	  	if (clientType === '발주처') {
+	        listCall(showPage);
+	    } else if (clientType === '수주처') {
+	        listCall2(showPage);
+	    }
   });
   
-/*   
-  // JSP 변수를 JavaScript 변수로 전달
-  var idxBusiness = "${client.idx_business}";
-
-  // 콘솔에 출력하여 확인
-  console.log("idxBusiness: ", idxBusiness);
- */
+	 /*   
+	  // JSP 변수를 JavaScript 변수로 전달
+	  var idxBusiness = "${client.idx_business}";
+	
+	  // 콘솔에 출력하여 확인
+	  console.log("idxBusiness: ", idxBusiness);
+	 */
  
 	var urlParams = new URLSearchParams(window.location.search);
 	var idxBusiness = urlParams.get('idx_business');
  
-	console.log(idxBusiness);
-   function listCall(page, search){
+	console.log("idxBusiness: ",idxBusiness);
+	
+	
+   function listCall(page){
 		
 	    $.ajax({
 	       type:'get',
 	       url:'/purchase_history',
 	       data:{
 	          'page':page,
-	          'cnt':5
+	          'cnt':7,
+	          'idx_business':idxBusiness
 	       },
 	       dataType:'json',
 	       success:function(data){
@@ -365,7 +372,7 @@
 	         	  onPageClick:function(evt, pg){//페이지 클릭시 실행 함수
 	        		  console.log(evt); // 이벤트 객체
 	        		  console.log(pg); //클릭한 페이지 번호
-	        		  listCall(pg, clientSearch);
+	        		  listCall(pg);
 	        	  }
 	          });
 	       },
@@ -376,6 +383,86 @@
 	       }
 	    });
 	} 
+   
+   
+    function drawList(list){
+	    var content = '';
+	    for(item of list){
+	      // console.log(item);
+	       content += '<tr>';
+	       content += '<td>'+ item.idx_purchasehtml +'</td>';
+	       content += '<td>'+ item.product_name + '</td>';
+	       content += '<td>'+ item.idx_product_category + '</td>';
+	       content += '<td>'+ item.purchase_price + '</td>';
+	       content += '<td>'+ item.allcount + '</td>';
+	       content += '<td>'+ DateToString(item.stock_datetime) + '</td>';
+	       content += '<td>'+ item.stock_status + '</td>';
+	       content += '</tr>';
+	    }
+	    $('.client-transaction').html(content);
+	}  
+
+    
+    
+	function listCall2(page){
+		
+	    $.ajax({
+	       type:'get',
+	       url:'/delivery_history',
+	       data:{
+	          'page':page,
+	          'cnt':7,
+	          'idx_business':idxBusiness
+	       },
+	       dataType:'json',
+	       success:function(data){
+		    	
+	          drawList2(data.list);
+	          console.log(data);
+	          console.log("총 페이지수 :",data.totalPages);
+	          
+	          //플러그인 추가
+	          var startPage = data.currPage > data.totalPages? data.totalPages : data.currPage;
+	          
+	          $('#pagination').twbsPagination({
+	        	  startPage:startPage, //시작페이지
+	        	  totalPages:data.totalPages, //총 페이지 갯수
+	        	  visiblePages:5, //보여줄 페이지 수 [1][2][3][4][5]
+	        	  first: '<<', 
+	        	  prev: '<',
+	  	          next: '>', 
+	  	          last: '>>',
+	         	  onPageClick:function(evt, pg){//페이지 클릭시 실행 함수
+	        		  console.log(evt); // 이벤트 객체
+	        		  console.log(pg); //클릭한 페이지 번호
+	        		  listCall2(pg);
+	        	  }
+	          });
+	       },
+	       error: function(request, status, error) {
+	           console.log("code: " + request.status)
+	           console.log("message: " + request.responseText)
+	           console.log("error: " + error);
+	       }
+	    });
+	} 
+	
+	 function drawList2(list){
+		    var content = '';
+		    for(item of list){
+		      // console.log(item);
+		       content += '<tr>';
+		       content += '<td>'+ item.order_no +'</td>';
+		       content += '<td>'+ item.product_name + '</td>';
+		       content += '<td>'+ item.idx_product_category + '</td>';
+		       content += '<td>'+ item.unit_price + '</td>';
+		       content += '<td>'+ item.order_total_price + '</td>';
+		       content += '<td>'+ DateToString(item.delivery_datetime) + '</td>';
+		       content += '<td>'+ item.delivery_state + '</td>';
+		       content += '</tr>';
+		    }
+		    $('.client-transaction').html(content);
+		}  
   
   </script>
 </html>
