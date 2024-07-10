@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.dao.SupportDepartmentDAO;
 import ko.gagu.issue.dto.SupportDepartmentDTO;
+import ko.gagu.issue.dto.stockentries_tbDTO;
+import ko.gagu.issue.dto.warehouse_tbDTO;
 
 @Service
 public class SupportDepartmentService {
@@ -105,6 +107,45 @@ public class SupportDepartmentService {
 		
 		model.addAttribute("client", dto);
 
+	}
+
+	public Map<String, Object> purchaseHistory(int currPage, int cnt, String idx_business) {
+		int start = (currPage-1)*cnt;
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<SupportDepartmentDTO> list = supportDAO.purchaseHistory(cnt, start, idx_business);
+		
+		result.put("list", list);
+		result.put("currPage",currPage);
+		result.put("totalPages", supportDAO.purchaseHistoryAllCount(cnt, idx_business));
+		
+		return result;
+	}
+
+	public Map<String, Object> deliveryHistory(int currPage, int cnt, String idx_business) {
+		int start = (currPage-1)*cnt;
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<SupportDepartmentDTO> list = supportDAO.deliveryHistory(cnt, start, idx_business);
+		
+		result.put("list", list);
+		result.put("currPage",currPage);
+		result.put("totalPages", supportDAO.deliveryHistoryAllCount(cnt, idx_business));
+		
+		return result;
+	}
+
+	public Map<String, Object> storageList(int currPage, int cnt) {
+		int start = (currPage-1)*cnt;
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<warehouse_tbDTO> list = supportDAO.storageList(cnt, start);
+		
+		result.put("list", list);
+		result.put("currPage",currPage);
+		result.put("totalPages", supportDAO.storageListAllCount(cnt));
+		
+		return result;
 	}
 
 
