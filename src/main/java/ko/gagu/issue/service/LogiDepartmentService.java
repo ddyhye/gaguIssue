@@ -427,7 +427,7 @@ public class LogiDepartmentService {
 		map.put("accept", accept);
 		
 		// 토스트 테스트,,
-		webSocketController.sendNotificationToUser(14, "※발주가 필요한 제품이 있습니다※");
+		webSocketController.sendNotificationToUser(35, "※발주가 필요한 제품이 있습니다※");
 		
 		return map;
 	}

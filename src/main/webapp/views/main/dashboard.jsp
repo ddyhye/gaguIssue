@@ -91,10 +91,18 @@
                   	<a href="#">
                   	  <div class="do-flexdirection-row">
                         <h2>조직도</h2><i class="greater-than" data-feather="chevron-right"></i>
-                        <h4 class="do-departName">관리자</h4>
+                        <h4 class="do-departName">${or_de_name}</h4>
                       </div>
                       <div class="card-body-center">
-                      	<div class="do-group">
+                      	<c:forEach items="${organization}" var="item">
+                      		<div class="do-group">
+	                      		<div class="do-group-pic">
+	                      			<img class="do-group-pic-size" src="/profile/${item.file_name}"/>
+	                      		</div>
+	                      		<div class="do-group-name">${item.emp_name}</div>
+	                      	</div>
+                      	</c:forEach>
+                      	<!-- <div class="do-group">
                       		<div class="do-group-pic">
                       			<img class="do-group-pic-size" src="/img/ahruru.png"/>
                       		</div>
@@ -111,7 +119,7 @@
                       			<img class="do-group-pic-size" src="/img/ahruru.png"/>
                       		</div>
                       		<div class="do-group-name">관리자</div>
-                      	</div>
+                      	</div> -->
                       </div>
                     </a>
                   </div>
