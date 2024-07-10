@@ -99,7 +99,7 @@ public class EmployeeService {
 	
 	// [do] 수정 - 인터셉터 및 로그인
 	// [tae] - first_login 여부에 따라 상태변경
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+    public ModelAndView login(HttpServletRequest request, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
 		logger.info("id :{}", emp_id);
@@ -112,7 +112,7 @@ public class EmployeeService {
 			logger.info("세션 새로 만들기");
 			session.invalidate();
 			session = request.getSession(true);
-			session.setMaxInactiveInterval(60); // 세션 타임아웃 설정 (60초)
+			session.setMaxInactiveInterval(3600); // 세션 타임아웃 설정 (30분)
 		}
 		if (encoder.matches(emp_pw, memPw)) {
 			EmployeeDTO dto = dao.employeeData(emp_id);

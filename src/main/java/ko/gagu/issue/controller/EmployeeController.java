@@ -329,7 +329,7 @@ public class EmployeeController {
         	logger.info("세션 새로 만들기");
         	session.invalidate();
         	session = request.getSession(true);
-            session.setMaxInactiveInterval(60); // 세션 타임아웃 설정 (60초)
+            session.setMaxInactiveInterval(3600); // 세션 타임아웃 설정 (30분)
         }
 		
 		rAttr.addFlashAttribute("msg","로그아웃 성공, 로그인 페이지로 돌아갑니다...");
