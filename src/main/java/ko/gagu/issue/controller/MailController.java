@@ -1,9 +1,12 @@
 package ko.gagu.issue.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +30,12 @@ public class MailController {
 		this.mailService=mailService;
 	}
 
-	@GetMapping(value="/common/mailList.go")
-	public String mailList(Model model) throws IOException{
-		List<MailDTO>mailList = mailService.receiveMails();
-		model.addAttribute("mailList",mailList);
-		return "common/mailList";
-	}
+//	@GetMapping(value="/common/mailList.go")
+//	public String mailList(Model model) throws IOException{
+//		List<MailDTO>mailList = mailService.receiveMails();
+//		model.addAttribute("mailList",mailList);
+//		return "common/mailList";
+//	}
 	
 	@GetMapping(value="/common/mailWrite.go")
 	public String mailWrite() {
@@ -41,9 +44,23 @@ public class MailController {
 	}
 	
 	@PostMapping(value = "/common/mailWrite.do")
-	public String sendMail(MailDTO mailDto, @RequestParam("files") MultipartFile[] files) throws MessagingException {
+	public String sendMail(MailDTO mailDto, @RequestParam("files") MultipartFile[] files,HttpSession session) throws MessagingException {
+		logger.info("mailDto : {}",mailDto.toString());
+		logger.info("제목 : {}",mailDto.getTitle());
+		logger.info("받는 사람 문자 : {}",Arrays.stream(mailDto.getAddress())
+                .collect(Collectors.joining(",")));
+		int idx_employee = (int) session.getAttribute("idxEmployee");
+		logger.info("idx_employee : {}",idx_employee);
+		mailDto.setDb_address(Arrays.stream(mailDto.getAddress()).collect(Collectors.joining(",")));
+		mailDto.setDb_ccAddress(Arrays.stream(mailDto.getCcAddress()).collect(Collectors.joining(",")));
 	    mailService.sendMail(mailDto, files);
+	    mailService.saveMail(mailDto,files,idx_employee);
 	    return "redirect:/common/mailList.go";
+	}
+	
+	@GetMapping(value="/common/sendMailList.go")
+	public String sendMailList() {
+		return "common/mailSendingList";
 	}
 	
 	
