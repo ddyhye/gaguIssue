@@ -49,11 +49,11 @@
               	<li class="d-flex align-items-center" style="height: 45px;">
               		<p style="margin-bottom: 0;" id="sessionCurrentTime">${remainingMinutes}:${remainingSeconds}</p><span style="text-decoration: underline; font-size: 12px;cursor: pointer;">연장</span>
               	</li>
-                <li>                         
+                <!-- <li>                         
                 	<span class="header-search">
                     <svg>
                       <use href="/assets/svg/icon-sprite.svg#search"></use>
-                    </svg></span></li>
+                    </svg></span></li> -->
                 <li class="fullscreen-body">                       <span>
                     <svg id="maximize-screen">
                       <use href="/assets/svg/icon-sprite.svg#full-screen"></use>
@@ -161,7 +161,7 @@
 	                var now = new Date().getTime();
 	                var distance = countDownDate - now;
 	                
-					console.log(sessionDeadTime, new Date(), distance);
+					//console.log(sessionDeadTime, new Date(), distance);
 	                if (distance < 0) {
 	                    clearInterval(x);
 	                    document.getElementById("sessionCurrentTime").innerHTML = "세션 뒤짐";

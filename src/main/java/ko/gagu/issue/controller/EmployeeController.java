@@ -198,7 +198,7 @@ public class EmployeeController {
 	@GetMapping(value="/login.go")
 	public String home() {
 		logger.info("로그인 페이지 요청...");
-		return "login/login";
+		return "login/do-login";
 	}
 	// 로그인
 	@PostMapping(value="/login.do")
