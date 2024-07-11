@@ -47,7 +47,7 @@ public class MainController {
 		// [do] 바코드 생성하기
 		mainService.createBarcode();
 				
-		return "login/login";
+		return "login/do-login";
 	}
 	
 	// [do] 메인페이지, 대시보드
@@ -72,6 +72,7 @@ public class MainController {
 	// 조직도 사진 경로
 	@GetMapping(value="/profile/{file_name}")
 	public ResponseEntity<Resource> productView(@PathVariable String file_name) {
+		logger.info("불러올 사진 파일 >>>>>>>>>>>>>>>>>>>>>>> "+file_name);
 		return mainService.profileView(file_name);
 	}
 	

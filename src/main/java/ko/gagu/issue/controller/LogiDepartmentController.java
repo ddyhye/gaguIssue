@@ -77,6 +77,7 @@ public class LogiDepartmentController {
 	}
 	// 인벤토리 상세보기 - 사진 경로
 	@GetMapping(value="/productPhoto/{file_name}")
+	@ResponseBody
 	public ResponseEntity<Resource> productView(@PathVariable String file_name) {
 		return logiDeptService.productView(file_name);
 	}

@@ -198,7 +198,7 @@ public class EmployeeController {
 	@GetMapping(value="/login.go")
 	public String home() {
 		logger.info("로그인 페이지 요청...");
-		return "login/login";
+		return "login/do-login";
 	}
 	// 로그인
 	@PostMapping(value="/login.do")
@@ -406,5 +406,36 @@ public class EmployeeController {
 			,@RequestParam int selectedIdxEmployee) {
 		return employeeService.getProfileInfo(selectedIdxEmployee);	
 	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/* [do] 로그인 ,,, */
+	@GetMapping(value="/do-login.go")
+	public String dologin_go() {
+		return "login/do-login";
+	}
+	@GetMapping(value="/login_2.go")
+	public String login_2_go() {
+		return "login/login_2";
+	}
+	
+//	// 로그인페이지 이동 ><
+//	@GetMapping(value="/login.go")
+//	public String home() {
+//		logger.info("로그인 페이지 요청...");
+//		return "login/login";
+//	}
 	
 }

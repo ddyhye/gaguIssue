@@ -3,7 +3,7 @@
 
 	<div class="sidebar-wrapper" data-layout="stroke-svg">
           <div>
-            <div class="logo-wrapper"><a href="<c:url value='/main/dashboard.go'/>"><img class="img-fluid" src="/img/가구이쓔 로고.png" alt=""></a>
+            <div class="logo-wrapper"><a href="<c:url value='/main/dashboard.go'/>"><img class="img-fluid" src="/productPhoto/gaguIssu_logo_sidebar.png" alt=""></a>
               <div class="back-btn"><i class="fa fa-angle-left"></i></div>
               <div class="toggle-sidebar" style="top: 28px !important;">
                 <svg class="stroke-icon sidebar-toggle status_toggle middle">

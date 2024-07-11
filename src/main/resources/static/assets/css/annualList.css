@@ -88,3 +88,33 @@
 #do-warning:hover {
 	color: rgba(122, 112, 186);
 }
+
+
+.do-poBtn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	position: relative;
+	left: 30%;
+	width: 40%;
+	height: 25px;
+	
+	color: #7a70ba;
+	font-weight: bold;
+	background-color:rgba(119, 119, 225, 0.2);
+	border: 1px solid rgba(186, 186, 201, 0.8);
+	border-radius: 4px;
+	
+	gap: 5px;
+}
+.do-poBtn:hover {
+	background-color: rgba(119, 119, 225, 0.8);
+	color: white;
+}
+.fa-magnifying-glass2 {
+	font-size: 13px;
+	/* right: 4.5%;
+	margin-top: 0;
+	margin-right: 3; */
+}
