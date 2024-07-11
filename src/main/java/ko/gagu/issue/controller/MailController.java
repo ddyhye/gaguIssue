@@ -3,6 +3,7 @@ package ko.gagu.issue.controller;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
@@ -55,12 +56,26 @@ public class MailController {
 		mailDto.setDb_ccAddress(Arrays.stream(mailDto.getCcAddress()).collect(Collectors.joining(",")));
 	    mailService.sendMail(mailDto, files);
 	    mailService.saveMail(mailDto,files,idx_employee);
-	    return "redirect:/common/mailList.go";
+	    return "redirect:/common/sendMailList.go";
 	}
 	
 	@GetMapping(value="/common/sendMailList.go")
 	public String sendMailList() {
 		return "common/mailSendingList";
+	}
+	
+	@PostMapping(value="/common/sendMailList.ajax")
+	public Map<String, Object>sendingMailList(String page, String cnt,int idx_sending_email){
+		logger.info("페이지 당 보여줄 갯수 : "+cnt);
+		logger.info("요청 페이지 : " +page);
+		
+		int currentPage = Integer.parseInt(page);
+		int pagePerCnt = Integer.parseInt(cnt);
+		
+		Map<String, Object>map = mailService.sendingMailList(idx_sending_email,currentPage,pagePerCnt);
+		logger.info("map : {}",map);
+		
+		return map;
 	}
 	
 	

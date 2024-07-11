@@ -1,12 +1,18 @@
 package ko.gagu.issue.service;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.mail.BodyPart;
 import javax.mail.Folder;
@@ -40,6 +46,7 @@ import ko.gagu.issue.util.MailUtil;
 @Service
 public class MailService {
 	
+	private static final String root = "/Users/ku-ilseung/Desktop/C/";
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private final MailDAO mailDao;
 	private final JavaMailSender emailSender;
@@ -87,20 +94,62 @@ public class MailService {
 	}
 	public void saveMail(MailDTO mailDto, MultipartFile[] files, int idx_employee) {
 		
+		String email="email_send";
+		int idx_sending_email=  mailDto.getIdx_sending_email();
+		mailDto.setIdx_employee(idx_employee);
+		int idx=mailDto.getIdx_employee();
+		logger.info("idx :{}",idx);
+		logger.info(email);
+		// 설정 제대로 안해줘서 안들가있을 확률 매우 높음
+//		logger.info("idx_sending_email : {}",idx_sending_email);
+		String[] attachmentFileNames=new String[files.length];
+		mailDao.saveMail(mailDto);
+		// 첨부 파일 저장
+					
+		    for (MultipartFile file : files) {
+				if (file.isEmpty()) {
+					continue;
+				}
+	        	String newFilename = saveAttachmentFiles(file,email);	
+	        	logger.info("attachmentFileNames[i].getOriginalFilename() :{}",file.getOriginalFilename());
+	        	mailDao.saveAttachmentFile(11,idx,file.getOriginalFilename(),newFilename);
+		    }
 		
-		mailDao.saveMail(mailDto,idx_employee);
-//		// 첨부 파일 저장
-//	    for (MultipartFile file : files) {
-//	        if (!file.isEmpty()) {
-//	            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//	            try {
-//	                mailDao.saveAttachment(mailId, fileName);
-//	            } catch (Exception e) {
-//	                e.printStackTrace();
-//	            }
-//	        }
-//	    }
 	}
+
+	private String saveAttachmentFiles(MultipartFile multipartFile, String email) {
+
+		String origin_name=multipartFile.getOriginalFilename();
+		logger.info("origin_name : {}", origin_name);
+		String ext=origin_name.substring(origin_name.lastIndexOf("."));
+//		String file_name="email_sending/"+System.currentTimeMillis()+ext;
+		String file_name="email_sending/"+UUID.randomUUID()+ext;
+		
+		try {
+			byte[] file_content=multipartFile.getBytes();
+			Path path = Paths.get(root+"/"+email+"/"+file_name);
+			if (Files.notExists(path.getParent())) {
+				Files.createDirectories(path.getParent());
+			}
+			Files.write(path, file_content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return file_name;
+	}
+
+	public Map<String, Object> sendingMailList(int idx_sending_email,int currentPage, int pagePerCnt) {
+		
+		int start = (currentPage - 1) * pagePerCnt;
+		Map<String, Object>map=new HashMap<String, Object>();
+		List<MailDTO> mailList=mailDao.sendingMailList(start,pagePerCnt,idx_sending_email);
+		
+		map.put("mailList", mailList);
+		map.put("currentPage", currentPage);
+		map.put("totalPages", mailDao.sendingMailListCountPage(pagePerCnt,idx_sending_email));
+		return map;
+	}
+
 	
 //	public List<MailDTO> receiveMails() {
 //        List<MailDTO> mailList = new ArrayList<>();

@@ -9,6 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Alias(value="mail")
 public class MailDTO {
+	private int idx_sending_email;
+	private int idx_employee;
+	private String se_employee_name;
 	private String from;
 	private String[] address;
 	private String[] ccAddress;
@@ -77,6 +80,24 @@ public class MailDTO {
 		return "MailDTO [from=" + from + ", address=" + Arrays.toString(address) + ", ccAddress="
 				+ Arrays.toString(ccAddress) + ", title=" + title + ", content=" + content + ", upload_datetime="
 				+ upload_datetime + ", multipartFiles=" + multipartFiles + "]";
+	}
+	public int getIdx_sending_email() {
+		return idx_sending_email;
+	}
+	public void setIdx_sending_email(int idx_sending_email) {
+		this.idx_sending_email = idx_sending_email;
+	}
+	public int getIdx_employee() {
+		return idx_employee;
+	}
+	public void setIdx_employee(int idx_employee) {
+		this.idx_employee = idx_employee;
+	}
+	public String getSe_employee_name() {
+		return se_employee_name;
+	}
+	public void setSe_employee_name(String se_employee_name) {
+		this.se_employee_name = se_employee_name;
 	}
 	
 }
