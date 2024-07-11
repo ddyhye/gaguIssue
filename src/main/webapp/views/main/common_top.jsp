@@ -124,7 +124,7 @@
                     <li><a href="<c:url value='/employee/group.go'/>"><i data-feather="users"></i><span>조직도</span></a></li>
                     <li><a href="<c:url value='/employee/attendance.go'/>"><i data-feather="check-circle"></i><span>나의 근태</span></a></li>
                     <li><a href="<c:url value='/employee/calendar.go'/>"><i data-feather="calendar"></i><span>Calendar</span></a></li>
-                    <li><a href="todo.go"><i data-feather="edit-3"> </i><span>To Do !</span></a></li>
+                    <li><a href="<c:url value='/todo.go'/>"><i data-feather="edit-3"> </i><span>To Do !</span></a></li>
                     <li><a href="<c:url value='/logout.go'/>"><i data-feather="log-in"> </i><span>Log out</span></a></li>
                   </ul>
                 </li>

@@ -785,7 +785,7 @@
 				                        <div class="row">
 				                            <div class="col-6 mb-2">
 				                                <label for="modifyEmpId">사원번호</label>
-				                                <input type="text" name="emp_id" class="form-control" id="modifyEmpId" readonly>
+				                                <input type="text" name="emp_id" class="form-control" id="modifyEmpId">
 				                            </div>
 				                            <div class="col-6 mb-2">
 				                                <label for="modifyEmpName">이름</label>
