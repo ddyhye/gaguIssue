@@ -169,7 +169,7 @@
                       	<c:forEach items="${organization}" var="item">
                       		<div class="do-group">
 	                      		<div class="do-group-pic">
-	                      			<img class="do-group-pic-size" src="/profile/${item.file_name}"/>
+	                      			<img class="do-group-pic-size" src="/file/profile_picture/${item.file_name}"/>
 	                      		</div>
 	                      		<div class="do-group-name">${item.emp_name}</div>
 	                      	</div>
