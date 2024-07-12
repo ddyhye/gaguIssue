@@ -448,21 +448,21 @@
 	} 
 	
 	 function drawList2(list){
-		    var content = '';
-		    for(item of list){
-		      // console.log(item);
-		       content += '<tr>';
-		       content += '<td>'+ item.order_no +'</td>';
-		       content += '<td>'+ item.product_name + '</td>';
-		       content += '<td>'+ item.idx_product_category + '</td>';
-		       content += '<td>'+ item.unit_price + '</td>';
-		       content += '<td>'+ item.order_total_price + '</td>';
-		       content += '<td>'+ DateToString(item.delivery_datetime) + '</td>';
-		       content += '<td>'+ item.delivery_state + '</td>';
-		       content += '</tr>';
-		    }
-		    $('.client-transaction').html(content);
-		}  
-  
+	    var content = '';
+	    for(item of list){
+	      // console.log(item);
+	       content += '<tr>';
+	       content += '<td>'+ item.order_no +'</td>';
+	       content += '<td>'+ item.product_name + '</td>';
+	       content += '<td>'+ item.idx_product_category + '</td>';
+	       content += '<td>'+ item.unit_price + '</td>';
+	       content += '<td>'+ item.order_total_price + '</td>';
+	       content += '<td>'+ DateToString(item.delivery_datetime) + '</td>';
+	       content += '<td>'+ item.delivery_state + '</td>';
+	       content += '</tr>';
+	    }
+	    $('.client-transaction').html(content);
+	}  
+	 
   </script>
 </html>
