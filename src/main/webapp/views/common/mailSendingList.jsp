@@ -35,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/datatables.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/date-range-picker/flatpickr.min.css'/>">
     <!-- Plugins css Ends-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
@@ -44,6 +45,10 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- [il] 페이징 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <style>
         /* 스타일링 추가 */
         .email-list .table th, .email-list .table td {
@@ -102,94 +107,44 @@
 		                        <a class="nav-link active" aria-current="page" href="#">받은 메일</a>
 		                    </li>
 		                    <li class="nav-item">
-		                        <a class="nav-link" href="#">안 읽은 메일</a>
-		                    </li>
-		                    <li class="nav-item">
 		                        <a class="nav-link" href="#">보낸 메일</a>
 		                    </li>
 		                </ul>
-		                <!-- 연도 및 월 선택 옵션 -->
-		                <form class="d-flex">
-		                    <select class="form-select" aria-label="연도 선택">
-		                        <option selected>연도 선택</option>
-		                        <option value="2023">2024</option>
-		                        <option value="2023">2023</option>
-		                        <option value="2022">2022</option>
-		                        <option value="2021">2021</option>
-		                    </select>
-		                    <select class="form-select" aria-label="월 선택">
-		                        <option selected>월 선택</option>
-		                        <option value="1">1월</option>
-		                        <option value="2">2월</option>
-		                        <option value="3">3월</option>
-		                        <option value="3">4월</option>
-		                        <option value="3">5월</option>
-		                        <option value="3">6월</option>
-		                        <option value="3">7월</option>
-		                        <option value="3">8월</option>
-		                        <option value="3">9월</option>
-		                        <option value="3">10월</option>
-		                        <option value="3">11월</option>
-		                        <option value="3">12월</option>
-		                    </select>
-		                </form>
 		            </div>
 		        </div>
 		    </nav>
 		
 		    <!-- 이메일 리스트 테이블 -->
 		    <div class="container mt-4">
-		        <div class="card">
-		            <div class="card-header">
-		                이메일 목록
-		            </div>
-		            <div class="card-body">
-		                <div class="table-responsive">
-		                    <table class="table table-bordered">
-		                    <thead>
-		                        <tr>
-		                            <th>From</th>
-		                            <th>Title</th>
-		                            <th>Content</th>
-		                        </tr>
-		                    </thead>
-		                    <tbody>
-		                        <c:forEach var="mail" items="${mailList}">
-		                            <tr>
-		                                <td>${mail.from}</td>
-		                                <td>${mail.title}</td>
-		                                <td>${mail.content}</td>
-		                            </tr>
-		                        </c:forEach>
-		                    </tbody>
-		                </table>
-		                </div>
-		            </div>
-		            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        </div>
-    </div>
+			    <div class="card">
+			        <div class="card-header">
+			            이메일 목록
+			        </div>
+			        <div class="card-body">
+			            <div class="table-responsive">
+			                <table id="emailTable" class="table table-bordered">
+			                    <thead>
+			                        <tr>
+			                            <th>송신자</th>
+			                            <th>제목</th>
+			                            <th>수신자</th>
+			                            <th>발신 날짜</th>
+			                        </tr>
+			                    </thead>
+			                    <tbody>
+			                    </tbody>
+			                </table>
+			            </div>
+			        </div>
+			    </div>
+			</div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
-        <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
     <!-- latest jquery-->
-    <script src="/assets/js/jquery.min.js"></script>
+    <!-- <script src="/assets/js/jquery.min.js"></script> -->
     <!-- Bootstrap js-->
     <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
     <!-- feather icon js-->
@@ -230,7 +185,76 @@
     <script src="/assets/js/script.js"></script>
     <script src="/assets/js/script1.js"></script>
     <script src="/assets/js/theme-customizer/customizer.js"></script>
+    <!-- [il] twbs-pagination -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    
+    <script>
+    var showPage = 1;
+
+    $(document).ready(function() {
+        function getEmailList(page) {
+            $.ajax({
+                url: './sendMailList.ajax', 
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    'page': page || showPage, // page가 없을 경우 기본 값으로 showPage 사용
+                    'cnt': 15
+                },
+                success: function(data) {
+                    var emailTableBody = $('#emailTable tbody');
+
+                    // 기존 테이블 내용 비우기
+                    emailTableBody.empty();
+
+                    $('#pagination').twbsPagination({
+                        startPage: data.currentPage, // 시작페이지
+                        totalPages: data.totalPages, // 총 페이지 수
+                        visiblePages: 5, // 보여줄 페이지 수 1,2,3,4,5
+                        onPageClick: function(event, pg) { // 페이지 클릭시 실행 함수
+                            console.log(pg); // 클릭한 페이지 번호
+                            getEmailList(pg); // 페이지 변경 시 새로운 데이터 로드
+                        }
+                    });
+
+                    drawList(data.mailList);
+                },
+                error: function(xhr, status, error) {
+                    console.error('email list 불러오기 실패ㅠㅠ:', status, error);
+                }
+            });
+        }
+
+        getEmailList(); // 초기 로드 시 첫 페이지 데이터 불러오기
+    });
+
+    function drawList(list) {
+        var content = '';
+
+        for (var item of list) {
+            content += '<tr data-url="/common/sendMailDetail.go?idx_sending_email=' + item.idx_sending_email + '">';
+            content += '<td>' + item.se_employee_name + '</td>';
+            content += '<td>' + item.title + '</td>';
+            content += '<td>' + item.db_address + '</td>';
+            content += '<td>' + item.upload_datetime + '</td>';
+            content += '</tr>';
+        }
+
+        $("#emailTable tbody").append(content);
+
+        $("#emailTable tbody tr").click(function(event) {
+            if (!$(event.target).is('.status-select')) {
+                var url = $(this).data('url');
+                window.location.href = url;
+            }
+        });
+    }
+
+    
+    
+    </script>
+    
   </body>
 </html>

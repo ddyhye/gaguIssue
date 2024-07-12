@@ -22,7 +22,7 @@ html, body {
 	position: relative;
 	width: 60%;
 	
-	background-image: url('/img/login_1.jpg');
+	background-image: url('/productPhoto/login_1.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -34,7 +34,7 @@ html, body {
 	
 	position: relative;
 	width: 40%;
-	background-image: url('/img/login_2.jpg');
+	background-image: url('/productPhoto/login_2.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -135,12 +135,14 @@ input:-webkit-autofill:active {
 }
 </style>
 </head>
+
+
 <body>
 	<div class="container">
 		<div class="back1"></div>
 		<div class="back2">
 			<div class="logo">
-				<img class="logo-img" src="/img/login_logo3.png"/>
+				<img class="logo-img" src="/productPhoto/login_logo3.png"/>
 			</div>
 			<div class="loginDiv">
 				<div class="loginDiv-main">

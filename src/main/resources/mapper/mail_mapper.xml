@@ -15,10 +15,20 @@
 		VALUES(11,#{param1},#{param2},#{param2},#{param3})
 	</insert>
 	
-	<insert id="saveMail">
+	<insert id="saveMail"
+		useGeneratedKeys="true" 
+		keyColumn="idx_sending_email" 
+		keyProperty="idx_sending_email"
+		parameterType="mail"		
+	>
 		INSERT INTO sending_email_tb
 			(idx_employee,se_recipient,se_references,se_title,se_description)
-		VALUES(#{idx_employee},#{mailDto.db_address},#{mailDto.db_ccAddress},#{mailDto.title},#{mailDto.content})
+		VALUES(#{idx_employee},#{db_address},#{db_ccAddress},#{title},#{content})
+	</insert>
+	
+	<insert id="saveAttachmentFile">
+		INSERT INTO filestore_tb(idx_filetype, idx_ref, origin_name, file_name)
+		VALUES(#{param1},#{param2},#{param3},#{param4})
 	</insert>
 	
 </mapper>

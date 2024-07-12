@@ -81,6 +81,12 @@ public class MainService {
 		// 조직도
 		String de_name = mainDao.getDename(emp.getIdx_employee());
 		List<EmployeeDTO> organization = mainDao.getOrganization(emp.getIdx_employee(), emp.getIdx_department());
+		
+		for (int i = 0; i < organization.size(); i++) {
+			String realName = organization.get(i).getFile_name().split("/")[1];
+			organization.get(i).setFile_name(realName);
+		}
+		
 		mav.addObject("or_de_name", de_name);
 		mav.addObject("organization", organization);
 		
@@ -412,7 +418,7 @@ public class MainService {
 
 	public ResponseEntity<Resource> profileView(String file_name) {
 		// 특정 경로에서 파일을 읽어와 Resource로 만든다.
-	    Resource resource = new FileSystemResource(root+"/profilepicture/"+file_name);
+	    Resource resource = new FileSystemResource(root+"/"+file_name);
 	    HttpHeaders header = new HttpHeaders();
 	      
 	    // 보내질 파일의 형태를 지정해 준다. (헤더에)
