@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -202,8 +204,8 @@ public class EmployeeController {
 	}
 	// 로그인
 	@PostMapping(value="/login.do")
-	public ModelAndView login(HttpServletRequest request, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
-		return employeeService.login(request, emp_id, emp_pw, rAttr, session);
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+		return employeeService.login(request, response, emp_id, emp_pw, rAttr, session);
 	}
 	
 	@GetMapping(value = "/joinForm.go")
@@ -318,18 +320,21 @@ public class EmployeeController {
 	
 	// [do] 로그아웃
 	@GetMapping(value="/logout.go")
-	public ModelAndView logout(HttpServletRequest request,
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
 		
 		session.removeAttribute("loginInfo");
 		session.removeAttribute("emp_id");
-        if (su.isSessionExpired(session)) {
+        if (su.isSessionExpired(request)) {
             // 세션이 만료되었거나 새로운 세션이 필요한 경우
         	logger.info("세션 새로 만들기");
         	session.invalidate();
         	session = request.getSession(true);
-            session.setMaxInactiveInterval(3600); // 세션 타임아웃 설정 (30분)
+            session.setMaxInactiveInterval(60); // 세션 타임아웃 설정 (30분)
+            String sessionDeadtime = String.valueOf(su.getExpirationTime(session));
+    		Cookie cookie = new Cookie("sessionDeadtime", sessionDeadtime);
+    		response.addCookie(cookie);
         }
 		
 		rAttr.addFlashAttribute("msg","로그아웃 성공, 로그인 페이지로 돌아갑니다...");
