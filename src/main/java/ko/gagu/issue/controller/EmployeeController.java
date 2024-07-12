@@ -331,7 +331,6 @@ public class EmployeeController {
         	logger.info("세션 새로 만들기");
         	session.invalidate();
         	session = request.getSession(true);
-            session.setMaxInactiveInterval(60); // 세션 타임아웃 설정 (30분)
             String sessionDeadtime = String.valueOf(su.getExpirationTime(session));
     		Cookie cookie = new Cookie("sessionDeadtime", sessionDeadtime);
     		response.addCookie(cookie);
