@@ -38,15 +38,17 @@
 <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 #salesHistoryDataList {
 	background: white;
-	height: 85%;
+	/* height: 85%; */
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
 }
 
 #salesHistoryHeader {
-	height: 17%;
+	/* height: 17%; */
 	/* background: red; */
 	padding: 15px;
 }
@@ -116,13 +118,13 @@
 			</div>
 			<div class="col-4 col-xl-4 page-title">
 				<!-- do: 페이지명 변경 -->
-				<h4 class="f-w-700">Default dashboard</h4>
+				<h4 class="f-w-700">매출 내역</h4>
 				<nav>
 					<ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
 						<li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
 						<!-- do: 경로명 변경 -->
-						<li class="breadcrumb-item f-w-400">Dashboard</li>
-						<li class="breadcrumb-item f-w-400 active">Default</li>
+						<li class="breadcrumb-item f-w-400">매출 관리</li>
+						<li class="breadcrumb-item f-w-400 active">매출 내역</li>
 					</ol>
 				</nav>
 			</div>
@@ -143,7 +145,19 @@
 							<div>
 								<h2>매출 내역</h2>
 							</div>
+							
+							
 							<hr />
+							
+							
+							<div style="width: 700px; height: 350px; margin: auto;">
+						        <canvas id="customerTransactionChart"></canvas>
+						    </div>
+						    
+						    
+							<hr />
+							
+							
 							<div class="d-flex align-items-center justify-content-between w-100">
 								<div class="d-flex align-items-center flex-shrink-0">
 									<h4 style="width: 125px;">날짜 :</h4>
@@ -156,10 +170,10 @@
 									<select id="filter" class="form-select-sm m-5" onchange="filter()">
 										<option value="" selected disabled hidden>선택</option>
 										<option value="purchaseOrder">발주</option>
-										<option value="order">주문</option>
+										<option value="order">판매</option>
 									</select>
 								</div>
-								<div class="d-flex align-items-center flex-shrink-0" style="width: 33%;'">
+								<div class="d-flex align-items-center flex-shrink-0" style="width: 33%;">
 									<h4 style="width: 125px;">검색 :</h4>
 									<select id="searchOption" class="form-select-sm m-5">
 										<option value="" selected disabled hidden>선택</option>
@@ -184,14 +198,12 @@
 								<thead>
 									<tr>
 										<th><span class="f-light f-w-600">번호</span></th>
-										<th><span class="f-light f-w-600">거래번호</span></th>
-										<th style="width: 15%;"><span class="f-light f-w-600">제품명</span></th>
 										<th><span class="f-light f-w-600">구분</span></th>
 										<th><span class="f-light f-w-600">거래일자</span></th>
+										<th style="width: 5%;"><span class="f-light f-w-600">거래번호</span></th>
+										<th style="width: 35%;"><span class="f-light f-w-600">제품명</span></th>
 										<th><span class="f-light f-w-600">거래처명</span></th>
 										<th><span class="f-light f-w-600">거래금액</span></th>
-										<th><span class="f-light f-w-600">제품 원가</span></th>
-										<th><span class="f-light f-w-600">비고</span></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -200,19 +212,17 @@
 											<c:forEach items="${salesDataList}" var="salesData" varStatus="status">
 												<tr>
 													<td>${status.index + 1}</td>
-													<td>${salesData.transactionId}</td>
-													<td>${salesData.productName}</td>
 													<td>${salesData.transactionType}</td>
 													<td>${salesData.transactionDatetime}</td>
+													<td>${salesData.transactionId}</td>
+													<td>${salesData.productName}</td>
 													<td>${salesData.customerName}</td>
 													<td>${salesData.transactionAmount}</td>
-													<td>${salesData.cost}</td>
-													<td>${salesData.remarks}</td>
 												</tr>
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
-											<td colspan="9" style="text-align: center;">조회된 내역이 없습니다.</td>
+											<td colspan="7" style="text-align: center;">조회된 내역이 없습니다.</td>
 										</c:otherwise>
 									</c:choose>
 <%-- 									<c:forEach begin="1" end="13" varStatus="status">
@@ -458,23 +468,130 @@
 		let content = '';
 		let index = 1;
 		if (data.totalPages == 0) {
-			content += '<td colspan="9" style="text-align: center;">조회된 내역이 없습니다.</td>';
+			content += '<td colspan="7" style="text-align: center;">조회된 내역이 없습니다.</td>';
 		} else {				
 			for (row of data.salesDataList) {
 				content += '<tr>';
 				content += '<td>' + index++ + '</td>';
-				content += '<td>' + row.transactionId + '</td>';
-				content += '<td>' + row.productName + '</td>';
 				content += '<td>' + row.transactionType + '</td>';
 				content += '<td>' + row.transactionDatetime + '</td>';
+				content += '<td>' + row.transactionId + '</td>';
+				content += '<td>' + row.productName + '</td>';
 				content += '<td>' + row.customerName + '</td>';
 				content += '<td>' + row.transactionAmount + '</td>';	
-				content += '<td>' + row.cost + '</td>';
-				content += '<td>' + row.remarks + '</td>';
 				content += '</tr>';
 			}
 		}
 		salesDataListTag.innerHTML = content;
+	}
+	
+	
+	
+	
+	// [do] 매출 관리 그래프
+	// 매출 현황 그래프
+	salesGraph();
+	
+	function salesGraph() {
+		// 현재 달로부터 지난 6개월 동안의 발주금액, 판매금액, 영업 이익 (판매금액 - 발주금액) 을 불러온다.
+		fetch('/main/salesGraph.ajax', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify()
+		})
+		.then(response => response.json())
+		.then(data => {
+			drawGraph(data.yearMonthList, data.poPriceList, data.salePriceList, data.profitPriceList);
+		})
+		.catch(error => {console.log('Error: ',error);});
+	}
+	
+	// 그래프 그리기
+	function drawGraph(yearMonthList, poPriceList, salePriceList, profitPriceList){
+		const ctx = document.getElementById('customerTransactionChart').getContext('2d');
+	    
+	    const data = {
+	        labels: yearMonthList,
+	        datasets: [
+	        	{
+	                type: 'bar',
+	                label: '발주 금액',
+	                data: poPriceList,
+	                backgroundColor: 'rgba(72, 163, 215, 0.65)',
+	                borderRadius: 10,
+	                barPercentage: 0.6, 
+	                categoryPercentage: 0.3, 
+	                order: 3
+	            },
+	            {
+	                type: 'bar',
+	                label: '판매 금액',
+	                data: salePriceList,
+	                backgroundColor: 'rgba(122, 112, 186, 0.65)',
+	                borderRadius: 10,
+	                barPercentage: 0.6,
+	                categoryPercentage: 0.3,
+	                order: 3
+	            },
+	            {
+	                type: 'line',
+	                label: '영업 이익',
+	                data: profitPriceList,
+	                backgroundColor: 'rgba(122, 112, 186, 1)',
+	                borderColor: 'rgba(122, 112, 186, 1)',
+	                borderWidth: 2,
+	                fill: false,
+	                pointBackgroundColor: 'rgba(122, 112, 186, 1)',
+	                pointBorderColor: '#fff',
+	                pointBorderWidth: 2,
+	                pointRadius: 5,
+	                pointStyle: 'circle',
+	                order: 1
+	            }
+	        ]
+	    };
+
+	    const options = {
+	        responsive: true,
+	        plugins: {
+	            legend: {
+	                position: 'top'
+	            },
+	            title: {
+	                display: false,
+	            }
+	        },
+	        scales: {
+	            y: {
+	                beginAtZero: true,
+	                max: 6000000,
+	                ticks: {
+	                    callback: function(value) {
+	                        return (value / 10000);
+	                    }
+	                }
+	            },
+	            x: {
+	                stacked: false,
+	                grid: {
+	                    offset: true
+	                },
+	                ticks: {
+	                    maxRotation: 0,
+	                    minRotation: 0
+	                },
+	                categoryPercentage: 0.8
+	            }
+	        }
+	    };
+
+	    const customerTransactionChart = new Chart(ctx, {
+	        type: 'bar',  // Use 'bar' to create a mixed bar chart
+	        data: data,
+	        options: options
+	    });
 	}
 	</script>
 </body>

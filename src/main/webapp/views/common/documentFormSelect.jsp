@@ -62,12 +62,12 @@
 				</div>
 			</div>
 			<div class="col-4 col-xl-4 page-title">
-				<h4 class="f-w-700">Default dashboard</h4>
+				<h4 class="f-w-700">기안서 양식 선택</h4>
 				<nav>
 					<ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
 						<li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
-						<li class="breadcrumb-item f-w-400">Dashboard</li>
-						<li class="breadcrumb-item f-w-400 active">Default</li>
+						<li class="breadcrumb-item f-w-400">전자 결재</li>
+						<li class="breadcrumb-item f-w-400 active">양식 선택</li>
 					</ol>
 				</nav>
 			</div>
@@ -148,7 +148,7 @@
 										<div class="card-body">
 											<a class="effect-card" href="/document/1/write.go" style="display: flex; align-items: center; flex-direction: column;">
 												<br/>
-												<img class="img-fluid" src="/assets/images/document/chair.png" alt="" width="100px" height="100px">
+												<img class="img-fluid" src="/assets/images/document/chair.png" alt="" style="height: 100px; width: 100px;">
 												<br/>
 												<br/>
 												<h2 class="text-truncate">연차 및 휴가 신청서</h2>
@@ -161,7 +161,7 @@
 										<div class="card-body">
 											<a class="effect-card" href="/document/2/write.go" style="display: flex; align-items: center; flex-direction: column;">
 												<br/>
-												<img class="img-fluid" src="/assets/images/document/contract-document.png" alt="" width="100px" height="100px">
+												<img class="img-fluid" src="/assets/images/document/contract-document.png" alt="" style="height: 100px; width: 100px;">
 												<br/>
 												<br/>
 												<h2 class="text-truncate">계약서</h2>
@@ -174,7 +174,7 @@
 										<div class="card-body">
 											<a class="effect-card" href="/document/3/write.go" style="display: flex; align-items: center; flex-direction: column;">
 												<br/>
-												<img class="img-fluid" src="/assets/images/document/shopping-cart.png" alt="" width="100px" height="100px">
+												<img class="img-fluid" src="/assets/images/document/shopping-cart.png" alt="" style="height: 100px; width: 100px;">
 												<br/>
 												<br/>
 												<h2 class="text-truncate">기자재 구입 요청서</h2>

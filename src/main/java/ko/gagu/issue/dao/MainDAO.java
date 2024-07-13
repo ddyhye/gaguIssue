@@ -11,7 +11,9 @@ import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
 import ko.gagu.issue.dto.Leave_usage_tbDTO;
 import ko.gagu.issue.dto.PagingDTO;
+import ko.gagu.issue.dto.ReservationDTO;
 import ko.gagu.issue.dto.product_tbDTO;
+import ko.gagu.issue.dto.salesPriceDTO;
 
 @Mapper
 public interface MainDAO {
@@ -67,4 +69,18 @@ public interface MainDAO {
 	List<Leave_usage_tbDTO> getempLeaveHistory2(int idx_employee);
 	
 	int getFilterTotalPages2(int idxEmployee);
+
+	List<ReservationDTO> getReservList(int idx_employee);
+
+	salesPriceDTO getMonthSalesPrice(int year, int month);
+
+	String getDename(int idx_employee);
+
+	List<EmployeeDTO> getOrganization(int idx_employee, int i);
+
+	List<Integer> getempLeaveHistoryDoc2(int idx_employee);
+
+	String getempLeaveHistoryFileName(Integer integer);
+
+	List<Integer> getempLeaveHistoryDoc(int idxEmployee);
 }

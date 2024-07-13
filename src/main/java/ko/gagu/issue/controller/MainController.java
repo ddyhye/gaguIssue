@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +47,7 @@ public class MainController {
 		// [do] 바코드 생성하기
 		mainService.createBarcode();
 				
-		return "login/login";
+		return "login/do-login";
 	}
 	
 	// [do] 메인페이지, 대시보드
@@ -63,6 +65,25 @@ public class MainController {
 		
 		
 		return mainService.dashboard(session, rAttr);
+	}
+	
+	
+	
+	// 조직도 사진 경로
+	@GetMapping(value="/profile/{file_name}")
+	public ResponseEntity<Resource> productView(@PathVariable String file_name) {
+		logger.info("불러올 사진 파일 >>>>>>>>>>>>>>>>>>>>>>> "+file_name);
+		return mainService.profileView(file_name);
+	}
+	
+	
+	
+	
+	// 대시보드 - 매출 현황 그래프
+	@PostMapping(value = "/main/salesGraph.ajax")
+	@ResponseBody	
+	public Map<String, Object> salesGraph() {
+		return mainService.salesGraph();			
 	}
 	
 	
@@ -118,7 +139,7 @@ public class MainController {
 		
 		return mainService.annualHistoryAjax(session, map);
 	}
-	// 연차 리스트 필터링
+	// 연차 리스트 페이징
 	@PostMapping(value = "/common/listPaging.ajax")
 	@ResponseBody	
 	public Map<String, Object> listPaging(@RequestBody PagingDTO pagingDTO

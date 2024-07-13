@@ -36,9 +36,14 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+    
     <!-- [do] css 추가 -->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/annualList.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
@@ -117,6 +122,9 @@
                       			</label>
                       		</div>
                       	</div>
+                      	<input type="hidden" id="startDate">
+						<input type="hidden" id="endDate">
+                      	
                       	<!--
                       	<div class="datatable-top">
                       		<div class="datatable-dropdown">
@@ -168,7 +176,7 @@
 											<td class="do-table-td1">${counter}</td>
 											<td class="do-table-td2">${item.lu_start_date} ~ ${item.lu_end_date}</td>
 											<td class="do-table-td3">${item.lu_usage_days}</td>
-											<td class="do-table-td4"><button>상세보기</button></td>
+											<td class="do-table-td4"><button class="do-poBtn" value="'+item.file_name+'">상세보기<i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i></button></td>
 										</tr>
 										<c:set var="counter" value="${counter + 1}" />
 									</c:forEach>										
@@ -182,7 +190,7 @@
                       </table>
                       
                       <!-- 페이징 -->
-                      <div class="d-flex justify-content-center">								
+                      <div class="d-flex justify-content-center" style="margin-top: 20px">								
 						  <nav aria-label="Page navigation">
 						      <ul class="pagination" id="pagination"></ul>
 						  </nav>
@@ -331,12 +339,12 @@
 	    const yearSelector = document.getElementById('yearSelector');
 	    const currentYear = new Date().getFullYear();
 	    
-	    for (let year = 1990; year <= currentYear; year++) {
-	        let option = document.createElement('option');
+	    for (let year = currentYear; year >= 2010; year--) {
+	    	let option = document.createElement('option');
 	        option.value = year;
 	        option.textContent = year;
 	        yearSelector.appendChild(option);
-	    }
+		}
 	});
 	
 	
@@ -344,8 +352,15 @@
 	
 	// 페이징
 	var page = 1;
-	//var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
+	var totalPage = ${totalPages}; // totalPages 는 서버에서 불러와야한다
 	var filter = 'all';
+	
+	
+	// 날짜 필터링
+	document.getElementById('yearSelector').addEventListener('change', () => {
+		fetchDocumentList();
+	});
+	
 	
 	$(document).ready(function () {
 		if (totalPage == 0) {
@@ -382,6 +397,7 @@
 		const pagingDTO = {
 			filter : filter,
 			page : page,
+			year : document.getElementById('yearSelector').value,
 			startDate : document.getElementById('startDate').value,
 			endDate : document.getElementById('endDate').value
 		}
@@ -405,11 +421,9 @@
         .catch(error => {
         	console.error('Error:', error);
         });
-		
-		
-		
 	}	
 	
+	// 리스트 그리기
 	function drawList(data) {
 
 		$('.do-annual-history').empty();
@@ -435,12 +449,26 @@
 			content += '<td class="do-table-td3">';
 			content += item.lu_usage_days;
 			content += '</td>';
-			content += '<td class="do-table-td4"><button>상세보기</button></td>';
+			content += '<td class="do-table-td4">';
+			content += '<button class="do-poBtn" value="'+item.file_name+'"><i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i></button>';
+			content += '</td>';
 			content += '</tr>';
 		}
 		
 		$('.do-annual-history').append(content);
 	}
+	
+	// 연차 신청서 보기
+	document.querySelector('.do-annual-history').addEventListener('click', function(e){
+		if (e.target && e.target.closest('button.do-poBtn')) {
+	        var button = e.target.closest('button.do-poBtn');
+	        var fileName = button.value;
+	        
+	        console.log('클릭됨,,, 파일명은 >> '+fileName);
+
+	        window.open("/file/"+fileName, "_blank", "width=1000,height=700");
+	    }		
+	});
 	
 	
 	function pagination() {

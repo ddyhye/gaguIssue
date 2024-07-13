@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -18,21 +21,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ko.gagu.issue.dao.EmployeeDAO;
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.HRDepartmentDTO;
 import ko.gagu.issue.dto.PagingDTO;
+import ko.gagu.issue.util.FileManagerUtil;
+import ko.gagu.issue.util.SessionUtil;
 
 @Service
 public class EmployeeService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	//@Autowired EmployeeDAO employeeDao;
-	@Autowired EmployeeDAO dao;
-	@Autowired PasswordEncoder encoder;
+	private final EmployeeDAO dao;
+	private final PasswordEncoder encoder;
+    private final FileManagerUtil fm;
+    private final SessionUtil su;
+    
+    public EmployeeService (FileManagerUtil fm, EmployeeDAO dao, PasswordEncoder encoder, SessionUtil su) {
+    	this.dao = dao;
+    	this.encoder = encoder;
+    	this.fm = fm;
+    	this.su = su;
+    }
 
 	public void employeeGetAllEvents(Map<String, Object> response,Integer idx_employee,Model model) {
 		// [il] 개인일정 보여주기
@@ -83,31 +100,58 @@ public class EmployeeService {
 	
 	
 	// [do] 수정 - 인터셉터 및 로그인
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+	// [tae] - first_login 여부에 따라 상태변경
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
-		logger.info("id :{}",emp_id);
-		logger.info("pw : {}",emp_pw);
+		logger.info("id :{}", emp_id);
+		logger.info("pw : {}", emp_pw);
 		
 		String memPw = dao.login(emp_id);
-		logger.info("mem_Pw = "+memPw);
-		
-		if(encoder.matches(emp_pw, memPw)) {
-			mav.setViewName("redirect:/main/dashboard.go");
+		logger.info("mem_Pw = " + memPw);
+		if (su.isSessionExpired(request)) {
+			// 세션이 만료되었거나 새로운 세션이 필요한 경우
+			logger.info("세션 새로 만들기");
+			session.invalidate();
+			session = request.getSession(true);
+			String sessionDeadtime = "" + su.getExpirationTime(session);
+			Cookie cookie = new Cookie("sessionDeadtime", sessionDeadtime);
+			response.addCookie(cookie);			
+		}
+		if (encoder.matches(emp_pw, memPw)) {
 			EmployeeDTO dto = dao.employeeData(emp_id);
-			session.setAttribute("loginInfo", dto);
-			session.setAttribute("emp_id", emp_id);
-			session.setAttribute("idxEmployee", dto.getIdx_employee());
-			session.setAttribute("employeeDTO", dto);
-			session.setAttribute("idxTitle", dto.getIdx_title());
-			rAttr.addFlashAttribute("msg","환영합니다.");
-		}else {
+
+			// 첫 로그인 체크 및 업데이트 하기
+			if (dto.getFirst_login() == 0) {
+				mav.setViewName("redirect:/findPW.go");  // 비밀번호 변경 페이지로 이동
+				session.setAttribute("loginInfo", dto);
+				session.setAttribute("emp_id", emp_id);
+				session.setAttribute("idxEmployee", dto.getIdx_employee());
+				session.setAttribute("employeeDTO", dto);
+				session.setAttribute("idxTitle", dto.getIdx_title());
+				mav.addObject("msg", "첫 로그인입니다. 비밀번호를 변경해주세요.");
+				rAttr.addFlashAttribute("msg","첫 로그인입니다. 비밀번호를 변경해주세요.");
+			} else {
+				mav.setViewName("redirect:/main/dashboard.go");
+				session.setAttribute("loginInfo", dto);
+				session.setAttribute("emp_id", emp_id);
+				session.setAttribute("idxEmployee", dto.getIdx_employee());
+				session.setAttribute("employeeDTO", dto);
+				session.setAttribute("idxTitle", dto.getIdx_title());
+				mav.addObject("msg", "환영합니다.");
+			}
+		} else {
 			mav.setViewName("redirect:/login.go");
-			rAttr.addFlashAttribute("msg","사원번호 및 비밀번호를 확인해 주세요!");
+			rAttr.addFlashAttribute("msg", "사원번호 및 비밀번호를 확인해 주세요!");
 		}
 		
 		return mav;
 	}
+	
+	public void updateFirstLoginStatus(String emp_id, int first_login) {
+		dao.updateFirstLoginStatus(emp_id, first_login);
+	}
+	
 
 	public ModelAndView join(Map<String, String> param) {
 		ModelAndView mav = new ModelAndView();
@@ -145,22 +189,22 @@ public class EmployeeService {
 	    response.put("title", idx_title);
 	    logger.info("title : {}", idx_title);
 	    
-	    return response; // 데이터를 담은 Map을 반환
+	    return response; 
 	}
 
-	public Map<String, Object> departmentAttendanceList(int idx_employee, Date selectedDate, int currentPage,
+	public Map<String, Object> departmentAttendanceList(int idx_employee, String formattedDate, int currentPage,
 			int pagePerCnt) {
 		// [il] 부서번호 가져오기
-		// [il] 현재 보여지는 페이지 : 페이지당 보여줄 개수
+		// [il] 현재 보여지는 페이지 : currentPage
 		// [il] 페이지당 보여줄 개수 : pagePerCnt
 		int idx_department = dao.getDepartmentIdxByEmployee(idx_employee);
 		int start = (currentPage - 1) * pagePerCnt;
 		Map<String, Object>map=new HashMap<String, Object>();
-		List<EmployeeDTO>attendanceList=dao.departmentAttendanceList(idx_employee,idx_department,selectedDate,start,pagePerCnt);
-		
+		List<EmployeeDTO>attendanceList=dao.departmentAttendanceList(idx_employee,idx_department,formattedDate,start,pagePerCnt);
+		logger.info("attendanceList : {}",attendanceList);
 		map.put("attendanceList", attendanceList);
 		map.put("currentPage", currentPage);
-		map.put("totalPages",dao.allCountPage(idx_department,selectedDate,pagePerCnt));
+		map.put("totalPages",dao.allCountPage(idx_department,formattedDate,pagePerCnt));
 		
 		return map;
 	}
@@ -206,14 +250,104 @@ public class EmployeeService {
 		response.put("totalPages", totalPages);
 		response.put("page", page);
 		return response;
-	}	
+	}
+
+	/* [jeong] 프로필 페이지로 이동 */
+	public ModelAndView getProfile(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("employee/profile");
+		EmployeeDTO employeeInfo = dao.getEmployeeInfo(idxEmployee);
+		mav.addObject("employeeInfo", employeeInfo);
+		return mav;
+	}
+
+	/* [jeong] 프로필 정보 수정 */
+	public Map<String, Object> updateProfileInfo(int idxEmployee, String birthDate
+			,String email, String phoneNumber) {
+		var response = new HashMap<String, Object>();
+		dao.updateProfileInfo(idxEmployee, birthDate, email, phoneNumber);
+		return response;
+	}
+
+	/* [jeong] 프로필 사진 변경 */
+	public Map<String, Object> uploadProfileImage(int idxEmployee, MultipartFile uploadProfileFile) {
+		var response = new HashMap<String, Object>();
+		String profileImageName = fm.saveFile(uploadProfileFile, "profile_picture");
+		int idxFile = dao.isProfileImage(idxEmployee);
+		if (idxFile != 0) {
+			dao.updateProfileImage(idxFile, idxEmployee, profileImageName);
+		} else {
+			dao.insertProfileImage(idxEmployee, profileImageName);
+		}		
+		response.put("profileImageName", profileImageName);
+		return response;
+	}
+
+	/* [jeong] 조직도 페이지로 이동 */
+	public ModelAndView getGroup(int idxEmployee) {
+		ModelAndView mav = new ModelAndView("employee/group");
+		List<Map<String, String>> temp = dao.getOrganization();
+		int totalPages = dao.getGoTotalPages(idxEmployee);
+		int page = 1; 
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page; 
+		List<EmployeeDTO> employeeList = dao.getEmployeeList(idxEmployee, page);
+        Map<String, String> rootNode = new HashMap<String, String>();
+        rootNode.put("type", "company");
+        rootNode.put("id", "gaguissue");
+        rootNode.put("parent", "#");
+        rootNode.put("text", "가구있수");
+        temp.add(rootNode);
+		ObjectMapper mapper = new ObjectMapper();
+		String organization = "";
+        try {
+            organization = mapper.writeValueAsString(temp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mav.addObject("organization", organization);
+        mav.addObject("employeeList", employeeList);
+        mav.addObject("totalPages", totalPages);
+		return mav;
+	}
+
+	/* [jeong] 조직도 데이터 반환 */
+	public Map<String,Object> getGroupList(int idxEmployee, String selectedDepartment, int page) {
+		var response = new HashMap<String, Object>();
+		int totalPages = dao.getTotalPages(selectedDepartment);  
+		page = page > totalPages ? totalPages == 0 ? 1 : totalPages : page; 
+		List<EmployeeDTO> employeeList = dao.getAJAXEmployeeList(selectedDepartment, page);
+		response.put("employeeList", employeeList);
+		response.put("totalPages", totalPages);
+		response.put("page", page);
+		return response;
+	}
+
+	/* [jeong] 프로필 상세보기 정보 불러오기 */
+	public Map<String, Object> getProfileInfo(int selectedIdxEmployee) {
+		var response = new HashMap<String, Object>();
+		EmployeeDTO employeeProfile = dao.getEmployeeProfile(selectedIdxEmployee);
+		response.put("employeeProfile", employeeProfile);
+		return response;
+	}
+
+	public EmployeeDTO findEmployee(String emp_id, String emp_name) {
+        return dao.findEmployeeByIdAndName(emp_id, emp_name);
+    }
+	
+	public void updateEmployeePassword(String emp_id, String newPassword) {
+        // 직원 정보를 emp_id를 통해 조회
+        EmployeeDTO employee = dao.findEmployeeById(emp_id);
+
+        if (employee != null) {
+            // 새 비밀번호를 암호화하여 설정
+            String encodedPassword = encoder.encode(newPassword);
+            employee.setEmp_pw(encodedPassword);
+
+            // DAO를 통해 비밀번호 업데이트
+            dao.updateEmployeePassword(employee);
+        }
+    }
 
 	
-
-	
-
-	
-
 	
 
 }

@@ -1,8 +1,15 @@
 package ko.gagu.issue.service;
 
+import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +35,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import ko.gagu.issue.controller.WebSocketController;
 import ko.gagu.issue.dao.MainDAO;
 import ko.gagu.issue.dto.AlarmDTO;
 import ko.gagu.issue.dto.Attendance_history_tbDTO;
@@ -31,7 +44,9 @@ import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.Leave_accruals_tbDTO;
 import ko.gagu.issue.dto.Leave_usage_tbDTO;
 import ko.gagu.issue.dto.PagingDTO;
+import ko.gagu.issue.dto.ReservationDTO;
 import ko.gagu.issue.dto.product_tbDTO;
+import ko.gagu.issue.dto.salesPriceDTO;
 
 @Service
 public class MainService {
@@ -43,7 +58,13 @@ public class MainService {
 	private String root;
 	
 	
-	@Autowired MainDAO mainDao;
+	private final MainDAO mainDao;
+	private final WebSocketController webSocketController;
+	
+	public MainService(MainDAO mainDao, WebSocketController webSocketController) {
+		this.mainDao = mainDao;
+		this.webSocketController = webSocketController;
+	}
 
 	
 	
@@ -56,6 +77,32 @@ public class MainService {
 		EmployeeDTO emp = mainDao.getEmpData(empID);
 		
 		
+		
+		// 조직도
+		String de_name = mainDao.getDename(emp.getIdx_employee());
+		List<EmployeeDTO> organization = mainDao.getOrganization(emp.getIdx_employee(), emp.getIdx_department());
+		
+		for (int i = 0; i < organization.size(); i++) {
+			String realName = organization.get(i).getFile_name().split("/")[1];
+			organization.get(i).setFile_name(realName);
+		}
+		
+		mav.addObject("or_de_name", de_name);
+		mav.addObject("organization", organization);
+		
+		
+		
+		// 회의실 예약
+		List<ReservationDTO> reservList = mainDao.getReservList(emp.getIdx_employee());
+		for (ReservationDTO rdto : reservList) {
+			String start_datetime = "";
+			start_datetime += rdto.getStart_datetime();
+			String startDate = start_datetime.split("T")[0];
+			String startTime = start_datetime.split("T")[1];
+			rdto.setStartDate(startDate);
+			rdto.setStartTime(startTime);
+		}
+		mav.addObject("reservList", reservList);
 		
 		
 		// 기안서
@@ -169,8 +216,20 @@ public class MainService {
 		mav.addObject("leave_days", empLdto.getLeave_days());
 		mav.addObject("usage_days", empLdto.getUsage_days());
 		
-		// 리스트
+		// 리스트 (연차 내용)
 		List<Leave_usage_tbDTO> empLhistory = mainDao.getempLeaveHistory2(emp.getIdx_employee());
+		// 리스트 (연차 신청서 번호)
+		List<Integer> docList = mainDao.getempLeaveHistoryDoc2(emp.getIdx_employee());
+		// 연차내역 dto에 파일명 설정
+		int i = 0;
+		if (docList.size() != 0) {
+				for (Leave_usage_tbDTO dto : empLhistory) {
+					String file_name = mainDao.getempLeaveHistoryFileName(docList.get(i));
+					dto.setFile_name(file_name);
+					i++;
+				}
+		}
+		
 		int totalPages = mainDao.getFilterTotalPages2(emp.getIdx_employee());
 		
 		mav.addObject("empLhistory", empLhistory);
@@ -195,7 +254,7 @@ public class MainService {
 		
 		int totalPages = mainDao.getFilterTotalPages(paging, idxEmployee);
 		
-		// 전체 페이지 수와 현재 페이지 수 지정
+		// 전체 페이지 수와 현재 페이지 지정
 		if (totalPages == 0) {
 			paging.setPage(0);
 		} else if (totalPages <= paging.getPage()) {
@@ -204,7 +263,18 @@ public class MainService {
 			paging.setPage(paging.getPage());
 		}
 		
+		// 리스트 (내용)
 		List<Leave_usage_tbDTO> empLhistory = mainDao.fetchFilterList(paging, idxEmployee);
+//		// 리스트 (연차 신청서 번호)
+//		List<Integer> docList = mainDao.getempLeaveHistoryDoc(idxEmployee);
+//		// 연차내역 dto에 파일명 설정
+//		int i = 0;
+//		for (Leave_usage_tbDTO dto : empLhistory) {
+//			String file_name = mainDao.getempLeaveHistoryFileName(docList.get(i));
+//			dto.setFile_name(file_name);
+//			i++;
+//		}
+		
 		map.put("empLhistory", empLhistory);
 		
 		map.put("totalPages", totalPages);
@@ -295,6 +365,74 @@ public class MainService {
 		mainDao.alarmRead(idx_alarm, idx_employee);
 		
 		return map;
+	}
+	
+	
+	
+	
+	
+	// 매출 현황 그래프
+	public Map<String, Object> salesGraph() {
+		Map<String, Object> map = new HashMap<>();
+		
+		List<String> yearMonthList = new ArrayList<String>();
+		List<Integer> poPriceList = new ArrayList<Integer>();
+		List<Integer> salePriceList = new ArrayList<Integer>();
+		List<Integer> profitPriceList = new ArrayList<Integer>();
+		
+		// 현재 날짜를 가져옴
+        LocalDate currentDate = LocalDate.now();
+        // DateTimeFormatter를 사용하여 년도와 월을 포맷팅
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        // 지난 6개월 간의 년도와 월을 추출하여 리스트에 추가
+        for (int i = 6; i > 0; i--) {
+            LocalDate date = currentDate.minusMonths(i);
+            String yearMonth = date.format(formatter);
+            // 년
+            String yearStr = yearMonth.split("-")[0];
+            int year = Integer.parseInt(yearStr);
+            // 월
+            String monthStr = yearMonth.split("-")[1];
+            int month = Integer.parseInt(monthStr);
+            
+            // 발주 금액과 판매 금액, 영업 이익 금액 dto를 만들어 매퍼로부터 한꺼번에 받아오자.
+            salesPriceDTO dto = mainDao.getMonthSalesPrice(year, month);
+            poPriceList.add(dto.getPoPriceList());
+            salePriceList.add(dto.getSalePriceList());
+            profitPriceList.add(dto.getProfitPriceList());
+            
+            // 년월
+            String yearMonthStr = yearStr+"."+monthStr;
+            yearMonthList.add(yearMonthStr);
+        }
+        
+        map.put("yearMonthList", yearMonthList);
+        map.put("poPriceList", poPriceList);
+        map.put("salePriceList", salePriceList);
+        map.put("profitPriceList", profitPriceList);
+		
+		return map;
+	}
+
+
+
+	public ResponseEntity<Resource> profileView(String file_name) {
+		// 특정 경로에서 파일을 읽어와 Resource로 만든다.
+	    Resource resource = new FileSystemResource(root+"/"+file_name);
+	    HttpHeaders header = new HttpHeaders();
+	      
+	    // 보내질 파일의 형태를 지정해 준다. (헤더에)
+	    // ex) image/gif, image/png, image/jpg, image/jpeg
+	    try {
+	       String type = Files.probeContentType(Paths.get(root+"/"+file_name));   //경로를 주면 해당 파일의 mime-type 을 알아낸다.
+	       logger.info("mime-type: "+type);
+	       header.add("content-type", type);
+	    } catch (IOException e) {
+	       e.printStackTrace();
+	    }   
+	      
+	    // 보낼 내용, 헤더, 상태(200 또는 OK 는 정상이라는 뜻)
+	    return new ResponseEntity<Resource>(resource, header, HttpStatus.OK); 
 	}
 	
 

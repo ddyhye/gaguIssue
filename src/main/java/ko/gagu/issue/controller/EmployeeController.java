@@ -1,43 +1,48 @@
 package ko.gagu.issue.controller;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.service.EmployeeService;
+import ko.gagu.issue.util.SessionUtil;
 
 @Controller
 public class EmployeeController {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired EmployeeService employeeService;
-	@Autowired PasswordEncoder encoder;
+	
+	private final EmployeeService employeeService;
+	private final PasswordEncoder encoder;
+	private final SessionUtil su;
+	
+	public EmployeeController(EmployeeService employeeService, PasswordEncoder encoder, SessionUtil su) {
+		this.employeeService = employeeService;
+		this.encoder = encoder;
+		this.su = su;
+	}
 	
 	// 작성자 : 구일승 , 기능 : 캘린더
 	@GetMapping(value="/employee/calendar.go")
@@ -122,8 +127,10 @@ public class EmployeeController {
 	
 		// [il] 개인 근태관리
 		@GetMapping(value="/employee/attendance.go")
-		public String employeeAttendance() {
+		public String employeeAttendance(Integer idx_employee,Model model) {
+			logger.info("idx_employee : {}",idx_employee);
 			logger.info("attendance calendar in");
+			model.addAttribute("idx_employee",idx_employee);
 			return "employee/attendance";
 		}
 		
@@ -163,12 +170,14 @@ public class EmployeeController {
 			logger.info("요청 페이지 : " +page);
 			int idx_employee= (int) session.getAttribute("idxEmployee");
 			logger.info("idxEmployee : {}",idx_employee);
+			String formattedDate =null;
 			
 			java.util.Date selectedDate=null;
-			
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 				selectedDate=dateFormat.parse(date);
+				formattedDate = dateFormat.format(selectedDate);
+				logger.info("formattedDate : {}",formattedDate);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -177,7 +186,7 @@ public class EmployeeController {
 			int currentPage = Integer.parseInt(page);
 			int pagePerCnt = Integer.parseInt(cnt);
 			
-			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,selectedDate,currentPage,pagePerCnt);
+			Map<String, Object>map = employeeService.departmentAttendanceList(idx_employee,formattedDate,currentPage,pagePerCnt);
 			logger.info("map : {}",map);
 			
 			return map;
@@ -191,12 +200,12 @@ public class EmployeeController {
 	@GetMapping(value="/login.go")
 	public String home() {
 		logger.info("로그인 페이지 요청...");
-		return "login/login";
+		return "login/do-login";
 	}
 	// 로그인
 	@PostMapping(value="/login.do")
-	public ModelAndView login(String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
-		return employeeService.login(emp_id, emp_pw, rAttr, session);
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+		return employeeService.login(request, response, emp_id, emp_pw, rAttr, session);
 	}
 	
 	@GetMapping(value = "/joinForm.go")
@@ -211,6 +220,7 @@ public class EmployeeController {
 	
 	@GetMapping(value = "/findNumber.go")
 	public String findNumber() {
+		logger.info("사원번호 찾기==============");
 		return "login/findNumber";
 	}
 	
@@ -238,7 +248,7 @@ public class EmployeeController {
 	        mav.addObject("emp_id", employeeId);  // 사원번호 전달
 	        mav.setViewName("login/MemberNumber");  // 사원번호 확인 페이지로 이동
 	    } else {
-	        mav.addObject("errorMessage", "올바른 정보를 입력해주세요.");
+	        mav.addObject("msg", "올바른 정보를 입력해주세요.");
 	        mav.setViewName("login/findNumber");  // 사원번호 찾기 페이지로 다시 이동
 	    }
 	    return mav;
@@ -248,34 +258,55 @@ public class EmployeeController {
 	public ModelAndView findPW(
 	        @RequestParam("emp_id") String emp_id,
 	        @RequestParam("emp_name") String emp_name,
-	        @RequestParam("year") String year,
-	        @RequestParam("month") String month,
-	        @RequestParam("day") String day) {
+	        @RequestParam("current_password") String currentPassword,
+	        @RequestParam("new_password") String newPassword,
+	        @RequestParam("confirm_password") String confirmPassword,
+	        RedirectAttributes rAttr,
+	        HttpSession session) {
+		logger.info("======================");
 
 	    ModelAndView mav = new ModelAndView();
-	    
-	    // 생년월일 필드가 비어있을 경우
-	    if (emp_id.isEmpty() || emp_name.isEmpty() || year.isEmpty() || month.isEmpty() || day.isEmpty()) {
-	        mav.addObject("errorMessage", "모든 정보를 입력해주세요.");
+	    EmployeeDTO employee = employeeService.findEmployee(emp_id, emp_name);
+	    logger.info(employee+"");
+	    logger.info(currentPassword);
+	    if (employee == null) {
+	    	
+	        mav.addObject("errorMessage", "올바른 정보를 입력해주세요.");
 	        mav.setViewName("login/findPW");
 	        return mav;
 	    }
 
-	    // 생년월일을 YYYY-MM-DD 형식으로 조합
-	    String birthDate = year + "-" + String.format("%02d", Integer.parseInt(month)) + "-" + String.format("%02d", Integer.parseInt(day));
-
-	    String pw = employeeService.findpw(emp_id, emp_name, birthDate);
-
-	    if (pw != null) {
-	        mav.addObject("emp_name", emp_name);
-	        mav.addObject("emp_pw", pw);
-	        mav.setViewName("login/MemberPW");
-	    } else {
-	        mav.addObject("errorMessage", "일치하는 사원정보가 없습니다.");
+	    // 현재 비밀번호 확인
+	    if (!encoder.matches(currentPassword, employee.getEmp_pw())) {
+	        mav.addObject("errorMessage", "현재 비밀번호가 일치하지 않습니다.");
 	        mav.setViewName("login/findPW");
+	        
+	        return mav;
+	    }
+
+	    // 새 비밀번호와 비밀번호 확인이 일치하는지 확인
+	    if (!newPassword.equals(confirmPassword)) {
+	        mav.addObject("errorMessage", "새 비밀번호가 일치하지 않습니다.");
+	        mav.setViewName("login/findPW");
+	        return mav;
+	    }
+
+	    // 비밀번호 변경
+	    employee.setEmp_pw(encoder.encode(newPassword));
+	    employeeService.updateEmployeePassword(employee.getEmp_id(), newPassword);
+	    
+	    employeeService.updateFirstLoginStatus(employee.getEmp_id(), 1);
+	    
+	    mav.setViewName("login/login");
+	    mav.addObject("msg", "비밀번호가 성공적으로 변경되었읍니다.");
+	    if (employee.getFirst_login() == 1) {
+	        mav.addObject("msg", "첫 로그인입니다. 비밀번호를 변경해주세요.");
+	    } else {
+	        mav.addObject("msg", "비밀번호가 성공적으로 변경되었습니다.");
 	    }
 	    return mav;
 	}
+
 
 	@GetMapping(value = "/todo.go")
 	public String todo() {
@@ -289,11 +320,21 @@ public class EmployeeController {
 	
 	// [do] 로그아웃
 	@GetMapping(value="/logout.go")
-	public ModelAndView logout(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
 		
 		session.removeAttribute("loginInfo");
 		session.removeAttribute("emp_id");
+        if (su.isSessionExpired(request)) {
+            // 세션이 만료되었거나 새로운 세션이 필요한 경우
+        	logger.info("세션 새로 만들기");
+        	session.invalidate();
+        	session = request.getSession(true);
+            String sessionDeadtime = String.valueOf(su.getExpirationTime(session));
+    		Cookie cookie = new Cookie("sessionDeadtime", sessionDeadtime);
+    		response.addCookie(cookie);
+        }
 		
 		rAttr.addFlashAttribute("msg","로그아웃 성공, 로그인 페이지로 돌아갑니다...");
 		
@@ -316,5 +357,89 @@ public class EmployeeController {
 		int idxEmployee = (int) session.getAttribute("idxEmployee");
 		return employeeService.getPaingSalesHistory(idxEmployee, pagingDTO);
 	}
+	
+	/* [jeong] 프로필 페이지로 이동 */
+	@GetMapping(value = "/employee/profile.go")
+	public ModelAndView profileGo(HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getProfile(idxEmployee);	
+	}
+	
+	/* [jeong] 프로필 페이지로 이동 */
+	@PostMapping(value = "/employee/updateProfileInfo.do")
+	@ResponseBody
+	public Map<String,Object> updateProfileInfoDo(
+			@RequestParam String birthDate
+			,@RequestParam String email
+			,@RequestParam String phoneNumber
+ 			,HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.updateProfileInfo(idxEmployee, birthDate, email, phoneNumber);	
+	}
+	
+	/* [jeong] 프로필 페이지로 이동 */
+	@PostMapping(value = "/employee/uploadProfileImage.do")
+	@ResponseBody
+	public Map<String,Object> uploadProfileImageDo(MultipartFile uploadProfileFile
+			,HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.uploadProfileImage(idxEmployee, uploadProfileFile);	
+	}
+	
+	/* [jeong] 조직도 페이지로 이동 */
+	@GetMapping(value = "/employee/group.go")
+	public ModelAndView groupGo(HttpSession session) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getGroup(idxEmployee);	
+	}
+	
+	/* [jeong] 조직도 데이터 요청 */
+	@PostMapping(value = "/employee/group.do")
+	@ResponseBody
+	public Map<String,Object> groupDo(HttpSession session
+			,@RequestParam String selectedDepartment
+			,@RequestParam int page) {
+		int idxEmployee = (int) session.getAttribute("idxEmployee");
+		return employeeService.getGroupList(idxEmployee, selectedDepartment, page);	
+	}
+	
+	/* [jeong] 프로필 정보 요청 */
+	@PostMapping(value = "/employee/profile.do")
+	@ResponseBody
+	public Map<String,Object> profileDo(HttpSession session
+			,@RequestParam int selectedIdxEmployee) {
+		return employeeService.getProfileInfo(selectedIdxEmployee);	
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/* [do] 로그인 ,,, */
+	@GetMapping(value="/do-login.go")
+	public String dologin_go() {
+		return "login/do-login";
+	}
+	@GetMapping(value="/login_2.go")
+	public String login_2_go() {
+		return "login/login_2";
+	}
+	
+//	// 로그인페이지 이동 ><
+//	@GetMapping(value="/login.go")
+//	public String home() {
+//		logger.info("로그인 페이지 요청...");
+//		return "login/login";
+//	}
 	
 }

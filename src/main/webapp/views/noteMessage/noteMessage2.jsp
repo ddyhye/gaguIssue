@@ -222,9 +222,9 @@
 				                <span id="previewContainer"></span>
 				              </div>
 				              <input class="msger-input two uk-textarea" type="text" id="sendText" placeholder="보내실 쪽지를 입력해주세요.">
-				              <div class="open-emoji">
+				              <!-- <div class="open-emoji">
 				                <div class="second-btn uk-button"></div>
-				              </div>
+				              </div> -->
 				              <button class="msger-send-btn" id="send_btn" type="submit"><i class="fa fa-location-arrow"></i></button>
 				              <!-- 숨겨진 파일 입력 요소 -->
   							  <input type="file" id="file-upload" name="file-send" style= "display: none;">
@@ -268,7 +268,7 @@
                         <div class="row mb-2">
                           <div class="profile-title">
                             <div class="d-flex">                        
-                            <img class="img-70 rounded-circle" alt="" src="/file/profile_picture/ahruru.png">
+                             <img class="img-70 rounded-circle" alt="" src="/img/ahruru.png">
                               <div class="flex-grow-1">
                                 <h4 class="mb-1"></h4>
                                 <p class="title">직위</p>
@@ -323,8 +323,8 @@
 	            <textarea class="form-control" id="message-text"></textarea>
 	          </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >취소</button>
-		        <button type="button" class="btn btn-primary" id="CreatAndsend_btn">보내기</button>
+		        <button type="button" class="btn btn-danger" id="sendCancel" data-bs-dismiss="modal" >취소</button>
+		        <button type="button" class="btn btn-primary" id="CreatAndsend_btn" data-bs-dismiss="modal">보내기</button>
 		      </div>
 	        </form>
 	      </div>
@@ -338,10 +338,15 @@
 		
 	<script>
 	
+	
 	$(document).ready(function() {
 	    $('#contacts-tab').on('click', function() {
 	        loadContact();
 	    });
+	});
+	
+	$('#sendCancel').on('click', function(){
+		$('#message-text').val('');
 	});
 	
 	var messageSearch = document.getElementById('messageSearch').value;
@@ -384,9 +389,9 @@
     	 document.getElementById('myModal').style.display = 'none';
     }
     
-    /* function closeModal2(){
-   	 document.getElementById('Modal3').style.display = 'none';
-   } */
+    /*  function closeModal2(){
+   	 	 document.getElementById('Modal3').style.display = 'none';
+    }  */
     
     function secModal(emp_name, idx_emp){
    	 console.log("메시지 보내기 모달 오픈");
@@ -401,6 +406,7 @@
       	 document.getElementById('myModal').style.display = 'block';
       	 employeeDetail(idx_emp);
        }
+    
     
     
     function employeeDetail(idx_emp){
@@ -445,6 +451,8 @@
 			loadChatRooms(emp_id); // '${loginInfo.email}' 나중에 세션으로 대체
 		}, 100);
 	    $('#sendText').val('');
+	    previewContainer.innerHTML = '';
+        fileUpload.value = '';
 	});
 
     
@@ -478,7 +486,8 @@
 	        contentType: false,
 	        dataType: 'JSON',
 	        success: function(data) {
-	            console.log(data.result);
+	            // console.log(data.result);
+	            closeModal2();
 	            loadChatRooms("${sessionScope.emp_id}");
 	        },
 	        error: function(error) {
@@ -608,37 +617,6 @@
   	}
       
       
-     
-      
-      
-      
-      
-      
- /*    
-	  document.addEventListener('DOMContentLoaded', function() {
-		  console.log("00000002번쨰 모달0000000");
-	    document.getElementById('openSecondModal').addEventListener('click', function(event) {
-	      event.preventDefault();
-	      var secondModal = new bootstrap.Modal(document.getElementById('myModal2'));
-	      secondModal.show();
-	    });
-	  });
-    
-	  document.addEventListener('DOMContentLoaded', function() {
-		  console.log("00000003번쨰 모달0000000");
-	    document.getElementById('openSecondModal2').addEventListener('click', function(event) {
-	      event.preventDefault();
-	      var secondModal = new bootstrap.Modal(document.getElementById('myModal2'));
-	      secondModal.show();
-	    });
-	  });  
-	  */
-	  
-	  
-
-	  
-		
-	  
 	  
 	</script>
 	

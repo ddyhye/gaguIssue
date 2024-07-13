@@ -263,6 +263,14 @@ public class MessageService {
 		int cnt = messageDAO.msgDelete(msg_idx);
 		return cnt;
 	}
+	
+
+	public int unreadCount(String emp_id) {
+		int idx_emp = employeeDAO.getEmpIdx(emp_id);
+		logger.info("emp_id -> idx_emp: " + idx_emp);
+		
+		return messageDAO.noreadCount(idx_emp);
+	}
 
 	
 	

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -148,6 +149,18 @@ public class MessageController {
 			return cnt;
 		}
 				
+		@GetMapping(value="/unreadMessageCount")
+		@ResponseBody
+		public Map<String, Integer> unreadMessageCount(String emp_id, Model model) {
+			logger.info("msg_idx: "+emp_id);
+			
+			int count = messageService.unreadCount(emp_id);
+			
+			 Map<String, Integer> response = new HashMap<>();
+			 response.put("unreadCount", count);
+			
+			return response;
+		}
 		
 		
 }

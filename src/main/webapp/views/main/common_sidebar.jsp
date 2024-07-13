@@ -3,9 +3,9 @@
 
 	<div class="sidebar-wrapper" data-layout="stroke-svg">
           <div>
-            <div class="logo-wrapper"><a href="index.go"><img class="img-fluid" src="/assets/images/logo/logo_light.png" alt=""></a>
+            <div class="logo-wrapper"><a href="<c:url value='/main/dashboard.go'/>"><img class="img-fluid" src="/productPhoto/gaguIssu_logo_sidebar.png" alt=""></a>
               <div class="back-btn"><i class="fa fa-angle-left"></i></div>
-              <div class="toggle-sidebar">
+              <div class="toggle-sidebar" style="top: 28px !important;">
                 <svg class="stroke-icon sidebar-toggle status_toggle middle">
                   <use href="/assets/svg/icon-sprite.svg#toggle-icon"></use>
                 </svg>
@@ -59,7 +59,7 @@
                       
                       
                   <!-- do: 메일 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="task.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/common/mailWrite.go'/>">
                       <svg class="stroke-icon">
                         <use href="/assets/svg/icon-sprite.svg#stroke-email"></use>
                       </svg>
@@ -120,8 +120,8 @@
 	                      </svg><span>인사 관리</span></a>
 	                    <ul class="sidebar-submenu">
 	                      <li><a href="<c:url value='/employeeManage.go'/>">직원 관리</a></li>
-	                      <li><a href="list-products.go">직원 근태 현황</a></li>
-	                      <li><a href="list-products.go">회사 일정 관리</a></li>
+	                      <li><a href="<c:url value='/hrdepartment/attendanceOfAllEmployees.go'/>">직원 근태 현황</a></li>
+	                      <li><a href="<c:url value='/hrdepartment/CompanyCalendar.go'/>">회사 일정 관리</a></li>
 	                    </ul>
 	                  </li>
                   </c:if>
@@ -149,7 +149,7 @@
                   
                   
 				  <!-- do: 매출 관리 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.go">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/common/salesHistory.go'/>">
                       <svg class="stroke-icon">
                         <use href="/assets/svg/icon-sprite.svg#stroke-charts"></use>
                       </svg>
@@ -161,7 +161,7 @@
                   <!-- do: 거래처 관리 -->
                   <!-- 경영지원부서만 보여야 함 -->
                   <c:if test="${de_name eq '경영지원부서' || de_name eq '임원진'}">
-	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="file-manager.go">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="/businessPartnerList.go">
 	                      <svg class="stroke-icon">
 	                        <use href="/assets/svg/icon-sprite.svg#stroke-learning"></use>
 	                      </svg>
@@ -174,7 +174,7 @@
                   <!-- do: 창고 관리 -->
                   <!-- 경영지원부서만 보여야 함 -->
                   <c:if test="${de_name eq '경영지원부서' || de_name eq '임원진'}">
-	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="storageManage.go">
+	                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="/storageManage.go">
 	                      <svg class="stroke-icon">
 	                        <use href="/assets/svg/icon-sprite.svg#stroke-animation"></use>
 	                      </svg>

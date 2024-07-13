@@ -1,5 +1,6 @@
 package ko.gagu.issue.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,13 +89,13 @@ public class HRDepartmentController {
 		
 		return response;
 	}
-	
-	// [il] 근태관리 : 구일승
-	@GetMapping(value="hrdepartment/employeeAttendance.go")
-	public String attendance() {
-		logger.info("attendance in");
-		return "Hrdepartment/employeeAttendance";
-	}
+//	
+//	// [il] 근태관리 : 구일승
+//	@GetMapping(value="hrdepartment/employeeAttendance.go")
+//	public String attendance() {
+//		logger.info("attendance in");
+//		return "Hrdepartment/employeeAttendance";
+//	}
 	
 	@PostMapping(value="/hrdepartment/deleteCompanyEvent.ajax")
 	@ResponseBody
@@ -118,6 +120,51 @@ public class HRDepartmentController {
 	        return errorResponse;
 	    }
 	}
+	
+	// [il] 근태 내역확인
+	@GetMapping(value="/hrdepartment/attendanceOfAllEmployees.go")
+	public String attendanceOfAllEmployees() {
+		return "HRDepartment/employeeAttendance";
+	}
+	
+	@PostMapping(value="/hrdepartment/attendanceOfAllEmployees.ajax")
+	@ResponseBody
+	public Map<String, Object>getAttendanceOfAllEmployees(String department,String date,String page, String cnt){
+		logger.info("페이지 당 보여줄 갯수 : "+cnt);
+		logger.info("요청 페이지 : " +page);
+		logger.info("선택된 부서 : {}",department);
+		String formattedDate =null;
+		
+		java.util.Date selectedDate=null;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			selectedDate=dateFormat.parse(date);
+			formattedDate = dateFormat.format(selectedDate);
+			logger.info("formattedDate : {}",formattedDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		int currentPage = Integer.parseInt(page);
+		int pagePerCnt = Integer.parseInt(cnt);
+		
+		Map<String, Object>map = hrDepartmentService.departmentAttendanceList(formattedDate,currentPage,pagePerCnt,department);
+		logger.info("map : {}",map);
+		
+		return map;
+	}
+	
+	@PostMapping(value="/hrdepartment/updateAttendanceOfAllEmployees.ajax")
+	@ResponseBody
+	public void updateAttendanceOfAllEmployees(Integer idx_employee, String ah_status, Integer idx_attendance){
+		logger.info("idx_employee : {}",idx_employee);
+		logger.info("ah_status : {}",ah_status);
+		logger.info("idx_attendance, {}",idx_attendance);
+		hrDepartmentService.updateAttendanceOfAllEmployees(idx_employee,ah_status,idx_attendance);
+	}
+	
+	
 	
 	@GetMapping(value="/employeeManage.go")
 	public ModelAndView employeeManage() {
@@ -194,6 +241,35 @@ public class HRDepartmentController {
 	    
 		return hrDepartmentService.getannualDetail(map, emp_id);
 	}
+	
+	@RequestMapping(value = "/searchEmployee", method = RequestMethod.POST)
+	@ResponseBody
+	public List<HRDepartmentDTO> searchEmployee(@RequestParam("searchInput") String searchInput, @RequestParam("department") String department) {
+	    return hrDepartmentService.searchEmployee(searchInput, department);
+	}
+	
+	 @PostMapping(value = "/updateEmployeeDetails")
+	    @ResponseBody
+	    public Map<String, Object> updateEmployeeDetails(HRDepartmentDTO employee) {
+	        Map<String, Object> response = new HashMap<>();
+	        logger.info(employee.getEmp_email());
+	        logger.info(employee.getProfileImage().getOriginalFilename());
+	        logger.info(employee.getEmp_id());
+	        logger.info(employee.getEmp_address());
+	        logger.info(employee.getOriginImage());
+	        try {
+	            String msg = hrDepartmentService.updateEmployee(employee, employee.getProfileImage());
+	            response.put("success", true);
+	            response.put("message", msg);
+	            logger.info("Employee updated: " + msg);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            response.put("success", false);
+	            response.put("message", "사원 정보 업데이트 실패: " + e.getMessage());
+	            logger.error("사원 정보 업데이트 실패: " + e.getMessage());
+	        }
+	        return response;
+	    }
 	
 
 			

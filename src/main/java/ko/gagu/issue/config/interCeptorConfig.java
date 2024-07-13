@@ -24,18 +24,25 @@ public class interCeptorConfig implements WebMvcConfigurer{
 		
 		List<String> excludeList = new ArrayList<String>();
 		excludeList.add("/");
-		excludeList.add("/main*");
-		excludeList.add("/board*");
-		excludeList.add("/document*");
-		excludeList.add("/employee*");
-		excludeList.add("/hrdepartment*");
-		excludeList.add("/logisticsDepartment");
-		excludeList.add("/mail*");
-		excludeList.add("/message*");
-		excludeList.add("/reservation*");
-		excludeList.add("/supportDepartment*");
+//		excludeList.add("/main*");
+//		excludeList.add("/board*");
+//		excludeList.add("/document*");
+//		excludeList.add("/employee*");
+//		excludeList.add("/hrdepartment*");
+//		excludeList.add("/logisticsDepartment");
+//		excludeList.add("/mail*");
+//		excludeList.add("/message*");
+//		excludeList.add("/reservation*");
+//		excludeList.add("/supportDepartment*");
 		excludeList.add("/resources/**");
 		excludeList.add("/login*");
+		excludeList.add("/findNumber*");
+		excludeList.add("/findPW*");
+		excludeList.add("/joinForm.go");
+		excludeList.add("/productPhoto/gaguIssu_logo_sidebar.png");
+		excludeList.add("/productPhoto/login_1.jpg");
+		excludeList.add("/productPhoto/login_2.jpg");
+		excludeList.add("/productPhoto/login_logo3.png");
 		
 		registry.addInterceptor(checker)
 					.addPathPatterns("/**")

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,9 +36,22 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/vendors/bootstrap.css'/>">
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/style.css'/>">
+    
+    
+    
+    <!-- [do] css 추가 -->
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/inventoryList.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+    
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+  	
+  	<!-- J-Query -->
+  	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -59,13 +73,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">Default dashboard</h4>
+          <h4 class="f-w-700">Product Detail</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">Default</li>
+              <li class="breadcrumb-item f-w-400">logisticsDept</li>
+              <li class="breadcrumb-item f-w-400 active">Product Detail</li>
             </ol>
           </nav>
         </div>
@@ -78,13 +92,128 @@
         <!-- Page Sidebar Start-->
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
+        
+        
+        
+        
         <div class="page-body">
           <!-- Container-fluid starts-->
-          <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="form theme-form">
+                      <div class="row">
+                        <div class="col">
+                          <div class="mb-3">
+                            <label>제품명</label>
+                            <!-- <input class="form-control" type="text" value="무한 의자" disabled> -->
+                            <div class="form-control" style="font-weight:bold; color: rgba(61,67,74,1);">${product_name}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="mb-3">
+                            <label>발주처</label>
+                            <div class="form-control" style="color: rgba(61,67,74,1);">${client_name}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="mb-3">
+                            <label>카테고리</label>
+                            <div class="form-control" style="color: rgba(61,67,74,1);">${category}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <div class="mb-3">
+                            <label>저장 공간</label>
+                            <div class="form-control" style="color: rgba(61,67,74,1)">${section_name} 구역</div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="mb-3">
+                            <label>현재 재고</label>
+                            <!-- <select class="form-select">
+                              <option>Hourly</option>
+                              <option>Fix price</option>
+                            </select> -->
+                            <div class="form-control" style="color: rgba(61,67,74,1)">${current_stock}</div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="mb-3">
+                            <label>최소 보유 재고</label>
+                            <div class="form-control" style="color: rgba(61,67,74,1)">${minimum_stock}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <div class="mb-3">
+                            <label>발주가</label>
+                            <div class="form-control" style="color: rgba(61,67,74,1)">${purchase_price} 원</div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="mb-3">
+                            <label>판매가</label>
+                            <div class="form-control" style="color: rgba(61,67,74,1)">${unit_price} 원</div>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="mb-3">
+                            <label>영업 이익</label>
+                            <div class="form-control" style="color: rgba(61,67,74,1)">${profit} 원</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="mb-3">
+                            <label>상세 설명</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea4" rows="3" value="${product_description}">${product_description}</textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="mb-3">
+                            <label>제품 사진</label>
+                            <div class="form-control" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                            	<c:forEach items="${photos}" var="photo">
+                            		<img src="/productPhoto/${photo}" name="productPhoto"/>
+                            		<br/>
+                            	</c:forEach>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="do-rightfixed2"> 
+	                        <a class="btn btn-primary" href="<c:url value='/logisticsDepartment/poWrite.go'/>"><i class="fa-solid fa-pen"></i>&nbsp;발주 요청</a>
+	                      </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
+        
+        
+        
+        
+        
         <!-- footer start-->
         <footer class="footer">
           <div class="container-fluid">
@@ -146,5 +275,15 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    
+    <!-- pagination js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+ 
   </body>
+  
+  
+<script>
+</script>
+
+
 </html>

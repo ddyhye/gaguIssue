@@ -53,14 +53,46 @@ public interface EmployeeDAO {
 
 	int getDepartmentIdxByEmployee(int idx_employee);
 
-	List<EmployeeDTO> departmentAttendanceList(int idx_employee, int idx_department, Date selectedDate, int start,
+	List<EmployeeDTO> departmentAttendanceList(int idx_employee, int idx_department, String formattedDate, int start,
 			int pagePerCnt);
 
-	Object allCountPage(int idx_department, Date selectedDate, int pagePerCnt);
+	Object allCountPage(int idx_department, String formattedDate, int pagePerCnt);
 
 	List<SalesDataDTO> getSalesHistory(PagingDTO pagingDTO);
 
 	int getSalesHistoryTotalPages(PagingDTO pagingDTO);
+
+	EmployeeDTO getEmployeeInfo(int idxEmployee);
+
+	void updateProfileInfo(int idxEmployee, String birthDate, String email, String phoneNumber);
+
+	void saveProfileImage(int idxEmployee, String profileImageName);
+
+	int isProfileImage(int idxEmployee);
+
+	void updateProfileImage(int idxFile, int idxEmployee, String profileImageName);
+
+	void insertProfileImage(int idxEmployee, String profileImageName);
+
+	List<Map<String, String>> getOrganization();
+
+	List<EmployeeDTO> getEmployeeList(int idxEmployee, int page);
+
+	List<EmployeeDTO> getAJAXEmployeeList(String selectedDepartment, int page);
+
+	int getGoTotalPages(int idxEmployee);
+
+	int getTotalPages(String selectedDepartment);
+
+	EmployeeDTO getEmployeeProfile(int selectedIdxEmployee);
+
+	EmployeeDTO findEmployeeByIdAndName(String emp_id, String emp_name);
+
+	EmployeeDTO findEmployeeById(String emp_id);
+
+	void updateEmployeePassword(EmployeeDTO employee);
+
+    void updateFirstLoginStatus(@Param("emp_id") String emp_id, @Param("first_login") int first_login);
 
 
 }

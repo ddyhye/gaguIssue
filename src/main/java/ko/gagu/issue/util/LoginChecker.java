@@ -1,16 +1,25 @@
 package ko.gagu.issue.util;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.controller.DocumentController;
+import ko.gagu.issue.controller.WebSocketController;
 import ko.gagu.issue.dto.EmployeeDTO;
 
 @Component
@@ -19,6 +28,8 @@ public class LoginChecker implements HandlerInterceptor {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DocumentController.class);
 
+	
+	@Autowired WebSocketController webSocketController;
 	
 	// 컨트롤러를 거치기 전에 인터셉터를 거친다.
 	// 반환값이 false면 컨트롤러에 접근할 수 없다.
@@ -66,9 +77,14 @@ public class LoginChecker implements HandlerInterceptor {
 	                logger.error("EmployeeDTO의 필드 중 하나가 null입니다.");
 	            }
 	        } else {
-	            logger.error("ModelAndView 객체가 null입니다.");
+	            //logger.error("ModelAndView 객체가 null입니다.");
 	        }
-	    }
+	        
+	        // WebSocket 세션 등록
+            String sessionId = req.getSession().getId();
+            webSocketController.registerUserSession(dto.getIdx_employee(), sessionId);
+            logger.info("웹소켓 세션 등록됨: " + sessionId);
+	    } 
 	}
 	
 	

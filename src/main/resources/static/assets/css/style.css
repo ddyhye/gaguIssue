@@ -1347,6 +1347,14 @@ svg.f-light {
   height: 100px !important;
 }
 
+.img-500 {
+  width: 500px !important;
+}
+
+.img-h-500 {
+  height: 500px !important;
+}
+
 /*====== Image-sizes css ends ======*/
 /*======= Text css starts ===========*/
 .font-primary {
@@ -44115,6 +44123,7 @@ body.dark-only .page-wrapper .chat-box .chat-right-aside .chat .chat-msg-box .my
 }
 body.dark-only .page-wrapper .chat-box .chat-right-aside .chat .chat-msg-box .message {
   color: rgba(255, 255, 255, 0.7);
+  top: 25px !important;
 }
 body.dark-only .page-wrapper .chat-box .chat-right-aside .chat .chat-msg-box .other-message {
   background-color: #374462;

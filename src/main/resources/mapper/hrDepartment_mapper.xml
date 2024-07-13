@@ -77,14 +77,27 @@
 	    INSERT INTO filestore_tb (idx_filetype, idx_ref, origin_name, file_name, upload_datetime)
 	   		VALUES ('1',#{param3}, #{param1}, #{param2}, now())
 	</insert>
+	
+	<update id="updateProfileImagePath">
+		UPDATE filestore_tb SET origin_name = #{param1}, file_name = #{param2} WHERE idx_file = #{param3}
+	</update>
+	
+	<select id="getIdxFile" resultType="int">
+		SELECT idx_file from filestore_tb ft where idx_filetype = 1 AND idx_ref = #{param1} ORDER BY idx_file DESC limit 1
+	</select>
 		
 	<select id="getnewIdx" resultType="String">
 		SELECT
 			RIGHT(CONCAT('0000', (SELECT et.idx_employee + 1 FROM employee_tb et ORDER BY et.idx_employee DESC LIMIT 1)), 5)
 	</select>
+	<select id="checkProfile" resultType="int">
+		SELECT COUNT(idx_file) from filestore_tb ft where idx_filetype = 1 AND idx_ref = #{param1}
+	</select>
+	
 	
 	 <select id="getEmployeeById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
 	    SELECT 
+	    	e.idx_employee,
 	        e.emp_id,
 	        e.emp_name,
 	        e.emp_phone_number,
@@ -119,6 +132,7 @@
 	
 	<select id="getAnnualLeaveInfoById" parameterType="string" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
 			SELECT 
+			e.idx_employee,
             e.emp_id,
             e.emp_name,
             e.emp_phone_number,
@@ -129,18 +143,101 @@
             la.usage_days,
             lu.lu_start_date,
             lu.lu_end_date,
-            lu.lu_usage_days
+            lu.lu_usage_days,
+            COALESCE(ft.file_name, 'user.jpg') as photo_url
         FROM 
             employee_tb e
         LEFT JOIN 
             leave_accruals_tb la ON e.idx_employee = la.idx_employee
         LEFT JOIN 
             leave_usage_tb lu ON e.idx_employee = lu.idx_employee
+        LEFT JOIN
+     filestore_tb ft ON e.idx_employee = ft.idx_ref AND ft.idx_filetype = 1
         WHERE 
             e.emp_id = #{emp_id}
+            LIMIT 1
 	</select>
-
 	
+	<select id="gethistory" resultType="ko.gagu.issue.dto.Leave_usage_tbDTO">
+			SELECT 
+			
+           lu_start_date,
+           lu_end_date,
+           lu_usage_days
+        FROM 
+            leave_usage_tb
+        
+        WHERE 
+            idx_employee = #{param1}
+	</select>
+	
+	<select id="searchEmployee" parameterType="map" resultType="ko.gagu.issue.dto.HRDepartmentDTO">
+	    SELECT 
+	        e.emp_id,
+	        e.emp_name,
+	        e.emp_phone_number,
+	        e.emp_birth_date,
+	        e.emp_email,
+	        e.emp_address,
+	        d.de_name
+	    FROM 
+	        employee_tb e
+	    JOIN 
+	        department_tb d ON e.idx_department = d.idx_department
+	    WHERE 
+	        (e.emp_id LIKE CONCAT('%', #{searchInput}, '%') 
+	        OR e.emp_name LIKE CONCAT('%', #{searchInput}, '%'))
+	    AND 
+	        (#{department} = '전체' OR d.de_name = #{department})
+	</select>
+	
+	<update id="updateEmployee" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
+        UPDATE employee_tb SET
+            emp_name = #{emp_name},
+            emp_phone_number = #{emp_phone_number},
+            emp_birth_date = #{emp_birth_date},
+            emp_email = #{emp_email},
+            emp_address = #{emp_address},
+            idx_department = (SELECT idx_department FROM department_tb WHERE de_name = #{de_name}),
+            idx_title = (SELECT idx_title FROM title_tb WHERE title_name = #{title_name})
+            
+        WHERE emp_id = #{emp_id}
+    </update>
+	
+
+	<select id="departmentAttendanceList" resultType="employee">
+		SELECT
+			ah.idx_attendance,
+	        ah.idx_employee,
+	        ah.ah_date,
+	        ah.ah_check_in,
+	        ah.ah_check_out,
+	        ah.ah_status,
+	        et.idx_department,
+	        et.emp_name,
+	        et.emp_status
+		FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    JOIN department_tb dt ON et.idx_department = dt.idx_department
+	    WHERE dt.de_name = #{param4} AND ah.ah_date=#{param1} AND et.emp_status='재직'
+	    LIMIT 15 OFFSET #{param2}
+	</select>
+	
+	<select id="allCountPage" resultType="Object">
+		SELECT CEIL(COUNT(ah.idx_attendance) / #{param3}) AS pages
+		FROM attendance_history_tb ah
+	    JOIN employee_tb et ON ah.idx_employee = et.idx_employee
+	    JOIN department_tb dt ON et.idx_department = dt.idx_department
+		WHERE ah.ah_date=#{param2} AND dt.de_name=#{param1}
+		ORDER BY ah.idx_employee DESC
+	</select>
+	
+	<update id="updateAttendanceOfAllEmployees">
+		UPDATE attendance_history_tb SET 
+			ah_status =#{param2}
+		WHERE idx_employee =#{param1}
+		AND idx_attendance=#{param3}
+	</update>
 	
 	
 </mapper>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import ko.gagu.issue.dto.EmployeeDTO;
 import ko.gagu.issue.dto.LogiDeptDTO;
+import ko.gagu.issue.dto.PagingDTO;
 import ko.gagu.issue.dto.client_tbDTO;
 import ko.gagu.issue.dto.purchase_order_tbDTO;
 
@@ -73,6 +74,39 @@ public interface LogiDepartmentDAO {
 	void insertAlarmLogiDept(int idx_order);
 
 	List<Integer> getLogiEmp();
+
+	
+	
+	
+	
+	// 페이징,,
+	int getInventoryPage();
+
+	int getFilterTotalPagesInven(PagingDTO paging, int idxEmployee);
+
+	List<LogiDeptDTO> fetchFilterListInven(PagingDTO paging, int idxEmployee);
+
+	int getReceivingPage();
+
+	int getFilterTotalPagesReceiving(PagingDTO paging, int idxEmployee);
+
+	List<LogiDeptDTO> fetchFilterListReceiving(PagingDTO paging, int idxEmployee);
+
+	int getOrderPage();
+
+	int getFilterTotalPagesOrder(PagingDTO paging, int idxEmployee);
+
+	List<LogiDeptDTO> fetchFilterListOrder(PagingDTO paging, int idxEmployee);
+
+	int getDeliveryPage();
+
+	int getFilterTotalPagesDelivery(PagingDTO paging, int idxEmployee);
+
+	List<LogiDeptDTO> fetchFilterListDelivery(PagingDTO paging, int idxEmployee);
+
+	LogiDeptDTO inventoryDetail(int idx_product);
+
+	List<String> inventoryPhoto(int idx_product);
 
 
 

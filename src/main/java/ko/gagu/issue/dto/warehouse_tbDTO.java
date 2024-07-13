@@ -8,6 +8,7 @@ public class warehouse_tbDTO {
 	private String section_name;
 	private int current_stock;
 	private int capacity;
+	private String category;
 	
 	public int getIdx_storage() {
 		return idx_storage;
@@ -32,6 +33,12 @@ public class warehouse_tbDTO {
 	}
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 }

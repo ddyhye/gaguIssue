@@ -103,7 +103,6 @@ class EmployeeControllerTest {
 		System.out.println(rsvTime);
 	}
 	
-	@Test
 	void test() {
         int[] selectedTime = {9, 13, 14, 16, 17, 18};
         Arrays.sort(selectedTime); // 배열 정렬

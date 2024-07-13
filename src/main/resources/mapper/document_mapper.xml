@@ -194,7 +194,7 @@
 		join department_tb dt ON dt.idx_department = et.idx_department
 		where
 			1 = 1 
-	    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
+	    <if test="paging.startDate != null and !paging.startDate.equals('')">
 	    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= at.written_datetime
 	    </if>
 	    <if test="paging.endDate != null and !paging.endDate.equals('')">
@@ -292,7 +292,7 @@
 		join department_tb dt ON dt.idx_department = et.idx_department
 		where
 			1 = 1
-	    <if test="paging.startDate != null and !paging.startDate.equals('날짜선택')">
+	    <if test="paging.startDate != null and !paging.startDate.equals('')">
 	    	AND STR_TO_DATE(CONCAT(#{paging.startDate}, '00:00:00.000'), '%Y-%m-%d %T.%f') &lt;= at.written_datetime
 	    </if>
 	    <if test="paging.endDate != null and !paging.endDate.equals('')">
@@ -325,6 +325,6 @@
 	
 	<insert id="insertAlarm">
 		INSERT INTO alerm_tb (idx_employee, al_content, al_path)
-			VALUES (idxEmployee, alarmMsg, alarmPath)
+			VALUES (#{idxEmployee}, #{alarmMsg}, #{alarmPath})
 	</insert>
 </mapper>

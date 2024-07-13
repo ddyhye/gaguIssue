@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ko.gagu.issue.dao.MailDAO">
+	
+	<insert id="saveSendingMail" parameterType="mail">
+		INSERT INTO sending_email_tb
+			(idx_employee,se_recipient,se_references,se_title,se_description,se_sending_datetime)
+		VALUES(#{param2},#{se_recipient},#{se_references},#{se_title},#{se_description},#{se_sending_datetime})
+	</insert>
+	
+	<insert id="saveAttachment" parameterType="mail">
+		INSERT INTO filestore_tb
+			(idx_filetype,idx_ref,origin_name,file_name,upload_datetime)
+		VALUES(11,#{param1},#{param2},#{param2},#{param3})
+	</insert>
+	
+	<insert id="saveMail"
+		useGeneratedKeys="true" 
+		keyColumn="idx_sending_email" 
+		keyProperty="idx_sending_email"
+		parameterType="mail"		
+	>
+		INSERT INTO sending_email_tb
+			(idx_employee,se_recipient,se_references,se_title,se_description)
+		VALUES(#{idx_employee},#{db_address},#{db_ccAddress},#{title},#{content})
+	</insert>
+	
+	<insert id="saveAttachmentFile">
+		INSERT INTO filestore_tb(idx_filetype, idx_ref, origin_name, file_name)
+		VALUES(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+	
+	<select id="sendingMailList" resultType="mail">
+		SELECT 
+			se.idx_sending_email,
+		    se.idx_employee, 
+		    e.emp_name,
+		    se.se_recipient AS db_address,
+		    se.se_title AS title,
+		    se.se_sending_datetime AS upload_datetime
+		FROM sending_email_tb se
+		JOIN employee_tb e ON se.idx_employee = e.idx_employee
+		ORDER BY se.idx_sending_email DESC
+		LIMIT 15 OFFSET #{param1}
+	</select>
+	
+	<select id="sendingMailListCountPage" resultType="int">
+		SELECT CEIL(COUNT(se.idx_sending_email) / #{param1}) AS pages
+		FROM sending_email_tb se
+		ORDER BY se.idx_sending_email DESC
+	</select>
+	
+	<select id="sendMailDetail" resultType="mail">
+		SELECT 
+			se.idx_sending_email,
+		    se.idx_employee, 
+		    e.emp_name,
+		    se.se_recipient AS db_address,
+		    se.se_references AS db_ccAddress,
+		    se.se_title AS title,
+		    se.se_description AS content,
+		    DATE_FORMAT(se.se_sending_datetime,'%Y-%m-%d %h:%d') AS upload_datetime
+		FROM sending_email_tb se
+		JOIN employee_tb e ON se.idx_employee = e.idx_employee
+		WHERE idx_sending_email=#{param1}
+	</select>
+	
+	<select id="getSendMailDetail" resultType="mail">
+		SELECT 
+			se.idx_sending_email,
+		    se.idx_employee, 
+		    e.emp_name,
+		    se.se_recipient AS db_address,
+		    se.se_references AS db_ccAddress,
+		    se.se_title AS title,
+		    se.se_description AS content,
+		    DATE_FORMAT(se.se_sending_datetime,'%Y-%m-%d %h:%d') AS upload_datetime
+		FROM sending_email_tb se
+		JOIN employee_tb e ON se.idx_employee = e.idx_employee
+		WHERE idx_sending_email=#{param1}
+	</select>
+	
+	<select id="getFileById" resultType="mail">
+		SELECT
+            idx_file,
+            idx_filetype,
+            idx_ref AS idx_sending_email,
+            origin_name AS originalFileName,
+            file_name AS newFileName,
+            upload_datetime
+        FROM  filestore_tb
+        WHERE idx_ref = #{idx_sending_email} and idx_filetype = 11
+	</select>
+	
+</mapper>
