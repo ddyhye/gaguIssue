@@ -836,7 +836,7 @@
 				                        <div class="row">
 				                            <div class="col-12 mb-2">
 				                                <label for="address">주소</label>
-				                                <input type="text" class="form-control" id="modifyaddress" name="address" readonly>
+				                                <input type="text" class="form-control" id="modifyaddress" name="address" >
 				                            </div>
 				                        </div>
 				                        <div class="row">
@@ -1331,7 +1331,7 @@
 		                    $('#modifyEmpPhoneNumber').val(employee.emp_phone_number);
 		                    $('#modifyEmpBirthDate').val(employee.emp_birth_date);
 		                    $('#modifyEmpEmail').val(employee.emp_email);
-		                    $('#modifyEmpAddress').val(employee.emp_address);
+		                    $('#modifyaddress').val(employee.emp_address);
 		                    $('#modifyDeName').val(employee.de_name);
 		                    $('#modifyTitleName').val(employee.title_name);
 		                    $('#modifyEmpHireDate').val(employee.emp_hire_date);

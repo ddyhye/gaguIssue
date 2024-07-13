@@ -314,6 +314,7 @@
 			et.emp_phone_number AS phoneNumber,
 			et.emp_name AS empName,
 			et.emp_color AS empColor,
+			et.emp_id AS empId,
 			CASE 
 				WHEN COUNT(ft.file_name) = 1 THEN ft.file_name
 				ELSE 'NONE'

@@ -285,7 +285,11 @@
 	       content += '<td>'+ item.idx_storage +'</td>';
 	       content += '<td>'+ item.section_name + '</td>';
 	       content += '<td>'+ item.category + '</td>';
+	       if(item.capacity - item.current_stock < 5){
+    	   content += '<td style="color: #FF0000;">'+ item.current_stock + '</td>';   
+	       }else{
 	       content += '<td>'+ item.current_stock + '</td>';
+	       }
 	       content += '<td>'+ item.capacity + '</td>';
 	       content += '</tr>';
 	    }

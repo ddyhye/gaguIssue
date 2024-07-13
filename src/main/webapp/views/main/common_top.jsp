@@ -47,7 +47,7 @@
             <div class="nav-right col-xxl-8 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
               <ul class="nav-menus">
               	<li class="d-flex align-items-center" style="height: 45px;">
-              		<p style="margin-bottom: 0;" id="sessionCurrentTime">${remainingMinutes}:${remainingSeconds}</p><span style="text-decoration: underline; font-size: 12px;cursor: pointer;">연장</span>
+              		<p style="margin-bottom: 0;" id="sessionCurrentTime">--:--</p><span style="text-decoration: underline; font-size: 12px;cursor: pointer;" onClick="extendSessionTime()">연장</span>
               	</li>
                 <!-- <li>                         
                 	<span class="header-search">
@@ -154,18 +154,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
+    	var countDownDate;
 		// [jeong] 세션 남은 시간 표시
 	        function startTimer(sessionDeadTime) {
-	            var countDownDate = new Date(sessionDeadTime).getTime();
+	        	countDownDate = new Date(sessionDeadTime).getTime();
 	            var x = setInterval(function () {
 	                var now = new Date().getTime();
 	                var distance = countDownDate - now;
 	                
-					//console.log(sessionDeadTime, new Date(), distance);
 	                if (distance < 0) {
 	                    clearInterval(x);
-	                    document.getElementById("sessionCurrentTime").innerHTML = "세션 뒤짐";
-	                 	window.location.href='/logout.go';
+	                    document.getElementById("sessionCurrentTime").innerHTML = "00:00";
+	                    alert('세션 끝남');
+	                 	// window.location.href='/logout.go';
 	                 	return;
 	                }
 	
@@ -173,13 +174,40 @@
 	                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 	                document.getElementById("sessionCurrentTime").innerHTML = 
 	                    (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-	            }, 1000);
+	            }, 500);
 	        }
 	
-	        window.onload = function () {
-	            var sessionDeadTime = '${sessionDeadTime}';
-	            startTimer(sessionDeadTime);
-	        };
+            var sessionDeadTime = get_cookie('sessionDeadtime');
+            console.log(sessionDeadTime);
+            startTimer(sessionDeadTime);
+	        
+	    	function extendSessionTime() {
+	    		const nowTime = new Date().getTime();
+	    		countDownDate = nowTime + 3600 * 1000;
+	    		set_cookie('sessionDeadtime', countDownDate.toString(), 30 * 60 * 1000);
+	    		console.log(new Date(countDownDate));
+	    	}
+	        
+	    	//쿠키 저장하는 함수
+	    	function set_cookie(name, value, unixTime) {
+	    		var date = new Date();
+	    		date.setTime(date.getTime() + unixTime);
+	    		console.log(encodeURIComponent(name) + '=' + encodeURIComponent(value) 
+	    				+ ';expires=' + date.toUTCString() + ';path=/');
+	    		document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value) 
+	    			+ ';expires=' + date.toUTCString() + ';path=/';
+	    	}
+	    	
+	    	//쿠키 값 가져오는 함수
+	    	function get_cookie(name) {
+	    		var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+	    		return value? parseInt(value[2]) : null;
+	    	}
+	    	
+	    	//쿠키 삭제하는 함수
+	    	function delete_cookie(name) {
+	    		document.cookie = encodeURIComponent(name) + '=; expires=Thu, 01 JAN 1999 00:00:10 GMT';
+	    	}	        
     </script>          
 <script>
 

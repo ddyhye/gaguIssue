@@ -1,7 +1,7 @@
 (function ($) {
   "use strict";
   var notify = $.notify(
-    '<i class="fa fa-bell-o"></i><strong>Loading</strong> page Do not close this page...',
+    '<i class="fa fa-bell-o"></i>잠시만 기다려봐..',
     {
       type: "theme",
       allow_dismiss: true,
@@ -18,7 +18,7 @@
   setTimeout(function () {
     notify.update(
       "message",
-      '<i class="fa fa-bell-o"></i><strong>Loading</strong> Inner Data.'
+      '<i class="fa fa-bell-o"></i>데이터를 불러오고 있습니다...'
     );
   }, 1000);
 })(jQuery);

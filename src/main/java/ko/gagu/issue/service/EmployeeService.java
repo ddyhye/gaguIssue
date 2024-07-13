@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -99,7 +101,7 @@ public class EmployeeService {
 	
 	// [do] 수정 - 인터셉터 및 로그인
 	// [tae] - first_login 여부에 따라 상태변경
-    public ModelAndView login(HttpServletRequest request, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, String emp_id, String emp_pw, RedirectAttributes rAttr, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
 		logger.info("id :{}", emp_id);
@@ -107,12 +109,14 @@ public class EmployeeService {
 		
 		String memPw = dao.login(emp_id);
 		logger.info("mem_Pw = " + memPw);
-		if (su.isSessionExpired(session)) {
+		if (su.isSessionExpired(request)) {
 			// 세션이 만료되었거나 새로운 세션이 필요한 경우
 			logger.info("세션 새로 만들기");
 			session.invalidate();
 			session = request.getSession(true);
-			session.setMaxInactiveInterval(3600); // 세션 타임아웃 설정 (30분)
+			String sessionDeadtime = "" + su.getExpirationTime(session);
+			Cookie cookie = new Cookie("sessionDeadtime", sessionDeadtime);
+			response.addCookie(cookie);			
 		}
 		if (encoder.matches(emp_pw, memPw)) {
 			EmployeeDTO dto = dao.employeeData(emp_id);
