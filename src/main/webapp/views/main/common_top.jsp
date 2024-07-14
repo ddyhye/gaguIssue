@@ -307,7 +307,7 @@
   			content +=		'<li class="common-space">';
   			content +=		'<div class="chat-time">';
   			if(item.file_name != null){
-          content += '<img class="img-fluid rounded-circle" alt="user" src="/file/profile_picture/'+item.file_name+'">';			                	
+          content += '<img class="img-fluid rounded-circle" alt="user" src="/file/'+item.file_name+'">';			                	
          }else{
          	content += '<img class="img-fluid rounded-circle" alt="user" src="/img/user_icon.png">';    	
          }
@@ -374,7 +374,7 @@
          			content +=		'<div class="chat-time">';
          			content +=		'<div class="active-profile">';
          			if(item.file_name != null){
-		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/'+item.file_name+'">';			                	
 	                }else{
 	                	content += '<img class="img-fluid rounded-circle" alt="" src="/img/user_icon.png">';    	
 	                }
@@ -470,7 +470,7 @@
             		content += '<div class="chat-time">';
 	    			content += '<div class="active-profile">';
 	    			if(item.file_name != null){
-		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+		                content += '<img class="img-fluid rounded-circle" alt="" src="/file/'+item.file_name+'">';			                	
 	                }else{
 	                	content += '<img class="img-fluid rounded-circle" alt="" src="/img/user_icon.png">';    	
 	                }
@@ -549,7 +549,7 @@
 			        if(idx_emp === item.receiver) {
 			            content += '<div class="msg left-msg">';
 			            if(item.file_name != null){
-			                content += '<img class="msg-img" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
+			                content += '<img class="msg-img" alt="" src="/file/'+item.file_name+'">';			                	
 		                }else{
 		                	content += '<img class="msg-img" alt="" src="/img/user_icon.png">';    	
 		                }

@@ -107,7 +107,7 @@ public class HRDepartmentService {
         // 파일 이름 생성
         String fileName = UUID.randomUUID().toString() + "_" + profileImage.getOriginalFilename();
         
-		Path filePath = Paths.get(uploadDir+"/profile_picture", fileName);
+		Path filePath = Paths.get(uploadDir+"/", fileName);
 
         // 파일 저장
         Files.createDirectories(filePath.getParent());
@@ -161,13 +161,13 @@ public class HRDepartmentService {
 	
 	public ResponseEntity<Resource> profileView(String fileName) {
 	      // 특정 경로에서 파일을 읽어와 Resource로 만든다.
-	      Resource resource = new FileSystemResource(uploadDir+"/profile_picture/"+fileName);
+	      Resource resource = new FileSystemResource(uploadDir+"/"+fileName);
 	      HttpHeaders header = new HttpHeaders();
 	      
 	      // 보내질 파일의 형태를 지정해 준다. (헤더에)
 	      // ex) image/gif, image/png, image/jpg, image/jpeg
 	      try {
-	         String type = Files.probeContentType(Paths.get(uploadDir+"/profile_picture/"+fileName));   //경로를 주면 해당 파일의 mime-type 을 알아낸다.
+	         String type = Files.probeContentType(Paths.get(uploadDir+"/"+fileName));   //경로를 주면 해당 파일의 mime-type 을 알아낸다.
 	         logger.info("mime-type: "+type);
 	         header.add("content-type", type);
 	      } catch (IOException e) {
@@ -268,7 +268,7 @@ public class HRDepartmentService {
 		}
 
 		private void deleteProfileImage(String originImage) {
-			File file = new File(uploadDir+"/profile_picture", originImage);
+			File file = new File(uploadDir+"/", originImage);
 			if(file.exists()) {
 				logger.info(originImage+"삭제");
 				file.delete();
