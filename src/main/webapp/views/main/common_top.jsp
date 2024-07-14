@@ -272,7 +272,7 @@
     	    fetchUnreadMessageCount();
 
     	    // 필요에 따라 주기적으로 읽지 않은 메시지 수를 업데이트 (선택사항)
-    	    // setInterval(fetchUnreadMessageCount, 60000); // 1분마다 업데이트
+    	    setInterval(fetchUnreadMessageCount, 6000); // 1분마다 업데이트
     	});
 	 
      function loadContact(search){
@@ -313,7 +313,7 @@
          }
   			content +=		'<div>';
   			content +=		'<span>'+item.emp_name+'</span>';
-  			content +=		'<p>사원 번호: '+item.idx_title+'</p>';
+  			content +=		'<p>사원 번호: '+item.emp_id+'</p>';
   			content +=		'</div>';
   			content +=		'</div>';
   			content +=		'<div class="contact-edit">';
@@ -404,7 +404,7 @@
          		
          		
          		
-         		$('.chats-user').append(content);
+         		$('.chats-user').prepend(content);
 
          		
          	  
@@ -433,7 +433,8 @@
          		// 5초마다 새 메시지 로드
          	    chatIntervalId = setInterval(function() {
          	    	messageCall(idx, emp_id , other_emp);
-         	    	loadChatRooms(emp_id, search)
+         	    	loadChatRooms(emp_id, search);
+         	    	selectChatRoom(element);
          	    }, 5000);
          	}
              
@@ -522,83 +523,87 @@
          	var checkDate;
          	/* 대화 내용 출력 */
          	function drawMessage(data) {
-			    var idx_emp = data.idx_emp; 
-			    console.log("idx_emp : ", idx_emp);
-			    var checkHours = 0;
-			    var checkMinutes = 0;
-			    
-			    var chatContainer = $('.msger-chat');
-			    var isScrolledToBottom = chatContainer.scrollTop() + chatContainer.innerHeight() >= chatContainer[0].scrollHeight;
-			    
-			    
-			    
-			    chatContainer.empty();
-			    
-			    var content = '';
-			
-			    if (!data.messageList || data.messageList.length === 0) {
-			        content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';
-			    }
-			    
-			    for (item of data.messageList) {
-			        var date = new Date(item.send_datetime);
-			        var dateStr = date.toLocaleDateString("ko-KR");
-			        var hours = date.getHours();
-			        var minutes = date.getMinutes();
-			        
-			        if(idx_emp === item.receiver) {
-			            content += '<div class="msg left-msg">';
-			            if(item.file_name != null){
-			                content += '<img class="msg-img" alt="" src="/file/profile_picture/'+item.file_name+'">';			                	
-		                }else{
-		                	content += '<img class="msg-img" alt="" src="/img/user_icon.png">';    	
-		                }
-			            content += '<div class="msg-bubble">';
-			            content += '<div class="msg-info">';
-			            content += '<div class="msg-info-name">' + item.other_name + '</div>';
-			            content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
-			            content += '</div>';
-			            if (item.new_picname != null){
-			            content += '<img class="photo" src="/file/message_picture/'+item.new_picname+'" alt="'+item.new_picname+'번 쪽지 사진">';
-			            content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
-			            }else{			            	
-			            content += '<div class="msg-text">' + item.msg_content + '</div>';
-			            }
-			            content += '</div>';
-			        }
-			        else if (idx_emp === item.sender) {
-			            if(item.sender_del == 0){
-			                content += '<div class="msg right-msg">';
-			                content += '<img class="img-20" id="delete_btn" alt="" src="/img/trash_icon.png" onclick="deleteMessage('+item.idx_message+');">';
-			                
-			                content += '<div class="msg-bubble">';
-			                content += '<div class="msg-info">';
-			                content += '<div class="msg-info-name">나</div>';			                
-			                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
-			                content += '</div>';
-			                if (item.new_picname != null){
-				            content += '<img class="photo" src="/file/message_picture/'+item.new_picname+'" alt="'+item.new_picname+'번 쪽지 사진">';
-				            content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
-				            }else{			            	
-				            content += '<div class="msg-text">' + item.msg_content + '</div>';
-				            }
-			                content += '</div>';
-			            }
-			        }
-			        content += '</div>';
-			        content += '</div>';
-			    }
-			    
-			    console.log('Before appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
-			    chatContainer.append(content);
-			    console.log('After appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
-			    
-			    // 새로운 메시지가 있을 때만 스크롤을 아래로 내림
-			    if (isScrolledToBottom) {
-			        chatContainer.scrollTop(chatContainer[0].scrollHeight);
-			    }
-			}
-         	
+         	    var idx_emp = data.idx_emp;
+         	    console.log("idx_emp : ", idx_emp);
+         	    var checkHours = 0;
+         	    var checkMinutes = 0;
+         	    
+         	    var chatContainer = $('.msger-chat');
+         	    var wasScrolledToBottom = chatContainer.scrollTop() + chatContainer.innerHeight() >= chatContainer[0].scrollHeight;
+         	    var previousScrollHeight = chatContainer[0].scrollHeight;
+         	    
+         	    chatContainer.empty();
+         	    
+         	    var content = '';
+
+         	    if (!data.messageList || data.messageList.length === 0) {
+         	        content += '<i class="fa-solid fa-square-envelope"></i><p class="no-message">Select Message...</p>';
+         	    }
+
+         	    for (item of data.messageList) {
+         	        var date = new Date(item.send_datetime);
+         	        var dateStr = date.toLocaleDateString("ko-KR");
+         	        var hours = date.getHours();
+         	        var minutes = date.getMinutes();
+         	        
+         	        if (idx_emp === item.receiver) {
+         	            content += '<div class="msg left-msg">';
+         	            if (item.file_name != null) {
+         	                content += '<img class="msg-img" alt="" src="/file/profile_picture/' + item.file_name + '">';                   
+         	            } else {
+         	                content += '<img class="msg-img" alt="" src="/img/user_icon.png">';        
+         	            }
+         	            content += '<div class="msg-bubble">';
+         	            content += '<div class="msg-info">';
+         	            content += '<div class="msg-info-name">' + item.other_name + '</div>';
+         	            content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+         	            content += '</div>';
+         	            if (item.new_picname != null) {
+         	                content += '<img class="photo" src="/file/message_picture/' + item.new_picname + '" alt="' + item.new_picname + '번 쪽지 사진">';
+         	                content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
+         	            } else {
+         	                content += '<div class="msg-text">' + item.msg_content + '</div>';
+         	            }
+         	            content += '</div>';
+         	        } else if (idx_emp === item.sender) {
+         	            if (item.sender_del == 0) {
+         	                content += '<div class="msg right-msg">';
+         	                content += '<img class="img-20" id="delete_btn" alt="" src="/img/trash_icon.png" onclick="deleteMessage(' + item.idx_message + ');">';
+         	                
+         	                content += '<div class="msg-bubble">';
+         	                content += '<div class="msg-info">';
+         	                content += '<div class="msg-info-name">나</div>';                
+         	                content += '<div class="msg-info-time">' + hours + ':' + (minutes < 10 ? '0' : '') + minutes + '</div>';
+         	                content += '</div>';
+         	                if (item.new_picname != null) {
+         	                    content += '<img class="photo" src="/file/message_picture/' + item.new_picname + '" alt="' + item.new_picname + '번 쪽지 사진">';
+         	                    content += '<div class="msg-text hide-text">' + item.origin_name + '</div>';
+         	                } else {
+         	                    content += '<div class="msg-text">' + item.msg_content + '</div>';
+         	                }
+         	                content += '</div>';
+         	            }
+         	        }
+         	        content += '</div>';
+         	        content += '</div>';
+         	    }
+
+         	    console.log('Before appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
+         	    chatContainer.append(content);
+         	    console.log('After appending new content:', chatContainer.scrollTop(), chatContainer[0].scrollHeight);
+         	    
+         	    var newScrollHeight = chatContainer[0].scrollHeight;
+         	    
+         	    // 새로운 메시지가 있을 때만 스크롤을 아래로 내림
+         	    if (wasScrolledToBottom || data.isNewMessage) {
+         	        chatContainer.scrollTop(newScrollHeight);
+         	    } else {
+         	        // 이전 스크롤 위치를 유지
+         	        var scrollDifference = newScrollHeight - previousScrollHeight;
+         	        chatContainer.scrollTop(chatContainer.scrollTop() + scrollDifference);
+         	    }
+         	}
+
          	
          	function deleteMessage(msg_idx){
          		var confirmDelete = confirm("쪽지를 삭제하시겠습니까?");

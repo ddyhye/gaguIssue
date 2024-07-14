@@ -123,7 +123,7 @@
 	
 	<select id="getContact" resultType="employee">
 		        
-        SELECT et.idx_employee, et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title, p.file_name
+        SELECT et.idx_employee, et.emp_name, et.emp_id, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title, p.file_name
 		FROM employee_tb et
 		JOIN department_tb dt
 		ON et.idx_department = dt.idx_department 
@@ -137,7 +137,7 @@
 	
 	<select id="getempDetail" parameterType="map">
 	
-		SELECT et.idx_employee ,tt.title_name, et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title , p.file_name
+		SELECT et.idx_employee ,tt.title_name, et.emp_id , et.emp_name, dt.de_name, et.emp_email, et.emp_phone_number, et.emp_address, et.idx_title , p.file_name
 		FROM employee_tb et
 		JOIN department_tb dt ON et.idx_department = dt.idx_department 
 		JOIN title_tb tt ON et.idx_title = tt.idx_title

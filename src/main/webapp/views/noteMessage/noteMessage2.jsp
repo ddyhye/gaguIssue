@@ -74,6 +74,10 @@
 		margin-left: 232px;
 	}
 	
+	.chats-user{
+		display: flex;
+	    flex-direction: column;
+	}
 	.chats-user .common-space.selected-chat {
 	    background-color: #9096a238; /* 원하는 색상으로 변경 */
 	}
@@ -268,7 +272,7 @@
                         <div class="row mb-2">
                           <div class="profile-title">
                             <div class="d-flex">                        
-                             <img class="img-70 rounded-circle" alt="" src="/img/ahruru.png">
+                             <img class="img-70 img-h-70 rounded-circle" alt="" src="/img/ahruru.png">
                               <div class="flex-grow-1">
                                 <h4 class="mb-1"></h4>
                                 <p class="title">직위</p>
@@ -423,7 +427,7 @@
             	 $('h4.mb-1').text(data.emp_name);
             	 $('p.title').text(data.title_name);
             	 $('p.custom-text1').text(data.de_name);
-            	 $('p.custom-text2').text(data.idx_title);
+            	 $('p.custom-text2').text(data.emp_id);
             	 $('p.custom-text3').text(data.emp_email);
             	 if(data.file_name != null){
             	 	 $('.img-70.rounded-circle').attr('src', '/file/profile_picture/' + data.file_name);            		 
