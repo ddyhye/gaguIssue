@@ -434,7 +434,6 @@
          	    chatIntervalId = setInterval(function() {
          	    	messageCall(idx, emp_id , other_emp);
          	    	loadChatRooms(emp_id, search);
-         	    	selectChatRoom(element);
          	    }, 5000);
          	}
              

@@ -114,7 +114,6 @@ public class EmployeeService {
 			logger.info("세션 새로 만들기");
 			session.invalidate();
 			session = request.getSession(true);
-			session.setMaxInactiveInterval(60); // 세션 타임아웃 설정 (30분)
 			String sessionDeadtime = "" + su.getExpirationTime(session);
 			Cookie cookie = new Cookie("sessionDeadtime", sessionDeadtime);
 			response.addCookie(cookie);			
@@ -272,7 +271,7 @@ public class EmployeeService {
 	/* [jeong] 프로필 사진 변경 */
 	public Map<String, Object> uploadProfileImage(int idxEmployee, MultipartFile uploadProfileFile) {
 		var response = new HashMap<String, Object>();
-		String profileImageName = fm.saveFile(uploadProfileFile, "profile_picture");
+		String profileImageName = fm.saveFile(uploadProfileFile);
 		int idxFile = dao.isProfileImage(idxEmployee);
 		if (idxFile != 0) {
 			dao.updateProfileImage(idxFile, idxEmployee, profileImageName);

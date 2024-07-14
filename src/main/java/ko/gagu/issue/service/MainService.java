@@ -83,7 +83,7 @@ public class MainService {
 		List<EmployeeDTO> organization = mainDao.getOrganization(emp.getIdx_employee(), emp.getIdx_department());
 		
 		for (int i = 0; i < organization.size(); i++) {
-			String realName = organization.get(i).getFile_name().split("/")[1];
+			String realName = organization.get(i).getFile_name();
 			organization.get(i).setFile_name(realName);
 		}
 		

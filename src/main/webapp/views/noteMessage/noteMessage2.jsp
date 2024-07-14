@@ -430,7 +430,7 @@
             	 $('p.custom-text2').text(data.emp_id);
             	 $('p.custom-text3').text(data.emp_email);
             	 if(data.file_name != null){
-            	 	 $('.img-70.rounded-circle').attr('src', '/file/profile_picture/' + data.file_name);            		 
+            	 	 $('.img-70.rounded-circle').attr('src', '/file/' + data.file_name);            		 
             	 }else{
             		 $('.img-70.rounded-circle').attr('src', '/img/user_icon.png');
             	 }

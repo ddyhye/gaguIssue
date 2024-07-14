@@ -149,7 +149,7 @@
           				</div>
           				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 						<h1>${employeeInfo.empName}</h1>
-          				<h6>${employeeInfo.empId}</h6>
+          				<h6>${employeeInfo.employeeId}</h6>
           			</div>
           		</div>
           		<div>

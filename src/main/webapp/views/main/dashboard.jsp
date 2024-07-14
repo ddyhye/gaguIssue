@@ -160,7 +160,7 @@
               <div class="col-xl-5 col-md-6 proorder-xl-1 proorder-md-1">  
                 <div class="card profile-greeting p-0">
                   <div class="card-body">
-                  	<a href="#">
+                  	<a href="/employee/group.go">
                   	  <div class="do-flexdirection-row">
                         <h2>조직도</h2><i class="greater-than" data-feather="chevron-right"></i>
                         <h4 class="do-departName">${or_de_name}</h4>
@@ -169,7 +169,7 @@
                       	<c:forEach items="${organization}" var="item">
                       		<div class="do-group">
 	                      		<div class="do-group-pic">
-	                      			<img class="do-group-pic-size" src="/file/profile_picture/${item.file_name}"/>
+	                      			<img class="do-group-pic-size" src="/file/${item.file_name}"/>
 	                      		</div>
 	                      		<div class="do-group-name">${item.emp_name}</div>
 	                      	</div>
