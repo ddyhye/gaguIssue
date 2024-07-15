@@ -50,10 +50,15 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <style>
-        /* 스타일링 추가 */
         .email-list .table th, .email-list .table td {
             text-align: center;
         }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
     </style>
   </head>
   <body> 
@@ -104,9 +109,6 @@
 		            <div class="collapse navbar-collapse" id="navbarSupportedContent">
 		                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 		                    <li class="nav-item">
-		                        <a class="nav-link active" aria-current="page" href="#">받은 메일</a>
-		                    </li>
-		                    <li class="nav-item">
 		                        <a class="nav-link" href="#">보낸 메일</a>
 		                    </li>
 		                </ul>
@@ -125,10 +127,11 @@
 			                <table id="emailTable" class="table table-bordered">
 			                    <thead>
 			                        <tr>
+			                        	<th></th>
 			                            <th>송신자</th>
 			                            <th>제목</th>
 			                            <th>수신자</th>
-			                            <th>발신 날짜</th>
+			                            <th>발신시간</th>
 			                        </tr>
 			                    </thead>
 			                    <tbody>
@@ -137,6 +140,11 @@
 			            </div>
 			        </div>
 			    </div>
+			    <div class="pagination-container">
+		            <nav aria-label="Page navigation">
+		                <ul class="pagination" id="pagination"></ul>
+		            </nav>
+		        </div>
 			</div>
           </div>
           <!-- Container-fluid Ends-->
@@ -194,31 +202,29 @@
     var showPage = 1;
 
     $(document).ready(function() {
-        function getEmailList(page) {
+        function getEmailList() {
             $.ajax({
                 url: './sendMailList.ajax', 
                 type: 'post',
                 dataType: 'json',
                 data: {
-                    'page': page || showPage, // page가 없을 경우 기본 값으로 showPage 사용
-                    'cnt': 15
+                    'page': showPage, 
+                    'cnt': 15,
                 },
                 success: function(data) {
                     var emailTableBody = $('#emailTable tbody');
-
-                    // 기존 테이블 내용 비우기
                     emailTableBody.empty();
-
+					
                     $('#pagination').twbsPagination({
-                        startPage: data.currentPage, // 시작페이지
+                        startPage: 1, // 시작페이지
                         totalPages: data.totalPages, // 총 페이지 수
                         visiblePages: 5, // 보여줄 페이지 수 1,2,3,4,5
                         onPageClick: function(event, pg) { // 페이지 클릭시 실행 함수
                             console.log(pg); // 클릭한 페이지 번호
-                            getEmailList(pg); // 페이지 변경 시 새로운 데이터 로드
+                            showPage = pg;
+                            getEmailList(); // 페이지 변경 시 새로운 데이터 로드
                         }
                     });
-
                     drawList(data.mailList);
                 },
                 error: function(xhr, status, error) {
@@ -234,11 +240,14 @@
         var content = '';
 
         for (var item of list) {
-            content += '<tr data-url="/common/sendMailDetail.go?idx_sending_email=' + item.idx_sending_email + '">';
-            content += '<td>' + item.se_employee_name + '</td>';
+        	content += '<tr>';
+        	content += '<tr data-url="/common/sendMailDetail.go?idx_sending_email=' + item.idx_sending_email + '">'; 
+        	content += '<td>' + item.idx_sending_email + '</td>';            
+            content += '<td>' + item.emp_name + '</td>';
             content += '<td>' + item.title + '</td>';
             content += '<td>' + item.db_address + '</td>';
-            content += '<td>' + item.upload_datetime + '</td>';
+            var date = new Date(item.upload_datetime);
+            content += '<td>' + date.toLocaleString() + '</td>';
             content += '</tr>';
         }
 

@@ -1,6 +1,7 @@
 package ko.gagu.issue.service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,14 +33,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.config.MailConfig;
 import ko.gagu.issue.dao.MailDAO;
+import ko.gagu.issue.dto.BoardDTO;
 import ko.gagu.issue.dto.MailDTO;
 import ko.gagu.issue.util.MailUtil;
 
@@ -138,15 +146,56 @@ public class MailService {
 		return file_name;
 	}
 
-	public Map<String, Object> sendingMailList(int idx_sending_email,int currentPage, int pagePerCnt) {
+	public Map<String, Object> sendingMailList(int currentPage, int pagePerCnt) {
 		
+		logger.info("sendingMailList 진입");
 		int start = (currentPage - 1) * pagePerCnt;
 		Map<String, Object>map=new HashMap<String, Object>();
-		List<MailDTO> mailList=mailDao.sendingMailList(start,pagePerCnt,idx_sending_email);
+		List<MailDTO> mailList=mailDao.sendingMailList(start,pagePerCnt);
+		logger.info("mailList : {}",mailList);
 		
 		map.put("mailList", mailList);
 		map.put("currentPage", currentPage);
-		map.put("totalPages", mailDao.sendingMailListCountPage(pagePerCnt,idx_sending_email));
+		map.put("totalPages", mailDao.sendingMailListCountPage(pagePerCnt));
+		logger.info("totalPage : {}",mailDao.sendingMailListCountPage(pagePerCnt));
+		return map;
+	}
+
+	public MailDTO sendMailDetail(Integer idx_sending_email) {
+		return mailDao.sendMailDetail(idx_sending_email);
+	}
+
+	public ResponseEntity<Resource> mailDownload(String fileName) {
+		
+		try {
+			Path filePath = Paths.get(root).resolve(fileName).normalize();
+			Resource resource = new UrlResource(filePath.toUri());
+			if (resource.exists()) {
+				return ResponseEntity.ok()
+						.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+						.body(resource);
+			}else {
+				logger.error("파일을 찾을 수 없음",fileName);
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		} catch (Exception e) {
+			logger.error("파일 다운로드 중 오류 발생 : "+e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	public Map<String, Object> getSendMailDetail(Integer idx_sending_email) {
+		Map<String, Object>map=new HashMap<String, Object>();
+		
+		MailDTO mail = mailDao.getSendMailDetail(idx_sending_email);
+		List <MailDTO> fileInfo = mailDao.getFileById(idx_sending_email);
+//		List<String> fileInfo = mailDao.getOriginalFileId(idx_sending_email);
+		logger.info("fileInfo : {}",fileInfo);
+		ModelAndView mav = new ModelAndView("common/mailSendingDetail");
+		mav.addObject("fileInfo", fileInfo);
+		map.put("fileInfo", fileInfo);
+		map.put("mail", mail);
+		
 		return map;
 	}
 

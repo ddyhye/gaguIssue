@@ -38,6 +38,64 @@
     <link id="color" rel="stylesheet" href="<c:url value='/assets/css/color-1.css'/>" media="screen">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .back-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .details, .attachments, .content {
+            margin-bottom: 10px;
+        }
+        .details label {
+            font-weight: bold;
+        }
+        .details span, .attachments ul {
+            margin-left: 10px;
+        }
+        .attachments ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .attachments li {
+            margin-bottom: 5px;
+        }
+        .attachments a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .attachments a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
   </head>
   <body> 
     <div class="loader-wrapper"> 
@@ -79,25 +137,49 @@
         <div class="page-body">
           <!-- Container-fluid starts-->
           <div class="container-fluid default-dashboard">
-          <!-- do: 여기서 코딩!!!! class명은 바꿔줘도 됩니당 -->
+          	<input type="hidden" name="idx_sending_email" class="idx_sending_email" id="idx_sending_email" value="${idx_sending_email}"/>
+          	<div class="container">
+		        <div class="header">
+		            <div class="title">${map.mail.title}</div>
+		            <a href="/common/sendMailList.go" class="back-button">뒤로가기</a>
+		        </div>
+		        <div class="details">
+		            <label>보낸 사람:</label>
+		            <span>${map.mail.emp_name}</span>
+		        </div>
+		        <div class="details">
+		            <label>받는 사람:</label>
+		            <span>${map.mail.db_address}</span>
+		        </div>
+		        <div class="details">
+		            <label>참조자:</label>
+		            <span>${map.mail.db_ccAddress}</span>
+		        </div>
+		        <div class="details">
+		            <label>송신일:</label>
+		            <span>${map.mail.upload_datetime}</span>
+		        </div>
+		        <div class="attachments">
+		             <c:if test="${not empty map.fileInfo}"> 
+					    <p>첨부 파일:</p>
+					    <ul>
+					        <c:forEach var="file" items="${map.fileInfo}">
+					            <li>
+					                <a href="<c:url value='/download/${map.file_name}'/>" download="${file.originalFileName}">${file.originalFileName}</a>
+					            </li>
+					        </c:forEach>
+					    </ul>
+					</c:if>
+		        </div>
+		        <div class="content">
+		            <label>내용:</label>
+		            <div>${map.mail.content}</div>
+		        </div>
+		    </div>
           </div>
           <!-- Container-fluid Ends-->
         </div>
         <!-- footer start-->
-        <footer class="footer">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12 footer-copyright d-flex flex-wrap align-items-center justify-content-between">
-                <p class="mb-0 f-w-600">Copyright <span class="year-update"> </span> Â© Mofi theme by pixelstrap  </p>
-                <p class="mb-0 f-w-600">Hand crafted & made with
-                  <svg class="footer-icon">
-                    <use href="/assets/svg/icon-sprite.svg#footer-heart"> </use>
-                  </svg>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
     <!-- latest jquery-->
@@ -144,5 +226,9 @@
     <script src="/assets/js/theme-customizer/customizer.js"></script>
     <!-- Plugin used-->
     <script>new WOW().init();</script>
+    <script>
+    
+    </script>
+    
   </body>
 </html>

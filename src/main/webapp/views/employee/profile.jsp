@@ -148,8 +148,8 @@
           					<input class='hidden-file-input' type='file' id='fileInput' style='display: none;'>
           				</div>
           				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-						<h1>김정원</h1>
-          				<h6>210823B02</h6>
+						<h1>${employeeInfo.empName}</h1>
+          				<h6>${employeeInfo.employeeId}</h6>
           			</div>
           		</div>
           		<div>
