@@ -42,8 +42,12 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
   	<!-- [tae] css 추가 -->
     <!--  <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/tae1.css'/>">-->
+    
+    <!-- [do] css 추가 -->
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/doCommon.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/inventoryList.css'/>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
-  </head>
   <style>
   	.modal-dialog {
             max-width: 800px; /* 모달 창 크기 조정 */
@@ -95,7 +99,7 @@
         .table {
             width: 100%;
             border-collapse: collapse; /* 테이블 경계선을 붙임 */
-            margin-top : 30px;
+            /* margin-top : 30px; */
         }
         
         /* 테이블 헤더 (thead) 스타일 */
@@ -111,7 +115,7 @@
         /* 테이블 셀 (td, th) 스타일 */
         .table td, .table th {
             padding: 10px;
-            text-align: left;
+            text-align: center;
             border-right: 1px solid #ccc; /* 각 셀의 우측에 회색 선 추가 */
         }
         
@@ -194,14 +198,17 @@
 		    background-color: #ffffff;
 		}
 		.info-section h5 {
-		    background-color: #f5f5f5;
-		    padding: 10px;
-		    border-radius: 5px;
+		    /* background-color: #f5f5f5; */
+		    padding: 5px 8px;
+		    /* border-radius: 5px; */
 		    font-size: 1.2em;
 		    margin-bottom: 10px;
+		    font-weight: bold;
+		    /* color: rgb(112 108 137);
+		    width: 87px; */
 		}
 		.employee-details {
-		    width: 600px;
+		    max-width: 700px;
 		    margin: 0 auto;
 		    padding: 20px;
 		    border: 1px solid #ddd;
@@ -211,7 +218,7 @@
 		}
 		
 		.annual-details{
-			width: 600px;
+			max-width: 700px;
 		    margin: 0 auto;
 		    padding: 20px;
 		    border: 1px solid #ddd;
@@ -303,7 +310,9 @@
 	    .button-detail-container {
 	        display: flex;
 	        gap: 0px;
-	        margin-bottom: 0px;
+	        position: relative;
+	        left: 30px;
+	        margin-bottom: 10px;
 	    }
 	    
 	    
@@ -348,20 +357,33 @@
 		.info-details {
 		    flex: 1;
 		    padding-left: 10px;
+		    display: flex;
+		    flex-direction: column;
+		    justify-content: center;
+		    gap: 5px;
+		}
+		
+		
+		.tae-test {
+			display: flex;
+			flex-direction: row;
+			gap: 20px;
 		}
 		
 		.info-details p {
-		    margin: 5px 0;
+		    margin: 2px 0;
 		}
 		
 		.namePhoneContainer {
 		    display: flex;
 		    justify-content: space-between;
+		    flex-direction: column;
 		}
 		
 		.info-row {
 		    display: flex;
 		    justify-content: space-between;
+		    flex-direction: column;
 		}
 		
 		.leave-info {
@@ -416,11 +438,83 @@
 		}
 		.no-click {
 		    pointer-events: none; /* 클릭 이벤트 비활성화 */
+		}       
+		
+		
+		
+		
+		
+		.page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper {
+			left: 0;
 		}
-	    
-	    
-       
+		.page-wrapper.compact-wrapper .page-header {
+			left: 0;
+		}
+		.page-wrapper.compact-wrapper .page-body-wrapper .page-body {
+			margin-top: 56px !important;
+		}
+		
+		.do-css {
+			align-items: center;
+			justify-content: center;
+			padding: 60px 0;
+			position: relative;
+			height: 90%;
+		}
+		.do-css-2 {
+			width: 50%;
+			padding-top: 20px;
+			padding-left: 20px;
+			padding-bottom: 20px;
+			background-color: white;
+			border-radius: 20px;
+			min-height: 700px;
+		}
+		.do-css3 {
+			border: 2px solid rgba(106, 113, 133, 0.3);
+			margin: 10px 0;
+		}
+		.do-css3 .table tr {
+			/* display: flex;
+			justify-content: center;
+			border-right: 1px solid rgba(106, 113, 133, 0.3); */
+		}
+		.do-css3-th1 {
+			width: 10%;
+			border-right: 1px solid rgba(106, 113, 133, 0.3) !important;
+		}
+		.do-css3-th2 {
+			width: 30%;
+			border-right: 1px solid rgba(106, 113, 133, 0.3) !important;
+		}
+		.do-css3-th3 {
+			width: 30%;
+			border-right: 1px solid rgba(106, 113, 133, 0.3) !important;
+		}
+		.do-css3-th4 {
+			width: 30%;
+			border-right: 1px solid rgba(106, 113, 133, 0.3) !important;
+		}
+		.table {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.do-css3-td1 {
+			width: 10%;
+		}
+		.do-css3-td2 {
+			width: 40%;
+		}
+		.do-css3-td3 {
+			width: 30%;
+		}
+		.do-css3-td4 {
+			width: 20%;
+		}
+		
   </style>
+  </head>
   
   <body> 
     <div class="loader-wrapper"> 
@@ -442,13 +536,13 @@
         </div>
         <div class="col-4 col-xl-4 page-title">
           <!-- do: 페이지명 변경 -->
-          <h4 class="f-w-700">사원관리</h4>
+          <h4 class="f-w-700">직원 관리</h4>
           <nav>
             <ol class="breadcrumb justify-content-sm-start align-items-center mb-0">
               <li class="breadcrumb-item"><a href="index.go"> <i data-feather="home"> </i></a></li>
               <!-- do: 경로명 변경 -->
-              <li class="breadcrumb-item f-w-400">Dashboard</li>
-              <li class="breadcrumb-item f-w-400 active">employeeList</li>
+              <li class="breadcrumb-item f-w-400">HRDept</li>
+              <li class="breadcrumb-item f-w-400 active">직원 관리</li>
             </ol>
           </nav>
         </div>
@@ -461,6 +555,8 @@
         <!-- Page Sidebar Start-->
         <%@ include file="../main/common_sidebar.jsp" %>
         <!-- Page Sidebar Ends-->
+        
+        
         <div class="page-body">
           <!-- Container-fluid starts-->
           <!-- Container-fluid 시작-->
@@ -582,9 +678,9 @@
 			<!-- Container-fluid Ends-->
 
 			<div class="container-fluid default-dashboard">
-			    <div class="row">
+			    <div class="row do-css">
 			        <!-- 사원 리스트를 표시할 왼쪽 반분 컨테이너 -->
-			        <div class="col-lg-6">
+			        <div class="col-lg-6 do-css-2" style="border-right: 1px solid rgba(106, 113, 133, 0.3);">
 			            <div class="search-container">
 			                <label for="searchInput">검색:</label>
 			                <input type="text" id="searchInput" placeholder="사원명 또는 사원번호">
@@ -599,14 +695,14 @@
 			            </div>
 			
 			            <!-- 사원리스트 테이블 -->
-			            <div class="table-container table-wrapper">
+			            <div class="table-container table-wrapper do-css3">
 			                <table class="table">
 			                    <thead>
 			                        <tr>
-			                            <th>No</th>
-			                            <th>사원번호</th>
-			                            <th>사원명</th>
-			                            <th>부서명</th>
+			                            <th class="do-css3-th1">No</th>
+			                            <th class="do-css3-th2">사원번호</th>
+			                            <th class="do-css3-th3">사원명</th>
+			                            <th class="do-css3-th4">부서명</th>
 			                        </tr>
 			                    </thead>
 			                    <tbody>
@@ -616,10 +712,10 @@
 						            <c:forEach var="employee" items="${employees}">
 						                <tr data-emp-id="${employee.emp_id}">
 						                    <!-- 자동 증가하는 번호 출력 -->
-						                    <td>${rowNumber}</td>
-						                    <td>${employee.emp_id}</td>
-						                    <td>${employee.emp_name}</td>
-						                    <td>${employee.de_name}</td>
+						                    <td clss="do-css3-td1">${rowNumber}</td>
+						                    <td clss="do-css3-td2">${employee.emp_id}</td>
+						                    <td clss="do-css3-td3">${employee.emp_name}</td>
+						                    <td clss="do-css3-td4">${employee.de_name}</td>
 						                </tr>
 						                
 						                <c:set var="rowNumber" value="${rowNumber + 1}" />
@@ -633,7 +729,7 @@
 			        </div>
 			
 			        <!-- 오른쪽 반분 컨테이너 -->
-			        <div class="col-lg-6">
+			        <div class="col-lg-6 do-css-2">
 					    <div class="button-container">
 					        <button id="registerButton" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">사원등록</button>
 					        <button id="modifyButton" class="btn btn-secondary" data-toggle="modal" data-target="#employeeModifyModal">사원수정</button>
@@ -644,12 +740,12 @@
 						</div>
 					    <!-- 사원 정보 표시 -->
 					    <div id="employeeDetails" class="employee-details">
-					        <h4>사원 상세 정보</h4>
+					        <h4>직원 상세 정보</h4>
 					        <hr>
 					        
 					        <!-- 인적정보 섹션 -->
 					        <div class="info-section">
-					            <h5>인적정보</h5>
+					            <h5>▶ 인적정보</h5>
 					            <div class="info-content">
 					                <div class="photo-container">
 					                    <img id="employeePhoto" src="/img/user.jpg" alt="사원 사진">
@@ -676,7 +772,7 @@
 					
 					        <!-- 재직정보 섹션 -->
 					        <div class="info-section">
-					            <h5>재직정보</h5>
+					            <h5>▶ 재직정보</h5>
 					            <div class="info-details">
 					                <p><strong>사원번호:</strong> <span id="emp_id_detail"></span></p>
 					                <p><strong>부서:</strong> <span id="de_name_detail"></span></p>
@@ -687,30 +783,32 @@
 					            </div>
 					        </div>
 					    </div>
-					    <div id="annualDetails" class="annual-details">
-					        <h4>사원 연차정보</h4>
+					    <div id="annualDetails" class="annual-details" style="max-width: 700px">
+					        <h4>직원 연차 정보</h4>
 					        <hr>
 					        
 					        <!-- 인적정보 섹션 -->
 					        <div class="info-section">
-					            <h5>인적정보</h5>
-					            <div class="info-content">
-					                <div class="photo-container">
-					                    <img id="employeePhoto2" src="/img/user.jpg" alt="사원 사진">
-					                </div>
-					                <div class="info-details">
-					                    <div class="namePhoneContainer">
-					                        <p><strong>이름:</strong> <p id="annual_emp_name_detail"></p></p>
-					                        <p><strong>전화번호:</strong> <p id="annual_emp_phone_number_detail"></p></p>
-					                    </div>
-					                    <div class="info-row">
-					                        <p><strong>생년월일:</strong> <span id="annual_emp_birth_date_detail"></span></p>
-					                        <p><strong>이메일:</strong> <span id="annual_emp_email_detail"></span></p>
-					                    </div>
-					                    <div class="info-row">
-					                        <p><strong>거주지:</strong> <span id="annual_emp_address_detail"></span></p>
-					                    </div>
-					                </div>
+					            <h5>▶ 인적정보</h5>
+					            <div class="info-content info-details">
+						            <div class="tae-test">
+						                <div class="photo-container">
+						                    <img id="employeePhoto2" src="/img/user.jpg" alt="사원 사진">
+						                </div>
+						                <div class="info-details">
+						                    <div class="namePhoneContainer">
+						                        <p><strong>이름:</strong> <p id="annual_emp_name_detail"></p></p>
+						                        <p><strong>전화번호:</strong> <p id="annual_emp_phone_number_detail"></p></p>
+						                    </div>
+						                    <div class="info-row">
+						                        <p><strong>생년월일:</strong> <span id="annual_emp_birth_date_detail"></span></p>
+						                        <p><strong>이메일:</strong> <span id="annual_emp_email_detail"></span></p>
+						                    </div>
+						                    <div class="info-row">
+						                        <p><strong>거주지:</strong> <span id="annual_emp_address_detail"></span></p>
+						                    </div>
+						                </div>
+						            </div>
 					            </div>
 					        </div>
 					

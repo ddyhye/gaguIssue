@@ -82,10 +82,10 @@ public class MainService {
 		String de_name = mainDao.getDename(emp.getIdx_employee());
 		List<EmployeeDTO> organization = mainDao.getOrganization(emp.getIdx_employee(), emp.getIdx_department());
 		
-		for (int i = 0; i < organization.size(); i++) {
-			String realName = organization.get(i).getFile_name().split("/")[1];
-			organization.get(i).setFile_name(realName);
-		}
+//		for (int i = 0; i < organization.size(); i++) {
+//			String realName = organization.get(i).getFile_name().split("/")[1];
+//			organization.get(i).setFile_name(realName);
+//		}
 		
 		mav.addObject("or_de_name", de_name);
 		mav.addObject("organization", organization);
@@ -94,15 +94,18 @@ public class MainService {
 		
 		// 회의실 예약
 		List<ReservationDTO> reservList = mainDao.getReservList(emp.getIdx_employee());
-		for (ReservationDTO rdto : reservList) {
-			String start_datetime = "";
-			start_datetime += rdto.getStart_datetime();
-			String startDate = start_datetime.split("T")[0];
-			String startTime = start_datetime.split("T")[1];
-			rdto.setStartDate(startDate);
-			rdto.setStartTime(startTime);
+		if (reservList != null || reservList.size() != 0) {
+			for (ReservationDTO rdto : reservList) {
+				String start_datetime = "";
+				start_datetime += rdto.getStart_datetime();
+				String startDate = start_datetime.split("T")[0];
+				String startTime = start_datetime.split("T")[1];
+				rdto.setStartDate(startDate);
+				rdto.setStartTime(startTime);
+			}
+			mav.addObject("reservList", reservList);
+			
 		}
-		mav.addObject("reservList", reservList);
 		
 		
 		// 기안서

@@ -164,7 +164,7 @@
 	
 	position: absolute !important;
    	width: 500px;
-   	height: 350px;
+   	min-height: 350px;
    	top: 50%;
    	left: 50%;
    	transform: translate(-50%, -50%);
@@ -235,6 +235,7 @@
 	border-radius: 5px;
 	color: white;
 	font-weight: bold;
+	margin-bottom: 10px;
 }
 #lackBtn:hover {
 	background-color: rgba(82, 82, 108);

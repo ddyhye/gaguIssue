@@ -629,7 +629,7 @@
 	        scales: {
 	            y: {
 	                beginAtZero: true,
-	                max: 6000000,
+	                max: 100000000,
 	                ticks: {
 	                    callback: function(value) {
 	                        return (value / 10000);
@@ -692,10 +692,10 @@
                 }
                 if (selectedTime.length != 0) {
                     selectedTime.forEach(time => {
-                        let elements  = document.querySelectorAll('#time_' + time);
+                        /* let elements  = document.querySelectorAll('#time_' + time);
                         elements.forEach(el => {
                             el.classList.remove('selectedSlot');
-                        });
+                        }); */
                     });
                     selectedTime.length = 0;
                 }

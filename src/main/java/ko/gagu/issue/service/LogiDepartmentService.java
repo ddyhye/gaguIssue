@@ -85,6 +85,10 @@ public class LogiDepartmentService {
 			paging.setPage(paging.getPage());
 		}
 		
+		
+		paging.setYear((paging.getPage()-1)*13);
+		
+		
 		// 필터에 따른 리스트
 		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListInven(paging, idxEmployee);
 		map.put("list",list);
@@ -311,6 +315,8 @@ public class LogiDepartmentService {
 			paging.setPage(paging.getPage());
 		}
 		
+		paging.setYear((paging.getPage()-1)*13);
+		
 		// 필터에 따른 리스트
 		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListReceiving(paging, idxEmployee);
 		map.put("list",list);
@@ -395,6 +401,10 @@ public class LogiDepartmentService {
 			paging.setPage(paging.getPage());
 		}
 		
+		
+		paging.setYear((paging.getPage()-1)*13);
+		
+		
 		// 필터에 따른 리스트
 		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListOrder(paging, idxEmployee);
 		map.put("list",list);
@@ -411,7 +421,9 @@ public class LogiDepartmentService {
 		return map;
 	}
 	
-	public Map<String, Object> clientPerOrder(Map<String, Object> map, int orderNo) {
+	public Map<String, Object> clientPerOrder(Map<String, Object> map, int orderNo, HttpSession session) {
+		EmployeeDTO emp = (EmployeeDTO) session.getAttribute("loginInfo");
+		
 		map.put("orderNo", orderNo);
 		String order_datetime = logiDeptDao.getOrderTime(orderNo);
 		map.put("order_datetime", order_datetime);
@@ -427,7 +439,7 @@ public class LogiDepartmentService {
 		map.put("accept", accept);
 		
 		// 토스트 테스트,,
-		webSocketController.sendNotificationToUser(35, "※발주가 필요한 제품이 있습니다※");
+		webSocketController.sendNotificationToUser(emp.getIdx_employee(), "※발주가 필요한 제품이 있습니다※");
 		
 		return map;
 	}
@@ -494,6 +506,8 @@ public class LogiDepartmentService {
 		} else {			
 			paging.setPage(paging.getPage());
 		}
+		
+		paging.setYear((paging.getPage()-1)*13);
 		
 		// 필터에 따른 리스트
 		List<LogiDeptDTO> list = logiDeptDao.fetchFilterListDelivery(paging, idxEmployee);
