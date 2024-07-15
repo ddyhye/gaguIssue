@@ -39,62 +39,65 @@
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<c:url value='/assets/css/responsive.css'/>">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .back-button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .details, .attachments, .content {
-            margin-bottom: 10px;
-        }
-        .details label {
-            font-weight: bold;
-        }
-        .details span, .attachments ul {
-            margin-left: 10px;
-        }
-        .attachments ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .attachments li {
-            margin-bottom: 5px;
-        }
-        .attachments a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .attachments a:hover {
-            text-decoration: underline;
-        }
-        .content {
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-        }
+	    body {
+	        font-family: Arial, sans-serif;
+	        background-color: white; /* 배경색을 하얀색으로 설정 */
+	    }
+	    .container {
+	        width: 80%;
+	        margin: 0 auto;
+	        padding: 20px;
+	        border: 1px solid #ccc;
+	        border-radius: 5px;
+	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	        background-color: white; /* container의 배경색을 하얀색으로 설정 */
+	    }
+	    .header {
+	        display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	        margin-bottom: 20px;
+	    }
+	    .title {
+	        font-size: 24px;
+	        font-weight: bold;
+	    }
+	    .back-button {
+	        padding: 10px 20px;
+	        background-color: #007bff;
+	        color: white;
+	        text-decoration: none;
+	        border-radius: 5px;
+	        font-size: 16px;
+	    }
+	    .details, .attachments, .content {
+	        margin-bottom: 10px;
+	    }
+	    .details label {
+	        font-weight: bold;
+	    }
+	    .details span, .attachments ul {
+	        margin-left: 10px;
+	    }
+	    .attachments ul {
+	        list-style-type: none;
+	        padding: 0;
+	    }
+	    .attachments li {
+	        margin-bottom: 5px;
+	    }
+	    .attachments a {
+	        color: #007bff;
+	        text-decoration: none;
+	    }
+	    .attachments a:hover {
+	        text-decoration: underline;
+	    }
+	    .content {
+	        border-top: 1px solid #ccc;
+	        padding-top: 10px;
+	    }
+</style>
     </style>
   </head>
   <body> 
