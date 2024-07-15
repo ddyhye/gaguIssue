@@ -29,5 +29,4 @@ public interface MailDAO {
 
 	List <MailDTO> getFileById(Integer idx_sending_email);
 
-
 }
