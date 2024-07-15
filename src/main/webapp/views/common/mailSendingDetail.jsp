@@ -168,7 +168,7 @@
 					    <ul>
 					        <c:forEach var="file" items="${map.fileInfo}">
 					            <li>
-					                <a href="<c:url value='/download/${map.file_name}'/>" download="${file.originalFileName}">${file.originalFileName}</a>
+					                <a href="<c:url value='/download/${file.newFileName}'/>" download="${file.originalFileName}">${file.originalFileName}</a>
 					            </li>
 					        </c:forEach>
 					    </ul>

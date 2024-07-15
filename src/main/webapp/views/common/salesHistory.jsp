@@ -566,7 +566,7 @@
 	        scales: {
 	            y: {
 	                beginAtZero: true,
-	                max: 6000000,
+	                max: 100000000,
 	                ticks: {
 	                    callback: function(value) {
 	                        return (value / 10000);

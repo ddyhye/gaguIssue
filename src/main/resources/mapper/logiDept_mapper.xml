@@ -36,8 +36,7 @@
 				</otherwise>
 			</choose>
 		</where>
-		GROUP BY pct.category
-		ORDER BY it.idx_product
+		ORDER BY pct.idx_product_category 
 	</select>
 	<!-- ***페이징*** -->
 	<select id="getInventoryPage" resultType="Integer">
@@ -72,7 +71,7 @@
 				</otherwise>
 			</choose>
 		</where>
-		ORDER BY it.idx_product
+		ORDER BY pct.idx_product_category 
 	</select>
 	<!-- ***페이징-필터에 따른 리스트 출력 -->
 	<select id="fetchFilterListInven" resultType="logi">
@@ -104,8 +103,8 @@
 				</otherwise>
 			</choose>
 		</where>
-		GROUP BY pct.category
-		ORDER BY it.idx_product
+		ORDER BY pct.idx_product_category 
+		LIMIT #{paging.year}, 13
 	</select>
 	
 	<!-- 제품 상새보기 -->
@@ -350,6 +349,7 @@
 				</otherwise>
 			</choose>
 		</where>
+		LIMIT 0, 13
 	</select>
 	<!-- 바코드로 입고 수량 증가 -->
 	<update id="updatePOQuantity">
@@ -538,7 +538,8 @@
 			</choose>
 		</where>
 	    GROUP BY ot.order_no
-	    ORDER BY ot.order_no DESC
+	    ORDER BY ot.order_datetime DESC
+	    LIMIT 0, 13
 	</select>
 	<!-- 주문 상세 내역 -->
 	<select id="getOrderTime" resultType="String">
@@ -741,6 +742,7 @@
 				</otherwise>
 			</choose>
 		</where>
+		LIMIT 0, 13
 	</select>
 	
 	
