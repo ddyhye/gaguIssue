@@ -111,7 +111,7 @@ public class MailController {
 		return mav;
 	}
 	
-	@GetMapping(value="/download/{fileName}")
+	@GetMapping(value="/download/email_sending/{fileName}")
 	public ResponseEntity<Resource>mailDownload(@PathVariable String fileName){
 		logger.info("fileName : {}",fileName);
 		return mailService.mailDownload(fileName);
