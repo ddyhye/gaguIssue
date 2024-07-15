@@ -620,7 +620,7 @@
 	            })
 	            .then(response => response.text())
 	            .then(data => {
-	            	listCall(productSearch, productCategory, clientList);
+	            	fetchDocumentList();
 	            })
 	            .catch(error => { console.error('Error:', error); });
 	            

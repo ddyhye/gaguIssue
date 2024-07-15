@@ -55,7 +55,7 @@
 	<!-- [jeong] 페이징 처리된 예약 내역을 반환 -->
 	<select id="getReservationList" resultType="reservation">
 		SELECT
-			REPLACE((SELECT rtt.rsv_date 
+			REPLACE((SELECT DATE_FORMAT(rtt.rsv_date, '%Y/%m/%d')
 			FROM reservation_time_tb rtt 
 			WHERE rtt.idx_reservation = rt.idx_reservation LIMIT 1), '-', '/') AS reservationDate,
 			CONCAT(DATE_FORMAT(rt.start_datetime, '%H:%i'), ' ~ ', DATE_FORMAT(rt.end_datetime, '%H:%i')) AS reservationTime,
@@ -63,8 +63,8 @@
 			rt.re_status AS rsvStatus,
 			et.emp_name AS resEmpName,
 			rt.idx_reservation AS idxReservation
-		FROM reservation_tb rt
-			JOIN employee_tb et ON et.idx_employee = #{idxEmployee}
+		FROM reservation_tb rt 
+			JOIN employee_tb et ON et.idx_employee = #{idxEmployee} AND rt.reservist = #{idxEmployee}
 			JOIN meetingroom_tb mt ON mt.idx_meeting_room = rt.idx_meeting_room
 		ORDER BY rt.rsv_datetime DESC
 		LIMIT ${(page - 1) * 12}, 12		
@@ -75,7 +75,7 @@
 		SELECT 
 			CEIL(COUNT(*) / 12)
 		FROM reservation_tb rt
-			JOIN employee_tb et ON et.idx_employee = #{idxEmployee}
+			JOIN employee_tb et ON et.idx_employee = #{idxEmployee} AND rt.reservist = #{idxEmployee}
 			JOIN meetingroom_tb mt ON mt.idx_meeting_room = rt.idx_meeting_room
 	</select>
 	
