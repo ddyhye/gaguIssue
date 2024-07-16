@@ -1463,14 +1463,14 @@
 			        var address = $('#modifyaddress').val();
 			        var detailAddress = $('#modifydetail_address').val();
 			        var fullAddress = postalCode + ' ' + address + ' ' + detailAddress;
-					console.log(postalCode);
-					console.log(address);
-					console.log(detailAddress);
-					console.log(fullAddress);
+					console.log('postalCode : ' + postalCode);
+					console.log('address : ' + address);
+					console.log('detailAddress : ' + detailAddress);
+					console.log('fullAddress : ' + fullAddress);
 					console.log($('#originImage').val());
 			        // 합쳐진 주소를 emp_address 필드에 추가
 			        formData.append('emp_address', fullAddress);
-			        
+			        console.log('formData : ' + formData);
 		            $.ajax({
 		                url: '/updateEmployeeDetails',
 		                method: 'POST',
