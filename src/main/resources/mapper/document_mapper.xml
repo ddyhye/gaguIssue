@@ -106,7 +106,7 @@
 			CASE
 				WHEN et.idx_employee = att.idx_employee THEN '작성자'
 				WHEN alt.idx_employee IS NOT NULL THEN '결재권자'
-				WHEN et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = att.idx_employee) IS NOT NULL THEN '같은부서원'
+				WHEN et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = att.idx_employee) THEN '같은부서원'
 				ELSE '접근불가'
 			END AS accessPermission,
 			CASE 
