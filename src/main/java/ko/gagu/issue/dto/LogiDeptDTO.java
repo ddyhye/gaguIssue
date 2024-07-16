@@ -445,5 +445,18 @@ public class LogiDeptDTO {
 	}
 	
 	
+	// 창고별 현재 잔고
+	private int group_current_stock;
+
+
+	public int getGroup_current_stock() {
+		return group_current_stock;
+	}
+	public void setGroup_current_stock(int group_current_stock) {
+		this.group_current_stock = group_current_stock;
+	}
+	
+	
+	
 
 }

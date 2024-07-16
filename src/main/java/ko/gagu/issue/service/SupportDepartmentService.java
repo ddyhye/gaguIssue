@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import ko.gagu.issue.dao.SupportDepartmentDAO;
+import ko.gagu.issue.dto.LogiDeptDTO;
 import ko.gagu.issue.dto.SupportDepartmentDTO;
 import ko.gagu.issue.dto.stockentries_tbDTO;
 import ko.gagu.issue.dto.warehouse_tbDTO;
@@ -139,7 +140,7 @@ public class SupportDepartmentService {
 		int start = (currPage-1)*cnt;
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<warehouse_tbDTO> list = supportDAO.storageList(cnt, start);
+		List<LogiDeptDTO> list = supportDAO.storageList(cnt, start);
 		
 		result.put("list", list);
 		result.put("currPage",currPage);
