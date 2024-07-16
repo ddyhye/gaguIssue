@@ -79,6 +79,17 @@
 		    NULL AS title         
 		FROM department_tb dt 
 		WHERE dt.idx_department IN (2,3,4)
+		ORDER BY 
+		    CASE 
+		        WHEN title = '대표이사' THEN 1
+		        WHEN title = '상무' THEN 2
+		        WHEN title = '이사' THEN 3
+		        WHEN title = '부장' THEN 4
+		        WHEN title = '과장' THEN 5
+		        WHEN title = '대리' THEN 6
+		        WHEN title = '사원' THEN 7
+		        ELSE 8
+		    END
 	</select>
 	
 	<!-- [jeong] 해당 문서에 접근할 권한(작성자, 결재권자, 부서원)이 무엇인지 그리고 결재 순서가 몇번인지 알려줌 -->
@@ -95,7 +106,7 @@
 			CASE
 				WHEN et.idx_employee = att.idx_employee THEN '작성자'
 				WHEN alt.idx_employee IS NOT NULL THEN '결재권자'
-				WHEN et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = att.idx_employee) IS NOT NULL THEN '같은부서원'
+				WHEN et.idx_department = (SELECT idx_department FROM employee_tb WHERE idx_employee = att.idx_employee) THEN '같은부서원'
 				ELSE '접근불가'
 			END AS accessPermission,
 			CASE 

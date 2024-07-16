@@ -26,6 +26,7 @@ public class MessageDTO {
 	private int idx_emp;
 	private int sender_del;
 	private int reciver_del;
+	private int emp_id;
 	private String new_picname;
 	private String origin_name;
 	
@@ -162,6 +163,12 @@ public class MessageDTO {
 	}
 	public void setOrigin_name(String origin_name) {
 		this.origin_name = origin_name;
+	}
+	public int getEmp_id() {
+		return emp_id;
+	}
+	public void setEmp_id(int emp_id) {
+		this.emp_id = emp_id;
 	}
 	
 	

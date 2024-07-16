@@ -44,6 +44,8 @@ public class HRDepartmentDTO {
 	private List<Leave_usage_tbDTO> annual_leave_usage_history;
 	private MultipartFile profileImage;
 	private String originImage;
+	private String ori_id;
+	
 	
 	
 	
@@ -251,6 +253,12 @@ public class HRDepartmentDTO {
 	}
 	public void setOriginImage(String originImage) {
 		this.originImage = originImage;
+	}
+	public String getOri_id() {
+		return ori_id;
+	}
+	public void setOri_id(String ori_id) {
+		this.ori_id = ori_id;
 	}
 
 	

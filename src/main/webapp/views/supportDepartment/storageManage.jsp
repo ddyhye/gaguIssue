@@ -133,7 +133,7 @@
         <h1 id="rsvTitle">${client.client_name}</h1>
         <div class="container">
             <div class="storage-Map">
-            <img class="img-500" alt="" src="/img/storageMap.png">
+            <img class="img-500 img-h-300" alt="" src="/img/storageMap.png">
 			</div>
         </div>
         <hr/>
@@ -154,11 +154,11 @@
             </tbody>
         </table>
         </br>
-        <div class="d-flex justify-content-center">                                
+        <!-- <div class="d-flex justify-content-center">                                
             <nav aria-label="Page navigation">
                 <ul class="pagination" id="pagination"></ul>
             </nav>
-        </div>                      
+        </div>          -->             
     </div>
 </div>
           </div>
@@ -279,20 +279,26 @@
   
   function drawList(list){
 	    var content = '';
+	    
+	    var idx = 1;
+	    
 	    for(item of list){
 	      // console.log(item);
 	       content += '<tr>';
-	       content += '<td>'+ item.idx_storage +'</td>';
-	       content += '<td>'+ item.section_name + '</td>';
+	       content += '<td>'+ idx +'</td>';
+	       content += '<td>'+ item.section_name + ' 구역</td>';
 	       content += '<td>'+ item.category + '</td>';
-	       if(item.capacity - item.current_stock < 5){
+	       /* if(item.capacity - item.current_stock < 5){
     	   content += '<td style="color: #FF0000;">'+ item.current_stock + '</td>';   
 	       }else{
 	       content += '<td>'+ item.current_stock + '</td>';
-	       }
+	       } */
+	       content += '<td>'+ item.group_current_stock + '</td>';   
 	       content += '<td>'+ item.capacity + '</td>';
 	       content += '</tr>';
+	       idx++;
 	    }
+	    
 	    $('.storageList').html(content);
 	}
   
