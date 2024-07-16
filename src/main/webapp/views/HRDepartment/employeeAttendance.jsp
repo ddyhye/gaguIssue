@@ -135,6 +135,7 @@
 	        <input type="date" class="form-control" id="date" style="width: 200px; display: inline-block; margin-right: 10px;">
 	        <label for="department">부서 선택</label>
 	        <select id="department" class="form-control" style="width: 200px; display: inline-block;">
+	        	<option value="전체">전체</option>
 	            <option value="임원진">임원진</option>
 	            <option value="경영지원부서">경영지원부서</option>
 	            <option value="물류관리부서">물류관리부서</option>

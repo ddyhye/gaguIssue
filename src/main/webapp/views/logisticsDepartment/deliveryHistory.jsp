@@ -53,6 +53,8 @@
   	<!-- J-Query -->
   	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
+  
+  
   <body> 
     <div class="loader-wrapper"> 
       <div class="loader loader-1">
@@ -213,6 +215,12 @@
         </footer>
       </div>
     </div>
+    
+    
+    <!-- 토스트 -->
+	<%@ include file="../main/common_bottom.jsp" %>
+	    
+	    
     <!-- latest jquery-->
     <script src="/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->

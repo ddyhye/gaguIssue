@@ -165,7 +165,7 @@
 	                if (distance < 0) {
 	                    clearInterval(x);
 	                    document.getElementById("sessionCurrentTime").innerHTML = "00:00";
-	                    alert('세션 끝남');
+	                    // alert('세션 끝남');
 	                 	// window.location.href='/logout.go';
 	                 	return;
 	                }

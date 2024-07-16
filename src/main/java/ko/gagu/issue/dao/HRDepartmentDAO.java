@@ -55,6 +55,10 @@ public interface HRDepartmentDAO {
 
 	void updateAttendanceOfAllEmployees(Integer idx_employee, String ah_status,Integer idx_attendance);
 
+	List<EmployeeDTO> wholeEmployeeAttendanceList(String formattedDate, int start, int pagePerCnt, String department);
+
+	Object wholeAllCountPage(String department, String formattedDate, int pagePerCnt);
+
 
 	
 

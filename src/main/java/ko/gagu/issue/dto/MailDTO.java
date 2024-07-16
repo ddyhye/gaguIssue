@@ -26,6 +26,7 @@ public class MailDTO {
     private int idx_filetype;
     private int idx_file;
     private String file_name;
+    
 	public String[] getAddress() {
 		return address;
 	}

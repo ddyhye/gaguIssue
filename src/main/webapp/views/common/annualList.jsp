@@ -101,7 +101,7 @@
                   	<div class="card-header do-flexdirection-row">
 			          <h4>My AnnualLeave History</h4>
 			          <div class="do-rightfixed"> 
-                        <a class="btn btn-primary" href="add-products.html"><i class="fa fa-plus"></i>연차신청</a>
+                        <a class="btn btn-primary" href="<c:url value='/document/formSelect.go'/>"><i class="fa fa-plus"></i>연차신청</a>
                       </div>
 			        </div>
 			        

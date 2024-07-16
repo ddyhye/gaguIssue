@@ -31,6 +31,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
@@ -54,7 +55,8 @@ import ko.gagu.issue.util.MailUtil;
 @Service
 public class MailService {
 	
-	private static final String root = "/Users/ku-ilseung/Desktop/C/";
+	@Value("${spring.servlet.multipart.location}")
+	private String root;
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private final MailDAO mailDao;
 	private final JavaMailSender emailSender;
@@ -168,7 +170,7 @@ public class MailService {
 	public ResponseEntity<Resource> mailDownload(String fileName) {
 		
 		try {
-			Path filePath = Paths.get(root).resolve(fileName).normalize();
+			Path filePath = Paths.get(root + "/email_sending/").resolve(fileName).normalize();
 			Resource resource = new UrlResource(filePath.toUri());
 			if (resource.exists()) {
 				return ResponseEntity.ok()

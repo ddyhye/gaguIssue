@@ -252,13 +252,13 @@ public class LogiDepartmentController {
 	// 주문 상세 내역 팝업창 채우기
 	@PostMapping(value="/clientPerOrder.ajax")
 	@ResponseBody
-	Map<String, Object> clientPerOrder(@RequestBody Map<String, Object> payload) {
+	Map<String, Object> clientPerOrder(@RequestBody Map<String, Object> payload, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		String orderNoStr = (String) payload.get("orderNo");
 		int orderNo = Integer.parseInt(orderNoStr);
 		
-		return logiDeptService.clientPerOrder(map, orderNo);
+		return logiDeptService.clientPerOrder(map, orderNo, session);
 	}
 	// 주문 출고하기
 	@PostMapping(value="/orderDelivery.ajax")
