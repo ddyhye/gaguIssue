@@ -133,7 +133,7 @@
         <h1 id="rsvTitle">${client.client_name}</h1>
         <div class="container">
             <div class="storage-Map">
-            <img class="img-500" alt="" src="/img/storageMap.png">
+            <img class="img-500 img-h-300" alt="" src="/img/storageMap.png">
 			</div>
         </div>
         <hr/>
@@ -285,7 +285,7 @@
 	       content += '<td>'+ item.idx_storage +'</td>';
 	       content += '<td>'+ item.section_name + '</td>';
 	       content += '<td>'+ item.category + '</td>';
-	       if(item.capacity - item.current_stock < 5){
+	       if(item.capacity - item.current_stock <= 5){
     	   content += '<td style="color: #FF0000;">'+ item.current_stock + '</td>';   
 	       }else{
 	       content += '<td>'+ item.current_stock + '</td>';

@@ -74,10 +74,7 @@
 		margin-left: 232px;
 	}
 	
-	.chats-user{
-		display: flex;
-	    flex-direction: column;
-	}
+	
 	.chats-user .common-space.selected-chat {
 	    background-color: #9096a238; /* 원하는 색상으로 변경 */
 	}
@@ -128,6 +125,15 @@
   	.hide-text {
     	display: none;
 	}
+	.left-sidebar-wrapper .advance-options .chats-user {
+	    border-bottom: unset;
+	    height: 559px;
+	    overflow-y: auto;
+	    padding: 0;            /* 상하 패딩 제거 */
+	    margin: 0;             /* 상하 마진 제거 */
+	    box-sizing: border-box; /* 경계선과 패딩을 포함하여 너비와 높이를 계산 */
+	    display: block;        /* 기본 블록 레이아웃 사용 */
+	}
 
 	</style>
   </head>
@@ -167,6 +173,8 @@
 				              
 				              <ul class="chats-user">
 				               
+				               <!-- 대화방 리스트 출력 부분 -->
+				               
 				              </ul>
 				              
 				            </div>
@@ -180,7 +188,7 @@
 				              </div>
 				              <div class="contact-wrapper">
 				              
-				              
+				              <!-- 연락처 리스트 부분 -->
 				              
 				              </div>
 				            </div>
