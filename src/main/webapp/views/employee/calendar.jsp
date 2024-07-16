@@ -59,70 +59,167 @@
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 	
 	<style>
-	/* [il] 모달 창 스타일링 */
-    .modal-content {
-        background-color: #f8f9fa; /* 배경색 설정 */
-        border-radius: 0;
-        box-shadow: 0 0 10px rgba(0,0,0,0.3); /* 그림자 설정 */
-    }
-    .modal-header {
-        background-color: #6c5ce7; /* 헤더 배경색 */
-        color: #fff; /* 헤더 글자색 */
-        border-bottom: none; /* 헤더 아래 경계선 없애기 */
-    }
-    .modal-title {
-        font-weight: bold;
-    }
-    .modal-body {
-        padding: 20px;
-    }
-    .modal-footer {
-        background-color: #f8f9fa; /* 푸터 배경색 */
-        border-top: none; /* 푸터 위 경계선 없애기 */
-    }
-    .close {
-        color: #fff; /* 닫기 버튼 글자색 */
-    }
-    .form-group label {
-        font-weight: bold;
-    }
-    .form-control {
-        border: 1px solid #ced4da; /* 입력 필드 테두리 스타일 */
-    }
-    .btn-primary {
-        background-color: #6c5ce7; /* 등록 버튼 배경색 */
-        border-color: #6c5ce7; /* 등록 버튼 테두리 색 */
-    }
-    .btn-primary:hover {
-        background-color: #563d7c; /* 등록 버튼 호버 배경색 */
-        border-color: #563d7c; /* 등록 버튼 호버 테두리 색 */
-    }
-    .btn-secondary {
-        background-color: #343a40; /* 취소 버튼 배경색 */
-        border-color: #343a40; /* 취소 버튼 테두리 색 */
-    }
-    .btn-secondary:hover {
-        background-color: #23272b; /* 취소 버튼 호버 배경색 */
-        border-color: #23272b; /* 취소 버튼 호버 테두리 색 */
-    }
-    .btn-danger {
-        background-color: #dc3545; /* 삭제 버튼 배경색 */
-        border-color: #dc3545; /* 삭제 버튼 테두리 색 */
-    }
-    .btn-danger:hover {
-        background-color: #c82333; /* 삭제 버튼 호버 배경색 */
-        border-color: #c82333; /* 삭제 버튼 호버 테두리 색 */
+	html {
+    font-size: 15px; /* 기본 글꼴 크기를 18px로 설정 */
+	}
+	
+	body {
+	    font-family: Arial, sans-serif;
+	    font-size: 1rem; /* 기본 글꼴 크기를 1rem으로 설정 */
+	}
+	
+	.container {
+	    width: 80%;
+	    margin: 0 auto;
+	    padding: 20px;
+	    border: 1px solid #ccc;
+	    border-radius: 5px;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+	
+	.header {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    margin-bottom: 20px;
+	}
+	
+	.title {
+	    font-size: 1.2rem; /* 글자 크기를 1.5rem으로 설정 */
+	    font-weight: bold;
+	}
+	
+	.back-button {
+	    padding: 10px 20px;
+	    background-color: #007bff;
+	    color: white;
+	    text-decoration: none;
+	    border-radius: 5px;
+	    font-size: 1rem; /* 글자 크기를 1rem으로 설정 */
+	}
+	
+	.details, .attachments, .content {
+	    margin-bottom: 10px;
+	}
+	
+	.details label {
+	    font-weight: bold;
+	}
+	
+	.details span, .attachments ul {
+	    margin-left: 10px;
+	}
+	
+	.attachments ul {
+	    list-style-type: none;
+	    padding: 0;
+	}
+	
+	.attachments li {
+	    margin-bottom: 5px;
+	}
+	
+	.attachments a {
+	    color: #007bff;
+	    text-decoration: none;
+	}
+	
+	.attachments a:hover {
+	    text-decoration: underline;
+	}
+	
+	.content {
+	    border-top: 1px solid #ccc;
+	    padding-top: 10px;
+	}
+	
+	/* 모달 창 스타일링 */
+	.modal-content {
+	    background-color: #f8f9fa;
+	    border-radius: 0;
+	    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+	}
+	
+	.modal-header {
+	    background-color: #6c5ce7;
+	    color: #fff;
+	    border-bottom: none;
+	}
+	
+	.modal-title {
+	    font-weight: bold;
+	}
+	
+	.modal-body {
+	    padding: 20px;
+	}
+	
+	.modal-footer {
+	    background-color: #f8f9fa;
+	    border-top: none;
+	}
+	
+	.close {
+	    color: #fff;
+	}
+	
+	.form-group label {
+	    font-weight: bold;
+	}
+	
+	.form-control {
+	    border: 1px solid #ced4da;
+	    font-size: 1rem; /* 글자 크기를 1rem으로 설정 */
+	}
+	
+	.btn-primary {
+	    background-color: #6c5ce7;
+	    border-color: #6c5ce7;
+	    font-size: 1rem; /* 글자 크기를 1rem으로 설정 */
+	}
+	
+	.btn-primary:hover {
+	    background-color: #563d7c;
+	    border-color: #563d7c;
+	}
+	
+	.btn-secondary {
+	    background-color: #343a40;
+	    border-color: #343a40;
+	    font-size: 1rem; /* 글자 크기를 1rem으로 설정 */
+	}
+	
+	.btn-secondary:hover {
+	    background-color: #23272b;
+	    border-color: #23272b;
+	}
+	
+	.btn-danger {
+	    background-color: #dc3545;
+	    border-color: #dc3545;
+	    font-size: 1rem; 
+	}
+	
+	.btn-danger:hover {
+	    background-color: #c82333;
+	    border-color: #c82333;
+	}
 	
 	#calendar {
-	   width: 80%;
-	   margin: 5px auto;
+	    width: 80%;
+	    margin: 5px auto;
+	    font-size: 1rem; 
 	}
+	
 	.datepicker-input {
-    position: relative;
+	    position: relative;
 	}
+	
 	.datepicker-input input, .timepicker-input select, .modal-body textarea {
 	    width: 100%;
+	    font-size: 1rem; /* 글자 크기를 1rem으로 설정 */
 	}
+	
 	.datepicker-input .ui-datepicker-trigger, .timepicker-input .ui-timepicker-trigger {
 	    position: absolute;
 	    right: 5px;
@@ -174,7 +271,8 @@
           <!-- Container-fluid starts-->
           <!-- [il] 캘린더 시작 -->
           <br>
-          <h2><center>Employee Fullcalendar</center></h2>
+          <h2><center></center></h2>
+          <br>
 		    <div id="calendar"></div>
 		    <!-- [il] : value 나중에 바꿔줘야함. -->
 		    <input type="hidden" id="idx_employee" value="${sessionScope.idxEmployee}"> 		    
