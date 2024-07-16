@@ -193,6 +193,7 @@
 	
 	<update id="updateEmployee" parameterType="ko.gagu.issue.dto.HRDepartmentDTO">
         UPDATE employee_tb SET
+        	emp_id = #{emp_id},
             emp_name = #{emp_name},
             emp_phone_number = #{emp_phone_number},
             emp_birth_date = #{emp_birth_date},
@@ -201,7 +202,7 @@
             idx_department = (SELECT idx_department FROM department_tb WHERE de_name = #{de_name}),
             idx_title = (SELECT idx_title FROM title_tb WHERE title_name = #{title_name})
             
-        WHERE emp_id = #{emp_id}
+        WHERE idx_employee = #{idx_employee}
     </update>
 	
 
