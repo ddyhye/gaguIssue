@@ -439,7 +439,7 @@ public class LogiDepartmentService {
 		map.put("accept", accept);
 		
 		// 토스트 테스트,,
-		webSocketController.sendNotificationToUser(emp.getIdx_employee(), "※발주가 필요한 제품이 있습니다※");
+		// webSocketController.sendNotificationToUser(emp.getIdx_employee(), "※발주가 필요한 제품이 있습니다※");
 		
 		return map;
 	}
