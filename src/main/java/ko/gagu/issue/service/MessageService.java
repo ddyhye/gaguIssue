@@ -56,6 +56,12 @@ public class MessageService {
 		  	if(messageDTO.getMsg_count() != 0) {
 		  		MessageDTO lastContent = messageDAO.lastContent(messageDTO.getIdx_messageroom(), messageDTO.getOther_emp(), idx_emp);
 		  		String content = lastContent.getMsg_content();
+		  		
+		  		// content의 길이가 8글자가 넘어가면 뒤를 ...으로 대체
+		  	    if(content != null && content.length() > 8) {
+		  	        content = content.substring(0, 8) + "...";
+		  	    }
+		  		
 		  		Timestamp send_time = lastContent.getSend_datetime();
 		  		String new_picname = lastContent.getFile_name();
 		  		String origin_name = lastContent.getOrigin_name();

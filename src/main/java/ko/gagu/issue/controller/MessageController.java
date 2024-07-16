@@ -55,15 +55,7 @@ public class MessageController {
 			return messageService.messageCallAjax(idx, emp_id, otherEmp);
 		}
 			
-		/*
-		// 쪽지 보내기 ajax
-		@RequestMapping(value = "/messageSend.ajax", method = RequestMethod.POST)
-		@ResponseBody
-		public Map<String, Object> messageSendAjax(int idx, String emp_id, int other_emp, String content){
-			logger.info("{}번 방, {}가 쪽지 전송", idx, emp_id);
-			return messageService.messageSend(idx, emp_id, other_emp, content);
-		}
-		 */
+		
 		
 		// 쪽지 보내기 ajax
 		@RequestMapping(value = "/messageSend.ajax", method = RequestMethod.POST)

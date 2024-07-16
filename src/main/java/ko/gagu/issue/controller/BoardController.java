@@ -125,7 +125,7 @@ public class BoardController {
         } else {
             mav.setViewName("errorPage");
         }
-
+        
         return mav;
     }
     
