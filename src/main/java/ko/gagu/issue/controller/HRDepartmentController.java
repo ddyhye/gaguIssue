@@ -252,11 +252,13 @@ public class HRDepartmentController {
 	    @ResponseBody
 	    public Map<String, Object> updateEmployeeDetails(HRDepartmentDTO employee) {
 	        Map<String, Object> response = new HashMap<>();
-	        logger.info(employee.getEmp_email());
-	        logger.info(employee.getProfileImage().getOriginalFilename());
-	        logger.info(employee.getEmp_id());
-	        logger.info(employee.getEmp_address());
-	        logger.info(employee.getOriginImage());
+	        logger.info("이메일 : " + employee.getEmp_email());
+	        logger.info("이미지 : " +employee.getProfileImage().getOriginalFilename());
+	        logger.info("사원번호 : " +employee.getEmp_id());
+	        logger.info("주소 : "+employee.getEmp_address());
+	        logger.info("원래 이미지 이름 : " +employee.getOriginImage());
+	        
+	        
 	        try {
 	            String msg = hrDepartmentService.updateEmployee(employee, employee.getProfileImage());
 	            response.put("success", true);
