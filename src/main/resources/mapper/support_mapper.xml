@@ -154,12 +154,16 @@
 	) AS subquery
 	</select>
 	
-	<select id="storageList" parameterType="map">
-	SELECT 
-		wt.*,
-		(SELECT pct.category FROM product_category_tb pct WHERE pct.idx_product_category = pt.idx_product_category) AS category 
-	FROM warehouse_tb wt, product_tb pt WHERE wt.idx_storage = pt.idx_storage
-	LIMIT #{param2},#{param1}
+	<select id="storageList" resultType="logi">
+		SELECT wt.section_name ,
+				pct.category ,
+				SUM(it.current_stock) AS group_current_stock ,
+				wt.capacity 
+		FROM product_tb pt 
+			JOIN warehouse_tb wt ON pt.idx_storage = wt.idx_storage 
+			JOIN product_category_tb pct ON pt.idx_product_category = pct.idx_product_category 
+			JOIN inventory_tb it ON pt.idx_product = it.idx_product 
+		GROUP BY wt.section_name 
 	</select>
 	
 	<select id="storageListAllCount" resultType="Integer" parameterType="map">

@@ -439,12 +439,14 @@ public class LogiDepartmentService {
 		map.put("accept", accept);
 		
 		// 토스트 테스트,,
-		webSocketController.sendNotificationToUser(emp.getIdx_employee(), "※발주가 필요한 제품이 있습니다※");
+		//webSocketController.sendNotificationToUser(emp.getIdx_employee(), "※발주가 필요한 제품이 있습니다※");
 		
 		return map;
 	}
 	
 	public Map<String, Object> orderDelivery(Map<String, Object> map, int orderNo, HttpSession session) {
+		EmployeeDTO myEmp = (EmployeeDTO) session.getAttribute("loginInfo");
+		
 		List<Integer> logiEmp = logiDeptDao.getLogiEmp();
 		
 		List<LogiDeptDTO> list = logiDeptDao.getOrderProductList(orderNo);
@@ -462,6 +464,7 @@ public class LogiDepartmentService {
 				// 물류관리부서 전원에게 알림 보내자.
 				for (int emp : logiEmp) {
 					// 토스트
+					webSocketController.sendNotificationToUser(myEmp.getIdx_employee(), "※ 발주가 필요한 제품이 있습니다 ※");
 					webSocketController.sendNotificationToUser(emp, "※ 발주가 필요한 제품이 있습니다 ※");
 					// 알림
 					logiDeptDao.insertAlarmLogiDept(emp);

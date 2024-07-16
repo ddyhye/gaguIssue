@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import ko.gagu.issue.dto.LogiDeptDTO;
 import ko.gagu.issue.dto.SupportDepartmentDTO;
 import ko.gagu.issue.dto.stockentries_tbDTO;
 import ko.gagu.issue.dto.warehouse_tbDTO;
@@ -34,7 +35,7 @@ public interface SupportDepartmentDAO {
 
 	Object deliveryHistoryAllCount(int cnt, String idx_business);
 
-	List<warehouse_tbDTO> storageList(int cnt, int start);
+	List<LogiDeptDTO> storageList(int cnt, int start);
 
 	Object storageListAllCount(int cnt);
 
