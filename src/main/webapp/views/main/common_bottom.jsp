@@ -22,7 +22,7 @@
                 toast.innerText = message;
                 setTimeout(function(){ 
                     toast.className = toast.className.replace("show", "");
-                }, 2800);
+                }, 8000);
             } else {
                 console.error("Toast element not found");
             }

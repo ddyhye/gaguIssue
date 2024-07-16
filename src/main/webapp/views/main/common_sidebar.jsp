@@ -59,7 +59,7 @@
                       
                       
                   <!-- do: 메일 -->
-                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/common/mailWrite.go'/>">
+                  <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="<c:url value='/common/sendMailList.go'/>">
                       <svg class="stroke-icon">
                         <use href="/assets/svg/icon-sprite.svg#stroke-email"></use>
                       </svg>

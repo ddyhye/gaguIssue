@@ -363,6 +363,12 @@
 						ORDER BY st.idx DESC
 						LIMIT 1)
 	</update>
+	<!-- 바코드로 수량증가하고있는 제품명 -->
+	<select id="productName" resultType="String">
+		SELECT product_name
+		FROM product_tb
+		WHERE idx_product = #{param1}
+	</select>
 	<!-- 주문 수량과 입고 수량이 동일한가? -->
 	<select id="isReceivingFinish" resultType="Integer">
 		SELECT count(*) as cnt
@@ -623,7 +629,7 @@
 	<!-- 알림 넣기 -->
 	<insert id="insertAlarmLogiDept">
 		INSERT INTO alerm_tb (idx_employee, al_content, al_path)
-		VALUES (#{param1}, '재고가 부족합니다. 재고리스트를 확인해 주세요!', '&lt;c:url value=&quot;/logisticsDepartment/inventoryList.go&quot;/&gt;');
+		VALUES (#{param1}, '재고가 부족합니다. 재고리스트를 확인해 주세요!', '/logisticsDepartment/inventoryList.go');
 	</insert>
 	
 	

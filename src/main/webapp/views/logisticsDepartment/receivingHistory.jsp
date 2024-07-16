@@ -402,6 +402,8 @@
     document.getElementById('do-warning').addEventListener('click', () => {
     	// 함수를 새로 만들어야한다....
     	fetchDocumentList2();
+    	
+    	chromeTTS("안녕하세요");
 	});
 	
 	// 페이지 이동
@@ -593,19 +595,24 @@
 	        window.open("/filestore/"+encodeURIComponent(fileName), "_blank", "width=1000,height=700");
 	    }		
 	});
-	
+
 	
 	// 바코드 읽기
 	document.addEventListener('DOMContentLoaded', (event) => {
 		let barcodeData = '';
 		let barcodeTimeout;
+		
+		console.log('Dom ㅇ이벤트도 안됨..');
 
-	    document.addEventListener('keypress', (e) => {
+	    document.addEventListener('keydown', (e) => {
 	        clearTimeout(barcodeTimeout);
+	        
+	        console.log('바코드 인식 자체가 안됨');
 
 	        // 바코드 작동 방식은 데이터를 읽어온 후, enter를 누르는 방식이다.
 	        // 즉, 데이터를 저장한 후, Enter가 눌릴 때 데이터를 처리하면 된다.
 	        if (e.key === 'Enter') {
+	        	console.log('바코드 인식은 됨');
 	            console.log('Scanned Barcode: ' + barcodeData);
 
 	            // 바코드 인식 시, 해당 제품의 입고수량이 추가된다.
@@ -618,10 +625,17 @@
 	                },
 	                body: JSON.stringify({barcodeData : barcodeData})
 	            })
-	            .then(response => response.text())
+	            .then(response => response.json())
 	            .then(data => {
 	            	//listCall(productSearch, productCategory, clientList);
 	            	fetchDocumentList();
+	            	
+	            	// 응답 데이터 로그
+	                console.log('응답 데이터:', data);
+	            	
+	            	if (data.msg != null) {
+						chromeTTS(data.msg);
+					}
 	            })
 	            .catch(error => { console.error('Error:', error); });
 	            
@@ -634,6 +648,12 @@
 	        }
 	    });
 	});
+	
+	// 크롬 TTS
+	function chromeTTS(text) {
+	  const utterance = new SpeechSynthesisUtterance(text);
+	  window.speechSynthesis.speak(utterance);
+	}
 </script>
 
 

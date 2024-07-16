@@ -108,6 +108,8 @@ public interface LogiDepartmentDAO {
 
 	List<String> inventoryPhoto(int idx_product);
 
+	String productName(int idx_product);
+
 
 
 

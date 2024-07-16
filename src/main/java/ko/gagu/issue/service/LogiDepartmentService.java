@@ -352,6 +352,9 @@ public class LogiDepartmentService {
 		int idx_product = Integer.parseInt(barcodeData);
 		logiDeptDao.updatePOQuantity(idx_product);
 		
+		// 해당 번호 제품명
+		String product_name = logiDeptDao.productName(idx_product);
+		
 		// 주문 수량 = 입고 수량 시,
 		// 	1) 입고 완료
 		//	2) 인벤토리 재고에 주문수량만큼 증가
@@ -359,6 +362,9 @@ public class LogiDepartmentService {
 		if (finish == 1) {
 			logiDeptDao.updateReceivingFinish(idx_product);
 			logiDeptDao.updateInventoryReceive(idx_product);
+			
+			// TTS 사용
+			map.put("msg", product_name+" 입고 완료");
 		}
 		
 		
@@ -464,12 +470,17 @@ public class LogiDepartmentService {
 				// 물류관리부서 전원에게 알림 보내자.
 				for (int emp : logiEmp) {
 					// 토스트
-					webSocketController.sendNotificationToUser(myEmp.getIdx_employee(), "※ 발주가 필요한 제품이 있습니다 ※");
 					webSocketController.sendNotificationToUser(emp, "※ 발주가 필요한 제품이 있습니다 ※");
 					// 알림
 					logiDeptDao.insertAlarmLogiDept(emp);
 				}
-				logger.info("재고가 부족합니다... 관련 부서 직원에게 알림 보내기 >>");
+				// 시연을 위해.. 현재 로그인한 사람에게도 보내자.
+				webSocketController.sendNotificationToUser(myEmp.getIdx_employee(), "※ 발주가 필요한 제품이 있습니다 ※");
+				logiDeptDao.insertAlarmLogiDept(myEmp.getIdx_employee());
+				
+				map.put("msg", "발주가 필요한 제품이 있습니다");
+				
+				logger.info("재고가 부족합니다... 관련 부서 직원에게 알림 보내기 >>");				
 			}
 		}
 		
@@ -538,7 +549,6 @@ public class LogiDepartmentService {
 	
 	
 
-	
 	
 	
 	

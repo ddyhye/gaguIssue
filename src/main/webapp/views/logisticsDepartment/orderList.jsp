@@ -814,12 +814,20 @@
 			.then(response => response.json())
 			.then(data=> {
 				alert('출고 완료!\n재고 관리 > 출고 내역 을 확인해 주세요...');
+				chromeTTS(data.msg);
 				document.getElementsByClassName('do-lackList')[0].classList.remove('active');
 				listCall(productSearch, productCategory, clientList);
 			})
 			.catch(error => { console.error('Fetch error:', error); });
 		}
 	});
+	
+	
+	// 크롬 TTS
+	function chromeTTS(text) {
+	  const utterance = new SpeechSynthesisUtterance(text);
+	  window.speechSynthesis.speak(utterance);
+	}
 </script>
 
 
