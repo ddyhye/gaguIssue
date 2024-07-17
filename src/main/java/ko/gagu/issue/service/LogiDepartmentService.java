@@ -476,6 +476,13 @@ public class LogiDepartmentService {
 				}
 				// 시연을 위해.. 현재 로그인한 사람에게도 보내자.
 				webSocketController.sendNotificationToUser(myEmp.getIdx_employee(), "※ 발주가 필요한 제품이 있습니다 ※");
+				webSocketController.sendNotificationToUser(6, "※ 발주가 필요한 제품이 있습니다 ※");
+				webSocketController.sendNotificationToUser(17, "※ 발주가 필요한 제품이 있습니다 ※");
+				webSocketController.sendNotificationToUser(35, "※ 발주가 필요한 제품이 있습니다 ※");
+				webSocketController.sendNotificationToUser(37, "※ 발주가 필요한 제품이 있습니다 ※");
+				webSocketController.sendNotificationToUser(38, "※ 발주가 필요한 제품이 있습니다 ※");
+				webSocketController.sendNotificationToUser(39, "※ 발주가 필요한 제품이 있습니다 ※");
+				
 				logiDeptDao.insertAlarmLogiDept(myEmp.getIdx_employee());
 				
 				map.put("msg", "발주가 필요한 제품이 있습니다");
