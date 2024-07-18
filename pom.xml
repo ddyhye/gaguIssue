@@ -119,22 +119,6 @@
 		    <version>3.4.1</version>
 		</dependency>
 	    
-		<!-- [jeong] pdf 파일을 생성하고 이용할 수 있음 -->
-		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox/2.0.24 -->
-	    <dependency>
-	        <groupId>org.apache.pdfbox</groupId>
-	        <artifactId>pdfbox</artifactId>
-	        <version>2.0.24</version>
-	    </dependency>
-	    
-	    <!-- [jeong] 웹 크롤링 HTML 파일을 다룰 수 있음 -->
-	    <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup/1.14.3 -->
-	    <dependency>
-	        <groupId>org.jsoup</groupId>
-	        <artifactId>jsoup</artifactId>
-	        <version>1.14.3</version>
-	    </dependency>	
-	    
 	    
 	    
 	    
