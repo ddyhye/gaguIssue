@@ -7,7 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeMultipart;
 
-import org.jsoup.Jsoup;
+//import org.jsoup.Jsoup;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +23,8 @@ public class MailUtil {
                 result.append(bodyPart.getContent().toString());
             } else if (bodyPart.isMimeType("text/html")) {
                 String html = (String) bodyPart.getContent();
-                result.append(Jsoup.parse(html).text());
+                // pom 에서 빠져있어 주석처리
+                //result.append(Jsoup.parse(html).text());
             } else if (bodyPart.getContent() instanceof MimeMultipart) {
                 result.append(getTextFromMimeMultipart((MimeMultipart) bodyPart.getContent()));
             }
